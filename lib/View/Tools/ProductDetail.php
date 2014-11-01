@@ -48,11 +48,10 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		// throw new \Exception("Error Processing Request".$attachment_model['attachment_url']);
 		
 		// $this->setModel($product_attachment_model);
-		//TODO Live Edit of Product Detail (server site live edit )
-		if( $this->api->edit_mode == true ){
-			if($this->html_attributes['xshop_product_detail_live_edit']){		
+		
+		//Live Edit of Product Detail (server site live edit )
+		if( $this->api->edit_mode == true ){		
 				$this->js(true)->_load('xshopContentUpdate');
-			} 
 		}else{ 
 			$this->template->tryDel('xshop_product_detail_live_edit_start');
 			$this->template->tryDel('xshop_product_detail_live_edit_end');
