@@ -82,10 +82,10 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		$details->setModel($custom_field_model);
 							
 		// do adding multiple images of a single product
-		$images = $this->add('xShop/View_Lister_ProductImages',null,'product_images');			
-		$images->setModel($this->add('xShop/Model_ProductImages')->addCondition('product_id',$_GET['xshop_item_id']));	
-		$this->setModel($product);
+		// $images = $this->add('xShop/View_Lister_ProductImages',null,'product_images');			
+		// $images->setModel($this->add('xShop/Model_ProductImages')->addCondition('product_id',$_GET['xshop_item_id']));	
 		
+		$this->setModel($product);
 		if(!$product['allow_enquiry'])
 			$this->template->tryDel('xshop_product_enquiry');	
 

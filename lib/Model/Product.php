@@ -170,7 +170,6 @@ class Model_Product extends \Model_Table{
 	function updateContent($id,$content){
 		if($this->loaded())
 			throw new \Exception("Model_loaded at time of product");
-
 		$this->load($id);
 		$this['description']=$content;
 		$this->save();
