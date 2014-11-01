@@ -176,5 +176,10 @@ class Model_Product extends \Model_Table{
 		$this->save();
 		return 'true';
 	}
+
+	function getProduct($id){
+		$this->load($id);				
+		return $this;
+	}
 }
 
