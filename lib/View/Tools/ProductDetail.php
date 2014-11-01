@@ -48,21 +48,20 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		// throw new \Exception("Error Processing Request".$attachment_model['attachment_url']);
 		
 		// $this->setModel($product_attachment_model);
-
-		if($_GET['xshop_item_id']){
-			$product->load($_GET['xshop_item_id']);		
-		}else{
-			return;
-		}	
-
 		//TODO Live Edit of Product Detail (server site live edit )
-		if( $this->api->edit_mode == 'true' ){
+		if( $this->api->edit_mode == true ){
 			if($this->html_attributes['xshop_product_detail_live_edit']){		
 				$this->js(true)->_load('xshopContentUpdate');
 			} 
 		}else{ 
 			$this->template->tryDel('xshop_product_detail_live_edit_start');
 			$this->template->tryDel('xshop_product_detail_live_edit_end');
+		}
+
+		if($_GET['xshop_item_id']){
+			$product->load($_GET['xshop_item_id']);		
+		}else{
+			return;
 		}
 
 		$this->add('View',null,'description123')->setHtml($product['description']);
