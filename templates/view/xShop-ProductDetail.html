@@ -33,18 +33,20 @@
 					<!-- reviews comes here -->
 				</div>
 			</div>
-			<!-- <div class="panel-group mypanel" id="accordion"> -->
-				<!-- <div class="panel panel-success"> -->
-				    <!-- <div class="panel-heading">
+			<?xshop_product_detail_panel_start?>
+			<div class="panel-group mypanel" id="xshop_detail_accordion_">
+				<div class="panel panel-success">
+				    <div class="panel-heading">
 				    	<h4 class="panel-title">
-				        <a data-toggle="collapse" data-parent="#accordion" href="#xShop-collapseOne">
-				          Detail
+				        <a data-toggle="collapse" data-parent="#xshop_detail_accordion" href="#xShop-collapseOne1">
+				          <?$xshop_product_detail_panel_label?>
 				        </a>
 				      	</h4>
-				    </div> -->
-				    <!-- <div id="xShop-collapseOne" class="panel-collapse collapse in"> -->
+				    </div>
+				    <div id="xShop-collapseOne1" class="panel-collapse collapse in">
+				    <div class="panel-body">
+			<?/xshop_product_detail_panel_start?>
 				    <div class="xshop-product-detail">
-				    	<!-- <div class="panel-body"> -->
 				    <?xshop_product_detail_live_edit_start?>	
 				    		<div class="epan-container epan-sortable-component epan-component  ui-sortable component-outline epan-sortable-extra-padding ui-selected xshop-product-detail-content-live-edit" component_type="Container" id="xshop_product_detail_content_live_edit_<?$id?>">
 				    <?/xshop_product_detail_live_edit_start?>	
@@ -56,11 +58,12 @@
 				    		</div>	
 				    <?/xshop_product_detail_live_edit_end?>	
 				    		<!-- <?$description?> -->
-				    	<!-- </div> -->
-				    <!-- </div> -->
-				<!-- </div> -->
+				  <?xshop_product_detail_panel_end?>  	
+				    	</div>
+				    </div>
+				</div>
 			</div>
-
+			<?/xshop_product_detail_panel_end?>
 			<div class="custom-field">
 				<?$product_custom_fields?>
 			</div>

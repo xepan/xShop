@@ -56,7 +56,16 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 			$this->template->tryDel('xshop_product_detail_live_edit_start');
 			$this->template->tryDel('xshop_product_detail_live_edit_end');
 		}
+		//end  
 
+		//PANEL OPTIONS
+			$this->template->trySetHTML('xshop_product_detail_panel_label',$this->html_attributes['xshop_product_detail_panel_label']);
+			if(!$this->html_attributes['xshop_product_detail_panel']){
+				$this->template->tryDel('xshop_product_detail_panel_start');
+				$this->template->tryDel('xshop_product_detail_panel_end');
+			}
+
+		//END OF PANEL OPTIONS
 		if($_GET['xshop_item_id']){
 			$product->load($_GET['xshop_item_id']);		
 		}else{
