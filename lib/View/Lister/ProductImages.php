@@ -10,7 +10,7 @@ class View_Lister_ProductImages extends \CompleteLister{
 		// cloneing the model and set first images  
 		$one_image = clone $model;
 		$one_image->tryLoadAny();
-		$this->template->trySet('zoom3_image_url',$one_image['image_url']);
+		$this->template->trySet('zoom3_image_url',$one_image['image_url']?:"epan-components/xShop/templates/images/item_no_image.png");
 			
 	}
 	// function formatRow(){

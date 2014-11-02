@@ -14,7 +14,8 @@ class View_Lister_Product extends \CompleteLister{
  
 	function formatRow(){
 		
-		$this->current_row['image_url'] = $this->model->ref('xShop/ProductImages')->tryLoadAny()->get('image_url');			
+
+		$this->current_row['image_url'] = $this->model->ref('xShop/ProductImages')->tryLoadAny()->get('image_url')?:"epan-components/xShop/templates/images/item_no_image.png";			
 
 		if($this->item_detail_onhover){
 			if($this->item_detail_url){

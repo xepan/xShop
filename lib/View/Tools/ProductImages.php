@@ -13,9 +13,8 @@ class View_Tools_ProductImages extends \componentBase\View_Component{
 		}
 		$product=$this->add('xShop/Model_Product');
 		$product->load($_GET['xshop_item_id']);
-		$images = $this->add('xShop/View_Lister_ProductImages');			
-		$images->setModel($this->add('xShop/Model_ProductImages')->addCondition('product_id',$_GET['xshop_item_id']));	
-		$this->setModel($product);
+		$images_lister = $this->add('xShop/View_Lister_ProductImages');			
+		$images_lister->setModel($this->add('xShop/Model_ProductImages')->addCondition('product_id',$_GET['xshop_item_id']));	
 	}
 
 }
