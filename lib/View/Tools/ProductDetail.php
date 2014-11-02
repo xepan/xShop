@@ -48,21 +48,28 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		// throw new \Exception("Error Processing Request".$attachment_model['attachment_url']);
 		
 		// $this->setModel($product_attachment_model);
+		
+		//Live Edit of Product Detail (server site live edit )
+		if( $this->api->edit_mode == true ){		
+				$this->js(true)->_load('xshopContentUpdate');
+		}else{ 
+			$this->template->tryDel('xshop_product_detail_live_edit_start');
+			$this->template->tryDel('xshop_product_detail_live_edit_end');
+		}
+		//end  
 
+		//PANEL OPTIONS
+			$this->template->trySetHTML('xshop_product_detail_panel_label',$this->html_attributes['xshop_product_detail_panel_label']);
+			if(!$this->html_attributes['xshop_product_detail_panel']){
+				$this->template->tryDel('xshop_product_detail_panel_start');
+				$this->template->tryDel('xshop_product_detail_panel_end');
+			}
+
+		//END OF PANEL OPTIONS
 		if($_GET['xshop_item_id']){
 			$product->load($_GET['xshop_item_id']);		
 		}else{
 			return;
-		}	
-
-		//TODO Live Edit of Product Detail (server site live edit )
-		if( $this->api->edit_mode == 'true' ){
-			if($this->html_attributes['xshop_product_detail_live_edit']){		
-				$this->js(true)->_load('xshopContentUpdate');
-			} 
-		}else{ 
-			$this->template->tryDel('xshop_product_detail_live_edit_start');
-			$this->template->tryDel('xshop_product_detail_live_edit_end');
 		}
 
 		$this->add('View',null,'description123')->setHtml($product['description']);
@@ -75,10 +82,10 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		$details->setModel($custom_field_model);
 							
 		// do adding multiple images of a single product
-		$images = $this->add('xShop/View_Lister_ProductImages',null,'product_images');			
-		$images->setModel($this->add('xShop/Model_ProductImages')->addCondition('product_id',$_GET['xshop_item_id']));	
-		$this->setModel($product);
+		// $images = $this->add('xShop/View_Lister_ProductImages',null,'product_images');			
+		// $images->setModel($this->add('xShop/Model_ProductImages')->addCondition('product_id',$_GET['xshop_item_id']));	
 		
+		$this->setModel($product);
 		if(!$product['allow_enquiry'])
 			$this->template->tryDel('xshop_product_enquiry');	
 

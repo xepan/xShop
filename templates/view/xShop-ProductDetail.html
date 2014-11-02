@@ -9,12 +9,12 @@
 	</div>
    
 	<div class="row">
-			<?xshop_product_detail_images?>
+<!-- 			<?xshop_product_detail_images?>
 		<div class="col-md-4" >
 			<?$product_images?>
 		</div>
-			<?/xshop_product_detail_images?>
-		<div class="col-md-8 well well-sm">
+			<?/xshop_product_detail_images?> -->
+		<div class="col-md-12 well well-sm col-sm-12">
 			<div class="row">
 				<div class="col-md-4 col-sm-4 text-left text-success">
 					<b>Code: <?$sku?></b>
@@ -33,33 +33,37 @@
 					<!-- reviews comes here -->
 				</div>
 			</div>
-			<div class="panel-group mypanel" id="accordion">
+			<?xshop_product_detail_panel_start?>
+			<div class="panel-group mypanel" id="xshop_detail_accordion_">
 				<div class="panel panel-success">
 				    <div class="panel-heading">
 				    	<h4 class="panel-title">
-				        <a data-toggle="collapse" data-parent="#accordion" href="#xShop-collapseOne">
-				          Detail
+				        <a data-toggle="collapse" data-parent="#xshop_detail_accordion" href="#xShop-collapseOne1">
+				          <?$xshop_product_detail_panel_label?>
 				        </a>
 				      	</h4>
 				    </div>
-				    <div id="xShop-collapseOne" class="panel-collapse collapse in">
-				    	<div class="panel-body">
+				    <div id="xShop-collapseOne1" class="panel-collapse collapse in">
+				    <div class="panel-body">
+			<?/xshop_product_detail_panel_start?>
+				    <div class="xshop-product-detail">
 				    <?xshop_product_detail_live_edit_start?>	
-				    		<div class="epan-container epan-sortable-component epan-component  ui-sortable component-outline epan-sortable-extra-padding ui-selected xshop-product-detail-content-live-edit" component_type="Container" id="xshop_product_detail_content_live_edit_<?$id?>">
+				    		<div class="epan-container epan-sortable-component epan-component  ui-sortable component-outline epan-sortable-extra-padding ui-selected xshop-product-detail-content-live-edit" component_type="Container" id="xshop_product_detail_content_live_edit_<?id?><?/id?>">
 				    <?/xshop_product_detail_live_edit_start?>	
 				    			<?$description123?>				    
 				    <?xshop_product_detail_live_edit_end?>
 				    		</div>
-				    		<div id="xshop_product_detail_live_edit_update" class="btn btn-danger pull-right btn-block" onclick='javascript:$(this).univ().producDetailUpdate("xshop_product_detail_content_live_edit_<?$id?>","<?$id?>","<?$code?>")' style="margin-top:10px;">
+				    		<div id="xshop_product_detail_live_edit_update" class="btn btn-danger pull-right btn-block" onclick='javascript:$(this).univ().producDetailUpdate("xshop_product_detail_content_live_edit_<?id?><?/id?>","<?id?><?/id?>","<?$sku?>")' style="margin-top:10px;">
 				    			Update
 				    		</div>	
 				    <?/xshop_product_detail_live_edit_end?>	
 				    		<!-- <?$description?> -->
+				  <?xshop_product_detail_panel_end?>  	
 				    	</div>
 				    </div>
 				</div>
 			</div>
-
+			<?/xshop_product_detail_panel_end?>
 			<div class="custom-field">
 				<?$product_custom_fields?>
 			</div>
@@ -104,9 +108,9 @@
 				<div class="col-md-12">
 					<?$xshop_product_tags?>
 				</div>
-			</div>
-			<div class="pull-right" style="color:#c3c3c3">
+			<div class="pull-right" style="color:#c3c3c3;">
 				Date: <?$created_at?>
+			</div>
 			</div>
 			<!-- <div class="row" style="margin:2% 0 0 0; color:#cccccc">
 					<div class="col-md-3"><small><span class="glyphicon glyphicon-certificate"></span> Indian Manufacturer</small></div>

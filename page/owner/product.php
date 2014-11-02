@@ -17,7 +17,7 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 		$model = $p_col->add('xShop/Model_Product');
 
 		$crud=$p_col->add('CRUD');
-		$crud->setModel($model);
+		$crud->setModel($model,array('supplier_id','manufacturer_id','name','sku','short_description','description','original_price','sale_price','created_at','expiry_date','meta_title','meta_description','rank_weight','tags','allow_comments','allow_attachment','comment_api','show_offer','show_detail','allow_enquiry','allow_saleable','show_price','show_manufacturer_detail','show_supplier_detail','add_custom_button','custom_button_text','custom_button_url','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','product_enquiry_auto_reply','is_publish','new','feature','latest','mostviewed'),array('name','sku','sale_price'));
 
 		// if($crud->isEditing()){
 		// 	$model_cat=$crud->form->getElement('categoryproduct_id')->getModel();
@@ -25,6 +25,7 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 		// }
 				
 		if($crud->grid){
+			$crud->grid->addColumn('expander','details');
 			$crud->grid->addColumn('expander','categories');
 			$crud->grid->addQuickSearch(array('sku','name','sale_price'));
 			$crud->grid->addPaginator($ipp=50);
@@ -88,6 +89,14 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 
 		$grid->addQuickSearch(array('category_name'));
 		$grid->addPaginator($ipp=20);
+	}
+
+	function page_details(){
+		$pro_id=$this->api->stickyGET('xshop_products_id');	
+		$product_model = $this->add('xShop/Model_Product');
+		$product_model->getProduct($pro_id);
+		$product_view = $this->add('xShop/View_ProductDetail');
+		$product_view->setModel($product_model);	
 	}
 
 }

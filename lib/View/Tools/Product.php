@@ -9,6 +9,7 @@ class View_Tools_Product extends \componentBase\View_Component{
 		//for grid column width
 		$this->api->js()->_load('xShop-js');
 		$this->api->stickyGET('search');
+		$this->api->stickyGET('category_id');
 
 		if(!$this->html_attributes['xshop-grid-column'])
 			$column_width='25';
@@ -71,7 +72,7 @@ class View_Tools_Product extends \componentBase\View_Component{
 		// 	$product_lister_view->template->del('no_record_found');			
 
 		$paginator = $product_lister_view->add('Paginator');
-		$paginator->ipp(9);
+		$paginator->ipp($this->html_attributes['xshop_product_paginator']?:12);
 
 		//loading custom CSS file	
 		$product_css = 'epans/'.$this->api->current_website['name'].'/xshopcustom.css';
