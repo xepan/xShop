@@ -17,6 +17,8 @@ class View_ProductDetail extends \View{
 		$this->template->trySet('marked_latest',$model['latest']?'On':'Off');
 		$this->template->trySet('marked_mostview',$model['mostviewed']?'On':'Off');
 		
+		//Published 
+		$this->template->trySet('published',$model['is_publish']?'Yes':'No');
 		//Enquiry
 		$this->template->trySet('self',$model['enquiry_send_to_self']?'On':'Off');
 		$this->template->trySet('supplier123',$model['enquiry_send_to_supplier']?'On':'Off');
@@ -40,6 +42,7 @@ class View_ProductDetail extends \View{
 		
 		//Item button and meta options
 		$this->template->trySet('custom_button',$model['add_custom_button']?'On':'Off');
+		
 		parent::setModel($model);
 	}
 
