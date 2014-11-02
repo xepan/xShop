@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 15, 2014 at 11:18 AM
+-- Generation Time: Nov 02, 2014 at 03:40 PM
 -- Server version: 5.5.38-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4.3
+-- PHP Version: 5.5.9-1ubuntu4.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `xepancomponent`
+-- Database: `xepan1.0.4test`
 --
 
 -- --------------------------------------------------------
@@ -265,6 +265,7 @@ CREATE TABLE IF NOT EXISTS `xshop_memberdetails` (
   `country` varchar(255) DEFAULT NULL,
   `mobile_number` varchar(255) DEFAULT NULL,
   `pincode` varchar(255) DEFAULT NULL,
+  `epan_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_users_id` (`users_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -308,6 +309,7 @@ CREATE TABLE IF NOT EXISTS `xshop_orders` (
   `billing_address` varchar(255) DEFAULT NULL,
   `shipping_address` varchar(255) DEFAULT NULL,
   `order_date` varchar(255) DEFAULT NULL,
+  `epan_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_member_id` (`member_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
