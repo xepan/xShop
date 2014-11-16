@@ -8,18 +8,20 @@ class Model_Product extends \Model_Table{
 
 	function init(){
 		parent::init();	
-		$this->hasOne('xShop/Supplier','supplier_id');
-		$this->hasOne('xShop/Manufacturer','manufacturer_id');
+		$f=$this->hasOne('xShop/Supplier','supplier_id');
+		$f->group ='a/6';
+		$f=$this->hasOne('xShop/Manufacturer','manufacturer_id');
+		$f->group='a/6';
 		//TODO for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 
-		$this->addField('name')->mandatory(true);
-		$this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique product code ')->mandatory(true);
-		$this->addField('short_description')->type('text')->display(array('form'=>'RichText'));
-		$this->addField('description')->type('text')->display(array('form'=>'RichText'));
-		$this->addField('original_price')->mandatory(true);
-		$this->addField('sale_price')->type('int')->mandatory(true);
+		$this->addField('name')->mandatory(true)->group('b/6');
+		$this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique product code ')->mandatory(true)->group('b/6');
+		$this->addField('short_description')->type('text')->group('c/4/Pricing Section');//->display(array('form'=>'RichText'));
+		$this->addField('original_price')->mandatory(true)->group('c/4/0');
+		$this->addField('sale_price')->type('int')->mandatory(true)->group('c/4/0');
+		$this->addField('description')->type('text')->display(array('form'=>'RichText'))->group('c/8');
 		$this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'));				
 		$this->addField('expiry_date')->type('date');
 		$this->addField('meta_title');
