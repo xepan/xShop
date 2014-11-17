@@ -15,16 +15,23 @@ class Model_Category extends \Model_Table{
 
 		//Todo for category model with self loop of parent category
 		$this->hasOne('xShop/ParentCategory','parent_id')->defaultValue('Null');
-		$this->addField('name')->Caption('Category Name');
-		$this->addField('description')->type('text')->display(array('form'=>'RichText'));
-		$this->addField('order')->type('int')->hint('Greatest order number display first and only integer number require')->defaultValue(0);
-		$this->addField('meta_title');
-		$this->addField('meta_description')->type('text');
-		$this->addField('meta_keywords');
-		$this->addField('is_active')->type('boolean')->defaultValue(true);
-		$this->addField('image_url')->display(array('form'=>'ElImage'));
-		$this->addField('alt_text');
 
+		$f = $this->addField('name')->Caption('Category Name')->mandatory(true)->group('a~6');
+		$f->icon = "fa fa-folder~red";
+		$f = $this->addField('order')->type('int')->hint('Greatest order number display first and only integer number require')->defaultValue(0)->group('a~4');
+		$f->icon = "fa fa-sort-amount-desc~blue";
+		$f = $this->addField('is_active')->type('boolean')->defaultValue(true)->group('a~2');
+		$f->icon = "fa fa-exclamation~blue";		
+		$f = $this->addField('image_url')->display(array('form'=>'ElImage'))->group('b~6~Category Images');
+		$f->icon = "glyphicon glyphicon-picture~blue";		
+		$f = $this->addField('alt_text')->group('b~6');
+		$f->icon = "glyphicon glyphicon-pencil~blue";		
+		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'))->group('c~12');
+		$f->icon = "fa fa-pencil~blue";
+
+		//$this->addField('meta_title');
+		//$this->addField('meta_description')->type('text');
+		//$this->addField('meta_keywords');
 		$this->hasMany('xShop/Category','parent_id',null,'SubCategories');
 		$this->hasMany('xShop/CategoryProduct','category_id');
 		

@@ -16,7 +16,7 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 
 		$model = $p_col->add('xShop/Model_Product');
 
-		$crud=$p_col->add('CRUD');
+		$crud=$p_col->add('CRUD',array('frame_options'=>array('beforeClose'=>'alert("sdf");')));
 		$crud->setModel($model,array('supplier_id','manufacturer_id','name','sku','short_description','description','original_price','sale_price','created_at','expiry_date','meta_title','meta_description','rank_weight','tags','allow_comments','allow_attachment','comment_api','show_offer','show_detail','allow_enquiry','allow_saleable','show_price','show_manufacturer_detail','show_supplier_detail','add_custom_button','custom_button_text','custom_button_url','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','product_enquiry_auto_reply','is_publish','new','feature','latest','mostviewed'),array('name','sku','sale_price'));
 		$crud->add('Controller_FormBeautifier');
 		// if($crud->isEditing()){
