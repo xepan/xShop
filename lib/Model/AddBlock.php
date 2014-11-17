@@ -11,7 +11,8 @@ class Model_AddBlock extends \Model_Table{
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);	
 		
-		$this->addField('name')->caption('Block Name');
+		$f = $this->addField('name')->caption('Block Name')->mandatory(true);
+		$f->icon = "fa fa-circle~red";
 		$this->hasMany('xShop/BlockImages','block_id');
 		
 		// $this->add('dynamic_model/Controller_AutoCreator');

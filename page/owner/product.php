@@ -31,9 +31,18 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 			$crud->grid->addPaginator($ipp=50);
 		}
 
-		$crud->addRef('xShop/ProductImages',array('label'=>'Images'));
-		$crud->addRef('xShop/CustomFields',array('label'=>'Custome Fields'));
-		$crud->addRef('xShop/Attachments',array('label'=>'Attachment'));
+		$ref = $crud->addRef('xShop/ProductImages',array('label'=>'Images'));
+		if($ref){
+			$ref->add('Controller_FormBeautifier');
+		}
+		$ref = $crud->addRef('xShop/CustomFields',array('label'=>'Custome Fields'));
+		if($ref){
+			$ref->add('Controller_FormBeautifier');
+		}
+		$ref = $crud->addRef('xShop/Attachments',array('label'=>'Attachment'));
+		if($ref){
+			$ref->add('Controller_FormBeautifier');
+		}
 		
 		// $c_col->add('View_Info')->set('Category');
 		// $crud1=$c_col->add('CRUD');
