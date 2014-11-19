@@ -11,20 +11,22 @@ class Model_Order extends \Model_Table{
  		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 
-		$this->hasOne('xShop/MemberDetails','member_id');
+		$f = $this->hasOne('xShop/MemberDetails','member_id')->group('a~3~<i class="fa fa-info"></i> Order Info');
+		$f->icon = "fa fa-user~red";
+		$f = $this->addField('name')->caption('Order ID')->mandatory(true)->group('a~3');
+		$f = $this->addField('order_status')->enum(array('OrderPlaced','OrderShiped','OrderDenied'))->group('a~2');
+		$f = $this->addField('payment_status')->enum(array('Pending','Cleared','Denied'))->group('a~2');
+		$f = $this->addField('order_date')->type('date')->defaultValue(date('Y-m-d'))->group('a~2');
+		$f->icon ="fa fa-calendar~blue";
 
-		$this->addField('name')->caption('Order ID');
-		$this->addField('order_status')->enum(array('OrderPlaced','OrderShiped','OrderDenied'));
-		$this->addField('payment_status')->enum(array('Pending','Cleared','Denied'));
-		$this->addField('amount');
-		$this->addField('discount_voucher');
-		$this->addField('discount_voucher_amount');
-		$this->addField('net_amount');
-		$this->addField('order_summary');
-		$this->addField('billing_address');
-		$this->addField('shipping_address');
-		$this->addField('order_date')->defaultValue(date('Y-m-d'));
-		
+		$f = $this->addField('amount')->mandatory(true)->group('b~3~<i class="fa fa-money"></i> Order Amount');
+		$f = $this->addField('discount_voucher')->group('b~3');
+		$f = $this->addField('discount_voucher_amount')->group('b~3');
+		$f = $this->addField('net_amount')->mandatory(true)->group('b~3');
+
+		$f = $this->addField('billing_address')->mandatory(true)->group('x~6~<i class="fa fa-map-marker"> Address</i>');
+		$f = $this->addField('shipping_address')->mandatory(true)->group('x~6');	
+		$f = $this->addField('order_summary')->type('text')->group('y~12');
 		$this->hasMany('xShop/OrderDetails','order_id');
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}

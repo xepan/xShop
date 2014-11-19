@@ -8,54 +8,101 @@ class Model_Product extends \Model_Table{
 
 	function init(){
 		parent::init();	
-		$this->hasOne('xShop/Supplier','supplier_id');
-		$this->hasOne('xShop/Manufacturer','manufacturer_id');
+		$f = $this->hasOne('xShop/Supplier','supplier_id')->group('a~6');
+		$f->icon = "fa fa-user~blue";
+		$f = $this->hasOne('xShop/Manufacturer','manufacturer_id')->group('a~6');
+		$f->icon = "fa fa-user~blue";
+		// $f->group='a/6';
 		//TODO for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 
-		$this->addField('name')->mandatory(true);
-		$this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique product code ')->mandatory(true);
-		$this->addField('short_description')->type('text')->display(array('form'=>'RichText'));
-		$this->addField('description')->type('text')->display(array('form'=>'RichText'));
-		$this->addField('original_price')->mandatory(true);
-		$this->addField('sale_price')->type('int')->mandatory(true);
-		$this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'));				
-		$this->addField('expiry_date')->type('date');
-		$this->addField('meta_title');
-		$this->addField('meta_description')->type('text');
-		$this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Product Display First')->mandatory(true);
-		$this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value');
-		$this->addField('allow_comments')->type('boolean');
-		$this->addField('allow_attachment')->type('boolean');
-		$this->addField('comment_api')->setValueList(
-														array('disqus'=>'Disqus')
-														);
+		$f = $this->addField('name')->mandatory(true)->group('b~6');
+		$f->icon = "fa fa-puzzle-piece~red";
+		$f = $this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique product code ')->mandatory(true)->group('b~4');
+		$f->icon = "fa fa-puzzle-piece~red";
+		$f = $this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~2');
+		$f->icon = "fa fa-exclamation~blue";
 
+		$f = $this->addField('short_description')->type('text')->group('d~6');//->display(array('form'=>'RichText'));
+		$f->icon = "fa fa-pencil~blue";
+		$f = $this->addField('original_price')->mandatory(true)->group('d~3');
+		$f->icon = "fa fa-money~blue";
+		$f = $this->addField('sale_price')->type('int')->mandatory(true)->group('d~3');
+		$f->icon = "fa fa-money~blue";
+		$f = $this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Product Display First')->mandatory(true)->group('d~6~dl');
+		$f->icon = "glyphicon glyphicon-sort-by-attributes~blue";
+		$f = $this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'))->group('d~3~dl');				
+		$f->icon = "fa fa-calendar~blue";
+		$f = $this->addField('expiry_date')->type('date')->group('d~3~dl');
+		$f->icon = "fa fa-calendar~blue";
+		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'))->group('g~12');
+		$f->icon = "fa fa-pencil~blue";
+		
+		//Item Allow Optins
+		$f = $this->addField('allow_attachment')->type('boolean')->group('f~3~<i class=\'fa fa-cog\' > Item Allow Options</i>');
+		$f->icon = "fa fa-folder-open~blue";		
+		$f = $this->addField('allow_saleable')->type('boolean')->group('f~3');
+		$f->icon = "fa fa-shopping-cart~blue";		
+		$f = $this->addField('allow_enquiry')->type('boolean')->group('f~3');
+		$f->icon = "fa fa-envelope~blue";		
+
+		//Search String
 		$this->addField('search_string')->type('text')->system(true);
-		$this->addField('show_offer')->type('boolean');
-		$this->addField('show_detail')->type('boolean')->defaultValue(true);
-		$this->addField('allow_enquiry')->type('boolean');
-		$this->addField('allow_saleable')->type('boolean');
-		$this->addField('show_price')->type('boolean');
-		$this->addField('show_manufacturer_detail')->type('boolean');
-		$this->addField('show_supplier_detail')->type('boolean');
-		
-		$this->addField('add_custom_button')->type('boolean');
-		$this->addField('custom_button_text');
-		$this->addField('custom_button_url')->placeHolder('subpage name like registration etc.');
-		
-		$this->addField('enquiry_send_to_self')->type('boolean');
-		$this->addField('enquiry_send_to_supplier')->type('boolean');
-		$this->addField('enquiry_send_to_manufacturer')->type('boolean');
-		$this->addField('product_enquiry_auto_reply')->type('boolean');
 
-		$this->addField('is_publish')->type('boolean')->defaultValue(true);
-		$this->addField('new')->type('boolean')->caption('mark_new')->defaultValue(true);
-		$this->addField('feature')->type('boolean')->caption('mark_featured');
-		$this->addField('latest')->type('boolean')->caption('mark_latest');
-		$this->addField('mostviewed')->type('boolean')->caption('mark_most_viewed');
+		//Item Display Options
+		$f = $this->addField('show_offer')->type('boolean')->group('i~2~<i class=\'fa fa-cog\' > Item Display Options</i>');
+		$f->icon = "glyphicon glyphicon-eye-open~#337ab7";		
+		$f = $this->addField('show_detail')->type('boolean')->defaultValue(true)->group('i~2~Item');
+		$f->icon = "glyphicon glyphicon-eye-open~#337ab7";		
+		$f = $this->addField('show_price')->type('boolean')->group('i~2');
+		$f->icon = "glyphicon glyphicon-eye-open~#337ab7";		
+		$f = $this->addField('show_manufacturer_detail')->type('boolean')->caption('Manufacturer Detail')->group('i~2~Item Display Options');
+		$f->icon = "glyphicon glyphicon-eye-open~#337ab7";		
+		$f = $this->addField('show_supplier_detail')->type('boolean')->caption('Supplier Detail')->group('i~2~Item Display Options');
+		$f->icon = "glyphicon glyphicon-eye-open~#337ab7";		
+
+		//Marked
+		$f = $this->addField('new')->type('boolean')->caption('New')->defaultValue(true)->group('m~3~<i class=\'fa fa-cog\' > Marked Options</i>');
+		$f->icon = "glyphicon glyphicon-pushpin~#5cb85c";
+		$f = $this->addField('feature')->type('boolean')->caption('Featured')->group('m~3');
+		$f->icon = "glyphicon glyphicon-pushpin~#337ab7";
+		$f = $this->addField('latest')->type('boolean')->caption('Latest')->group('m~3');
+		$f->icon = "glyphicon glyphicon-pushpin~#f0ad4e";
+		$f = $this->addField('mostviewed')->type('boolean')->caption('Most Viewed')->group('m~3');
+		$f->icon = "glyphicon glyphicon-pushpin~#5bc0de";
 		
+		//Enquiry Send To		
+		$f = $this->addField('enquiry_send_to_self')->caption('Self/ Owner')->type('boolean')->group('e~3~<i class=\'fa fa-cog\' > Enquiry Send To</i>');
+		$f->icon = "glyphicon glyphicon-send~#5cb85c";		
+		$f = $this->addField('enquiry_send_to_supplier')->caption('Supplier')->type('boolean')->group('e~3');
+		$f->icon = "glyphicon glyphicon-send~#5cb85c";		
+		$f= $this->addField('enquiry_send_to_manufacturer')->caption('Manufacturer')->type('boolean')->group('e~3');
+		$f->icon = "glyphicon glyphicon-send~#5cb85c";		
+		$f = $this->addField('product_enquiry_auto_reply')->caption('Item Enquiry Auto Reply')->type('boolean')->group('e~3');
+		$f->icon = "glyphicon glyphicon-send~#5cb85c";		
+
+		//Item Comment Options
+		$f = $this->addField('allow_comments')->type('boolean')->group('com~4~<i class=\'fa fa-cog\'> Item Comment Options</i>');
+		$f->icon = "glyphicon glyphicon-comment~blue";		
+		$f = $this->addField('comment_api')->setValueList(
+														array('disqus'=>'Disqus')
+														)->group('com~8');
+		$f->icon = "glyphicon glyphicon-ok~blue";		
+
+		//Item Other Options	
+		$f = $this->addField('add_custom_button')->type('boolean')->group('o~3~<i class=\'fa fa-cog\'> Item Other Options</i>');
+		$f = $this->addField('meta_title')->group('o~3~bl');
+		$f->icon = "glyphicon glyphicon-pencil~blue";		
+		$f = $this->addField('custom_button_text')->group('o~4');
+		$f->icon = "glyphicon glyphicon-pencil~blue";		
+		$f = $this->addField('meta_description')->type('text')->group('o~4~bl');
+		$f->icon = "glyphicon glyphicon-pencil~blue";		
+		$f = $this->addField('custom_button_url')->placeHolder('subpage name like registration etc.')->group('o~5');
+		$f->icon = "glyphicon glyphicon-pencil~blue";		
+		$f = $this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value')->group('o~5~bl');
+		$f->icon = "glyphicon glyphicon-pencil~blue";	
+
 		$this->hasMany('xShop/CategoryProduct','product_id');
 		$this->hasMany('xShop/ProductImages','product_id');
 		$this->hasMany('xShop/CustomFields','product_id');

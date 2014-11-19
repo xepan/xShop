@@ -6,7 +6,10 @@ class page_xShop_page_owner_addblock extends page_xShop_page_owner_main{
 
 		$crud=$this->add('CRUD');
 		$crud->setModel('xShop/Model_AddBlock');
-		$crud->addRef('xShop/BlockImages',array('label'=>'Images'));	
+		$crud->add('Controller_FormBeautifier');
+		$ref = $crud->addRef('xShop/BlockImages',array('label'=>'Images'));
+		if($ref)
+			$ref->add('Controller_FormBeautifier');
 	}
 
 	function page_BlockImages(){

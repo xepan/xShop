@@ -8,8 +8,8 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 		$col_static=$this->add('Columns');
 		$i_col=$col_static->addColumn(3);
 		$d_col=$col_static->addColumn(3);
-		$i_col->add('View_Info')->set("Item out of stock");
-		$d_col->add('View_Error')->set("Disable Product");
+		//$i_col->add('View_Info')->set("Item out of stock");
+		//$d_col->add('View_Error')->set("Disable Product");
 
 		$col=$this->add('Columns');
 		$p_col=$col->addColumn(12);
@@ -17,8 +17,8 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 		$model = $p_col->add('xShop/Model_Product');
 
 		$crud=$p_col->add('CRUD');
-		$crud->setModel($model,array('supplier_id','manufacturer_id','name','sku','short_description','description','original_price','sale_price','created_at','expiry_date','meta_title','meta_description','rank_weight','tags','allow_comments','allow_attachment','comment_api','show_offer','show_detail','allow_enquiry','allow_saleable','show_price','show_manufacturer_detail','show_supplier_detail','add_custom_button','custom_button_text','custom_button_url','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','product_enquiry_auto_reply','is_publish','new','feature','latest','mostviewed'),array('name','sku','sale_price'));
-
+		$crud->setModel($model,array('supplier_id','manufacturer_id','name','sku','is_publish','short_description','description','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','product_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags'),array('name','sku','sale_price'));
+		$crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
 		// if($crud->isEditing()){
 		// 	$model_cat=$crud->form->getElement('categoryproduct_id')->getModel();
 		// 	$model_cat->title_field="category_name";
@@ -31,9 +31,18 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 			$crud->grid->addPaginator($ipp=50);
 		}
 
-		$crud->addRef('xShop/ProductImages',array('label'=>'Images'));
-		$crud->addRef('xShop/CustomFields',array('label'=>'Custome Fields'));
-		$crud->addRef('xShop/Attachments',array('label'=>'Attachment'));
+		$ref = $crud->addRef('xShop/ProductImages',array('label'=>'Images'));
+		if($ref){
+			$ref->add('Controller_FormBeautifier');
+		}
+		$ref = $crud->addRef('xShop/CustomFields',array('label'=>'Custome Fields'));
+		if($ref){
+			$ref->add('Controller_FormBeautifier');
+		}
+		$ref = $crud->addRef('xShop/Attachments',array('label'=>'Attachment'));
+		if($ref){
+			$ref->add('Controller_FormBeautifier');
+		}
 		
 		// $c_col->add('View_Info')->set('Category');
 		// $crud1=$c_col->add('CRUD');

@@ -11,9 +11,9 @@ class page_xShop_page_owner_categorygroup_category extends page_xShop_page_owner
 		$e_col=$col->addcolumn(3);
 		$t_col=$col->addcolumn(3);
 		$a_col=$col->addcolumn(3);
-		$d_col->add('View_Info')->set('Disable Category');
-		$e_col->add('View_Error')->set('Empty Category');
-		$t_col->add('View_Info')->set('Top Category');
+		// $d_col->add('View_Info')->set('Disable Category');
+		// $e_col->add('View_Error')->set('Empty Category');
+		// $t_col->add('View_Info')->set('Top Category');
 		// $a_col->add('View_Error')->set('Average no of Product');
 		
 
@@ -23,7 +23,8 @@ class page_xShop_page_owner_categorygroup_category extends page_xShop_page_owner
 		$crud->addClass('xshop-owner-category');
 		$category_model->setOrder('id','desc');
 		
-		$crud->setModel($category_model,array('parent_id','name','order','is_active','description','meta_title','meta_description','meta_keywords','image_url','alt_text'),array('name','parent','order','is_active'));
+		$crud->setModel($category_model,array('parent_id','name','order','is_active','meta_title','meta_description','meta_keywords','image_url','alt_text','description'),array('name','parent','order','is_active'));
+		$crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
 		
 		if($crud->form){
 			$parent_model = $crud->form->getElement('parent_id')->getModel();

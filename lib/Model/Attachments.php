@@ -12,8 +12,10 @@ class Model_Attachments extends \Model_Table{
 		$this->addCondition('epan_id',$this->api->current_website->id);	
 		$this->hasOne('xShop/Product','product_id');
 		
-		$this->addField('name')->mandatory(true);
-		$this->addField('attachment_url')->display(array('form'=>'ElImage'))->mandatory(true);
+		$f = $this->addField('name')->mandatory(true)->group('a~6~Item Attachments');
+		$f->icon = "fa fa-puzzle-piece~red";
+		$f = $this->addField('attachment_url')->display(array('form'=>'ElImage'))->mandatory(true)->mandatory(true)->group('a~6');
+		$f->icon = "fa fa-paperclip~red";
 
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}

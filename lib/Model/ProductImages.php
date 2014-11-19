@@ -9,9 +9,12 @@ class Model_ProductImages extends \Model_Table {
 		
 		$this->hasOne('xShop/Product','product_id');
 		
-		$this->addField('image_url')->mandatory(true)->display(array('form'=>'ElImage'));
-		$this->addField('alt_text');
-		$this->addField('title');
+		$f = $this->addField('image_url')->mandatory(true)->display(array('form'=>'ElImage'))->group('a~12~<i class="glyphicon glyphicon-picture"></i> Media Management');
+		$f->icon ="glyphicon glyphicon-picture~blue";
+		$f = $this->addField('alt_text')->group('a~11~bl');
+		$f->icon ="glyphicon glyphicon-pencil~blue";
+		$f = $this->addField('title')->group('a~11~bl');
+		$f->icon ="glyphicon glyphicon-pencil~blue";
 
 		// $this->add('dynamic_model/Controller_AutoCreator');		
 	}
