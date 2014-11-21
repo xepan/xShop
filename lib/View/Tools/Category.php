@@ -12,12 +12,15 @@ class View_Tools_Category extends \componentBase\View_Component{
 		if(!$category_group){
 			// throw new \Exception($category_group);
 			$this->add('View_Error')->set('Please Select Category Group or First Create Category Group');		
-			$this->js(true)->univ()->errorMessage('Please Select category group first');
+			return;
+			// $this->js(true)->univ()->errorMessage('Please Select category group first');
 		}
 		elseif(!$this->html_attributes['xshop_category_url_page']){
 			$this->add('View_Error')->set('Please Specify Category URL Page Name (epan page name like.. about,contactus etc..)');		
-			$this->js(true)->univ()->errorMessage('Please Specify Category URL Page');
+			return;
+			// $this->js(true)->univ()->errorMessage('Please Specify Category URL Page');
 		}else{
+			
 			$categories->addCondition('categorygroup_id',$category_group);		
 			$categories->addCondition('is_active',true);
 			$categories->setOrder('order','asc');
@@ -29,7 +32,12 @@ class View_Tools_Category extends \componentBase\View_Component{
 	            	->where('mc.parent_id', 0)
 	            	);
 	        // $categories->addCondition('parent_id',Null);    
-	        $categories->tryLoadAny();        
+	        $categories->tryLoadAny();
+	        if(!$categories->loaded()){
+	        	$this->add('View_Error')->setHTML('No Category Found in Selected Category Group');
+	        	return;
+	        }
+
 			$output ="<div class='body epan-sortable-component epan-component  ui-sortable ui-selected'>";
 			$output ="<ul class='sky-mega-menu sky-mega-menu-anim-slide sky-mega-menu-response-to-stack'>";
 					foreach ($categories as $junk_category) {

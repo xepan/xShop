@@ -10,7 +10,7 @@ class Model_CategoryGroup extends \Model_Table{
 		//TODO for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
-		$f=$this->addField('name')->caption('Category Group Name')->mandatory(true)->group('a~12');
+		$f=$this->addField('name')->caption('Category Group Name')->mandatory(true)->group('a~12')->sortable(true);
 		$f->icon = 'fa fa-folder~red';
 		//Todo for category model with self loop of parent category
 		$this->hasMany('xShop/Category','categorygroup_id');

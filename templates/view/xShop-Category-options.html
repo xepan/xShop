@@ -23,7 +23,7 @@
 										<option value='0'>Please Select</option>
 										<option value='Horizontal'>Horizontal</option>
 										<option value='Vertical'>Vertical</option>
-										<option value='MegaMenu'>MegaMenu</option>;
+										<!-- <option value='MegaMenu'>MegaMenu</option>; -->
 										<option value='Thumbnail'>Thumbnail</option>;
 									</select>
 								</td>
@@ -110,10 +110,11 @@ var <?$component_type?>_options = {
 				data: {},
 				success: function (data) {
 					$('#xshop_categorygroup_<?$_id?>').html(data);
+					$('#xshop_categorygroup_<?$_id?>').val($(current_selected_component).attr('xshop_categorygroup_id')?$(current_selected_component).attr('xshop_categorygroup_id'):0);
 				}
 			});
 		
-		$('#xshop_category_layout_<?$id?>').val($(current_selected_component).attr('xshop_category_layout'));
+		$('#xshop_category_layout_<?$id?>').val($(current_selected_component).attr('xshop_category_layout')?$(current_selected_component).attr('xshop_category_layout'):'Horizontal');
 
 		$("#xshop_categorygroup_<?$id?>:contains(" + $(current_selected_component).attr('xshop_categorygroup_id') + ")").attr('selected', 'selected');
 

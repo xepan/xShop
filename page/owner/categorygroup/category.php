@@ -21,7 +21,7 @@ class page_xShop_page_owner_categorygroup_category extends page_xShop_page_owner
 		$category_model->addCondition('categorygroup_id',$categorygroup_id);
 		$crud=$this->add('CRUD');
 		$crud->addClass('xshop-owner-category');
-		$category_model->setOrder('id','desc');
+		$category_model->setOrder('id','asc');
 		
 		$crud->setModel($category_model,array('parent_id','name','order','is_active','meta_title','meta_description','meta_keywords','image_url','alt_text','description'),array('name','parent','order','is_active'));
 		$crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
@@ -32,12 +32,14 @@ class page_xShop_page_owner_categorygroup_category extends page_xShop_page_owner
 			// $parent_model->debug();
 		}
 
-		if($crud->grid){
+		if($g = $crud->grid){
+			$g->addClass('panel panel-default');
+			$g->addStyle('padding','20px');
 			$crud->grid->addClass('mygrid');//Todo for reload of crud->grid 
 			$crud->grid->js('reload')->reload();//adding trigger 
 			$crud->grid->addQuickSearch(array('name','parent','order'));
 			$crud->grid->addPaginator($ipp=30);
-			$crud->grid->addcolumn('expander','groupaccess');
+			// $crud->grid->addcolumn('expander','groupaccess');
 			$crud->grid->addcolumn('Button','duplicate');
 			// $crud->grid->add('misc/Export');
 		}
