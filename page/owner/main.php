@@ -3,6 +3,8 @@
 class page_xShop_page_owner_main extends page_componentBase_page_owner_main {
 	function page_index(){
 
+		$this->h1->setHTML('<i class="fa fa-shopping-cart"></i> '.$this->component_name. '<small>Used as ( <i class="fa fa-list"></i> ) Product Listing , Blogs and ( <i class="fa fa-shopping-cart"></i> ) E-commerce kinds of Application</small>');
+
 		$tab=$this->add('Tabs');
 		$cat_tab=$tab->addTabURL('xShop/page_owner_dashboard','Dashboard');
 		$cat_tab=$tab->addTabURL('xShop/page_owner_categorygroup','Category');
