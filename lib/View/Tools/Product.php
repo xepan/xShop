@@ -11,6 +11,12 @@ class View_Tools_Product extends \componentBase\View_Component{
 		$this->api->stickyGET('search');
 		$this->api->stickyGET('category_id');
 
+		$cg_id=$this->html_attributes['xshop_product_categorygroup_id']?$this->html_attributes['xshop_product_categorygroup_id']:0;
+		if(!$cg_id){
+			$this->add('View_Error')->set('Please Select category Group');
+			return;
+		}
+		
 		if(!$this->html_attributes['xshop-grid-column'])
 			$column_width='25';
 		else
@@ -31,7 +37,6 @@ class View_Tools_Product extends \componentBase\View_Component{
 		$product_model->addCondition('is_publish',true);
 				
 		$p_type=$this->html_attributes['xshop_producttype'];
-		$cg_id=$this->html_attributes['xshop_product_categorygroup_id']?$this->html_attributes['xshop_product_categorygroup_id']:0;
 		// Selection of Product according to options 
 		// if $p_type is null
 		// then default value
@@ -39,8 +44,6 @@ class View_Tools_Product extends \componentBase\View_Component{
 		if($p_type and $p_type !='all')
 			$product_model->addcondition($p_type,true);
 		//todo select product according to category group id
-		if(!$cg_id)
-			$this->add('View_Error')->set('Please Select category Group');
 		// Product Model according to category grooup
 		$p_join=$product_model->leftJoin('xshop_category_product.product_id','id');
 		$cp_join=$p_join->leftJoin('xshop_categories','category_id');

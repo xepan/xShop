@@ -220,6 +220,7 @@ var <?$component_type?>_options = {
 				data: {},
 				success: function (data) {
 					$('#xShop-producttype-root').html(data);
+					$('#xShop-producttype-root').val($(current_selected_component).attr('xshop_producttype')?$(current_selected_component).attr('xshop_producttype'):0);
 				}
 			});
 
@@ -237,6 +238,7 @@ var <?$component_type?>_options = {
 				data: {},
 				success: function (data) {
 					$('#xshop-product-categorygroup_<?$_id?>').html(data);
+					$('#xshop-product-categorygroup_<?$_id?>').val($(current_selected_component).attr('xshop_product_categorygroup_id')?$(current_selected_component).attr('xshop_product_categorygroup_id'):0);	
 				}
 			});
 
@@ -256,6 +258,8 @@ var <?$component_type?>_options = {
 		$('#xshop_product_detail_on_image_click').attr('checked',$(current_selected_component).attr("xshop_product_detail_on_image_click")==1?true:false);
 		
 		$('#xshop_product_paginator').val($(current_selected_component).attr("xshop_product_paginator"));
+
+		$(current_selected_component).attr("xshop_productlayout")=='xShop-productlist'?$('#xShop-listbtn').addClass('btn btn-success'):$('#xShop-gridbtn').addClass('btn btn-success');
 	}	
 }
 </script>
