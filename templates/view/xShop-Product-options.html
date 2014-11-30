@@ -33,12 +33,22 @@
 							<td >
 								Display Layout
 							</td>
-							<td colspan="2">
+							<td>
 								<div class="btn-group">
 				  				<button id="xShop-listbtn" type="button" class="btn btn-default glyphicon glyphicon-th-list btn btn-sm" title="List View"> </button>
 				  				<button id="xShop-gridbtn" type="button" class="btn btn-default glyphicon glyphicon-th btn-sm" title="Grid View"> </button>
-								<input id="xShop-grid-column" type="number" class="form-control" placeholder="Product in each Row">
 								</div>
+							</td>
+							<td>
+								<select id="xShop-grid-column" type="number" class="" placeholder="Product in each Row">
+									<option value="0">Item in Each Row</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="6">6</option>
+									<option value="12">12</option>
+								</select>								
 							</td>
 						</tr>
 						<tr>
@@ -161,15 +171,11 @@ $('#xShop-listbtn').click(function(event) {
 
 $('#xShop-gridbtn').click(function(event) {
 	$(current_selected_component).attr('xshop_productlayout','xShop-productgrid');
+	// $('#xShop-grid-column');
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-	
 });
-$('#xShop-grid-column').blur(function(event){
-	if($(this).val() >= 1 || $(this).val() <= 12){
-		$(current_selected_component).attr('xshop-grid-column',$(this).val());
-	}else{
-		$('#xShop-grid-column').addClass('text-danger alert alert-error');
-	}
+$('#xShop-grid-column').change(function(event){
+	$(current_selected_component).attr('xshop-grid-column',$(this).val());
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 
@@ -260,6 +266,9 @@ var <?$component_type?>_options = {
 		$('#xshop_product_paginator').val($(current_selected_component).attr("xshop_product_paginator"));
 
 		$(current_selected_component).attr("xshop_productlayout")=='xShop-productlist'?$('#xShop-listbtn').addClass('btn btn-success'):$('#xShop-gridbtn').addClass('btn btn-success');
+		
+		$('#xShop-grid-column').val($(current_selected_component).attr('xshop-grid-column')?$(current_selected_component).attr('xshop-grid-column'):0);
+
 	}	
 }
 </script>

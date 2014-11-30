@@ -17,10 +17,31 @@ class View_Tools_Product extends \componentBase\View_Component{
 			return;
 		}
 		
-		if(!$this->html_attributes['xshop-grid-column'])
-			$column_width='25';
-		else
-			$column_width=100 / $this->html_attributes['xshop-grid-column'];
+		//Item Colunm Width 
+		switch ($this->html_attributes['xshop-grid-column']) {
+			case '1':
+				$column_width = "col-sm-12 col-lg-12 col-md-12";	
+				break;
+			case '2':
+				$column_width = "col-sm-6 col-lg-6 col-md-6";	
+				break;
+			case '3':
+				$column_width = "col-sm-4 col-lg-4 col-md-4";	
+				break;
+			case '4':
+				$column_width = "col-sm-3 col-lg-3 col-md-3";	
+				break;
+			case '6':
+				$column_width = "col-sm-2 col-lg-2 col-md-2";
+				break;
+			case '12':
+				$column_width = "col-sm-1 col-lg-1 col-md-1";	
+				break;
+			
+			default:
+				$column_width = "col-sm-3 col-lg-3 col-md-3";
+				break;
+		}
 
 		$product_lister_view=$this->add('xShop/View_Lister_Product',
 								array('xshop_product_display_layout'=>$this->html_attributes['xshop_productlayout'],
@@ -29,7 +50,7 @@ class View_Tools_Product extends \componentBase\View_Component{
 										'xshop_product_categorygroup_id'=>$this->html_attributes['xshop_product_categorygroup_id']?$this->html_attributes['xshop_product_categorygroup_id']:0,
 										'fancy_box_on'=>$this->html_attributes['xshop_product_fancy_box'],										
 										'item_detail_url'=>$this->html_attributes['xshop_product_hover_detail_page'],										
-										'item_detail_onhover'=>$this->html_attributes['xshop_product_hover'],
+										'item_detail_onclick'=>$this->html_attributes['xshop_product_hover'],
 										'xshop_product_detail_on_image_click'=>$this->html_attributes['xshop_product_detail_on_image_click']										
 										));
 
