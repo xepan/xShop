@@ -10,8 +10,25 @@ class View_Lister_Product extends \CompleteLister{
 	public $item_detail_url;
 	public $item_detail_onclick;
 	public $xshop_product_detail_on_image_click;
-
+	public $item_short_description;
 	function formatRow(){
+		
+		if($this->xshop_product_display_layout=='xShop-productgrid'){						
+			$this->current_row_html['xshop_item_list_view_image_start']=" ";
+			$this->current_row_html['xshop_item_list_view_image_end']=" ";
+			$this->current_row_html['xshop_item_list_view_btn_start']=" ";
+			$this->current_row_html['xshop_item_list_view_btn_end']=" ";
+			$this->current_row_html['xshop_item_list_view_row_start']=" ";
+			$this->current_row_html['xshop_item_list_view_row_end']=" ";
+			$this->current_row_html['xshop_list_btn_class']="col-md-12";
+		}else{
+			$this->current_row_html['xshop_list_btn_class']="col-md-6";
+		}
+		
+		if(!$this->item_short_description){		
+			$this->current_row_html['xshop_item_short_description'] = " ";
+		}
+
 		if(!$this->item_detail_url)
 			$this->item_detail_url = '#2221212$%';
 
@@ -94,9 +111,9 @@ class View_Lister_Product extends \CompleteLister{
 		
 		// throw new \Exception("Error Processing Request", 1);
 						
-		if($this->xshop_product_display_layout=='xShop-productlist'){
-			return array('view/xShop-ProductLister');
-		}else
+		// if($this->xshop_product_display_layout=='xShop-productlist'){
+		// 	return array('view/xShop-ProductLister');
+		// }else
 			return array('view/xShop-ProductListerGrid');
 	}
 	

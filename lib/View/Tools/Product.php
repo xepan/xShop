@@ -5,7 +5,7 @@ namespace xShop;
 class View_Tools_Product extends \componentBase\View_Component{
 	function init(){
 		parent::init();
-		
+			
 		//for grid column width
 		$this->api->js()->_load('xShop-js');
 		$this->api->stickyGET('search');
@@ -16,7 +16,7 @@ class View_Tools_Product extends \componentBase\View_Component{
 			$this->add('View_Error')->set('Please Select category Group');
 			return;
 		}
-		
+			
 		//Item Colunm Width 
 		switch ($this->html_attributes['xshop-grid-column']) {
 			case '1':
@@ -43,6 +43,10 @@ class View_Tools_Product extends \componentBase\View_Component{
 				break;
 		}
 
+		if($this->html_attributes['xshop_productlayout'] == 'xShop-productlist'){
+			$column_width = "col-sm-12 col-lg-12 col-md-12";
+		}
+
 		$product_lister_view=$this->add('xShop/View_Lister_Product',
 								array('xshop_product_display_layout'=>$this->html_attributes['xshop_productlayout'],
 										'xshop_product_grid_column'=>$column_width,
@@ -51,6 +55,7 @@ class View_Tools_Product extends \componentBase\View_Component{
 										'fancy_box_on'=>$this->html_attributes['xshop_product_fancy_box'],										
 										'item_detail_url'=>$this->html_attributes['xshop_product_hover_detail_page'],										
 										'item_detail_onclick'=>$this->html_attributes['xshop_product_hover'],
+										'item_short_description'=>$this->html_attributes['xshop_item_short_description'],
 										'xshop_product_detail_on_image_click'=>$this->html_attributes['xshop_product_detail_on_image_click']										
 										));
 
