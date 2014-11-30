@@ -11,7 +11,7 @@ class View_Tools_Product extends \componentBase\View_Component{
 		$this->api->stickyGET('search');
 		$this->api->stickyGET('category_id');
 
-		$cg_id=$this->html_attributes['xshop_product_categorygroup_id']?$this->html_attributes['xshop_product_categorygroup_id']:0;
+		$cg_id=$this->html_attributes['xshop_product_categorygroup_id']?$this->html_attributes['xshop_product_categorygroup_id']:0;		
 		if(!$cg_id){
 			$this->add('View_Error')->set('Please Select category Group');
 			return;
@@ -35,12 +35,10 @@ class View_Tools_Product extends \componentBase\View_Component{
 
 		$product_model=$this->add('xShop/Model_Product');
 		$product_model->addCondition('is_publish',true);
-				
 		$p_type=$this->html_attributes['xshop_producttype'];
 		// Selection of Product according to options 
 		// if $p_type is null
-		// then default value
-
+		// then default value All
 		if($p_type and $p_type !='all')
 			$product_model->addcondition($p_type,true);
 		//todo select product according to category group id
@@ -52,18 +50,20 @@ class View_Tools_Product extends \componentBase\View_Component{
 		$product_model->addCondition('categorygroup_id',$cg_id);
 		//end of product model accordiing to category group
 
+		//Category Wise Product Loading
 		if($_GET['category_id']){
 			$product_model->addCondition('category_id',$_GET['category_id']);
 		}
+		//end of Category Wise Product Loading
 		
-		
+		//Search Filter				
 		if($search=$_GET['search']){		
-			// $result->addExpression('Relevance')->set('MATCH(search_string) AGAINST ("'.$search.'" IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION)');
 			$product_model->addExpression('Relevance')->set('MATCH(search_string) AGAINST ("'.$search.'" IN BOOLEAN MODE)');
 			$product_model->addCondition('Relevance','>',0);
 			// throw new \Exception($product_model['Relevance']);
 	 		$product_model->setOrder('Relevance','Desc');
 		}
+		//end Search Filter				
 
 		if($product_model->count()->getOne() != 0)
 			$product_lister_view->template->del('no_record_found');		
@@ -71,15 +71,15 @@ class View_Tools_Product extends \componentBase\View_Component{
 		$product_model->_dsql()->group('product_id');
 		$product_lister_view->setModel($product_model);
 		
-		// if($product_model->count()->getOne() != 0)
-		// 	$product_lister_view->template->del('no_record_found');			
-
+		//Add Painator to Product List	
 		$paginator = $product_lister_view->add('Paginator');
 		$paginator->ipp($this->html_attributes['xshop_product_paginator']?:12);
+		//end of Add Painator to Product List	
 
 		//loading custom CSS file	
 		$product_css = 'epans/'.$this->api->current_website['name'].'/xshopcustom.css';
 		$this->api->template->appendHTML('js_include','<link id="xshop-product-customcss-link" type="text/css" href="'.$product_css.'" rel="stylesheet" />'."\n");
+		//end of loading custom CSS file	
 
 	}
 
