@@ -86,6 +86,9 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		// $images->setModel($this->add('xShop/Model_ProductImages')->addCondition('product_id',$_GET['xshop_item_id']));	
 		
 		$this->setModel($product);
+
+		$this->api->template->trySet('page_title',$product['name']);
+
 		if(!$product['allow_enquiry'])
 			$this->template->tryDel('xshop_product_enquiry');	
 

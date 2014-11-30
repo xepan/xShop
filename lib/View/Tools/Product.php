@@ -65,7 +65,9 @@ class View_Tools_Product extends \componentBase\View_Component{
 		if($product_model->count()->getOne() != 0)
 			$product_lister_view->template->del('no_record_found');		
 		
-		$product_model->_dsql()->group('product_id');
+		$product_model->_dsql()->group('product_id'); // Multiple category association shows multiple times product so .. grouped
+		$product_model->setOrder('created_at','desc');
+		
 		$product_lister_view->setModel($product_model);
 		
 		// if($product_model->count()->getOne() != 0)
