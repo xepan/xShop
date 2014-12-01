@@ -23,9 +23,15 @@ class Model_DiscountVoucher extends \Model_Table{
 		$f->icon = "fa fa-calendar~blue";
 			
 		$this->hasMany('xShop/DiscountVoucherUsed','discountvoucher_id');
+		$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}
-  
+  	
+  	function beforeDelete($m){	
+		if($m->ref('xShop/DiscountVoucherUsed')->count()->getOne())
+			$this->api->js(true)->univ()->errorMessage('Cannot Delete, First Delete its Transaction/Orders')->execute();
+  	}
+
 	function isExpire(){
 
 		$current_date=date('Y-m-d');

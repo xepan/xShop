@@ -36,7 +36,13 @@ class Model_Manufacturer extends \Model_Table {
 		$f->icon = "fa fa-pencil~blue";
 		$this->hasMany('xShop/Product','manufacturer_id');
 
+		$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator');
+	}
+
+	function beforeDelete($m){
+		if($m->ref('xShop/Product')->count()->getOne())
+			$this->api->js(true)->univ()->errorMessage('First Delete its associated Item')->execute();		
 	}
 	
 }

@@ -31,8 +31,14 @@ class Model_Supplier extends \Model_Table {
 		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'));
 		$f->icon = "fa fa-pencil~blue";
 		$this->hasMany('xShop/Product','supplier_id');
-		
+		$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator');
 
 	}
+
+	function beforeDelete($m){
+		if($m->ref('xShop/Product')->count()->getOne())
+			$this->api->js(true)->univ()->errorMessage('First Delete,Associated Items')->execute();		
+	}
+
 }
