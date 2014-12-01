@@ -14,6 +14,16 @@ class Model_CategoryGroup extends \Model_Table{
 		$f->icon = 'fa fa-folder~red';
 		//Todo for category model with self loop of parent category
 		$this->hasMany('xShop/Category','categorygroup_id');
+		
 		// $this->add('dynamic_model/Controller_AutoCreator'); 
+		$this->addHook('beforeDelete',$this);
 	}
+
+	function beforeDelete($m){
+		if($m->ref('xShop/Category')->count()->getOne()){
+			$m->api->js(true)->univ()->errorMessage("Category Group(".$m['name'].") cannot deleted, first delete its category")->execute();
+		}	
+
+	}
+
 }		
