@@ -108,10 +108,11 @@ class Model_Product extends \Model_Table{
 		$this->hasMany('xShop/CustomFields','product_id');
 		$this->hasMany('xShop/Attachments','product_id');
 		$this->hasMany('xShop/ProductEnquiry','product_id');
-		
+		$this->hasMany('xShop/OrderDetails','product_id');
+			
 		$this->addHook('beforeSave',$this);
 		$this->addHook('beforeDelete',$this);
-		// $this->add('dynamic_model/Controller_AutoCreator');	
+		$this->add('dynamic_model/Controller_AutoCreator');	
 	}
 
 	function beforeSave($m){
@@ -121,13 +122,6 @@ class Model_Product extends \Model_Table{
 			$product_old->addCondition('id','<>',$this->id);
 
 		$product_old->addCondition('sku',$this['sku']);		
-		// $product_old->addCondition(
-		// 	$product_old->_dsql()->orExpr()
-		// 		->where('sku',$this['sku'])
-		// 		->where('rank_weight',$this['rank_weight'])
-		// 	);
-
-		// $product_old->setOrder('rank_weight','desc');
 		$product_old->tryLoadAny();
 		//TODO Rank Weight Auto Increment 
 		if($product_old->loaded())
@@ -158,8 +152,19 @@ class Model_Product extends \Model_Table{
 		return $cat_name;				
 	}
 
-	function beforeDelete(){
+	function beforeDelete($m){
+		$order_count = $m->ref('xShop/OrderDetails')->count()->getOne();
+		$product_enquiry_count = $m->ref('xShop/ProductEnquiry')->count()->getOne();						
+		
+		if($this->api->auth->model['type'] and($order_count or $product_enquiry_count)){
+			$this->api->js(true)->univ()->errorMessage('Cannot Delete,first delete Orders or Enquiry')->execute();	
+		}
 
+		$m->ref('xShop/CategoryProduct')->deleteAll();
+		$m->ref('xShop/ProductImages')->deleteAll();
+		$m->ref('xShop/CustomFields')->deleteAll();
+		$m->ref('xShop/Attachments')->deleteAll();	 
+		
 	}
 
 	function updateSearchString($product_id){
