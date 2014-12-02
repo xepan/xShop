@@ -55,8 +55,21 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 		$pro_id=$this->api->stickyGET('xshop_products_id');			
 		
 		$grid=$this->add('Grid');
-		$cat_model=$this->add('xShop/Model_Category');
+		$cat_model=$this->add('xShop/Model_Category',array('table_alias'=>'mc'));
 		$cat_model->addCondition('is_active',true);
+
+		$cat_model->addExpression('child_count')->set(function($m,$q){
+			$temp = $this->add('xShop/Model_Category',array('table_alias'=>'pc'));
+			$temp->addCondition('parent_id',$q->getField('id'));
+			return $temp->count();
+		});
+		$cat_model->addCondition('child_count',0);
+		// $cat_model->_dsql()->having(
+	 //        	$cat_model->_dsql()->orExpr()
+	 //            	->where('child_count',0)
+	 //            	->where('parent_id','<>',0)
+	 //            	);
+
 		$cat_model->addExpression('category_group')->set(function($m,$q){
 			return $m->refSQL('categorygroup_id')->fieldQuery('name');
 		});

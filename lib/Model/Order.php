@@ -28,9 +28,24 @@ class Model_Order extends \Model_Table{
 		$f = $this->addField('shipping_address')->mandatory(true)->group('x~6');	
 		$f = $this->addField('order_summary')->type('text')->group('y~12');
 		$this->hasMany('xShop/OrderDetails','order_id');
+		$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}
 
+	function beforeDelete($m){
+		if($m['discount_voucher'] != null and $m['discount_voucher'] != 0 ){
+			$discountvoucher = $this->add('xShop/Model_DiscountVoucher');		
+			$discountvoucher->addCondition('name',$m['discount_voucher']);
+			$discountvoucher->tryLoadAny();
+			if($discountvoucher->loaded()){
+				$voucher_used = $discountvoucher->ref('xShop/DiscountVoucherUsed');
+				$voucher_used->addCondition('member_id',$m['member_id']);
+				$voucher_used->tryLoadAny();
+				$voucher_used->delete();
+			}
+		}
+		$m->ref('xShop/OrderDetails')->deleteAll();
+	}
 
 	function placeOrder($order_info){
 

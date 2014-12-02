@@ -14,7 +14,12 @@ class Model_AddBlock extends \Model_Table{
 		$f = $this->addField('name')->caption('Block Name')->mandatory(true);
 		$f->icon = "fa fa-circle~red";
 		$this->hasMany('xShop/BlockImages','block_id');
-		
+		$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}
+
+	function beforeDelete($m){
+		$m->ref('xShop/BlockImages')->deleteAll();	
+	}
+
 }

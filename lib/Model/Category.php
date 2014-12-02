@@ -38,7 +38,7 @@ class Model_Category extends \Model_Table{
 		$parent_join = $this->leftJoin('xshop_categories','parent_id');
 				
 		$this->addExpression('category_name')->set('concat('.$this->table_alias.'.name,"- (",IF('.$parent_join->table_alias.'.name is null,"",'.$parent_join->table_alias.'.name),")")');
-		// $this->addHook('beforeSave',$this);
+		$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator'); 
 	}
 
@@ -50,7 +50,6 @@ class Model_Category extends \Model_Table{
 		$old_cat_model->tryLoadAny();
 		if(!$m->loaded())
 			$m['order']=$old_cat_model['order']+1;
-					
 	}
 
 	function duplicate($cat_id){
@@ -73,6 +72,20 @@ class Model_Category extends \Model_Table{
 		$new_cat->saveandUnload();
 
 	}
+
+	function beforeDelete($m){
+		
+		$category_parent = $this->add('xShop/Model_Category');
+		$category_parent->addCondition('parent_id',$m->id);
+		$category_parent->tryLoadAny();
+		if($category_parent->loaded()){
+			$category_parent->api->js(true)->univ()->errorMessage('first delete its all child category')->execute();
+		}
+
+		// Delete category and its product associatations
+		$m->ref('xShop/CategoryProduct')->deleteAll();
+	}
+
 
 }
 
