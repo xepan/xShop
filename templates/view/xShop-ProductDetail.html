@@ -69,11 +69,11 @@
 			</div>
 			<ul class="xshop-popover-examples list-inline">
 				<?xshop_product_supplier?> 
-        		<li><a href="#" class="btn btn-default" data-toggle="modal" data-target="#xShop_supplier_modal_<?$id?>" >Supplier</a>
+        		<li><a href="#" class="btn btn-default" data-toggle="modal" data-target="#xShop_supplier_modal_<?$id?>" ><?supplier_caption?>Supplier<?/supplier_caption?></a>
         		</li>
 				<?/xshop_product_supplier?> 
         		<?xshop_product_manufacturer?>
-        		<li><a href="#" class="btn btn-default" data-toggle="modal" data-target="#xShop_manufacturer_modal_<?$id?>" >Manufacturer</a>
+        		<li><a href="#" class="btn btn-default" data-toggle="modal" data-target="#xShop_manufacturer_modal_<?$id?>" ><?manufacturer_caption?>Manufacturer<?/manufacturer_caption?></a>
         		</li>
         		<?/xshop_product_manufacturer?>
         		<?xshop_product_enquiry?>
@@ -128,7 +128,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title" id="myModalLabel">Supplier</h4>
+	        <h4 class="modal-title" id="myModalLabel"><?supplier_caption?>Supplier<?/supplier_caption?></h4>
 	      </div>
 	      <div class="modal-body">
 			<div class="row">
@@ -219,7 +219,7 @@
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 	        <div class="row">
 	        	<div class="col-md-10">
-	        		<h4 class="modal-title" id="myModalLabel">Manufacturer</h4>
+	        		<h4 class="modal-title" id="myModalLabel"><?manufacturer_caption?>Manufacturer<?/manufacturer_caption?></h4>
 	        	</div>	
 	      	 <div class="col-md-2 col-sm-2">
 	      		<img style="width:50px;height:50px;max-height:50px;max-width:50px;overflow:hidden;" src="<?$manufacturer_logo_url?>" />

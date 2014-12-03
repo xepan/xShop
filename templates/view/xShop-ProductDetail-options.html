@@ -17,16 +17,6 @@
 									Show/Hide
 								</td>
 							</tr>
-							<!-- <tr>
-								<td>
-								</td>
-								<td>
-									Item images
-								</td>
-								<td>
-									<input id="show_xshop_product_detail_images" type="checkbox"/>
-								</td>
-							</tr> -->
 							<tr>
 								<td>
 									
@@ -60,6 +50,33 @@
 									<input id="xshop_product_detail_live_edit" type="checkbox"/>
 								</td>
 							</tr> -->
+							<tr>
+								<td colspan="3">
+									Caption
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Supplier Button
+								</td>
+								<td>
+									<input id="xshop_pd_supplier_caption"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Manufacturer Button
+								</td>
+								<td>
+									<input id="xshop_pd_manufacturer_caption"/>
+								</td>
+							</tr>
 						</table>
 					</div>
 				</div>
@@ -106,6 +123,15 @@ $('#xshop_product_detail_live_edit').change(function(event) {
 	if($('#xshop_product_detail_live_edit').is(':checked')?$(current_selected_component).attr('xshop_product_detail_live_edit',1):$(current_selected_component).attr('xshop_product_detail_live_edit',0));		
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
+$('#xshop_pd_manufacturer_caption').change(function(event){
+	$(current_selected_component).attr('xshop_pd_manufacturer_caption',$('#xshop_pd_manufacturer_caption').val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_pd_supplier_caption').change(function(event){
+	$(current_selected_component).attr('xshop_pd_supplier_caption',$('#xshop_pd_supplier_caption').val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');	
+});
 
 var <?$component_type?>_options = {
 	show: function (){
@@ -124,7 +150,10 @@ var <?$component_type?>_options = {
 		if($(current_selected_component).attr("xshop_product_detail_panel") == '0'){
 			$("#panel-label").hide();			
 		}
-
+			// $(current_selected_component).attr('xshop_pd_supplier_caption','Supplier');		
+		
+		$('#xshop_pd_supplier_caption').val($(current_selected_component).attr('xshop_pd_supplier_caption')?$(current_selected_component).attr('xshop_pd_supplier_caption'):'Supplier');
+		$('#xshop_pd_manufacturer_caption').val($(current_selected_component).attr('xshop_pd_manufacturer_caption')?$(current_selected_component).attr('xshop_pd_manufacturer_caption'):'Manufacturer');
 	}
 }
 </script>

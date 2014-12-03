@@ -7,6 +7,7 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 	function init(){
 		parent::init();
 		
+
 		$this->js(true)->_load('jquery-elevatezoom');
 		$this->api->stickyGET('xshop_item_id');
 		$config_model=$this->add('xShop/Model_Configuration');
@@ -92,10 +93,9 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		if(!$product['allow_enquiry'])
 			$this->template->tryDel('xshop_product_enquiry');	
 
-		if(!$product['show_supplier_detail']){
-			// throw new \Exception("Error Processing Request", 1);
+		if(!$product['show_supplier_detail'])
 			$this->template->tryDel('xshop_product_supplier');
-		}
+		$this->template->trySet('supplier_caption',$this->html_attributes['xshop_pd_supplier_caption']?:'Supplier');
 
 		if(!$product['show_price']){
 			// throw new \Exception("Error Processing Request", 1);
@@ -104,6 +104,7 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 
 		if(!$product['show_manufacturer_detail'])
 			$this->template->tryDel('xshop_product_manufacturer');
+		$this->template->trySet('manufacturer_caption',$this->html_attributes['xshop_pd_manufacturer_caption']?:'Manufacturer');
 		
 		if($this->html_attributes['xshop_product_detail_images']==1){
 			$this->template->tryDel('xshop_product_detail_images');	
