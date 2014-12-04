@@ -14,7 +14,6 @@ class Model_CategoryGroup extends \Model_Table{
 		$f->icon = 'fa fa-folder~red';
 		//Todo for category model with self loop of parent category
 		$this->hasMany('xShop/Category','categorygroup_id');
-		
 		// $this->add('dynamic_model/Controller_AutoCreator'); 
 		$this->addHook('beforeDelete',$this);
 	}
