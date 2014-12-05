@@ -15,7 +15,7 @@ class page_xShop_page_owner_categorygroup extends page_xShop_page_owner_main{
 
 		$bv->addToTopBar('View')->setHTML('Total Category - '.$total_category)->addClass('label label-primary');			
 		$bv->addToTopBar('View')->setHTML('Active Category - '.$active_category)->addClass('label label-success ');
-		$bv->addToTopBar('View')->setHTML('Unactive Category - '.$unactive_category)->addClass('label label-danger');
+		$bv->addToTopBar('View')->setHTML('Unactive Category - '.$unactive_category)->addClass('label label-warning');
 			
 		$catgroup_model->setOrder('name','asc');
 		$crud=$bv->add('CRUD');

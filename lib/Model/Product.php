@@ -232,5 +232,23 @@ class Model_Product extends \Model_Table{
 		$this->load($id);				
 		return $this;
 	}
+
+	function getAllProductCount(){
+		if($this->loaded())
+			throw new \Exception("Product Model Loaded at Count All Product");	
+		return $this->count()->getOne();
+	}
+
+	function getPublishCount(){
+		if($this->loaded())
+			throw new \Exception("Product Model Loaded at Count Active Product");	
+		return $this->addCondition('is_publish',true)->count();
+	}
+
+	function getUnpublishCount(){
+		if($this->loaded())
+			throw new \Exception("Product Model Loaded at Count Unactive Product");	
+		return $this->addCondition('is_publish',false)->count();	
+	}
 }
 

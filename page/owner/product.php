@@ -4,18 +4,16 @@ class page_xShop_page_owner_product extends page_xShop_page_owner_main{
 
 	function page_index(){
 		// parent::init();
+				
+		$bv = $this->add('View_BackEndView',array('cols_widths'=>array(12)));
+		$product_model = $this->add('xShop/Model_Product');
+		$bv->addToTopBar('View')->setHTML('Total Product - '.$product_model->getAllProductCount())->addClass('label label-primary');
+		$bv->addToTopBar('View')->setHTML('Publish Product - '.$product_model->getPublishCount())->addClass('label label-success');
+		$bv->addToTopBar('View')->setHTML('Unpublish Product - '.$this->add('xShop/Model_Product')->getUnpublishCount())->addClass('label label-warning');
 		
-		$col_static=$this->add('Columns');
-		$i_col=$col_static->addColumn(3);
-		$d_col=$col_static->addColumn(3);
-		//$i_col->add('View_Info')->set("Item out of stock");
-		//$d_col->add('View_Error')->set("Disable Product");
-
 		$col=$this->add('Columns');
 		$p_col=$col->addColumn(12);
-
 		$model = $p_col->add('xShop/Model_Product');
-
 		$crud=$p_col->add('CRUD');
 		$crud->setModel($model,array('supplier_id','manufacturer_id','name','sku','is_publish','short_description','description','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','product_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags'),array('name','sku','sale_price'));
 		$crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
