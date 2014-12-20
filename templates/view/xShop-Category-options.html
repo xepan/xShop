@@ -1,11 +1,11 @@
 
-<div id='<?$_name?>' class='epan-component-options' component_type="<?$component_type?>">
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
 	<div class="panel-group" id="accordion">
 		<div class="xepan-collasp-header component-header">
 		 	<div class="panel-heading">
 		      	<h3 class="panel-title">
 		        	<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-xshop-category">
-						<?$component_type_name?>
+						{$component_type_name}
 		        	</a> 
 		      	</h3>
 		   	</div>
@@ -19,7 +19,7 @@
 									 Layout
 								</td>
 								<td>
-									<select id='xshop_category_layout_<?$id?>'>
+									<select id='xshop_category_layout_{$id}'>
 										<option value='0'>Please Select</option>
 										<option value='Horizontal'>Horizontal</option>
 										<option value='Vertical'>Vertical</option>
@@ -33,7 +33,7 @@
 									Category Group
 								</td>
 								<td>
-									<select id='xshop_categorygroup_<?$id?>'>
+									<select id='xshop_categorygroup_{$id}'>
 									</select>
 								</td>
 							</tr>
@@ -42,7 +42,7 @@
 									Subpage Name
 								</td>
 								<td>
-									<input type='text' id='xshop_category_url_page_<?$id?>'/>
+									<input type='text' id='xshop_category_url_page_{$id}'/>
 								</td>
 							</tr>
 							<tr>
@@ -72,25 +72,23 @@ $('#xshop-category-editcss').click(function(){
 	$(this).univ().frameURL('Edit CSS ( xShop Category Display Layout )','index.php?page=xShop_page_categorylayoutcss&cut_page=1');
 });
 
-$('#xshop_category_layout_<?$id?>').change(function(event) {
+$('#xshop_category_layout_{$id}').change(function(event) {
 	$(current_selected_component).attr('xshop_category_layout',$(this).val());
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 
-$('#xshop_categorygroup_<?$id?>').change(function(event){
+$('#xshop_categorygroup_{$id}').change(function(event){
 	$(current_selected_component).attr('xshop_categorygroup_id',$(this).val());
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 
 // on category click custom page redirect..
-$('#xshop_category_url_page_<?$id?>').change(function(event){
+$('#xshop_category_url_page_{$id}').change(function(event){
 	$(current_selected_component).attr('xshop_category_url_page',$(this).val());
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 
 $('#xshop-category-theme-color').change(function(){
-			// $(current_selected_component).css('bakcground-color', '#'+ $(this).val());
-	// $('body').append($("<link rel='stylesheet' href='<?template?>css/sky-mega-menu-theme.css<?/?>' type='text/css' media='screen' />"));
 	$.ajax({
 		url: "index.php/?page=xShop/page/categorytheme",
 		data: null,
@@ -99,7 +97,7 @@ $('#xshop-category-theme-color').change(function(){
 		});
 });
 
-var <?$component_type?>_options = {
+var {$component_type}_options = {
 	show: function (){
 		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
 		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
@@ -107,18 +105,18 @@ var <?$component_type?>_options = {
 		$.ajax({
 				url: 'index.php?page=xShop_page_getcategories',
 				type: 'GET',
-				data: {},
+				data: { },
 				success: function (data) {
-					$('#xshop_categorygroup_<?$_id?>').html(data);
-					$('#xshop_categorygroup_<?$_id?>').val($(current_selected_component).attr('xshop_categorygroup_id')?$(current_selected_component).attr('xshop_categorygroup_id'):0);
+					$('#xshop_categorygroup_{$_id}').html(data);
+					$('#xshop_categorygroup_{$_id}').val($(current_selected_component).attr('xshop_categorygroup_id')?$(current_selected_component).attr('xshop_categorygroup_id'):0);
 				}
 			});
 		
-		$('#xshop_category_layout_<?$id?>').val($(current_selected_component).attr('xshop_category_layout')?$(current_selected_component).attr('xshop_category_layout'):'Horizontal');
+		$('#xshop_category_layout_{$id}').val($(current_selected_component).attr('xshop_category_layout')?$(current_selected_component).attr('xshop_category_layout'):'Horizontal');
 
-		$("#xshop_categorygroup_<?$id?>:contains(" + $(current_selected_component).attr('xshop_categorygroup_id') + ")").attr('selected', 'selected');
+		$("#xshop_categorygroup_{$id}:contains(" + $(current_selected_component).attr('xshop_categorygroup_id') + ")").attr('selected', 'selected');
 
-		$('#xshop_category_url_page_<?$id?>').val($(current_selected_component).attr('xshop_category_url_page'));
+		$('#xshop_category_url_page_{$id}').val($(current_selected_component).attr('xshop_category_url_page'));
 	}
 }
 </script>

@@ -1,10 +1,10 @@
-<div id='<?$_name?>' class='epan-component-options' component_type="<?$component_type?>">
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
 	<div class="panel-group" id="accordion">
 		<div class="xepan-collasp-header component-header">
 			<div class="panel-heading">
 				<h3 class="panel-title">
 				<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-xshop-product">
-					<?$component_type_name?>
+					{$component_type_name}
 				</a>
 				</h3>
 			</div>
@@ -56,7 +56,7 @@
 									Category Group
 								</td>
 								<td colspan="2">
-									<select id='xshop-product-categorygroup_<?$_id?>'>
+									<select id='xshop-product-categorygroup_{$_id}'>
 									</select>
 								</td>
 							</tr>
@@ -164,7 +164,7 @@ $('#xShop-producttype-root').change(function(event) {
 	$(current_selected_component).attr('xshop_producttype',$(this).val());
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
-$('#xshop-product-categorygroup_<?$_id?>').change(function(event) {
+$('#xshop-product-categorygroup_{$_id}').change(function(event) {
 $(current_selected_component).attr('xshop_product_categorygroup_id',$(this).val());
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
@@ -215,7 +215,7 @@ $('#xshop_product_paginator').change(function(event){
 $(current_selected_component).attr('xshop_product_paginator',$(this).val());
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
-var <?$component_type?>_options = {
+var {$component_type}_options = {
 show: function (){
 // ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
 // TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
@@ -223,7 +223,7 @@ show: function (){
 $.ajax({
 url: 'index.php?page=xShop_page_getproducttype',
 type: 'GET',
-data: {},
+data: { },
 success: function (data) {
 $('#xShop-producttype-root').html(data);
 $('#xShop-producttype-root').val($(current_selected_component).attr('xshop_producttype')?$(current_selected_component).attr('xshop_producttype'):0);
@@ -232,7 +232,7 @@ $('#xShop-producttype-root').val($(current_selected_component).attr('xshop_produ
 $.ajax({
 url: 'index.php?page=xEnquiryNSubscription_page_getforms',
 type: 'GET',
-data: {},
+data: { },
 success: function ( data ){
 $('#xshop_product_enquiry_form_no').html(data);
 }
@@ -240,13 +240,13 @@ $('#xshop_product_enquiry_form_no').html(data);
 $.ajax({
 url: 'index.php?page=xShop_page_getcategories',
 type: 'GET',
-data: {},
+data: { },
 success: function (data) {
-$('#xshop-product-categorygroup_<?$_id?>').html(data);
-$('#xshop-product-categorygroup_<?$_id?>').val($(current_selected_component).attr('xshop_product_categorygroup_id')?$(current_selected_component).attr('xshop_product_categorygroup_id'):0);
+$('#xshop-product-categorygroup_{$_id}').html(data);
+$('#xshop-product-categorygroup_{$_id}').val($(current_selected_component).attr('xshop_product_categorygroup_id')?$(current_selected_component).attr('xshop_product_categorygroup_id'):0);
 }
 });
-$('#xshop-product-categorygroup_<?$_id?>').val($(current_selected_component).attr("xshop-product-categorygroup_id"));
+$('#xshop-product-categorygroup_{$_id}').val($(current_selected_component).attr("xshop-product-categorygroup_id"));
 //display selected option into checkbox
 
 $('#xshop_product_topbar').attr('checked',$(current_selected_component).attr("xshop_product_topbar")=='true'?true:false);
