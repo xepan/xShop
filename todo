@@ -1,0 +1,32 @@
+xShop:
+ ☐ flevers of product on product listing view (Available in 3 colors with previews) etc
+ ☐ add image (for reverse side or broucher page) ?? rearrange
+ ☐ minimum purchase quantity
+ ☐ amount change as per qty
+
+Designer:
+  category has many custom fields copied to each new product created.
+  Frontend product creation tool.
+    The creator updates value to default values of custom fields.
+
+
+
+Product:
+  has many custom fields
+  has many layouts
+  has many color options
+  has many side/pages
+  each page may have design options
+    Whats included and whats can be added with extra charge
+    on select design change ie grayscale/blank (cannot add anything on it)
+    can have layout selection options If yes give options
+
+  Each design can have set
+    
+  Save designed thing in session for re use in session .. like changed on other page and came back .. same designewhould be available what I edited
+
+
+Custome Field:
+editable_properties .. movable/text/color ????
+ex. color - can be different design on this
+      fold - can be differrent design on this

@@ -14,7 +14,6 @@ class Model_Category extends \Model_Table{
 
 		//Do for category model with self loop of parent category
 		$this->hasOne('xShop/ParentCategory','parent_id')->defaultValue('Null');
-
 		$f = $this->addField('name')->Caption('Category Name')->mandatory(true)->sortable(true)->group('a~6');
 		$f->icon = "fa fa-folder~red";
 		$f = $this->addField('order_no')->type('int')->hint('Greatest order number display first and only integer number require')->defaultValue(0)->sortable(true)->group('a~4');
