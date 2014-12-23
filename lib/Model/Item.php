@@ -74,6 +74,7 @@ class Model_Item extends \Model_Table{
 		$f = $this->addField('mostviewed')->type('boolean')->caption('Most Viewed')->group('m~3');
 		$f->icon = "glyphicon glyphicon-pushpin~#5bc0de";
 		
+		$this->addField('is_designable')->type('boolean');
 		//Enquiry Send To		
 		$f = $this->addField('enquiry_send_to_self')->caption('Self/ Owner')->type('boolean')->group('e~3~<i class=\'fa fa-cog\' > Enquiry Send To</i>');
 		$f->icon = "glyphicon glyphicon-send~#5cb85c";		
@@ -107,14 +108,14 @@ class Model_Item extends \Model_Table{
 
 		$this->hasMany('xShop/CategoryItem','item_id');
 		$this->hasMany('xShop/ItemImages','item_id');
-		$this->hasMany('xShop/CustomFields','item_id');
 		$this->hasMany('xShop/Attachments','item_id');
 		$this->hasMany('xShop/ItemEnquiry','item_id');
 		$this->hasMany('xShop/OrderDetails','item_id');
+		$this->hasMany('xShop/CategoryItemCustomFields','item_id');
 			
 		$this->addHook('beforeSave',$this);
 		$this->addHook('beforeDelete',$this);
-		$this->add('dynamic_model/Controller_AutoCreator');	
+		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 
 	function beforeSave($m){
@@ -156,7 +157,7 @@ class Model_Item extends \Model_Table{
 
 	function beforeDelete($m){
 		$order_count = $m->ref('xShop/OrderDetails')->count()->getOne();
-		$item_enquiry_count = $m->ref('xShop/ItemEnquiry')->count()->getOne();						
+		$item_enquiry_count = $m->ref('xShop/ItemEnquiry')->count()->getOne();
 		
 		if($this->api->auth->model['type'] and($order_count or $item_enquiry_count)){
 			$this->api->js(true)->univ()->errorMessage('Cannot Delete,first delete Orders or Enquiry')->execute();	
@@ -164,9 +165,8 @@ class Model_Item extends \Model_Table{
 
 		$m->ref('xShop/CategoryItem')->deleteAll();
 		$m->ref('xShop/ItemImages')->deleteAll();
-		$m->ref('xShop/CustomFields')->deleteAll();
 		$m->ref('xShop/Attachments')->deleteAll();	 
-		
+		$m->ref('xShop/CategoryItemCustomFields')->deleteAll();	
 	}
 
 	function updateSearchString($item_id){
@@ -271,6 +271,52 @@ class Model_Item extends \Model_Table{
 	function getAssociatedCategories(){
 		$associated_categories = $this->ref('xShop/CategoryItem')->addCondition('is_associate',true)->_dsql()->del('fields')->field('category_id')->getAll();
 		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_categories)),false);
+	}
+
+	function getAssociatedCustomFields(){
+		$associate_customfields= $this->ref('xShop/CategoryItemCustomFields')->addCondition('is_allowed',true)->_dsql()->del('fields')->field('customfield_id')->getAll();
+		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associate_customfields)),false);
+	}
+
+	function addCustomField($customfield_id){
+		$old_model = $this->add('xshop/Model_CategoryItemCustomFields');
+		$old_model->addCondition('item_id',$this->id);
+		$old_model->addCondition('customfield_id',$customfield_id);
+		$old_model->addCondition('is_allowed',false);
+		$old_model->tryLoadAny();
+		if($old_model->loaded()){
+			$old_model['is_allowed'] = true;
+			$old_model->saveandUnload();
+		}else{
+			$cat_item_cf_model = $this->add('xshop/Model_CategoryItemCustomFields');
+			$cat_item_cf_model['customfield_id'] = $customfield_id;
+			$cat_item_cf_model['item_id'] = $this->id;
+			$cat_item_cf_model['is_allowed'] = true;
+			$cat_item_cf_model->saveandUnload();
+		}	
+	}
+	
+	function updateCustomField($item_id){
+
+		
+		$this->load($item_id);
+		$category_item_model = $this->add('xShop/Model_CategoryItem');
+		$category_item_model->addCondition('item_id',$item_id);
+		foreach ($category_item_model as $junk) {
+			$category_customfield_model = $this->add('xShop/Model_CategoryItemCustomFields');
+			$category_customfield_model->addCondition('category_id',$junk['category_id']);
+			
+			foreach ($category_customfield_model as $junk) {
+				$model = $this->add('xshop/Model_CategoryItemCustomFields');
+				$model->addCondition('item_id',$item_id);
+				$model->addCondition('customfield_id',$junk['customfield_id']);
+				$model->tryLoadAny();
+								
+				$model['is_allowed'] = $junk['is_allowed'];
+				$model->saveandUnload();
+			}
+
+		}
 	}
 
 }	

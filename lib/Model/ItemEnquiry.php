@@ -20,7 +20,7 @@ class Model_ItemEnquiry extends \Model_Table{
 		$this->addField('item_code');
 		$this->addField('created_at')->type('datetime')->defaultValue(date('Y-m-d h:i:s'));
 
-		// $this->add('dynamic_model/Controller_AutoCreator');	
+		$this->add('dynamic_model/Controller_AutoCreator');	
 	}
 
 	function createNew($name,$contact_no,$email_id,$message,$item_id,$item_code,$item_name){

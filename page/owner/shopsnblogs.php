@@ -12,6 +12,8 @@ class page_xShop_page_owner_shopsnblogs extends page_xShop_page_owner_main {
 	function page_shops(){
 		$crud= $this->add('CRUD',array('grid_class'=>'xShop/Grid_Shop'));
 		$crud->setModel('xShop/Shop');
+		
+		$crud->addRef('xShop/CustomFields',array('label'=>'Custom Fields'));
 	}
 
 	function page_blogs(){
