@@ -107,10 +107,10 @@ class Model_Item extends \Model_Table{
 
 		$this->hasMany('xShop/CategoryItem','item_id');
 		$this->hasMany('xShop/ItemImages','item_id');
-		$this->hasMany('xShop/CustomFields','item_id');
 		$this->hasMany('xShop/Attachments','item_id');
 		$this->hasMany('xShop/ItemEnquiry','item_id');
 		$this->hasMany('xShop/OrderDetails','item_id');
+		$this->hasMany('xShop/CategoryItemCustomFields','item_id');
 			
 		$this->addHook('beforeSave',$this);
 		$this->addHook('beforeDelete',$this);

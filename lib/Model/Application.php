@@ -17,6 +17,7 @@ class Model_Application extends \Model_Table{
 
 		$this->hasMany('xShop/Category','application_id');
 		$this->hasMany('xShop/Item','application_id');
+		$this->hasMany('xShop/CustomFields','application_id');
 		$this->addHook('beforeDelete',$this);
 		
 		$this->add('dynamic_model/Controller_AutoCreator'); 

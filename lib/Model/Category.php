@@ -38,17 +38,22 @@ class Model_Category extends \Model_Table{
 				
 		$this->addExpression('category_name')->set('concat('.$this->table_alias.'.name,"- (",IF('.$parent_join->table_alias.'.name is null,"",'.$parent_join->table_alias.'.name),")")');		
 		$this->addHook('beforeDelete',$this);
+		$this->addHook('beforeSave',$this);
+		$this->addHook('afterSave',$this);
+		
+		$this->hasMany('xShop/CategoryItemCustomFields','category_id');		
 		// $this->add('dynamic_model/Controller_AutoCreator'); 
 	}
 
 
 	function beforeSave($m){
+		// Category name Cannot be same in Parent Category
+		if($this->existInParent($this['parent_id'],$this['name']))
+			throw $this->Exception('Name Already Exist','ValidityCheck')->setField('name');
 
-		$old_cat_model=$this->add('xShop/Model_Category');
-		$old_cat_model->setOrder('order','desc'); // Display order in grid
-		$old_cat_model->tryLoadAny();
-		if(!$m->loaded())
-			$m['order']=$old_cat_model['order']+1;
+	}
+	function afterSave(){
+
 	}
 
 	function duplicate($cat_id){
@@ -82,7 +87,7 @@ class Model_Category extends \Model_Table{
 		}
 
 		// Delete category and its product associatations
-		$m->ref('xShop/CategoryItem')->deleteAll();
+		$this->ref('xShop/CategoryItem')->deleteAll();
 	}
 
 	function getActiveCategory($app_id){
@@ -97,6 +102,46 @@ class Model_Category extends \Model_Table{
 		$this->addCondition('is_active',false);
 		$this->tryLoadAny();
 		return $this;
+	}
+
+	function existInParent($parent_id,$category_name){//Check Duplicasy on Name Exist in Parent Category
+		$app_id=$this->api->recall('xshop_application_id');
+		$category_old=$this->add('xShop/Model_Category');
+		$category_old->addCondition('application_id',$app_id);
+		
+		if($this['parent_id'])
+			$category_old->addCondition('parent_id',$parent_id);
+		$category_old->addCondition('name',$category_name);
+		$category_old->tryLoadAny();
+		if($category_old->loaded())
+			return true;
+
+		return false;
+	}
+
+	function getAllAssociateCustomFields(){
+		$associate_customfields= $this->ref('xShop/CategoryItemCustomFields')->addCondition('is_allowed',true)->_dsql()->del('fields')->field('customfield_id')->getAll();
+		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associate_customfields)),false);
+	}	
+
+	function addCustomField($customfield_id){
+	
+		$old_model = $this->add('xshop/Model_CategoryItemCustomFields');
+		$old_model->addCondition('category_id',$this->id);
+		$old_model->addCondition('customfield_id',$customfield_id);
+		$old_model->addCondition('is_allowed',false);
+		$old_model->tryLoadAny();
+		if($old_model->loaded()){
+			$old_model['is_allowed'] = true;
+			$old_model->saveandUnload();
+		}else{
+			$cat_item_cf_model = $this->add('xshop/Model_CategoryItemCustomFields');
+			$cat_item_cf_model['customfield_id'] = $customfield_id;
+			$cat_item_cf_model['category_id'] = $this->id;
+			$cat_item_cf_model['is_allowed'] = true;
+			$cat_item_cf_model->saveandUnload();
+		}
+
 	}
 
 }
