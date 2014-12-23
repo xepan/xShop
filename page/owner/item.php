@@ -19,33 +19,11 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 
 		$crud=$this->app->layout->add('CRUD',array('grid_class'=>'xShop/Grid_Item'));
 		$crud->setModel($model,array('supplier_id','manufacturer_id','name','sku','is_publish','short_description','description','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','item_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags'),array('name','sku','sale_price','is_publish'));
-		// $crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
-		// if($crud->isEditing()){
-		// 	$model_cat=$crud->form->getElement('categoryitem_id')->getModel();
-		// 	$model_cat->title_field="category_name";
-		// }
-
-		$ref = $crud->addRef('xShop/ItemImages',array('label'=>'Images'));
-		// // if($ref){
-		// // 	$ref->add('Controller_FormBeautifier');
-		// // }
-		$ref = $crud->addRef('xShop/CustomFields',array('label'=>'Custome Fields'));
-		// // if($ref){
-		// // 	$ref->add('Controller_FormBeautifier');
-		// // }
-		$ref = $crud->addRef('xShop/Attachments',array('label'=>'Attachment'));
-		// if($ref){
-		// 	$ref->add('Controller_FormBeautifier');
-		// }
 		
-		// $c_col->add('View_Info')->set('Category');
-		// $crud1=$c_col->add('CRUD');
-		// $m=$this->add('xShop/Model_Categoryitem');
-		// $crud1->setModel($m);
 	}
 
 	function page_categories(){
-
+		
 		$application_id=$this->api->recall('xshop_application_id');
 		
 		$item_id = $this->api->stickyGET('xshop_items_id');
@@ -67,45 +45,100 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 			return $category_prod_model->count();
 		})->type('boolean');
 
-		
-		// $grid->addSelectable('category_name');
-		// $grid->addColumn('Button','save','Swap Select');
-		// $grid->addColumn('Button','cancle');
-		// $save->js('click',$grid->reload())->univ()->successMessage('Save Changes Successfully',array())->execute();
-
 		$grid->setModel($app_cat_model,array('category_name','application','status'));
 		$grid->addSelectable($app_cat_field);
 
 		if($form->isSubmitted()){
-			// $cat_item = $this->add('xShop/Model_CategoryItem');
-			// $cat_item->addCondition('item_id')
-			$item->ref('xShop/CategoryItem')->deleteAll();
-
+			$item->ref('xShop/CategoryItem')->_dsql()->set('is_associate',0)->update();	
 			$cat_item_model = $this->add('xShop/Model_CategoryItem');
 			$selected_categories = json_decode($form['app_cat'],true);
-
 			foreach ($selected_categories as $cat_id) {
 				$cat_item_model->createNew($cat_id,$_GET['xshop_items_id']);
-			}
-			
+			}		
 			// Update Search String
 			$item_model=$this->add('xShop/Model_Item');
 			$item_model->load($item_id);
-			$item_model->updateSearchString($_GET['xshop_items_id']);
-
+			$item_model->updateSearchString($_GET['xshop_items_id']);			
+			
+			$item_model->updateCustomField($item_id);
 			$form->js(null,$this->js()->univ()->successMessage('Updated'))->reload()->execute();
-		}
-
+		}		
 		$grid->addQuickSearch(array('category_name'));
-		$grid->addPaginator($ipp=20);
+		$grid->addPaginator($ipp=50);
 	}
 
 	function page_details(){
-		$pro_id=$this->api->stickyGET('xshop_items_id');	
+		$item_id=$this->api->stickyGET('xshop_items_id');	
 		$item_model = $this->add('xShop/Model_Item');
-		$item_model->getItem($pro_id);
+		$item_model->getItem($item_id);
 		$product_view = $this->add('xShop/View_ProductDetail');
 		$product_view->setModel($item_model);
 	}
 
+	function page_images(){
+		$item_id=$this->api->stickyGET('xshop_items_id');
+		$crud = $this->add('CRUD');
+		$item_images_model = $this->add('xShop/Model_ItemImages')->addCondition('item_id',$item_id);
+		$item_images_model->setOrder('id','desc');
+		$crud->setModel($item_images_model);
+		if(!$crud->isEditing()){
+			$g = $crud->grid;
+			$g->addMethod('format_image_thumbnail',function($g,$f){
+				$g->current_row_html[$f] = '<img style="height:40px;max-height:40px;" src="'.$g->current_row[$f].'"/>';
+
+			});
+			$g->addFormatter('image_url','image_thumbnail');
+
+		}
+
+		$g->addQuickSearch(array('category_name'));
+		$g->addPaginator($ipp=50);
+	}
+
+	function page_attachments(){
+		$item_id=$this->api->stickyGET('xshop_items_id');
+		$crud = $this->add('CRUD');
+		$attachment_model = $this->add('xShop/Model_Attachments')->addCondition('item_id',$item_id);
+		$attachment_model->setOrder('id','desc');
+		$crud->setModel($attachment_model);
+		if(!$crud->isEditing()){
+			$g = $crud->grid;
+			$g->addMethod('format_attachment',function($g,$f){
+				$g->current_row_html[$f] = '<a class="glyphicon glyphicon-folder-open" target="_blank" style="height:40px;max-height:40px;" href="'.$g->current_row[$f].'"></a>';
+			});
+			$g->addFormatter('attachment_url','attachment');
+
+		}
+		$g->addQuickSearch(array('category_name'));
+		$g->addPaginator($ipp=50);					
+	}
+
+	function page_custom_fields(){
+		$item_id=$this->api->stickyGET('xshop_items_id');
+		$application_id = $this->api->recall('xshop_application_id');
+		
+		$item_model = $this->add('xShop/Model_Item')->load($item_id);
+		
+		$custom_fields = $this->add('xShop/Model_CustomFields');
+		$custom_fields->addCondition('application_id',$application_id);
+		$custom_fields->tryLoadAny();
+
+		$grid = $this->add('Grid');
+		$grid->setModel($custom_fields,array('name'));
+		
+		$form = $this->add('Form');
+		$selected_custom_fields = $form->addField('hidden','selected_custom_fields')->set(json_encode($item_model->getAssociatedCustomFields()));
+		$form->addSubmit('Update');
+
+		$grid->addSelectable($selected_custom_fields);
+
+		if($form->isSubmitted()){
+			$item_model->ref('xShop/CategoryItemCustomFields')->_dsql()->set('is_allowed',0)->update();
+			$selected_fields = json_decode($form['selected_custom_fields'],true);			
+			foreach ($selected_fields as $customfield_id) {
+				$item_model->addCustomField($customfield_id);
+			}
+			$form->js()->univ()->successMessage('Updated')->execute();
+		}
+	}
 }

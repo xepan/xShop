@@ -12,9 +12,12 @@ class Grid_Item extends \Grid{
 	}
 
 	function recursiveRender(){
-
+		
 		$this->addColumn('expander','details');
 		$this->addColumn('expander','categories');
+		$this->addColumn('expander','images');
+		$this->addColumn('expander','custom_fields');
+		$this->addColumn('expander','attachments');
 		parent::recursiveRender();
 	}
 

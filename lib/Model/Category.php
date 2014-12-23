@@ -53,7 +53,6 @@ class Model_Category extends \Model_Table{
 
 	}
 	function afterSave(){
-
 	}
 
 	function duplicate($cat_id){
@@ -73,7 +72,19 @@ class Model_Category extends \Model_Table{
 		$new_cat['meta_title']=$this['meta_title'];
 		$new_cat['meta_description']=$this['meta_description'];
 		$new_cat['meta_keywords']=$this['meta_keywords'];
-		$new_cat->saveandUnload();
+		$new_cat->save();
+
+		$cat_old_customfield = $this->add('xShop/Model_CategoryItemCustomFields');
+		$cat_old_customfield->addCondition('category_id',$cat_id);
+		foreach ($cat_old_customfield as $junk) {
+			$cat_new_customfield = $this->add('xShop/Model_CategoryItemCustomFields');
+			$cat_new_customfield['category_id'] = $new_cat['id'];
+			$cat_new_customfield['customfield_id'] = $cat_old_customfield['customfield_id'];
+			$cat_new_customfield['is_allowed'] = true;
+			$cat_new_customfield->saveandUnload();			
+		}
+		//Add Category Custom Fields
+		$new_cat->Unload();
 
 	}
 
@@ -87,7 +98,13 @@ class Model_Category extends \Model_Table{
 		}
 
 		// Delete category and its product associatations
+		
+		// $custom_field = $this->add('xShop/Model_CategoryItemCustomFields');
+		// $custom_field->addCondition('category_id',$m['id']);
+		
+		$this->ref('xShop/CategoryItemCustomFields')->deleteAll();
 		$this->ref('xShop/CategoryItem')->deleteAll();
+
 	}
 
 	function getActiveCategory($app_id){

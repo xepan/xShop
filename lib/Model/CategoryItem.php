@@ -17,10 +17,21 @@ class Model_CategoryItem extends \Model_Table{
 	}
 
 	function createNew($cat_id,$item_id){
-		$this['category_id']=$cat_id;		
-		$this['item_id']=$item_id;
-		$this['is_associate']=true;
-		$this->saveAndUnload();
+		$old_model = $this->add('xShop/Model_CategoryItem');
+		$old_model->addCondition('category_id',$cat_id);
+		$old_model->addCondition('item_id',$item_id);
+		$old_model->addCondition('is_associate',false);
+		$old_model->tryLoadAny();
+		if($old_model->loaded()){
+			$old_model['is_associate'] = true;
+			$old_model->saveandUnload();
+		}else{
+			$cat_item_cf_model = $this->add('xShop/Model_CategoryItem');
+			$cat_item_cf_model['category_id'] = $cat_id;
+			$cat_item_cf_model['item_id'] = $item_id;
+			$cat_item_cf_model['is_associate'] = true;
+			$cat_item_cf_model->saveandUnload();
+		}
 	}
 	
 	function getStatus($cat_id,$item_id){

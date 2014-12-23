@@ -20,4 +20,6 @@ class Model_CategoryItemCustomFields extends \Model_Table{
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
+
+		
 }
