@@ -3,16 +3,16 @@ Text_Component = function (params){
 	this.designer_tool= undefined;
 	this.canvas= undefined;
 	this.element = undefined;
-	
+
 	this.options = {
 		x:0,
 		y:0,
 		width:'100%',
 		height:'100%',
-		font: "Times New Romans",
+		font: "OpenSans",
 		font_size: '12pt',
-		color:"black",
-		bold: false,
+		color:"red",
+		bold: true,
 		italic:false,
 		underline:false,
 		rotation_angle:0,
@@ -59,20 +59,31 @@ Text_Component = function (params){
 	}
 
 	this.render = function(){
+		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div  style="position:absolute"></div>').appendTo(this.canvas);
+			this.element = $('<div style="position:absolute"></div>').appendTo(this.canvas);
 			this.element.draggable({
-				containment: 'parent'
+				containment: 'parent',
+				stop:function(e,ui){
+					var position = ui.position;
+					self.options['x'] = position.left;
+					self.options['y'] = position.top;
+				}
 			});
 		}
 
 		$.ajax({
 			url: 'index.php?page=xShop_page_designer_rendertext',
 			type: 'GET',
-			data: {param1: 'value1'},
+			data: {default_value: self.options['default_value'],
+					color: self.options['color'],
+					font: self.options['font'],
+					bold: self.options['bold']
+					},
 		})
 		.done(function(ret) {
-			console.log(ret);
+			$(ret).appendTo(self.element.html(''));		
+			// console.log(ret);
 		})
 		.fail(function() {
 			console.log("error");
@@ -176,10 +187,11 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		$(this.TextPanel).TextPanel('test');
 	},
 
-	_getZoom(){
+	_getZoom:function(){
 		return this.zoom = 10;
 	},
-	_isDesignerMode(){
+
+	_isDesignerMode:function(){
 		return this.options.designer_mode;
 	}
 
