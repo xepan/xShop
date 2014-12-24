@@ -7,9 +7,30 @@ class View_Tools_Designer extends \componentBase\View_Component{
 	
 	function init(){
 		parent::init();
-		$this->add('View_Warning');
+		if(isset($this->api->xepan_xshopdesigner_included)){
+			throw $this->exception('Designer Tool Cannot be included twise on same page');
+		}else{
+			$this->api->xepan_xshopdesigner_included = true;
+		}
+
+		$this->addClass('xshop-designer-tool');
+
 	}
 
-	// defined in parent class
-	// Template of this tool is view/namespace-ToolName.html
+	function render(){
+		$this->app->pathfinder->base_location->addRelativeLocation(
+		    'epan-components/'.__NAMESPACE__, array(
+		        'php'=>'lib',
+		        'template'=>'templates',
+		        'css'=>array('templates/css','templates/js'),
+		        'js'=>'templates/js',
+		    )
+		);
+
+		$this->api->jquery->addInclude('designer/designer');
+		$this->api->jquery->addStylesheet('designer/designer');
+		$this->js(true)->xepan_xshopdesigner(array('width'=>95,'height'=>55,'trim'=>5,'unit'=>'mm','design'=>array(array('type'=>'Text','text'=>'hello'),array('type'=>'Bacground','url'=>'path.jgp','crop'=>array(1,2,3,4)))));
+		parent::render();
+	}
+
 }

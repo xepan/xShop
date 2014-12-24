@@ -123,22 +123,22 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$custom_fields->addCondition('application_id',$application_id);
 		$custom_fields->tryLoadAny();
 
-		$grid = $this->add('Grid');
-		$grid->setModel($custom_fields,array('name'));
+		$grid = $this->add('CRUD');
+		$grid->setModel($item_model->ref('xShop/CategoryItemCustomFields'));
 		
-		$form = $this->add('Form');
-		$selected_custom_fields = $form->addField('hidden','selected_custom_fields')->set(json_encode($item_model->getAssociatedCustomFields()));
-		$form->addSubmit('Update');
+		// $form = $this->add('Form');
+		// $selected_custom_fields = $form->addField('hidden','selected_custom_fields')->set(json_encode($item_model->getAssociatedCustomFields()));
+		// $form->addSubmit('Update');
 
-		$grid->addSelectable($selected_custom_fields);
+		// $grid->addSelectable($selected_custom_fields);
 
-		if($form->isSubmitted()){
-			$item_model->ref('xShop/CategoryItemCustomFields')->_dsql()->set('is_allowed',0)->update();
-			$selected_fields = json_decode($form['selected_custom_fields'],true);			
-			foreach ($selected_fields as $customfield_id) {
-				$item_model->addCustomField($customfield_id);
-			}
-			$form->js()->univ()->successMessage('Updated')->execute();
-		}
+		// if($form->isSubmitted()){
+		// 	$item_model->ref('xShop/CategoryItemCustomFields')->_dsql()->set('is_allowed',0)->update();
+		// 	$selected_fields = json_decode($form['selected_custom_fields'],true);			
+		// 	foreach ($selected_fields as $customfield_id) {
+		// 		$item_model->addCustomField($customfield_id);
+		// 	}
+		// 	$form->js()->univ()->successMessage('Updated')->execute();
+		// }
 	}
 }

@@ -13,7 +13,7 @@ class Model_CategoryItem extends \Model_Table{
 		
 		$this->addField('is_associate')->type('boolean');
 			
-		// $this->add('dynamic_model/Controller_AutoCreator'); 
+		$this->add('dynamic_model/Controller_AutoCreator'); 
 	}
 
 	function createNew($cat_id,$item_id){

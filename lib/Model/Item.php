@@ -145,7 +145,9 @@ class Model_Item extends \Model_Table{
 
 	}
 
-	function getCategory($item_id){
+	function getCategory($item_id=null){
+		if(!$item_id) $item_id= $this->id;
+
 		$cat_pro_model=$this->add('xShop/Model_CategoryItem');
 		$cat_pro_model->addCondition('item_id',$item_id);
 		$cat_name=array();
@@ -169,9 +171,10 @@ class Model_Item extends \Model_Table{
 		$m->ref('xShop/CategoryItemCustomFields')->deleteAll();	
 	}
 
-	function updateSearchString($item_id){
+	function updateSearchString($item_id=null){
 		if($this->loaded()){
-			$this['search_string']= implode(" ", $this->getCategory($this['id'])). " ".
+			if(!$item_id) $item_id =$this->id;
+			$this['search_string']= implode(" ", $this->getCategory()). " ".
 								$this["name"]. " ".
 								$this['sku']. " ".
 								$this['short_description']. " ".

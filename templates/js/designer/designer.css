@@ -1,0 +1,39 @@
+.xshop-designer-tool {
+	border: 2px solid black;
+	width: 80%;
+	margin: 0 auto;
+}
+
+.xshop-designer-tool-topbar{
+	height: 4.5em;
+	border: 1px solid red;
+	/*width: 100%;*/
+	margin: 20px;
+}
+
+.xshop-designer-tool-topbar-button{
+	width: 4em;
+	float: left;
+	border: 1px solid blue;
+	height: 4em;
+	margin: 0.25em;
+}
+
+#xshop-designer-component-panel:before{
+	clear: both;
+}
+
+#xshop-designer-component-panel{
+	/*float: left;*/
+	outline: 5px solid gray;
+	/*min-width: 300px;*/
+	/*min-height: 500px;*/
+}
+
+.xshop-desiner-tool-canvas{
+	outline: 2px solid green !important;
+}
+
+.xshop-desiner-tool-safe-zone{
+	outline: 1px dashed gray !important;
+}
