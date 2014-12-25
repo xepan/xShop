@@ -134,18 +134,16 @@ Text_Component = function (params){
 			$(new_text.element).data('component',new_text);
 			
 			$(new_text.element).click(function(event) {
-		        if ($(this).hasClass('ui-selected')) {
-		            $(this).removeClass('ui-selected');
-		        } else {
-		            $(this).addClass('ui-selected');
-		            self.editor.setTextComponent($(this).data('component'));
-		        }
+	            $('.ui-selected').removeClass('ui-selected');
+	            $(this).addClass('ui-selected');
+	            self.editor.setTextComponent($(this).data('component'));
+	            $('.xshop-designer-tool-topbar-options').show();
+		        event.stopPropagation();
 			});
 		});
 
 		this.editor = new xShop_Text_Editor(parent.find('.xshop-designer-tool-topbar-options'));
-		
-		
+
 	}
 
 	this.render = function(){
@@ -245,12 +243,18 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		top_bar.prependTo(this.element);
 
 		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
-		var tool_bar_options = $('<div class="xshop-designer-tool-topbar-options pull-right"></div>').appendTo(top_bar);
+		var tool_bar_options = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none"></div>').appendTo(top_bar);
 		
 		$.each(this.options.ComponentsIncluded, function(index, component) {
 			var temp = new window[component+"_Component"]();
 			temp.init(self, self.canvas);
 			tool_btn = temp.renderTool(top_bar) ;
+		});
+		
+		$(this.element).click(function(event){
+			$('.ui-selected').removeClass('ui-selected');
+			tool_bar_options.hide();
+			event.stopPropagation();
 		});
 	},
 
