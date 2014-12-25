@@ -17,7 +17,7 @@ class page_xShop_page_designer_rendertext extends Page {
 		/* Font properties */
 		$draw->setFont('epan-components/xShop/templates/fonts/'.$_GET['font'].'.ttf');
 		$draw->setFontWeight(700);
-		$draw->setFontSize(30);
+		$draw->setFontSize($_GET['font_size']);
 
 		/* Create text */
 		$image->annotateImage($draw, 10, 45, 0, $_GET['default_value']);
