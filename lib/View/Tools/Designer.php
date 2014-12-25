@@ -8,7 +8,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 	function init(){
 		parent::init();
 		if(isset($this->api->xepan_xshopdesigner_included)){
-			throw $this->exception('Designer Tool Cannot be included twise on same page');
+			// throw $this->exception('Designer Tool Cannot be included twise on same page','StopRender');
 		}else{
 			$this->api->xepan_xshopdesigner_included = true;
 		}
