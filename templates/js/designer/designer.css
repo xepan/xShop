@@ -6,9 +6,11 @@
 
 .xshop-designer-tool-topbar{
 	height: 4.5em;
-	border: 1px solid red;
 	/*width: 100%;*/
 	margin: 20px;
+	background:linear-gradient(to bottom, #fefefe, #f0f2f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border:1px solid #b5babf;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .xshop-designer-tool-topbar-button{
