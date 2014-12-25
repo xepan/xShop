@@ -23,12 +23,18 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		        'php'=>'lib',
 		        'template'=>'templates',
 		        'css'=>array('templates/css','templates/js'),
+		        'img'=>array('templates/css','templates/js'),
 		        'js'=>'templates/js',
+
 		    )
 		);
 
-		$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/designer.js"></script>'."\n");
 		$this->api->jquery->addStylesheet('designer/designer');
+		$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/designer.js"></script>'."\n");
+		//Jquery Color Picker
+		$this->api->jquery->addStylesheet('designer/jquery.colorpicker');
+		$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/jquery.colorpicker.js"></script>'."\n");
+
 		$this->js(true)->xepan_xshopdesigner(array('width'=>95,'height'=>55,'trim'=>5,'unit'=>'mm','design'=>array(array('type'=>'Text','text'=>'hello'),array('type'=>'Bacground','url'=>'path.jgp','crop'=>array(1,2,3,4)))));
 		parent::render();
 	}

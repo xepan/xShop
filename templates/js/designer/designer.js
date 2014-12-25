@@ -64,7 +64,14 @@ xShop_Text_Editor = function(parent){
 	text_rotate_right = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat"></span></div>').appendTo(text_button_set);
 
 	// Color
-	text_color_picker = $('<input class="btn btn-default"/>').appendTo(text_editor).univ().xEpanColorPicker();
+	text_color_picker = $('<input id="xshop-colorpicker-full" value="fe9810" type="text"> style="display:none"').appendTo(text_editor);
+	$(text_color_picker).colorpicker({
+		parts:          'full',
+        alpha:          true,
+        showOn:         'both',
+        buttonColorize: true,
+        showNoneButton: true
+	});
 
 	this.setTextComponent = function(component){
 		this.current_text_component  = component;
