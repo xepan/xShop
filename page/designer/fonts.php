@@ -8,10 +8,10 @@ class page_xShop_page_designer_fonts extends Page {
             'ttf'=>array('epan-components/xShop/templates/fonts')
         ))->setParent($this->api->pathfinder->base_location);
 
-		$m= $this->add('Model');
 		$p=$this->api->pathfinder->searchDir('ttf','.');
 		sort($p);
 		// print_r($p);
+		$m= $this->add('Model');
 		$m->setSource('Array',$p);
 		$opts="";
 		

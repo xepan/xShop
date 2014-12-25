@@ -1,5 +1,5 @@
 getDesignerWidget = function(){
-	return $('.xshop-designer-tool').xepan_xshopdesigner('_get_widget');
+	return $('.xshop-designer-tool').xepan_xshopdesigner('get_widget');
 }
 
 xShop_Text_Editor = function(parent){
@@ -68,19 +68,27 @@ xShop_Text_Editor = function(parent){
 	text_rotate_right = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat"></span></div>').appendTo(text_button_set);
 
 	// Color
-	text_color_picker = $('<input id="xshop-colorpicker-full" value="fe9810" type="text"> style="display:none"').appendTo(text_editor);
+	text_color_picker = $('<input id="xshop-colorpicker-full" type="text" style="display:block">').appendTo(text_editor);
 	$(text_color_picker).colorpicker({
 		parts:          'full',
-        alpha:          true,
+        alpha:          false,
         showOn:         'both',
         buttonColorize: true,
-        showNoneButton: true
+        showNoneButton: true,
+        ok: function(event, color){
+        	self.current_text_component.options.color_cmyk = parseInt((color.cmyk.c)*100)+','+parseInt((color.cmyk.m)*100)+','+parseInt((color.cmyk.y)*100)+','+parseInt((color.cmyk.k)*100);
+        	self.current_text_component.options.color_formatted = '#'+color.formatted;
+        	self.current_text_component.render();
+        	$('.xshop-designer-tool').xepan_xshopdesigner('check');
+        }
 	});
-
+	
 	this.setTextComponent = function(component){
 		this.current_text_component  = component;
 		$(font_size).val(component.options.font_size);
 		$(font_selector).val(component.options.font);
+		$(text_color_picker).val(component.options.color);
+		$(text_color_picker).colorpicker('setColor',component.options.color_formatted);
 	}
 
 	$(font_selector).change(function(event){
@@ -105,7 +113,8 @@ Text_Component = function (params){
 		height:'100%',
 		font: "OpenSans",
 		font_size: '12',
-		color:"red",
+		color_cmyk:"0,0,0,100",
+		color_formatted:"#000000",
 		bold: true,
 		italic:false,
 		underline:false,
@@ -182,12 +191,11 @@ Text_Component = function (params){
 				minWidth: self.element.find('span').css('width')
 			});
 		}
-
 		$.ajax({
 			url: 'index.php?page=xShop_page_designer_rendertext',
 			type: 'GET',
 			data: {default_value: self.options['default_value'],
-					color: self.options['color'],
+					color: self.options['color_formatted'],
 					font: self.options['font'],
 					font_size: self.options['font_size'],
 					bold: self.options['bold']
@@ -197,7 +205,8 @@ Text_Component = function (params){
 			$(ret).appendTo(self.element.find('span').html(''));
 			// console.log(ret);
 		})
-		.fail(function() {
+		.fail(function(ret) {
+			evel(ret);
 			console.log("error");
 		})
 		.always(function() {
@@ -316,7 +325,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	_isDesignerMode:function(){
 		return this.options.designer_mode;
 	},
-	_get_widget: function(){
+	get_widget: function(){
 		return this;
 	},
 
