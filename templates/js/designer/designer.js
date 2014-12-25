@@ -1,3 +1,7 @@
+getDesignerWidget = function(){
+	return $('.xshop-designer-tool').xepan_xshopdesigner('_get_widget');
+}
+
 xShop_Text_Editor = function(parent){
 	var self = this;
 	this.parent = parent;
@@ -69,7 +73,14 @@ xShop_Text_Editor = function(parent){
 	this.setTextComponent = function(component){
 		this.current_text_component  = component;
 		$(font_size).val(component.options.font_size);
+		$(font_selector).val(component.options.font);
 	}
+
+	$(font_selector).change(function(event){
+		self.current_text_component.options.font = $(this).val();
+		// $('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+	});
 
 }
 
@@ -157,7 +168,12 @@ Text_Component = function (params){
 					self.options.x = position.left;
 					self.options.y = position.top;
 				}
-			}).resizable();
+			}).resizable({
+				minHeight: function(){
+					return self.element.find('span').css('height');
+				},
+				minWidth: self.element.find('span').css('width')
+			});
 		}
 
 		$.ajax({
@@ -171,7 +187,7 @@ Text_Component = function (params){
 					},
 		})
 		.done(function(ret) {
-			$(ret).appendTo(self.element.html(''));
+			$(ret).appendTo(self.element.find('span').html(''));
 			// console.log(ret);
 		})
 		.fail(function() {
@@ -292,6 +308,9 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	_isDesignerMode:function(){
 		return this.options.designer_mode;
+	},
+	_get_widget: function(){
+		return this;
 	},
 
 	check: function(){

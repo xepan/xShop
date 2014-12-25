@@ -4,8 +4,6 @@ class page_xShop_page_designer_rendertext extends Page {
 	function init(){
 		parent::init();
 
-
-
 		$image = new \Imagick();
 		$draw = new \ImagickDraw();
 		$pixel = new \ImagickPixel( 'none' );
