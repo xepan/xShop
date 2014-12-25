@@ -3,15 +3,14 @@ xShop_Text_Editor = function(parent){
 	this.parent = parent;
 	this.current_text_component = undefined;
 
-	text_editor = $('<div id="xshop-designer-text-editor" style="display:block"> EDITOR </div>').appendTo(this.parent);
+	text_editor = $('<div id="xshop-designer-text-editor" style="display:block"> </div>').appendTo(this.parent);
 
 	// add font_selection with preview
-	font_selector = $('<select></select>').appendTo(text_editor);
+	font_selector = $('<select class="btn btn-xs"></select>').appendTo(text_editor);
 	// get all fonts via ajax
 	$.ajax({
-		url: '/path/to/file',
-		type: 'default GET (Other values: POST)',
-		dataType: 'default: Intelligent Guess (Other values: xml, json, script, or html)',
+		url: 'index.php?page=xShop_page_designer_fonts',
+		type: 'GET',
 		data: {param1: 'value1'},
 	})
 	.done(function(ret) {
@@ -26,7 +25,8 @@ xShop_Text_Editor = function(parent){
 	});
 	
 	// font size
-	font_size = $('<select></select>').appendTo(text_editor);
+	font_size = $('<select class="btn btn-xs"></select>').appendTo(text_editor);
+
 	for (var i = 7; i < 50; i++) {
 		$('<option value="'+i+'">'+i+'</option>').appendTo(font_size);
 	};
@@ -38,22 +38,33 @@ xShop_Text_Editor = function(parent){
 	});
 
 	// B/I/U
-	text_bold_btn = $('<div class="btn btn-default">B</div>').appendTo(text_editor);
-	text_italic_btn = $('<div class="btn btn-default">I</div>').appendTo(text_editor);
-	text_underline_btn = $('<div class="btn btn-default">U</div>').appendTo(text_editor);
+	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Bold/Italic/Underline"></div>').appendTo(text_editor);
+	text_bold_btn = $('<div class="btn btn-default"><span class="fa fa-bold"></span></div>').appendTo(text_button_set);
+	text_italic_btn = $('<div class="btn btn-default"><span class="fa fa-italic"></span></div>').appendTo(text_button_set);
+	text_underline_btn = $('<div class="btn btn-default"><span class="fa fa-underline"></span></div>').appendTo(text_button_set);
+	text_strikethrough_btn = $('<div class="btn btn-default"><span class="fa fa-strikethrough"></span></div>').appendTo(text_button_set);
 
 	// L/M/R/J align
-	text_align_left_btn = $('<div class="btn btn-default">Left</div>').appendTo(text_editor);
-	text_align_center_btn = $('<div class="btn btn-default">Center</div>').appendTo(text_editor);
-	text_align_right_btn = $('<div class="btn btn-default">Right</div>').appendTo(text_editor);
-	text_align_justify_btn = $('<div class="btn btn-default">Justify</div>').appendTo(text_editor);
+	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(text_editor);
+	text_align_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-left"></span></div>').appendTo(text_button_set);
+	text_align_center_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-center"></span></div>').appendTo(text_button_set);
+	text_align_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-right"></span></div>').appendTo(text_button_set);
+	text_align_justify_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-justify"></div>').appendTo(text_button_set);
+
+	//Ordered List
+	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Orderd List"></div>').appendTo(text_editor);
+	text_order_list_ul_btn = $('<div class="btn btn-default"><span class="fa fa-list-ul"></span></div>').appendTo(text_button_set);
+	text_order_list_ol_btn = $('<div class="btn btn-default"><span class="fa fa-list-ol"></span></div>').appendTo(text_button_set);
+	text_indent_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-left"></span></div>').appendTo(text_button_set);
+	text_indent_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-right"></div>').appendTo(text_button_set);
+	
+	// Angle
+	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(text_editor);
+	text_rotate_left = $('<div class="btn btn-default btn-xs"><span class="fa fa-undo"></span></div>').appendTo(text_button_set);
+	text_rotate_right = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat"></span></div>').appendTo(text_button_set);
 
 	// Color
 	text_color_picker = $('<input class="btn btn-default"/>').appendTo(text_editor).univ().xEpanColorPicker();
-
-	// Angle
-	text_rotate_left = $('<div class="btn btn-default">Left</div>').appendTo(text_editor);
-	text_rotate_right = $('<div class="btn btn-default">Right</div>').appendTo(text_editor);
 
 	this.setTextComponent = function(component){
 		this.current_text_component  = component;
