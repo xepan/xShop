@@ -251,7 +251,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			tool_btn = temp.renderTool(top_bar) ;
 		});
 		
-		$(this.element).click(function(event){
+		// Hide options if not clicked on any component
+		$(this.canvas).click(function(event){
 			$('.ui-selected').removeClass('ui-selected');
 			tool_bar_options.hide();
 			event.stopPropagation();
