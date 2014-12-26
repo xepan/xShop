@@ -39,3 +39,7 @@
 .xshop-desiner-tool-safe-zone{
 	outline: 1px dashed gray !important;
 }
+
+.ui-selected {
+  outline: 2px dashed blue !important;
+}

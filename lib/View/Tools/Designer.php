@@ -36,7 +36,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		$this->api->jquery->addStylesheet('designer/jquery.colorpicker');
 		$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/jquery.colorpicker.js"></script>'."\n");
 
-		$this->js(true)->xepan_xshopdesigner(array('width'=>95,'height'=>55,'trim'=>5,'unit'=>'mm','design'=>array(array('type'=>'Text','text'=>'hello'),array('type'=>'Bacground','url'=>'path.jgp','crop'=>array(1,2,3,4)))));
+		$this->js(true)->xepan_xshopdesigner(array('width'=>279,'height'=>210,'trim'=>5,'unit'=>'mm','design'=>array(array('type'=>'Text','text'=>'hello'),array('type'=>'Bacground','url'=>'path.jgp','crop'=>array(1,2,3,4)))));
 		parent::render();
 	}
 

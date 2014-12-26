@@ -403,16 +403,15 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 
 	setupCanvas: function(workplace){
+		var self = this;
 		var outer_column = $('<div class="col-md-12"></div>').appendTo(workplace);
 		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative"></div>').appendTo(outer_column);
-		this.canvas.css('width',this.options.width * this._getZoom());
-		this.canvas.css('height',this.options.height * this._getZoom());
-
-		this.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(this.canvas);
-		this.safe_zone.css('margin',this.options.trim * this._getZoom());
-		this.safe_zone.css('height',(this.options.height * this._getZoom()) - (this.options.trim * this._getZoom()*2));
-		this.safe_zone.css('width',(this.options.width * this._getZoom()) - (this.options.trim * this._getZoom()*2));
-
+		this.canvas.css('width',this.options.width +'mm');
+		self.canvas.css('height',self.options.height * self._getZoom());
+		self.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(self.canvas);
+		self.safe_zone.css('margin',self.options.trim * self._getZoom());
+		self.safe_zone.css('height',(self.options.height * self._getZoom()) - (self.options.trim * self._getZoom()*2));
+		self.safe_zone.css('width',(self.options.width * self._getZoom()) - (self.options.trim * self._getZoom()*2));
 
 	},
 
@@ -422,7 +421,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 
 	_getZoom:function(){
-		return this.zoom = 10;
+		this.zoom = (this.canvas.width())/ this.options.width;
+		return this.zoom;
 	},
 
 	_isDesignerMode:function(){
