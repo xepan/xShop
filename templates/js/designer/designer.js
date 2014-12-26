@@ -43,10 +43,39 @@ xShop_Text_Editor = function(parent){
 
 	// B/I/U
 	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Bold/Italic/Underline"></div>').appendTo(text_editor);
-	text_bold_btn = $('<div class="btn btn-default"><span class="fa fa-bold"></span></div>').appendTo(text_button_set);
-	text_italic_btn = $('<div class="btn btn-default"><span class="fa fa-italic"></span></div>').appendTo(text_button_set);
-	text_underline_btn = $('<div class="btn btn-default"><span class="fa fa-underline"></span></div>').appendTo(text_button_set);
-	text_strikethrough_btn = $('<div class="btn btn-default"><span class="fa fa-strikethrough"></span></div>').appendTo(text_button_set);
+	text_bold_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-bold"></span></div>').appendTo(text_button_set);
+	text_italic_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-italic"></span></div>').appendTo(text_button_set);
+	text_underline_btn = $('<div class="btn btn-default"><span class="icon-underline"></span></div>').appendTo(text_button_set);
+	text_strokethrough_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-text-strike"></span></div>').appendTo(text_button_set);
+	/*Bold Text Render*/
+	$(text_bold_btn).click(function(event){
+		if(!self.current_text_component.options.bold)
+			self.current_text_component.options.bold = true;
+		else
+			self.current_text_component.options.bold = false;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+	});
+
+	//Underline Text
+	$(text_underline_btn).click(function(event){
+		if(!self.current_text_component.options.underline)
+			self.current_text_component.options.underline = true;
+		else
+			self.current_text_component.options.underline = false;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+	});
+	
+	//Stroke Through
+	$(text_strokethrough_btn).click(function(event){
+		if(!self.current_text_component.options.stokethrough)
+			self.current_text_component.options.stokethrough = true;
+		else
+			self.current_text_component.options.stokethrough = false;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+	});
 
 	// L/M/R/J align
 	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(text_editor);
@@ -54,18 +83,77 @@ xShop_Text_Editor = function(parent){
 	text_align_center_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-center"></span></div>').appendTo(text_button_set);
 	text_align_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-right"></span></div>').appendTo(text_button_set);
 	text_align_justify_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-justify"></div>').appendTo(text_button_set);
+	
+	//LEFT Text Alignment
+	$(text_align_left_btn).click(function(){
+		if(!self.current_text_component.options.alignment_left)
+			self.current_text_component.options.alignment_left = true;
+		else
+			self.current_text_component.options.alignment_left = false;
+
+		self.current_text_component.options.alignment_center = false;
+		self.current_text_component.options.alignment_right = false;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+	});
+	
+	//RIGHT Text Alignment
+	$(text_align_right_btn).click(function(){
+		if(!self.current_text_component.options.alignment_right)
+			self.current_text_component.options.alignment_right = true;
+		else
+			self.current_text_component.options.alignment_right = false;
+
+		self.current_text_component.options.alignment_left = false;
+		self.current_text_component.options.alignment_center = false;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+	});
+
+	//CENTER Text Alignment
+	$(text_align_center_btn).click(function(){
+		if(!self.current_text_component.options.alignment_center)
+			self.current_text_component.options.alignment_center = true;
+		else
+			self.current_text_component.options.alignment_center = false;
+
+		self.current_text_component.options.alignment_left = false;
+		self.current_text_component.options.alignment_right = false;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+	});
 
 	//Ordered List
 	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Orderd List"></div>').appendTo(text_editor);
-	text_order_list_ul_btn = $('<div class="btn btn-default"><span class="fa fa-list-ul"></span></div>').appendTo(text_button_set);
-	text_order_list_ol_btn = $('<div class="btn btn-default"><span class="fa fa-list-ol"></span></div>').appendTo(text_button_set);
+	text_order_list_ul_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-list"></span></div>').appendTo(text_button_set);
 	text_indent_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-left"></span></div>').appendTo(text_button_set);
 	text_indent_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-right"></div>').appendTo(text_button_set);
 	
 	// Angle
 	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(text_editor);
-	text_rotate_left = $('<div class="btn btn-default btn-xs"><span class="fa fa-undo"></span></div>').appendTo(text_button_set);
-	text_rotate_right = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat"></span></div>').appendTo(text_button_set);
+	text_rotate_anticlockwise = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat" style="-moz-transform: scaleX(-1);-o-transform: scaleX(-1);-webkit-transform: scaleX(-1);transform: scaleX(-1);filter: FlipH;-ms-filter: "FlipH";"></span></div>').appendTo(text_button_set);
+	text_rotate_clockwise = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat"></span></div>').appendTo(text_button_set);
+
+	//Rotation AntiClockWise Difference with -45 deg
+	$(text_rotate_anticlockwise).click(function(event){
+		var angle_rotate = self.current_text_component.options.rotation_angle;
+		if(angle_rotate==0)
+			angle_rotate = 360;
+		self.current_text_component.options.rotation_angle = angle_rotate-45;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+
+	});
+
+	//Rotation ClockWise Difference with +45 deg
+	$(text_rotate_clockwise).click(function(event){
+		var angle_rotate = self.current_text_component.options.rotation_angle;
+		if(angle_rotate==360)
+			angle_rotate = 0;
+		self.current_text_component.options.rotation_angle = angle_rotate+45;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();		
+	});
 
 	// Color
 	text_color_picker = $('<input id="xshop-colorpicker-full" type="text" style="display:block">').appendTo(text_editor);
@@ -115,12 +203,15 @@ Text_Component = function (params){
 		font_size: '12',
 		color_cmyk:"0,0,0,100",
 		color_formatted:"#000000",
-		bold: true,
+		bold: false,
 		italic:false,
 		underline:false,
+		stokethrough:false,
 		rotation_angle:0,
 		locked: false,
-
+		alignment_left:false,
+		alignment_center:false,
+		alignment_right:false,
 		// Designer properties
 		movable: true,
 		colorable: true,
@@ -194,11 +285,17 @@ Text_Component = function (params){
 		$.ajax({
 			url: 'index.php?page=xShop_page_designer_rendertext',
 			type: 'GET',
-			data: {default_value: self.options['default_value'],
-					color: self.options['color_formatted'],
-					font: self.options['font'],
-					font_size: self.options['font_size'],
-					bold: self.options['bold']
+			data: {default_value: self.options.default_value,
+					color: self.options.color_formatted,
+					font: self.options.font,
+					font_size: self.options.font_size,
+					bold: self.options.bold,
+					underline:self.options.underline,
+					stokethrough:self.options.stokethrough,
+					rotation_angle:self.options.rotation_angle,
+					alignment_left:self.options.alignment_left,
+					alignment_right:self.options.alignment_right,
+					alignment_center:self.options.alignment_center
 					},
 		})
 		.done(function(ret) {
