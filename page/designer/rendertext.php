@@ -38,9 +38,11 @@ class page_xShop_page_designer_rendertext extends Page {
 		}
 		// 1-Text will be normal 2-Underline 3-Upperline 4- stroke-through  
 		if($_GET['underline']=='true'){
+			echo"underline";
 			$draw->setTextDecoration(2);
 		}
 		if($_GET['stokethrough']=='true'){
+			echo"stoke";
 			$draw->setTextDecoration(4);
 		}
 
@@ -53,7 +55,7 @@ class page_xShop_page_designer_rendertext extends Page {
 			$draw->setTextAlignment(1);
 
 		/* Create text */
-		$image->annotateImage($draw, 50, 60,$_GET['rotation_angle'], $_GET['default_value']);
+		$image->annotateImage($draw,50, 50,$_GET['rotation_angle'], $_GET['default_value']);
 		
 		/* Give image a format */
 		$image->setImageFormat('png');

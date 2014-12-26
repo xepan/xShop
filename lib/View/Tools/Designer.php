@@ -18,6 +18,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 	}
 
 	function render(){
+		
 		$this->app->pathfinder->base_location->addRelativeLocation(
 		    'epan-components/'.__NAMESPACE__, array(
 		        'php'=>'lib',
