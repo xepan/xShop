@@ -54,7 +54,7 @@ class page_xShop_page_designer_rendertext extends Page {
 
 		/* Create text */
 		$image->annotateImage($draw, 50, 60,$_GET['rotation_angle'], $_GET['default_value']);
-
+		
 		/* Give image a format */
 		$image->setImageFormat('png');
 
