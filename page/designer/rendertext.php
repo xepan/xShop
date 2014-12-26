@@ -4,8 +4,8 @@ class page_xShop_page_designer_rendertext extends Page {
 	function init(){
 		parent::init();
 
-		$image = new Imagick();
 		$draw = new ImagickDraw();
+		$image = new Imagick();
 		$pixel = new ImagickPixel( 'none' );
 
 		/* New image */
@@ -32,11 +32,28 @@ class page_xShop_page_designer_rendertext extends Page {
 		$draw->setFillColor($_GET['color']);
 		/* Font properties */
 		$draw->setFont('epan-components/xShop/templates/fonts/'.$_GET['font'].'.ttf');
-		$draw->setFontWeight(700);
 		$draw->setFontSize($_GET['font_size']);
+		if($_GET['bold']=='true'){
+			$draw->setFontWeight(700);
+		}
+		// 1-Text will be normal 2-Underline 3-Upperline 4- stroke-through  
+		if($_GET['underline']=='true'){
+			$draw->setTextDecoration(2);
+		}
+		if($_GET['stokethrough']=='true'){
+			$draw->setTextDecoration(4);
+		}
+
+		//Text Alignment :: 3-Left 2-Center 1-Right
+		if($_GET['alignment_left']=='true')
+			$draw->setTextAlignment(3);
+		if($_GET['alignment_center']=='true')
+			$draw->setTextAlignment(2);
+		if($_GET['alignment_right']=='true')
+			$draw->setTextAlignment(1);
 
 		/* Create text */
-		$image->annotateImage($draw, 10, 45, 0, $_GET['default_value']);
+		$image->annotateImage($draw, 50, 60,$_GET['rotation_angle'], $_GET['default_value']);
 
 		/* Give image a format */
 		$image->setImageFormat('png');
@@ -46,6 +63,11 @@ class page_xShop_page_designer_rendertext extends Page {
 		header('Content-type: image/png');
 		// echo $image;
 		echo "<img src='data:image/png;base64,".base64_encode($image)."' />";	
+		
+		$image->clear();
+		$image->destroy();
+		$draw->clear();
+		$draw->destroy();	
 		exit;
 
 	}
