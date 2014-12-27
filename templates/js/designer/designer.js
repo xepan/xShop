@@ -46,7 +46,7 @@ xShop_Text_Editor = function(parent){
 	text_bold_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-bold"></span></div>').appendTo(text_button_set);
 	text_italic_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-italic"></span></div>').appendTo(text_button_set);
 	text_underline_btn = $('<div class="btn btn-default"><span class="icon-underline"></span></div>').appendTo(text_button_set);
-	text_strokethrough_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-text-strike"></span></div>').appendTo(text_button_set);
+	text_strokethrough_btn = $('<div class="btn btn-default"><span class="icon-strike"></span></div>').appendTo(text_button_set);
 	/*Bold Text Render*/
 	$(text_bold_btn).click(function(event){
 		if(!self.current_text_component.options.bold)
@@ -59,20 +59,25 @@ xShop_Text_Editor = function(parent){
 
 	//Underline Text
 	$(text_underline_btn).click(function(event){
+		self.current_text_component.options.stokethrough = false;
+		
 		if(!self.current_text_component.options.underline)
 			self.current_text_component.options.underline = true;
 		else
 			self.current_text_component.options.underline = false;
+		
 		$('.xshop-designer-tool').xepan_xshopdesigner('check');
 		self.current_text_component.render();
 	});
 	
 	//Stroke Through
 	$(text_strokethrough_btn).click(function(event){
+		self.current_text_component.options.underline = false;		
 		if(!self.current_text_component.options.stokethrough)
 			self.current_text_component.options.stokethrough = true;
 		else
 			self.current_text_component.options.stokethrough = false;
+
 		$('.xshop-designer-tool').xepan_xshopdesigner('check');
 		self.current_text_component.render();
 	});
@@ -128,6 +133,7 @@ xShop_Text_Editor = function(parent){
 	text_order_list_ul_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-list"></span></div>').appendTo(text_button_set);
 	text_indent_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-left"></span></div>').appendTo(text_button_set);
 	text_indent_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-right"></div>').appendTo(text_button_set);
+	text_symbol_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-plus"></div>').appendTo(text_button_set);
 	
 	// Angle
 	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(text_editor);
