@@ -327,6 +327,7 @@ Text_Component = function (params){
 	this.canvas= undefined;
 	this.element = undefined;
 	this.editor = undefined;
+	this.xhr = undefined;
 
 	this.options = {
 		x:0,
@@ -408,17 +409,26 @@ Text_Component = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div style="position:absolute"><span></span></div>').appendTo(this.canvas);
+			this.element = $('<xdiv style="position:absolute"><span></span></xdiv>').appendTo(this.canvas);
 			this.element.draggable({
 				containment: 'parent',
 				stop:function(e,ui){
 					var position = ui.position;
-					self.options.x = position.left;
-					self.options.y = position.top;
+					self.options.x = position.left / self.designer_tool.zoom;
+					self.options.y = position.top / self.designer_tool.zoom;
 				}
 			});
 		}
-		$.ajax({
+
+		this.element.css('top',self.options.y  * self.designer_tool.zoom);
+		this.element.css('left',self.options.x * self.designer_tool.zoom);
+		// this.element.find('img').width(this.element.find('img').width() * self.designer_tool.zoom);
+		// this.element.find('img').height(this.element.find('img').height() * self.designer_tool.zoom);
+
+		if(this.xhr != undefined)
+			this.xhr.abort();
+
+		this.xhr = $.ajax({
 			url: 'index.php?page=xShop_page_designer_rendertext',
 			type: 'GET',
 			data: {default_value: self.options.default_value,
@@ -437,10 +447,10 @@ Text_Component = function (params){
 		})
 		.done(function(ret) {
 			$(ret).appendTo(self.element.find('span').html(''));
-			// console.log(ret);
+			self.xhr=undefined;
 		})
 		.fail(function(ret) {
-			evel(ret);
+			// evel(ret);
 			console.log("error");
 		})
 		.always(function() {
@@ -513,12 +523,15 @@ ZoomPlus_Component = function (params){
 	this.renderTool = function(parent){
 		var self=this;
 		this.parent = parent;
-		tool_btn = $('<div class="btn btn-deault">ZOOM +</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+		this.tool_btn = $('<div class="btn btn-deault">ZOOM +</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+		
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS
-		tool_btn.click(function(event){
+		this.tool_btn.click(function(event){
 			// create new TextComponent type object
-			
+			self.designer_tool.canvas.width(self.designer_tool.canvas.width() + (self.designer_tool.canvas.width() * 10/100));
+			self.designer_tool.render();
+
 		});
 
 	}
@@ -555,7 +568,8 @@ ZoomMinus_Component = function (params){
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
 			// create new TextComponent type object
-			
+			self.designer_tool.canvas.width(self.designer_tool.canvas.width() - (self.designer_tool.canvas.width() * 10/100));
+			self.designer_tool.render();
 		});
 
 	}
@@ -631,17 +645,25 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	_create: function(){
 		this.setupLayout();
 	},
+
 	setupLayout: function(){
 		var self = this;
+
+		// Load Plugin Files
+
 		var workplace = this.setupWorkplace();
 		window.setTimeout(function(){
 			self.setupCanvas(workplace);
 			if(self.options.showTopBar){
 				self.setupToolBar();
 			}
+
+			self.render();
+
 		},200);
 		// this.setupComponentPanel(workplace);
 	},
+
 	setupToolBar: function(){
 		var self=this;
 		var top_bar = $('<div class="xshop-designer-tool-topbar"></div>');
@@ -693,12 +715,16 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		if(this.canvas.width() < (workplace.width()/2)){
 			this.canvas.width((workplace.width()/2));
 		}
+		
+		this.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(this.canvas);
+	},
 
+	render: function(param){
+		var self = this;
 		this.canvas.css('height',this.options.height + this.options.unit); // In Given Unit
 		// console.log(this.canvas.height());
 		this.canvas.height(this.canvas.height() * this._getZoom()); // get in pixel .height() and multiply by zoom 
 
-		this.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(this.canvas);
 		this.safe_zone.css('width',(this.options.width - (this.options.trim * 2)) + this.options.unit); // In given unit
 		this.safe_zone.css('height',(this.options.height - (this.options.trim * 2)) + this.options.unit); // In given UNit
 
@@ -710,12 +736,11 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		this.safe_zone.css('margin-right',trim_in_px);
 		this.safe_zone.css('margin-top',trim_in_px);
 		this.safe_zone.css('margin-bottom',trim_in_px);
+		
 
-	},
-
-	render: function(param){
-		console.log('Called by ' + param.msg);
-		$(this.TextPanel).TextPanel('test');
+		$.each(self.components, function(index, component) {
+			component.render();
+		});
 	},
 
 	_getZoom:function(){
