@@ -238,6 +238,8 @@ Text_Component = function (params){
 		var self=this;
 		this.parent = parent;
 		tool_btn = $('<div class="btn btn-deault">Text</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+
+		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
 			// create new TextComponent type object
 			var new_text = new Text_Component();
@@ -276,10 +278,12 @@ Text_Component = function (params){
 					self.options.y = position.top;
 				}
 			}).resizable({
-				minHeight: function(){
-					return self.element.find('span').css('height');
-				},
-				minWidth: self.element.find('span').css('width')
+				 minHeight: function() {
+			        $(self.element).find('img').height();
+			    }
+			    ,minWidth: function() {
+			        $(self.element).find('img').width();
+			    }
 			});
 		}
 		$.ajax({
@@ -359,11 +363,14 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		this.setupLayout();
 	},
 	setupLayout: function(){
-		var workplace = this.setupWorkplace()
-		this.setupCanvas(workplace);
-		if(this.options.showTopBar){
-			this.setupToolBar();
-		}
+		var self = this;
+		var workplace = this.setupWorkplace();
+		window.setTimeout(function(){
+			self.setupCanvas(workplace);
+			if(self.options.showTopBar){
+				self.setupToolBar();
+			}
+		},200);
 		// this.setupComponentPanel(workplace);
 	},
 	setupToolBar: function(){
@@ -389,7 +396,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 
 	setupWorkplace: function(){
-		return $('<div class="xshop-designer-tool-workplace row"></div>').appendTo(this.element);
+		return $('<div class="xshop-designer-tool-workplace"></div>').appendTo(this.element);
 	},
 
 	setupComponentPanel: function(workplace){
@@ -398,9 +405,17 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	setupCanvas: function(workplace){
 		var self = this;
-		var outer_column = $('<div class="col-md-12"></div>').appendTo(workplace);
+		var outer_column = $('<div class="col-md-12_removed"></div>').appendTo(workplace);
 		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative"></div>').appendTo(outer_column);
-		this.canvas.css('width',this.options.width +'mm');
+		
+		this.canvas.css('width',this.options.width + this.options.unit);
+
+		console.log(workplace.width());
+
+		if(this.canvas.width() > workplace.width()){
+			this.canvas.css('width', workplace.width() - 20 + 'px');
+		}
+
 		self.canvas.css('height',self.options.height * self._getZoom());
 		self.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(self.canvas);
 		self.safe_zone.css('margin',self.options.trim * self._getZoom());
