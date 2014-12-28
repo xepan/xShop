@@ -43,3 +43,12 @@
 .ui-selected {
   outline: 2px dashed blue !important;
 }
+.input-group{
+	margin-bottom: 10px;
+}
+
+/*.active{
+	background-color: #337ab7;
+	background-color: #337ab7;
+	color: white;
+}*/

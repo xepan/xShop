@@ -15,22 +15,20 @@ PageBlock = function(parent,designer,canvas, manager){
 	this.init = function(pages_data_array){
 		var self = this;
 		// make a nice div
-		row = $('<div class="row"></div>').appendTo(this.parent);
-		page_col  = $('<div class="col-md-6 col-sm-6"></div>').appendTo(row);
-		layout_col  = $('<div class="col-md-6 col-sm-6"></div>').appendTo(row);
-	 
-		this.element = $('<div> I M PAGE DIV</div>').appendTo(page_col);
+		page_col  = $('<div class="col-md-6 col-sm-6 col-lg-6"></div>').appendTo(this.parent);
+		this.element = $('<div class="xshop-designer-ft-page">Pages</div>').appendTo(page_col);
 		// add input box and add button
-		this.add_div = $("<div></div>").appendTo(this.element);
-		this.input_box =$('<input type="text" class="pull-left"/>').appendTo(this.add_div);
-		this.add_btn = $('<button class="pull-right">Add</button>').appendTo(this.add_div);
+
+		this.add_div = $('<div class="input-group"></div>').appendTo(this.element);
+		this.input_box =$('<input type="text" class="form-control" placeholder="New Page"/>').appendTo(this.add_div);
+		this.add_btn = $('<span class="input-group-btn"><button class="btn btn-default" type="button">Add</button></span>').appendTo(this.add_div);
 
 		this.add_btn.click(function(event){
 			self.addPage(self.input_box.val());
 		});
 
 		// make a list of current pages with remove buton
-		this.page_list_div = $('<div></div>').appendTo(this.element);
+		this.page_list_div = $('<div class="list-group"></div>').appendTo(this.element);
 
 		$.each(pages_data_array,function(index,page){
 			self.addPage(page);
@@ -54,10 +52,14 @@ PageBlock = function(parent,designer,canvas, manager){
 		// add default layout to this page as well
 
 		page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
-		div = $('<div></div>').appendTo(page_row).html(page_name);
-		rm_btn = $('<div> X </div>').appendTo(page_row).data('page_name',page_name);
+		div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
+		page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
+		rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('page_name',page_name);
 		div.click(function(event){
-			self.manager.layoutblock.setPage($(this).html());
+			$(this).parent().siblings().find('a').removeClass('active').addClass('activeOff');
+			$(this).addClass('active').removeClass('activeOff');
+			self.manager.layoutblock.setPage($(this).find('span.xshop-designer-ft-page-name').html());
+			console.log('yes');
 		});
 
 		rm_btn.click(function(event){
@@ -90,27 +92,35 @@ LayoutBlock = function(parent,designer,canvas, manager){
 
 	this.init = function(){
 		var self = this;
-		// make a nice div
-		this.element = $('<div> I M LAYOUT DIV</div>').appendTo(this.parent);
+		// make a nice div		
+		layout_col  = $('<div class="col-md-6 col-sm-6 col-lg-6"></div>').appendTo(this.parent);
+		this.element = $('<div class="xshop-designer-ft-layout">Layout</div>').appendTo(layout_col);
 		// add input box and add button
-		this.add_div = $("<div></div>").appendTo(this.element);
-		this.input_box =$('<input type="text" class="pull-left"/>').appendTo(this.add_div);
-		this.add_btn = $('<button class="pull-right">Add</button>').appendTo(this.add_div);
+		this.add_div = $('<div class="input-group"></div>').appendTo(this.element);
+		this.input_box =$('<input type="text" class="form-control" placeholder="New Page"/>').appendTo(this.add_div);
+		this.add_btn = $('<span class="input-group-btn"><button class="btn btn-default" type="button">Add</button></span>').appendTo(this.add_div);
 
 		this.add_btn.click(function(event){
 			self.addLayout(self.input_box.val());
 		});
 
 		// make a list of current pages with remove buton
-		this.layout_list_div = $('<div></div>').appendTo(this.element);
+		this.layout_list_div = $('<div class="list-group"></div>').appendTo(this.element);
 
 	}
 
 	this.setPage = function(page_name){
+		var self=this;
 		this.current_page = page_name;
-		
-		// create layout dis with remove button and its event
 		console.log('changed page to ' + page_name);
+		//Show Active on Current Page
+		$( "div.xshop-designer-ft-page" ).find( 'a.list-group-item:contains('+page_name+')' ).addClass('active');
+		//Empty all html:remove repeating layout
+		$('div.xshop-designer-ft-layout').find('div.list-group').empty();
+		$.each(this.designer_tool.pages_and_layouts[page_name],function(index,layout){			
+			self.addLayout(index);
+		});
+		// create layout dis with remove button and its event
 	}
 
 	this.addLayout = function(layout_name){	
@@ -120,13 +130,15 @@ LayoutBlock = function(parent,designer,canvas, manager){
 		this.designer_tool.pages_and_layouts[this.current_page][layout_name] =  new_layout;
 
 		layout_row = $('<div class="layout_row"></div>').appendTo(this.layout_list_div);
-		div = $('<div></div>').appendTo(layout_row).html(layout_name);
-		rm_btn = $('<div>X</div>').appendTo(layout_row).data('layout_name',layout_name);
+		div = $('<a href="#" class="list-group-item"></a>').appendTo(layout_row).html(layout_name);
+		rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('layout_name',layout_name);
 
 		rm_btn.click(function(event){
 			self.removeLayout($(this).data('layout_name'));
 			$(this).closest(".layout_row").remove();
 		});
+
+		console.log(this.designer_tool.pages_and_layouts[this.current_page]);
 	}
 
 	this.removeLayout = function(layout_name){
@@ -160,7 +172,7 @@ FreeLancerPageLayoutManager = function(parent,designer, canvas){
 		this.layoutblock.setPage('page1');
 
 
-		this.page.dialog({autoOpen: false, modal: true, width:500});
+		this.page.dialog({autoOpen: false, modal: true, width:600});
 		this.element.click(function(event){
 			// Update recent pages and layouts 
 			self.page.dialog('open');
@@ -271,7 +283,7 @@ FreeLancerPanel = function(parent, designer, canvas){
 	this.FreeLancerPageLayoutManager=undefined;
 
 	this.init =  function(){
-		this.element = $('<div></div>').appendTo(this.parent);
+		this.element = $('<div class="row"></div>').appendTo(this.parent);
 		this.FreeLancerPageLayoutManager = new FreeLancerPageLayoutManager(this.element,this.designer_tool, this.canvas);
 		this.FreeLancerPageLayoutManager.init();
 		this.FreeLancerComponentOptions = new FreeLancerComponentOptions(this.element,this.designer_tool, this.canvas);
