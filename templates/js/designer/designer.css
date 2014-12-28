@@ -43,3 +43,24 @@
 .ui-selected {
   outline: 2px dashed blue !important;
 }
+
+.guidex{
+    display:none;
+    background:#0aa;
+    width:0px;
+    height:100%;
+    position:absolute;
+    top:0px;
+    left:10px;
+    border-left: 1px dotted black;
+}
+.guidey{
+    display:none;
+    background:#0aa;
+    width:100%;
+    height:0px;
+    position:absolute;
+    top:10px;
+    left:0px;
+    border-bottom: 1px dotted black;
+}
