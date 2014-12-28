@@ -1,8 +1,8 @@
 // xEpan Designer jQuery Widget for extended xShop elements 
 jQuery.widget("ui.xepan_xshopdesigner",{
 	pages_and_layouts: {
-		"front_page": {
-			"main_layout": {
+		"Front Page": {
+			"Main Layout": {
 				components: []
 			}
 		}
