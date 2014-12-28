@@ -13,6 +13,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	canvas:undefined,
 	safe_zone: undefined,
 	zoom: 1,
+	delta_zoom: 0,
 	px_width:undefined,
 	option_panel: undefined,
 	freelancer_panel: undefined,
@@ -113,6 +114,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		}
 		
 		this.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(this.canvas);
+		this.guidex= $('<div class="guidex"></div>').appendTo($('body'));
+		this.guidey= $('<div class="guidey"></div>').appendTo($('body'));
 	},
 
 	render: function(param){
@@ -140,7 +143,11 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 
 	_getZoom:function(){
-		this.zoom = (this.canvas.width())/ this.px_width;
+		var zoom = (this.canvas.width())/ this.px_width;
+		if(zoom != this.zoom){
+			this.delta_zoom = this.zoom + zoom;
+			this.zoom = zoom;
+		}
 		return this.zoom;
 	},
 
@@ -178,3 +185,64 @@ jQuery.widget("ui.xepan_xshopdesigner",{
         return $(this);
     };
 })(jQuery);
+
+
+$.ui.plugin.add("draggable", "smartguides", {
+	start: function(event, ui) {
+		// console.log(this.data());
+		var i = $(this).data("uiDraggable");
+		o = i.options;
+		i.elements = [];
+		$(o.smartguides.constructor != String ? ( o.smartguides.items || ':data(uiDraggable)' ) : o.smartguides).each(function() {
+			var $t = $(this); var $o = $t.offset();
+			if(this != i.element[0]) i.elements.push({
+				item: this,
+				width: $t.outerWidth(), height: $t.outerHeight(),
+				top: $o.top, left: $o.left
+			});
+		});
+	},
+	drag: function(event, ui) {
+		var inst = $(this).data("uiDraggable"), o = inst.options;
+		var d = o.tolerance;
+        $(".guidex").css({"display":"none"});
+        $(".guidey").css({"display":"none"});
+            var x1 = ui.offset.left, x2 = x1 + inst.helperProportions.width,
+                y1 = ui.offset.top, y2 = y1 + inst.helperProportions.height;
+            for (var i = inst.elements.length - 1; i >= 0; i--){
+                var l = inst.elements[i].left, r = l + inst.elements[i].width,
+                    t = inst.elements[i].top, b = t + inst.elements[i].height;
+                    var ls = Math.abs(l - x2) <= d;
+                    var lss = Math.abs(l - x1) <= d;
+                    var rs = Math.abs(r - x1) <= d;
+                    var ts = Math.abs(t - y2) <= d;
+                    var bs = Math.abs(b - y1) <= d;
+                if(lss){
+                    ui.position.left = inst._convertPositionTo("relative", { top: 0, left: l }).left - inst.margins.left;
+                    $(".guidex").css({"left":l-d-4,"display":"block"});
+                }
+                if(ls) {
+                    ui.position.left = inst._convertPositionTo("relative", { top: 0, left: l - inst.helperProportions.width }).left - inst.margins.left;
+                    $(".guidex").css({"left":l-d-4,"display":"block"});
+                }
+                if(rs) {
+                    ui.position.left = inst._convertPositionTo("relative", { top: 0, left: r }).left - inst.margins.left;
+                     $(".guidex").css({"left":r-d-4,"display":"block"});
+                }
+                
+                if(ts) {
+                    ui.position.top = inst._convertPositionTo("relative", { top: t - inst.helperProportions.height, left: 0 }).top - inst.margins.top;
+                    $(".guidey").css({"top":t-d-4,"display":"block"});
+                }
+                if(bs) {
+                    ui.position.top = inst._convertPositionTo("relative", { top: b, left: 0 }).top - inst.margins.top;
+                    $(".guidey").css({"top":b-d-4,"display":"block"});
+                }
+            };
+        },
+
+        stop: function(event, ui){
+        	// $(".guidex").hide();
+        	// $(".guidey").hide();
+        }
+});

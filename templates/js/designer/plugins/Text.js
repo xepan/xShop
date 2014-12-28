@@ -273,6 +273,9 @@ Text_Component = function (params){
 			new_text.y=0;
 			new_text.text="Your Text";
 			// add this Object to canvas components array
+			
+			console.log(self.designer_tool.current_page);
+
 			self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_text);
 			new_text.render();
 			$(new_text.element).data('component',new_text);
@@ -286,7 +289,6 @@ Text_Component = function (params){
 	            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
 		        event.stopPropagation();
 			});
-			// console.log(self.designer_tool);
 		});
 
 
@@ -295,9 +297,11 @@ Text_Component = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<xdiv style="position:absolute"><span></span></xdiv>').appendTo(this.canvas);
+			this.element = $('<div style="position:absolute" class="xshop-designer-component"><span></span></div>').appendTo(this.canvas);
 			this.element.draggable({
 				containment: 'parent',
+				smartguides:".xshop-designer-component",
+			    tolerance:5,
 				stop:function(e,ui){
 					var position = ui.position;
 					self.options.x = position.left / self.designer_tool.zoom;
@@ -308,8 +312,8 @@ Text_Component = function (params){
 
 		this.element.css('top',self.options.y  * self.designer_tool.zoom);
 		this.element.css('left',self.options.x * self.designer_tool.zoom);
-		// this.element.find('img').width(this.element.find('img').width() * self.designer_tool.zoom);
-		// this.element.find('img').height(this.element.find('img').height() * self.designer_tool.zoom);
+		// this.element.find('img').width((this.element.find('img').width() * self.designer_tool.delta_zoom /100));
+		// this.element.find('img').height((this.element.find('img').height() * self.designer_tool.delta_zoom/100));
 
 		if(this.xhr != undefined)
 			this.xhr.abort();
