@@ -273,7 +273,6 @@ Text_Component = function (params){
 			new_text.y=0;
 			new_text.text="Your Text";
 			// add this Object to canvas components array
-			console.log(self.designer_tool.current_page);
 			self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_text);
 			new_text.render();
 			$(new_text.element).data('component',new_text);
@@ -287,6 +286,7 @@ Text_Component = function (params){
 	            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
 		        event.stopPropagation();
 			});
+			// console.log(self.designer_tool);
 		});
 
 

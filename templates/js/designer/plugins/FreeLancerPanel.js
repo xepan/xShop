@@ -15,7 +15,11 @@ PageBlock = function(parent,designer,canvas, manager){
 	this.init = function(pages_data_array){
 		var self = this;
 		// make a nice div
-		this.element = $('<div> I M PAGE DIV</div>').appendTo(this.parent);
+		row = $('<div class="row"></div>').appendTo(this.parent);
+		page_col  = $('<div class="col-md-6 col-sm-6"></div>').appendTo(row);
+		layout_col  = $('<div class="col-md-6 col-sm-6"></div>').appendTo(row);
+	 
+		this.element = $('<div> I M PAGE DIV</div>').appendTo(page_col);
 		// add input box and add button
 		this.add_div = $("<div></div>").appendTo(this.element);
 		this.input_box =$('<input type="text" class="pull-left"/>').appendTo(this.add_div);
@@ -104,16 +108,30 @@ LayoutBlock = function(parent,designer,canvas, manager){
 
 	this.setPage = function(page_name){
 		this.current_page = page_name;
+		
 		// create layout dis with remove button and its event
 		console.log('changed page to ' + page_name);
 	}
 
-	this.addLayout = function(layout_name){
-		
+	this.addLayout = function(layout_name){	
+		var self = this;
+		var new_layout= new Object();
+		new_layout.components=[];
+		this.designer_tool.pages_and_layouts[this.current_page][layout_name] =  new_layout;
+
+		layout_row = $('<div class="layout_row"></div>').appendTo(this.layout_list_div);
+		div = $('<div></div>').appendTo(layout_row).html(layout_name);
+		rm_btn = $('<div>X</div>').appendTo(layout_row).data('layout_name',layout_name);
+
+		rm_btn.click(function(event){
+			self.removeLayout($(this).data('layout_name'));
+			$(this).closest(".layout_row").remove();
+		});
 	}
 
 	this.removeLayout = function(layout_name){
-
+		this.designer_tool.pages_and_layouts[this.current_page][layout_name] = null;
+		delete this.designer_tool.pages_and_layouts[this.current_page][layout_name];
 	}
 
 }
@@ -142,7 +160,7 @@ FreeLancerPageLayoutManager = function(parent,designer, canvas){
 		this.layoutblock.setPage('page1');
 
 
-		this.page.dialog({autoOpen: false, modal: true});
+		this.page.dialog({autoOpen: false, modal: true, width:500});
 		this.element.click(function(event){
 			// Update recent pages and layouts 
 			self.page.dialog('open');
