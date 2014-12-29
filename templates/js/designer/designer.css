@@ -67,3 +67,7 @@
     left:0px;
     border-bottom: 1px dotted black;
 }
+
+.page_row,.layout_row{
+	margin:2px;
+}

@@ -16,7 +16,7 @@ PageBlock = function(parent,designer,canvas, manager){
 		var self = this;
 		// make a nice div
 		page_col  = $('<div class="col-md-6 col-sm-6 col-lg-6"></div>').appendTo(this.parent);
-		this.element = $('<div class="xshop-designer-ft-page">Pages</div>').appendTo(page_col);
+		this.element = $('<div class="xshop-designer-ft-page text-center">Pages</div>').appendTo(page_col);
 		// add input box and add button
 
 		this.add_div = $('<div class="input-group"></div>').appendTo(this.element);
@@ -40,33 +40,41 @@ PageBlock = function(parent,designer,canvas, manager){
 
 	this.addPage = function(page_name){
 		var self = this;
+		page_name = $.trim(page_name);
 		// validate page_name
 		// existing page name
-		console.log('adding ' + page_name);
-		this.input_box.addClass('atk-effect-danger has-error atk-form-error');
-		this.input_box.css('border-color','red');
+		if(page_name == ""){
+			this.input_box.addClass('atk-effect-danger has-error atk-form-error');
+			this.input_box.css('border-color','red');
+			return;
+		}
+
+		if( !(this.pageExist(page_name)) ){
+			
+			this.designer_tool.pages_and_layouts[page_name] =  new Object();
+			this.designer_tool.pages_and_layouts[page_name]['Main Layout'] =  new Object();
+			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].components = [];
+			console.log('adding ' + page_name);
+			// add default layout to this page as well
+
+			page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
+			div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
+			page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
+			rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('page_name',page_name);
+			div.click(function(event){
+				$(this).parent().siblings().find('a').removeClass('active').addClass('activeOff');
+				$(this).addClass('active').removeClass('activeOff');
+				self.manager.layoutblock.setPage($(this).find('span.xshop-designer-ft-page-name').html());
+			});
+
+			rm_btn.click(function(event){
+				self.removePage($(this).data('page_name'));
+				$(this).closest(".page_row").remove();
+			});
+
+			this.input_box.val("");
+		}
 		// add page to pagelistdiv and add to designertool pagesnadlayout object
-		this.designer_tool.pages_and_layouts[page_name] =  new Object();
-		this.designer_tool.pages_and_layouts[page_name]['Main Layout'] =  new Object();
-		this.designer_tool.pages_and_layouts[page_name]['Main Layout'].components = [];
-		// add default layout to this page as well
-
-		page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
-		div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
-		page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
-		rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('page_name',page_name);
-		div.click(function(event){
-			$(this).parent().siblings().find('a').removeClass('active').addClass('activeOff');
-			$(this).addClass('active').removeClass('activeOff');
-			self.manager.layoutblock.setPage($(this).find('span.xshop-designer-ft-page-name').html());
-			console.log('yes');
-		});
-
-		rm_btn.click(function(event){
-			self.removePage($(this).data('page_name'));
-			$(this).closest(".page_row").remove();
-		});
-
 	}
 
 	this.removePage = function(page_name){
@@ -75,6 +83,21 @@ PageBlock = function(parent,designer,canvas, manager){
 		this.designer_tool.pages_and_layouts[page_name] = null;	
 		delete this.designer_tool.pages_and_layouts[page_name];
 		console.log(this.designer_tool.pages_and_layouts);
+	}
+
+	this.pageExist = function(page_name){
+		page_name = $.trim(page_name);
+		return_value = false;
+		$.each(this.designer_tool.pages_and_layouts,function(index,value){
+			// console.log(index+"::"+page_name);
+			if(index === page_name){
+				alert('page exist');
+				return_value = true;
+			}
+		});
+		
+		return return_value;
+		
 	}
 
 }
@@ -94,14 +117,14 @@ LayoutBlock = function(parent,designer,canvas, manager){
 		var self = this;
 		// make a nice div		
 		layout_col  = $('<div class="col-md-6 col-sm-6 col-lg-6"></div>').appendTo(this.parent);
-		this.element = $('<div class="xshop-designer-ft-layout">Layout</div>').appendTo(layout_col);
+		this.element = $('<div class="xshop-designer-ft-layout text-center">Layouts</div>').appendTo(layout_col);
 		// add input box and add button
 		this.add_div = $('<div class="input-group"></div>').appendTo(this.element);
-		this.input_box =$('<input type="text" class="form-control" placeholder="New Page"/>').appendTo(this.add_div);
+		this.input_box =$('<input type="text" class="form-control" placeholder="New Layout"/>').appendTo(this.add_div);
 		this.add_btn = $('<span class="input-group-btn"><button class="btn btn-default" type="button">Add</button></span>').appendTo(this.add_div);
 
 		this.add_btn.click(function(event){
-			self.addLayout(self.input_box.val());
+			self.addLayout(self.input_box.val(),true);
 		});
 
 		// make a list of current pages with remove buton
@@ -111,6 +134,8 @@ LayoutBlock = function(parent,designer,canvas, manager){
 
 	this.setPage = function(page_name){
 		var self=this;
+		page_name = $.trim(page_name);
+
 		this.current_page = page_name;
 		console.log('changed page to ' + page_name);
 		//Show Active on Current Page
@@ -118,32 +143,58 @@ LayoutBlock = function(parent,designer,canvas, manager){
 		//Empty all html:remove repeating layout
 		$('div.xshop-designer-ft-layout').find('div.list-group').empty();
 		$.each(this.designer_tool.pages_and_layouts[page_name],function(index,layout){			
-			self.addLayout(index);
+			self.addLayout(index,false);
 		});
 		// create layout dis with remove button and its event
 	}
 
-	this.addLayout = function(layout_name){	
+	this.addLayout = function(layout_name,new_layout){	
 		var self = this;
-		var new_layout= new Object();
-		new_layout.components=[];
-		this.designer_tool.pages_and_layouts[this.current_page][layout_name] =  new_layout;
+		layout_name = $.trim(layout_name);
+		// validate page_name
+		// existing page name
+		if(layout_name == ""){
+			this.input_box.addClass('atk-effect-danger has-error atk-form-error');
+			this.input_box.css('border-color','red');
+			return;
+		}
+		if(!(new_layout) || !(this.layoutExist(layout_name))){
+			var new_layout= new Object();
+			new_layout.components=[];
+			this.designer_tool.pages_and_layouts[this.current_page][layout_name] =  new_layout;
 
-		layout_row = $('<div class="layout_row"></div>').appendTo(this.layout_list_div);
-		div = $('<a href="#" class="list-group-item"></a>').appendTo(layout_row).html(layout_name);
-		rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('layout_name',layout_name);
+			layout_row = $('<div class="layout_row"></div>').appendTo(this.layout_list_div);
+			div = $('<a href="#" class="list-group-item"></a>').appendTo(layout_row).html(layout_name);
+			rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('layout_name',layout_name);
 
-		rm_btn.click(function(event){
-			self.removeLayout($(this).data('layout_name'));
-			$(this).closest(".layout_row").remove();
-		});
+			rm_btn.click(function(event){
+				self.removeLayout($(this).data('layout_name'));
+				$(this).closest(".layout_row").remove();
+			});
 
-		console.log(this.designer_tool.pages_and_layouts[this.current_page]);
+			// console.log(this.designer_tool.pages_and_layouts[this.current_page]);
+			this.input_box.val("");
+		}			
 	}
 
 	this.removeLayout = function(layout_name){
 		this.designer_tool.pages_and_layouts[this.current_page][layout_name] = null;
 		delete this.designer_tool.pages_and_layouts[this.current_page][layout_name];
+	}
+
+	this.layoutExist = function(layout_name){
+		layout_name = $.trim(layout_name);
+		return_value = false;
+		$.each(this.designer_tool.pages_and_layouts[this.current_page],function(index,layout){
+			// console.log(index+"::"+layout_name);
+			if(index === layout_name){
+				alert('Layout exist');
+				return_value = true;
+			}
+		});
+		
+		return return_value;
+		
 	}
 
 }
