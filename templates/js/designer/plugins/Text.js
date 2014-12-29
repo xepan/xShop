@@ -179,7 +179,9 @@ xShop_Text_Editor = function(parent){
         }
 	});
 
-	this.text_input = $('<textarea></textarea>').appendTo(text_editor);
+	div = $('<div></div>').appendTo(text_editor);
+	this.text_input = $('<textarea class="xshop-designer-text-input" rows="1"></textarea>').appendTo(div);
+
 	$(this.text_input).delayKeyup(function(el){
 		self.current_text_component.options.text = $(el).val();
 		if(self.current_text_component.designer_tool.options.designer_mode){
@@ -260,7 +262,8 @@ Text_Component = function (params){
 	this.renderTool = function(parent){
 		var self=this;
 		this.parent = parent;
-		tool_btn = $('<div class="btn btn-deault">Text</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+		
+		tool_btn = $('<div class="btn btn-deault btn-xs"><i class="glyphicon glyphicon-text-height"></i><br>Text</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
 		this.editor = new xShop_Text_Editor(parent.find('.xshop-designer-tool-topbar-options'));
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS

@@ -12,7 +12,7 @@ Image_Component = function (params){
 
 	this.renderTool = function(parent){
 		this.parent = parent;
-		tool_btn = $('<div class="btn btn-deault">Image</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+		tool_btn = $('<div class="btn btn-deault btn-xs"><i class="glyphicon glyphicon-picture"></i><br>Image</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
 		tool_btn.click(function(event){
 			console.log($(this).text());
 		});

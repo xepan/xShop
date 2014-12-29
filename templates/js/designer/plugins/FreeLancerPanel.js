@@ -212,7 +212,7 @@ FreeLancerPageLayoutManager = function(parent,designer, canvas){
 
 	this.init = function(){
 		var self = this;
-		this.element = $('<div class="btn btn-default">P&L</div>').appendTo(this.parent);
+		this.element = $('<div class="btn btn-xs xshop-designer-freelancer-tool"><i class="glyphicon glyphicon-list-alt"></i><br>P&L</div>').appendTo(this.parent);
 		this.page = $('<div></div>').appendTo(this.element);
 
 		this.pageblock = new PageBlock(this.page,this.designer_tool,this.canvas,this);
@@ -242,7 +242,7 @@ FreeLancerComponentOptions = function(parent, designer, canvas){
 	this.init =  function(){
 		var self =this;
 		ft_btn_set = $('<div class="btn-group" style="display:none;"></div>');
-		$('<a title="" data-toggle="dropdown" class="btn dropdown-toggle" data-original-title="Font Size">FT&nbsp;<b class="caret"></b></a>').appendTo(ft_btn_set);
+		$('<a title="" data-toggle="dropdown" class="btn dropdown-toggle " data-original-title="Font Size">FT&nbsp;<b class="caret"></b></a>').appendTo(ft_btn_set);
         ft_btn_list = $('<ul class="dropdown-menu"></ul>').appendTo(ft_btn_set);
 
         this.btn_movable = $('<li class=""><span class="glyphicon glyphicon-ok" style="display:none"></span> Movable</li>').appendTo(ft_btn_list);

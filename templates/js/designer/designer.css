@@ -5,7 +5,8 @@
 }
 
 .xshop-designer-tool-topbar{
-	height: 4.5em;
+	height: 6.3em;
+	/*height:80px*/
 	/*width: 100%;*/
 	margin: 20px;
 	background:linear-gradient(to bottom, #fefefe, #f0f2f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
@@ -70,4 +71,20 @@
 
 .page_row,.layout_row{
 	margin:2px;
+}
+
+.xshop-designer-freelancer-tool{
+	/*blue:#2e6da4;warning:#f0ad4e;success:#4cae4c;*/
+	background-color:#f0ad4e;
+	color: white;
+}
+textarea.xshop-designer-text-input{
+	width: 100%;
+	font-size: 12px;
+	line-height: 1.4;
+	margin: 0;
+	padding: 2px;
+	max-height:40px;
+	overflow-y:scroll;
+	border-radius:0px ;
 }
