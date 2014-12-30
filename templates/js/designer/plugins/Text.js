@@ -243,6 +243,8 @@ Text_Component = function (params){
 		z_index:0,
 		resizable: true,
 		auto_fit: false,
+		frontside:true,
+		backside:false,
 		multiline: false,
 		// System properties
 		type: 'Text'

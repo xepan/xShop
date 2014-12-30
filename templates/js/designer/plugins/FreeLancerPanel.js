@@ -248,10 +248,11 @@ FreeLancerComponentOptions = function(parent, designer, canvas){
         this.btn_movable = $('<li class=""><span class="glyphicon glyphicon-ok" style="display:none"></span> Movable</li>').appendTo(ft_btn_list);
         this.btn_colorable = $('<li><span class="glyphicon glyphicon-ok" style="display:none"></span> Colorable</li>').appendTo(ft_btn_list);
         this.btn_editable = $('<li><span class="glyphicon glyphicon-ok" style="display:none"></span> Editable</li>').appendTo(ft_btn_list);
-        this.btn_zindex = $('<li><a><font size="3">Z-index</font></a></li>').appendTo(ft_btn_list);
+        this.btn_frontside = $('<li><span class="glyphicon glyphicon-ok" style="display:true"></span> Front side</li>').appendTo(ft_btn_list);
+        this.btn_backside = $('<li><span class="glyphicon glyphicon-remove"></span> Back side</li>').appendTo(ft_btn_list);
         this.btn_resizable = $('<li><a><font size="3">Resizable</font></a></li>').appendTo(ft_btn_list);
         this.btn_autofit = $('<li><a><font size="3">Autofit</font></a></li>').appendTo(ft_btn_list);
-        this.btn_multiline = $('<li><a><font size="3">Multiline Text</font></a></li>').appendTo(ft_btn_list);
+        // this.btn_multiline = $('<li><a><font size="3">Multiline Text</font></a></li>').appendTo(ft_btn_list);
 			
 		this.element = $(ft_btn_set).appendTo(this.parent);
 
@@ -291,7 +292,22 @@ FreeLancerComponentOptions = function(parent, designer, canvas){
 			$(this).find('span').toggle();
 		});
 
+		this.btn_frontside.click(function(){
+			self.current_component.options.frontside = !self.current_component.options.frontside;
+			self.current_component.options.z_index = 5;
+			//Todo Add Z-index value 5 on div of image
+			// console.log(self.current_component.options);
+			$(this).find('span').toggle();
 
+		});
+
+		this.btn_backside.click(function(){
+			self.current_component.options.backside = !self.current_component.options.backside;
+			self.current_component.options.z_index = 0;
+			//Todo Add Z-index value 0 on div of image
+			// console.log(self.current_component.options);
+			$(this).find('span').toggle();
+		});
 
 	}
 

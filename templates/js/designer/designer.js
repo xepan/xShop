@@ -85,6 +85,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			$('.ui-selected').removeClass('ui-selected');
 			self.option_panel.hide();
 			self.freelancer_panel.FreeLancerComponentOptions.element.hide();
+			$('div.guidex').css('display','none');
+			$('div.guidey').css('display','none');
 			event.stopPropagation();
 		});
 	},
@@ -189,8 +191,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 $.ui.plugin.add("draggable", "smartguides", {
 	start: function(event, ui) {
-		// console.log(this.data());
 		var i = $(this).data("uiDraggable");
+		// console.log(this.data());
 		o = i.options;
 		i.elements = [];
 		$(o.smartguides.constructor != String ? ( o.smartguides.items || ':data(uiDraggable)' ) : o.smartguides).each(function() {
@@ -219,24 +221,24 @@ $.ui.plugin.add("draggable", "smartguides", {
                     var bs = Math.abs(b - y1) <= d;
                 if(lss){
                     ui.position.left = inst._convertPositionTo("relative", { top: 0, left: l }).left - inst.margins.left;
-                    $(".guidex").css({"left":l-d-4,"display":"block"});
+                    $(".guidex").css({"left":l-d+4,"display":"block"});
                 }
                 if(ls) {
                     ui.position.left = inst._convertPositionTo("relative", { top: 0, left: l - inst.helperProportions.width }).left - inst.margins.left;
-                    $(".guidex").css({"left":l-d-4,"display":"block"});
+                    $(".guidex").css({"left":l-d+4,"display":"block"});
                 }
                 if(rs) {
                     ui.position.left = inst._convertPositionTo("relative", { top: 0, left: r }).left - inst.margins.left;
-                     $(".guidex").css({"left":r-d-4,"display":"block"});
+                     $(".guidex").css({"left":r-d+4,"display":"block"});
                 }
                 
                 if(ts) {
                     ui.position.top = inst._convertPositionTo("relative", { top: t - inst.helperProportions.height, left: 0 }).top - inst.margins.top;
-                    $(".guidey").css({"top":t-d-4,"display":"block"});
+                    $(".guidey").css({"top":t-d+4,"display":"block"});
                 }
                 if(bs) {
                     ui.position.top = inst._convertPositionTo("relative", { top: b, left: 0 }).top - inst.margins.top;
-                    $(".guidey").css({"top":b-d-4,"display":"block"});
+                    $(".guidey").css({"top":b-d+4,"display":"block"});
                 }
             };
         },

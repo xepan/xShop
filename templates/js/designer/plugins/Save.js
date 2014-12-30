@@ -14,8 +14,9 @@ Save_Component = function (params){
 	this.renderTool = function(parent){
 		this.parent = parent;
 		this.component_option_array = [];
-		tool_btn = $('<div class="btn btn-deault btn-xs"><i class="glyphicon glyphicon-floppy-save"></i><br>Save</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+		tool_btn = $('<div class="btn btn-deault btn-xs"><i class="glyphicon glyphicon-floppy-saved"></i><br>Save</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
 		tool_btn.click(function(event){
+			console.log(self.designer_tool);
 			$(self.designer_tool.components).each(function(index,component){
 				$(self.designer_tool.components[index].options).each(function(index,options){
 					self.component_option_array.push(JSON.stringify(options));
