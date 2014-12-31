@@ -313,7 +313,7 @@ FreeLancerComponentOptions = function(parent, designer, canvas){
 
 	this.setComponent = function(component){
 		this.current_component = component;
-		console.log(this.current_component);
+		// console.log(this.current_component);
 
 		if(this.current_component.options.movable){
 			$(this.btn_movable).find('span').show();
