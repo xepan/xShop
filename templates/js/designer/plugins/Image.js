@@ -3,7 +3,17 @@ xShop_Image_Editor = function(parent){
 	this.parent = parent;
 	this.current_text_component = undefined;
 
-	text_editor = $('<div id="xshop-designer-text-editor" style="display:block"> </div>').appendTo(this.parent);
+	this.element = $('<div id="xshop-designer-text-editor" style="display:block" class="xshop-options-editor"></div>').appendTo(this.parent);
+
+	this.image_manager = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-align-center"></span></div>').appendTo(this.element);
+
+	this.image_manager.click(function(event){
+		$.univ().frameURL('Hello','index.php?page=abcd');
+	});
+
+	this.setImageComponent = function(component){
+		this.current_image_component  = component;
+	}
 }
 
 Image_Component = function (params){
@@ -87,6 +97,8 @@ Image_Component = function (params){
 			$(new_image.element).click(function(event) {
 	            $('.ui-selected').removeClass('ui-selected');
 	            $(this).addClass('ui-selected');
+	            $('.xshop-options-editor').hide();
+	            self.editor.element.show();
 	            self.designer_tool.option_panel.show();
 	            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
 	            self.designer_tool.current_selected_component = new_image;
