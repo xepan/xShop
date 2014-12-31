@@ -202,7 +202,6 @@ xShop_Text_Editor = function(parent){
 	
 	this.setTextComponent = function(component){
 		this.current_text_component  = component;
-		// this.current_text_component.designer_tool.current_selected_component = component;
 		$(this.font_size).val(component.options.font_size);
 		$(this.font_selector).val(component.options.font);
 		$(this.text_color_picker).val(component.options.color_formatted);
@@ -266,10 +265,6 @@ Text_Component = function (params){
 		this.canvas = canvas;
 		if(editor !== undefined)
 			this.editor = editor;
-	}
-
-	this.initExisting = function(params){
-
 	}
 
 	this.renderTool = function(parent){

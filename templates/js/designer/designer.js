@@ -12,6 +12,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	// components:[],
 	current_page:'Front Page',
 	current_layout: 'Main Layout',
+	item_id:undefined,
 	canvas:undefined,
 	safe_zone: undefined,
 	zoom: 1,
@@ -262,7 +263,7 @@ $.ui.plugin.add("draggable", "smartguides", {
         },
 
         stop: function(event, ui){
-        	// $(".guidex").hide();
-        	// $(".guidey").hide();
+        	$(".guidex").hide();
+        	$(".guidey").hide();
         }
 });
