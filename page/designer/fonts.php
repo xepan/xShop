@@ -4,25 +4,34 @@ class page_xShop_page_designer_fonts extends Page {
 	function page_index(){
 		// parent::init();
 		
-		$this->api->addLocation(array(
+        $this->api->addLocation(array(
             'ttf'=>array('epan-components/xShop/templates/fonts')
         ))->setParent($this->api->pathfinder->base_location);
 
-		$p=$this->api->pathfinder->searchDir('ttf','.');
-		sort($p);
-		// print_r($p);
-		$m= $this->add('Model');
-		$m->setSource('Array',$p);
-		$opts="";
-		
-		foreach ($m as $junk) {
-			$opts .= "<option value='".str_replace(".ttf", "", $m['name'])."'>".str_replace(".ttf", "", $m['name'])."</option>";
-		}
-		echo $opts;
-		exit;
-		// $options = '<option>1</option>';
-		// echo $options;
-		// exit;
+        $p=$this->api->pathfinder->searchDir('ttf','.');
+        sort($p);
+        $font_array=array();
+
+        foreach ($p as  $junk) {
+            $font_name = explode("-", $junk);
+            $font_name = $font_name[0];
+            if(!in_array($font_name, $font_array)){
+                $font_array[]=$font_name;
+            }
+        }
+        // print_r($p);
+        $m= $this->add('Model');
+        $m->setSource('Array',$font_array);
+        $opts="";
+        
+        foreach ($m as $junk) {
+            $opts .= "<option value='".str_replace(".ttf", "", $m['name'])."'>".str_replace(".ttf", "", $m['name'])."</option>";
+        }
+        echo $opts;
+        exit;
+        // $options = '<option>1</option>';
+        // echo $options;
+        // exit;
 	}
 
 	function page_testfonts(){
