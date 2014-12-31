@@ -58,6 +58,7 @@ class page_xShop_page_designer_rendertext extends Page {
 		if($_GET['alignment_right']=='true')
 			$draw->setTextAlignment(1);
 
+
 		$metrics = $image->queryFontMetrics ($draw, $_GET['default_value']);
 		print_r($metrics);
 		
@@ -91,8 +92,13 @@ class page_xShop_page_designer_rendertext extends Page {
 		
 
 		/* Create text */
-		// $image->annotateImage($draw,10, 10,$_GET['rotation_angle'], $_GET['default_value']);
-		$image->drawImage($draw);
+		// if($_GET['rotation_angle']){	
+		// }
+		// $draw->rotate(90);
+
+		// $image->drawImage($draw);
+		$image->annotateImage($draw,0,$textheight,0, $_GET['default_value']);
+		$image->rotateimage($pixel,$_GET['rotation_angle']);
 		/* Give image a format */
 		$image->setImageFormat('png');
 
