@@ -59,6 +59,16 @@ xShop_Text_Editor = function(parent){
 		self.current_text_component.render();
 	});
 
+	/*Italic Text Render*/
+	$(this.text_italic_btn).click(function(event){
+		if(!self.current_text_component.options.italic)
+			self.current_text_component.options.italic = true;
+		else
+			self.current_text_component.options.italic = false;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+	});
+
 	//Underline Text
 	$(this.text_underline_btn).click(function(event){
 		self.current_text_component.options.stokethrough = false;
@@ -257,10 +267,6 @@ Text_Component = function (params){
 			this.editor = editor;
 	}
 
-	this.initExisting = function(params){
-
-	}
-
 	this.renderTool = function(parent){
 		var self=this;
 		this.parent = parent;
@@ -279,7 +285,7 @@ Text_Component = function (params){
 			new_text.text="Your Text";
 			// add this Object to canvas components array
 			
-			console.log(self.designer_tool.current_page);
+			// console.log(self.designer_tool.current_page);
 
 			self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_text);
 			new_text.render();
@@ -290,7 +296,8 @@ Text_Component = function (params){
 	            $(this).addClass('ui-selected');
 	            self.designer_tool.option_panel.show();
 	            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
-	            self.editor.setTextComponent($(this).data('component'));
+	            self.designer_tool.current_selected_component = new_text;
+	            self.editor.setTextComponent(new_text);
 	            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
 		        event.stopPropagation();
 			});
@@ -331,6 +338,7 @@ Text_Component = function (params){
 					font: self.options.font,
 					font_size: self.options.font_size,
 					bold: self.options.bold,
+					italic: self.options.italic,
 					underline:self.options.underline,
 					stokethrough:self.options.stokethrough,
 					rotation_angle:self.options.rotation_angle,

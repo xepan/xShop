@@ -7,6 +7,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			}
 		}
 	},
+
+	current_selected_component : undefined,
 	// components:[],
 	current_page:'Front Page',
 	current_layout: 'Main Layout',
@@ -69,6 +71,22 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
 		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none"></div>').appendTo(top_bar);
 		
+		this.remove_btn = $('<div>X</div>').appendTo(this.option_panel);
+
+		this.remove_btn.click(function(event){
+			$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index,cmp){
+				if(cmp === self.current_selected_component){
+					// console.log(self.pages_and_layouts);
+					$(self.current_selected_component.element).remove();
+					self.pages_and_layouts[self.current_page][self.current_layout].components.splice(index,1);
+					self.current_selected_component = null;
+					self.option_panel.hide();
+					console.log(self.pages_and_layouts);
+					// self.render();
+				}
+			});
+		});
+
 		if(this.options.designer_mode){
 			this.freelancer_panel = new FreeLancerPanel(top_bar,self, self.canvas);
 			this.freelancer_panel.init();
@@ -138,7 +156,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		this.safe_zone.css('margin-top',trim_in_px);
 		this.safe_zone.css('margin-bottom',trim_in_px);
 		
-
+		console.log('Components in '+ self.pages_and_layouts[self.current_page][self.current_layout].components.length);
 		$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index, component) {
 			component.render();
 		});
@@ -244,7 +262,7 @@ $.ui.plugin.add("draggable", "smartguides", {
         },
 
         stop: function(event, ui){
-        	// $(".guidex").hide();
-        	// $(".guidey").hide();
+        	$(".guidex").hide();
+        	$(".guidey").hide();
         }
 });

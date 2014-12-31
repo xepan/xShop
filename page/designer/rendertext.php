@@ -6,20 +6,41 @@ class page_xShop_page_designer_rendertext extends Page {
 
 		$zoom= $_GET['zoom'];
 		$point_size = $_GET['font_size'];
-
+		$font = $_GET['font'].'-Regular';
 
 		$image = new Imagick();
 		$draw = new ImagickDraw();
 		$pixel = new ImagickPixel( 'none' );
 
 		$draw->setFillColor($_GET['color']);
-		$draw->setFont('epan-components/xShop/templates/fonts/'.$_GET['font'].'.ttf');
 		
 		$draw->setFontSize($_GET['font_size'] * $zoom * 1.328352013);
 
+
+
 		if($_GET['bold']=='true'){
-			$draw->setFontWeight(700);
+			if(file_exists(getcwd().'/epan-components/xShop/templates/fonts/'.$_GET['font'].'-Bold.ttf'))
+				$font = $_GET['font'].'-Bold';
+			else
+				$draw->setFontWeight(700);
 		}
+
+		if($_GET['italic']=='true'){
+			if(file_exists(getcwd().'/epan-components/xShop/templates/fonts/'.$_GET['font'].'-Italic.ttf'))
+				$font = $_GET['font'].'-Italic';
+			else
+				$font = $_GET['font'].'-Regular';
+		}
+
+		if($_GET['italic']=='true' and $_GET['bold']=='true'){
+			if(file_exists(getcwd().'/epan-components/xShop/templates/fonts/'.$_GET['font'].'-BoldItalic.ttf'))
+				$font = $_GET['font'].'-BoldItalic';
+			else
+				$font = $_GET['font'].'-Regular';
+		}
+
+
+
 		if($_GET['underline']=='true'){
 			// 1-Text will be normal 2-Underline 3-Upperline 4- stroke-through  
 			$draw->setTextDecoration(2);
@@ -28,6 +49,7 @@ class page_xShop_page_designer_rendertext extends Page {
 			$draw->setTextDecoration(4);
 		}
 
+		$draw->setFont('epan-components/xShop/templates/fonts/'.$font.'.ttf');
 		//Text Alignment :: 3-Left 2-Center 1-Right
 		if($_GET['alignment_left']=='true')
 			$draw->setTextAlignment(3);
