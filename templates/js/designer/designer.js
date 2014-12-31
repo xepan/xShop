@@ -1,258 +1,29 @@
-getDesignerWidget = function(){
-	return $('.xshop-designer-tool').xepan_xshopdesigner('get_widget');
-}
-
-xShop_Text_Editor = function(parent){
-	var self = this;
-	this.parent = parent;
-	this.current_text_component = undefined;
-
-	text_editor = $('<div id="xshop-designer-text-editor" style="display:block"> </div>').appendTo(this.parent);
-
-	// add font_selection with preview
-	font_selector = $('<select class="btn btn-xs"></select>').appendTo(text_editor);
-	// get all fonts via ajax
-	$.ajax({
-		url: 'index.php?page=xShop_page_designer_fonts',
-		type: 'GET',
-		data: {param1: 'value1'},
-	})
-	.done(function(ret) {
-		$(ret).appendTo(font_selector);
-		console.log("success");
-	})
-	.fail(function() {
-		console.log("error");
-	})
-	.always(function() {
-		console.log("complete");
-	});
-	
-	// font size
-	font_size = $('<select class="btn btn-xs"></select>').appendTo(text_editor);
-
-	for (var i = 7; i < 50; i++) {
-		$('<option value="'+i+'">'+i+'</option>').appendTo(font_size);
-	};
-
-	$(font_size).change(function(event){
-		self.current_text_component.options.font_size = $(this).val();
-		$('.xshop-designer-tool').xepan_xshopdesigner('check');
-		self.current_text_component.render();
-	});
-
-	// B/I/U
-	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Bold/Italic/Underline"></div>').appendTo(text_editor);
-	text_bold_btn = $('<div class="btn btn-default"><span class="fa fa-bold"></span></div>').appendTo(text_button_set);
-	text_italic_btn = $('<div class="btn btn-default"><span class="fa fa-italic"></span></div>').appendTo(text_button_set);
-	text_underline_btn = $('<div class="btn btn-default"><span class="fa fa-underline"></span></div>').appendTo(text_button_set);
-	text_strikethrough_btn = $('<div class="btn btn-default"><span class="fa fa-strikethrough"></span></div>').appendTo(text_button_set);
-
-	// L/M/R/J align
-	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(text_editor);
-	text_align_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-left"></span></div>').appendTo(text_button_set);
-	text_align_center_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-center"></span></div>').appendTo(text_button_set);
-	text_align_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-right"></span></div>').appendTo(text_button_set);
-	text_align_justify_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-justify"></div>').appendTo(text_button_set);
-
-	//Ordered List
-	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Orderd List"></div>').appendTo(text_editor);
-	text_order_list_ul_btn = $('<div class="btn btn-default"><span class="fa fa-list-ul"></span></div>').appendTo(text_button_set);
-	text_order_list_ol_btn = $('<div class="btn btn-default"><span class="fa fa-list-ol"></span></div>').appendTo(text_button_set);
-	text_indent_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-left"></span></div>').appendTo(text_button_set);
-	text_indent_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-right"></div>').appendTo(text_button_set);
-	
-	// Angle
-	text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(text_editor);
-	text_rotate_left = $('<div class="btn btn-default btn-xs"><span class="fa fa-undo"></span></div>').appendTo(text_button_set);
-	text_rotate_right = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat"></span></div>').appendTo(text_button_set);
-
-	// Color
-	text_color_picker = $('<input id="xshop-colorpicker-full" type="text" style="display:block">').appendTo(text_editor);
-	$(text_color_picker).colorpicker({
-		parts:          'full',
-        alpha:          false,
-        showOn:         'both',
-        buttonColorize: true,
-        showNoneButton: true,
-        ok: function(event, color){
-        	self.current_text_component.options.color_cmyk = parseInt((color.cmyk.c)*100)+','+parseInt((color.cmyk.m)*100)+','+parseInt((color.cmyk.y)*100)+','+parseInt((color.cmyk.k)*100);
-        	self.current_text_component.options.color_formatted = '#'+color.formatted;
-        	self.current_text_component.render();
-        	$('.xshop-designer-tool').xepan_xshopdesigner('check');
-        }
-	});
-	
-	this.setTextComponent = function(component){
-		this.current_text_component  = component;
-		$(font_size).val(component.options.font_size);
-		$(font_selector).val(component.options.font);
-		$(text_color_picker).val(component.options.color);
-		$(text_color_picker).colorpicker('setColor',component.options.color_formatted);
-	}
-
-	$(font_selector).change(function(event){
-		self.current_text_component.options.font = $(this).val();
-		// $('.xshop-designer-tool').xepan_xshopdesigner('check');
-		self.current_text_component.render();
-	});
-
-}
-
-Text_Component = function (params){
-	this.parent=undefined;
-	this.designer_tool= undefined;
-	this.canvas= undefined;
-	this.element = undefined;
-	this.editor = undefined;
-
-	this.options = {
-		x:0,
-		y:0,
-		width:'100%',
-		height:'100%',
-		font: "OpenSans",
-		font_size: '12',
-		color_cmyk:"0,0,0,100",
-		color_formatted:"#000000",
-		bold: true,
-		italic:false,
-		underline:false,
-		rotation_angle:0,
-		locked: false,
-
-		// Designer properties
-		movable: true,
-		colorable: true,
-		editable: true,
-		default_value:'Enter Text',
-		z_index:0,
-		resizable: true,
-		auto_fit: false,
-		
-		// System properties
-		type: 'Text'
-	};
-
-	this.init = function(designer,canvas){
-		this.designer_tool = designer;
-		this.canvas = canvas;
-	}
-
-	this.initExisting = function(params){
-
-	}
-
-	this.renderTool = function(parent){
-		var self=this;
-		this.parent = parent;
-		tool_btn = $('<div class="btn btn-deault">Text</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
-		tool_btn.click(function(event){
-			// create new TextComponent type object
-			var new_text = new Text_Component();
-			new_text.init(self.designer_tool,self.canvas);
-			// feed default values for its parameters
-			new_text.x=0;
-			new_text.y=0;
-			new_text.text="Your Text";
-			// add this Object to canvas components array
-			self.designer_tool.components.push(new_text);
-			new_text.render();
-			$(new_text.element).data('component',new_text);
-			
-			$(new_text.element).click(function(event) {
-	            $('.ui-selected').removeClass('ui-selected');
-	            $(this).addClass('ui-selected');
-	            self.editor.setTextComponent($(this).data('component'));
-	            $('.xshop-designer-tool-topbar-options').show();
-		        event.stopPropagation();
-			});
-		});
-
-		this.editor = new xShop_Text_Editor(parent.find('.xshop-designer-tool-topbar-options'));
-
-	}
-
-	this.render = function(){
-		var self = this;
-		if(this.element == undefined){
-			this.element = $('<div style="position:absolute"><span></span></div>').appendTo(this.canvas);
-			this.element.draggable({
-				containment: 'parent',
-				stop:function(e,ui){
-					var position = ui.position;
-					self.options.x = position.left;
-					self.options.y = position.top;
-				}
-			}).resizable({
-				minHeight: function(){
-					return self.element.find('span').css('height');
-				},
-				minWidth: self.element.find('span').css('width')
-			});
-		}
-		$.ajax({
-			url: 'index.php?page=xShop_page_designer_rendertext',
-			type: 'GET',
-			data: {default_value: self.options['default_value'],
-					color: self.options['color_formatted'],
-					font: self.options['font'],
-					font_size: self.options['font_size'],
-					bold: self.options['bold']
-					},
-		})
-		.done(function(ret) {
-			$(ret).appendTo(self.element.find('span').html(''));
-			// console.log(ret);
-		})
-		.fail(function(ret) {
-			evel(ret);
-			console.log("error");
-		})
-		.always(function() {
-			console.log("complete");
-		});
-		
-
-		// this.element.text(this.text);
-		// this.element.css('left',this.x);
-		// this.element.css('top',this.y);
-	}
-}
-
-Image_Component = function (params){
-	this.parent=undefined;
-	// this.text = params.text != undefined?params.text:'Enter Text';
-	this.init = function(designer,canvas){
-		this.designer_tool = designer;
-		this.canvas = canvas;
-	}
-
-	this.initExisting = function(params){
-
-	}
-
-	this.renderTool = function(parent){
-		this.parent = parent;
-		tool_btn = $('<div class="btn btn-deault">Image</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
-		tool_btn.click(function(event){
-			console.log($(this).text());
-		});
-	}
-}
-
-
 // xEpan Designer jQuery Widget for extended xShop elements 
 jQuery.widget("ui.xepan_xshopdesigner",{
-	components:[],
+	pages_and_layouts: {
+		"Front Page": {
+			"Main Layout": {
+				components: []
+			}
+		}
+	},
+	// components:[],
+	current_page:'Front Page',
+	current_layout: 'Main Layout',
 	canvas:undefined,
 	safe_zone: undefined,
 	zoom: 1,
+	delta_zoom: 0,
+	px_width:undefined,
+	option_panel: undefined,
+	freelancer_panel: undefined,
+
 	options:{
 		// Layout Options
 		showTopBar: true,
 		// ComponentsIncluded: ['Background','Text','Image','Help'], // Plugins
-		ComponentsIncluded: ['Text','Image'], // Plugins
+		IncludeJS: ['FreeLancerPanel'], // Plugins
+		ComponentsIncluded: ['Text','Image','PDF','ZoomPlus','ZoomMinus','Save'], // Plugins
 		design: [],
 		designer_mode: false,
 		width: undefined,
@@ -261,22 +32,48 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	_create: function(){
 		this.setupLayout();
 	},
+
 	setupLayout: function(){
-		var workplace = this.setupWorkplace()
-		this.setupCanvas(workplace);
-		if(this.options.showTopBar){
-			this.setupToolBar();
-		}
+		var self = this;
+		// Load Plugin Files
+		// 
+		$.each(this.options.IncludeJS, function(index, js_file) {
+			$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/"+js_file+".js");
+		});
+
+		$.each(this.options.ComponentsIncluded, function(index, component) {
+			$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/"+component+".js");
+		});
+
+		$.atk4(function(){
+			var workplace = self.setupWorkplace();
+			window.setTimeout(function(){
+				self.setupCanvas(workplace);
+				if(self.options.showTopBar){
+					self.setupToolBar();
+				}
+
+				self.render();
+
+			},200);
+		});
+
 		// this.setupComponentPanel(workplace);
 	},
+
 	setupToolBar: function(){
 		var self=this;
 		var top_bar = $('<div class="xshop-designer-tool-topbar"></div>');
 		top_bar.prependTo(this.element);
 
 		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
-		var tool_bar_options = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none"></div>').appendTo(top_bar);
+		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none"></div>').appendTo(top_bar);
 		
+		if(this.options.designer_mode){
+			this.freelancer_panel = new FreeLancerPanel(top_bar,self, self.canvas);
+			this.freelancer_panel.init();
+		}
+
 		$.each(this.options.ComponentsIncluded, function(index, component) {
 			var temp = new window[component+"_Component"]();
 			temp.init(self, self.canvas);
@@ -286,13 +83,16 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		// Hide options if not clicked on any component
 		$(this.canvas).click(function(event){
 			$('.ui-selected').removeClass('ui-selected');
-			tool_bar_options.hide();
+			self.option_panel.hide();
+			self.freelancer_panel.FreeLancerComponentOptions.element.hide();
+			$('div.guidex').css('display','none');
+			$('div.guidey').css('display','none');
 			event.stopPropagation();
 		});
 	},
 
 	setupWorkplace: function(){
-		return $('<div class="xshop-designer-tool-workplace row"></div>').appendTo(this.element);
+		return $('<div class="xshop-designer-tool-workplace"></div>').appendTo(this.element);
 	},
 
 	setupComponentPanel: function(workplace){
@@ -300,26 +100,57 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 
 	setupCanvas: function(workplace){
-		var outer_column = $('<div class="col-md-12"></div>').appendTo(workplace);
+		var self = this;
+		var outer_column = $('<div class="col-md-12_removed"></div>').appendTo(workplace);
 		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative"></div>').appendTo(outer_column);
-		this.canvas.css('width',this.options.width * this._getZoom());
-		this.canvas.css('height',this.options.height * this._getZoom());
+		
+		this.canvas.css('width',this.options.width + this.options.unit); // In given Unit
+		this.px_width = this.canvas.width(); // Save in pixel for actual should be width
 
+		if(this.canvas.width() > workplace.width()){
+			this.canvas.css('width', workplace.width() - 20 + 'px');
+		}
+
+		if(this.canvas.width() < (workplace.width()/2)){
+			this.canvas.width((workplace.width()/2));
+		}
+		
 		this.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(this.canvas);
-		this.safe_zone.css('margin',this.options.trim * this._getZoom());
-		this.safe_zone.css('height',(this.options.height * this._getZoom()) - (this.options.trim * this._getZoom()*2));
-		this.safe_zone.css('width',(this.options.width * this._getZoom()) - (this.options.trim * this._getZoom()*2));
-
-
+		this.guidex= $('<div class="guidex"></div>').appendTo($('body'));
+		this.guidey= $('<div class="guidey"></div>').appendTo($('body'));
 	},
 
 	render: function(param){
-		console.log('Called by ' + param.msg);
-		$(this.TextPanel).TextPanel('test');
+		var self = this;
+		this.canvas.css('height',this.options.height + this.options.unit); // In Given Unit
+		// console.log(this.canvas.height());
+		this.canvas.height(this.canvas.height() * this._getZoom()); // get in pixel .height() and multiply by zoom 
+
+		this.safe_zone.css('width',(this.options.width - (this.options.trim * 2)) + this.options.unit); // In given unit
+		this.safe_zone.css('height',(this.options.height - (this.options.trim * 2)) + this.options.unit); // In given UNit
+
+		this.safe_zone.width(this.safe_zone.width() * this._getZoom()); // get width in pixels and multiply by our zoom
+		this.safe_zone.height(this.safe_zone.height() * this._getZoom()); // get height in pixels and multiply by our zoom
+
+		var trim_in_px= (this.canvas.width() - this.safe_zone.width()) / 2;
+		this.safe_zone.css('margin-left',trim_in_px);
+		this.safe_zone.css('margin-right',trim_in_px);
+		this.safe_zone.css('margin-top',trim_in_px);
+		this.safe_zone.css('margin-bottom',trim_in_px);
+		
+
+		$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index, component) {
+			component.render();
+		});
 	},
 
 	_getZoom:function(){
-		return this.zoom = 10;
+		var zoom = (this.canvas.width())/ this.px_width;
+		if(zoom != this.zoom){
+			this.delta_zoom = this.zoom + zoom;
+			this.zoom = zoom;
+		}
+		return this.zoom;
 	},
 
 	_isDesignerMode:function(){
@@ -333,4 +164,87 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		console.log(this.components);
 	}
 
+});
+
+
+
+(function($) {
+    /**
+     * KeyUp with delay event setup
+     * 
+     * @link http://stackoverflow.com/questions/1909441/jquery-keyup-delay#answer-12581187
+     * @param function callback
+     * @param int ms
+     */
+    $.fn.delayKeyup = function(callback, ms){
+            $(this).keyup(function( event ){
+                var srcEl = event.currentTarget;
+                if( srcEl.delayTimer )
+                    clearTimeout (srcEl.delayTimer );
+                srcEl.delayTimer = setTimeout(function(){ callback( $(srcEl) ); }, ms);
+            });
+
+        return $(this);
+    };
+})(jQuery);
+
+
+$.ui.plugin.add("draggable", "smartguides", {
+	start: function(event, ui) {
+		var i = $(this).data("uiDraggable");
+		// console.log(this.data());
+		o = i.options;
+		i.elements = [];
+		$(o.smartguides.constructor != String ? ( o.smartguides.items || ':data(uiDraggable)' ) : o.smartguides).each(function() {
+			var $t = $(this); var $o = $t.offset();
+			if(this != i.element[0]) i.elements.push({
+				item: this,
+				width: $t.outerWidth(), height: $t.outerHeight(),
+				top: $o.top, left: $o.left
+			});
+		});
+	},
+	drag: function(event, ui) {
+		var inst = $(this).data("uiDraggable"), o = inst.options;
+		var d = o.tolerance;
+        $(".guidex").css({"display":"none"});
+        $(".guidey").css({"display":"none"});
+            var x1 = ui.offset.left, x2 = x1 + inst.helperProportions.width,
+                y1 = ui.offset.top, y2 = y1 + inst.helperProportions.height;
+            for (var i = inst.elements.length - 1; i >= 0; i--){
+                var l = inst.elements[i].left, r = l + inst.elements[i].width,
+                    t = inst.elements[i].top, b = t + inst.elements[i].height;
+                    var ls = Math.abs(l - x2) <= d;
+                    var lss = Math.abs(l - x1) <= d;
+                    var rs = Math.abs(r - x1) <= d;
+                    var ts = Math.abs(t - y2) <= d;
+                    var bs = Math.abs(b - y1) <= d;
+                if(lss){
+                    ui.position.left = inst._convertPositionTo("relative", { top: 0, left: l }).left - inst.margins.left;
+                    $(".guidex").css({"left":l-d+4,"display":"block"});
+                }
+                if(ls) {
+                    ui.position.left = inst._convertPositionTo("relative", { top: 0, left: l - inst.helperProportions.width }).left - inst.margins.left;
+                    $(".guidex").css({"left":l-d+4,"display":"block"});
+                }
+                if(rs) {
+                    ui.position.left = inst._convertPositionTo("relative", { top: 0, left: r }).left - inst.margins.left;
+                     $(".guidex").css({"left":r-d+4,"display":"block"});
+                }
+                
+                if(ts) {
+                    ui.position.top = inst._convertPositionTo("relative", { top: t - inst.helperProportions.height, left: 0 }).top - inst.margins.top;
+                    $(".guidey").css({"top":t-d+4,"display":"block"});
+                }
+                if(bs) {
+                    ui.position.top = inst._convertPositionTo("relative", { top: b, left: 0 }).top - inst.margins.top;
+                    $(".guidey").css({"top":b-d+4,"display":"block"});
+                }
+            };
+        },
+
+        stop: function(event, ui){
+        	// $(".guidex").hide();
+        	// $(".guidey").hide();
+        }
 });
