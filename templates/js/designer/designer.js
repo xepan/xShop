@@ -262,7 +262,7 @@ $.ui.plugin.add("draggable", "smartguides", {
         },
 
         stop: function(event, ui){
-        	// $(".guidex").hide();
-        	// $(".guidey").hide();
+        	$(".guidex").hide();
+        	$(".guidey").hide();
         }
 });
