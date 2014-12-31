@@ -12,6 +12,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	// components:[],
 	current_page:'Front Page',
 	current_layout: 'Main Layout',
+	item_id:undefined,
 	canvas:undefined,
 	safe_zone: undefined,
 	zoom: 1,

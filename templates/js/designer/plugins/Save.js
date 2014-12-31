@@ -16,7 +16,6 @@ Save_Component = function (params){
 		this.page = undefined;
 		this.layout = undefined;
 		this.parent = parent;
-		this.layout_array = [];
 		tool_btn = $('<div class="btn btn-deault btn-xs"><i class="glyphicon glyphicon-floppy-saved"></i><br>Save</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
 		
 		tool_btn.click(function(event){
@@ -36,11 +35,19 @@ Save_Component = function (params){
 			console.log(self.layout_array);
 			$.ajax({
 					url: 'index.php?page=xShop_page_designer_save',
-					type: 'GET',
-					data: {param1: 'value1'},
+					type: 'POST',
+					datatype: "json",
+					data: {xshop_item_design: self.layout_array,//json object
+							item_id:self.designer_tool.item_id //designed item id
+						},
 				})
 				.done(function(ret) {
-					console.log("success");
+					if(ret==='true'){
+						$.univ().successMessage('Saved Successfully');
+						console.log('Item Design Saved Successfully');
+					}
+					else
+						$.univ().errorMessage('Not Saved, some thing wrong');					
 				})
 				.fail(function() {
 					console.log("error");
