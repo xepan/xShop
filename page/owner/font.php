@@ -46,9 +46,5 @@ class page_xShop_page_owner_font extends page_xShop_page_owner_main{
 	        });       
 	        $grid->addFormatter('font','font');
 	        $grid->addColumn('Button','delete');
-       	
-       		 
-	
-
 	}
 }
