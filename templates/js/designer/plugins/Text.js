@@ -142,11 +142,17 @@ xShop_Text_Editor = function(parent){
 
 	//Ordered List
 	this.text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Orderd List"></div>').appendTo(this.element);
-	this.text_order_list_ul_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-list"></span></div>').appendTo(this.text_button_set);
-	this.text_indent_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-left"></span></div>').appendTo(this.text_button_set);
-	this.text_indent_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-right"></div>').appendTo(this.text_button_set);
-	this.text_symbol_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-plus"></div>').appendTo(this.text_button_set);
+	// this.text_order_list_ul_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-list"></span></div>').appendTo(this.text_button_set);
+	// this.text_indent_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-left"></span></div>').appendTo(this.text_button_set);
+	// this.text_indent_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-right"></div>').appendTo(this.text_button_set);
+	// this.text_symbol_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-plus"></div>').appendTo(this.text_button_set);
 	
+	// Text Indent Left
+	$(this.text_indent_left_btn).click(function(){
+		self.current_text_component.options.indent_left != self.current_text_component.options.indent_left;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+	});	
 	// Angle
 	this.text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(this.element);
 	this.text_rotate_anticlockwise = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat" style="-moz-transform: scaleX(-1);-o-transform: scaleX(-1);-webkit-transform: scaleX(-1);transform: scaleX(-1);filter: FlipH;-ms-filter: "FlipH";"></span></div>').appendTo(this.text_button_set);
@@ -246,6 +252,8 @@ Text_Component = function (params){
 		alignment_left:false,
 		alignment_center:false,
 		alignment_right:false,
+		indent_left:false,
+		indent_right:false,
 		// Designer properties
 		movable: true,
 		colorable: true,

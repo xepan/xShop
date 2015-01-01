@@ -7,7 +7,6 @@ class View_FontUpload extends \View{
 	function init() {
 		parent::init();
 
-		
 			$target_dir = getcwd().DS.'epan-components'.DS.'xShop'.DS.'templates'.DS.'fonts'.DS;
 			$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 			$uploadOk = 1;
@@ -16,13 +15,11 @@ class View_FontUpload extends \View{
 			if(isset($_POST["submit"])) {
 				$font_format= explode('-', $target_file);
 
-					if(! in_array($font_format[2], array('Regular.ttf','Bold.ttf','Italic.ttf','BoldItalic.ttf'))){
-						$this->api->js(true,$this->js()->reload())->univ()->errorMessage('Wrong Font name ');
-						$uploadOk=0;
-
-						echo $font_format[2];
-					}
-				
+				if(! in_array($font_format[2], array('Regular.ttf','Bold.ttf','Italic.ttf','BoldItalic.ttf'))){
+					$this->api->js(true,$this->js()->reload())->univ()->errorMessage('Wrong Font name ');
+					$uploadOk=0;
+					echo $font_format[2];
+				}
 				if (file_exists($target_file)) {
 				    $this->api->js(true)->univ()->errorMessage('File Already Exist');
 				    $uploadOk = 0;
@@ -36,7 +33,7 @@ class View_FontUpload extends \View{
 				    	$this->api->js(true,$this->js()->reload())->univ()->successMessage('Font File '.basename( $_FILES["fileToUpload"]["name"]." has been uploded"));
 			    	} else {
 					    $this->api->js(true)->univ()->errorMessage('Sorry, there was an error uploading your file');
-			    		} 
+			    	} 
 				}
 			}
 	}
