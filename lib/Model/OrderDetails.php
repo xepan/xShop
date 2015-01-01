@@ -12,6 +12,7 @@ class Model_OrderDetails extends \Model_Table{
 		$this->addCondition('epan_id',$this->api->current_website->id);
 		$this->hasOne('xShop/Order','order_id');
 		$this->hasOne('xShop/Item','item_id');
+		$this->hasOne('xShop/Order','order_id');
 
 		$this->addField('qty')->type('money');
 		$this->addField('unit')->type('money');

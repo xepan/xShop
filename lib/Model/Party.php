@@ -1,16 +1,20 @@
 <?php
 
 namespace xShop;
-class Model_Manufacturer extends \Model_Table {
-	var $table= "xshop_manufacturer";
+class Model_Party extends \Model_Table {
+	var $table= "xshop_party";
 	function init(){
 		parent::init();
 
 		//TODO for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
-		//$this->addCondition('epan_id',$this->api->current_website->id);
+		$this->addCondition('epan_id',$this->api->current_website->id);
 		
-		$f = $this->addField('name')->caption('Company Name')->mandatory(true)->group('a~5~<i class="fa fa-info"></i> Basic Info')->sortable(true);
+		$f = $this->addField('party_type')->enum(array('Supplier','Manufacturer'));
+		$f->icon = "glyphicon glyphicon-send~blue";
+		$f = $this->addField('company_name')->caption('Company Name')->mandatory(true)->group('a~5~<i class="fa fa-info"></i> Basic Info')->sortable(true);
+		$f->icon = "fa fa-circle~red";
+		$f = $this->addField('name')->caption('Owner Name')->mandatory(true)->group('a~5~<i class="fa fa-info"></i> Basic Info')->sortable(true);
 		$f->icon = "fa fa-circle~red";
 		$f = $this->addField('logo_url')->display(array('form'=>'ElImage'))->group('a~5');
 		$f->icon = "glyphicon glyphicon-picture~blue";
@@ -35,14 +39,23 @@ class Model_Manufacturer extends \Model_Table {
 		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'));
 		$f->icon = "fa fa-pencil~blue";
 		
-		$this->hasMany('xShop/Party','party_id');
-		$this->addHook('beforeDelete',$this);
-		// $this->add('dynamic_model/Controller_AutoCreator');
+	
+
+
+		$f = $this->hasMany('xShop/Item','party_id');
+		$f->icon = "fa fa-user~blue";
+		$this->addExpression('items')->set(function($m,$q){
+			return $m->refSQL('xShop/Item')->count();
+		});
+
+		 $this->add('dynamic_model/Controller_AutoCreator');
+
+
+// $this->addExpression('total_consume')->set(function($m,$q){
+// 		return $m->refSQL('ProductTransaction')->count();
+
+// 	});	
+
 	}
 
-	function beforeDelete($m){
-		if($m->ref('xShop/Item')->count()->getOne())
-			$this->api->js(true)->univ()->errorMessage('First Delete its associated Item')->execute();		
 	}
-	
-}
