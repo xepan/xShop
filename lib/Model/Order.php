@@ -29,7 +29,7 @@ class Model_Order extends \Model_Table{
 		$f = $this->addField('order_summary')->type('text')->group('y~12');
 		$this->hasMany('xShop/OrderDetails','order_id');
 		$this->addHook('beforeDelete',$this);
-		// $this->add('dynamic_model/Controller_AutoCreator');
+		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 
 	function beforeDelete($m){
@@ -126,21 +126,21 @@ class Model_Order extends \Model_Table{
 			$subject=$config_model['order_detail_email_subject'];
 		}
 
-		// if($config_model['order_detail_email_body']){
-		// 	$email_body=$config_model['order_detail_email_body'];		
-		// }
+		if($config_model['order_detail_email_body']){
+			$email_body=$config_model['order_detail_email_body'];		
+		}
 		
 		$user_model = $this->add('xShop/Model_MemberDetails');
 		$user_model->getAllDetail($this->api->auth->model->id);
 		$email_body = $print_order->getHTML(false);
 
-		// REPLACING VALUE INTO ORDER DETAIL TEMPLATES
-		// $email_body = str_replace("{{user_name}}", $this->api->auth->model['name'], $email_body);
-		// $email_body = str_replace("{{mobile_number}}", $user_model['mobile_number'], $email_body);
-		// $email_body = str_replace("{{billing_address}}",$this['billing_address'], $email_body);
-		// $email_body = str_replace("{{shipping_address}}", $this['shipping_address'], $email_body);
-		// $email_body = str_replace("{{email}}", $this->api->auth->model['email'], $email_body);
-		// END OF REPLACING VALUE INTO ORDER DETAIL EMAIL BODY
+		//REPLACING VALUE INTO ORDER DETAIL TEMPLATES
+		$email_body = str_replace("{{user_name}}", $this->api->auth->model['name'], $email_body);
+		$email_body = str_replace("{{mobile_number}}", $user_model['mobile_number'], $email_body);
+		$email_body = str_replace("{{billing_address}}",$this['billing_address'], $email_body);
+		$email_body = str_replace("{{shipping_address}}", $this['shipping_address'], $email_body);
+		$email_body = str_replace("{{email}}", $this->api->auth->model['email'], $email_body);
+		//END OF REPLACING VALUE INTO ORDER DETAIL EMAIL BODY
 		
 		try{
 			$tm->send($this->api->auth->model['email'], $epan['email_username'], $subject, $email_body ,false,null);			
