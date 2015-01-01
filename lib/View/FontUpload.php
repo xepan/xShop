@@ -14,6 +14,15 @@ class View_FontUpload extends \View{
 			$fontFileType = pathinfo($target_file,PATHINFO_EXTENSION);
 			// Check if image file is a actual image or fake image
 			if(isset($_POST["submit"])) {
+				$font_format= explode('-', $target_file);
+
+					if(! in_array($font_format[2], array('Regular.ttf','Bold.ttf','Italic.ttf','BoldItalic.ttf'))){
+						$this->api->js(true,$this->js()->reload())->univ()->errorMessage('Wrong Font name ');
+						$uploadOk=0;
+
+						echo $font_format[2];
+					}
+				
 				if (file_exists($target_file)) {
 				    $this->api->js(true)->univ()->errorMessage('File Already Exist');
 				    $uploadOk = 0;
