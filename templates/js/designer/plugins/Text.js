@@ -252,8 +252,6 @@ Text_Component = function (params){
 		alignment_left:false,
 		alignment_center:false,
 		alignment_right:false,
-		indent_left:false,
-		indent_right:false,
 		// Designer properties
 		movable: true,
 		colorable: true,
