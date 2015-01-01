@@ -105,6 +105,9 @@ class Model_Item extends \Model_Table{
 		$f->icon = "glyphicon glyphicon-pencil~blue";		
 		$f = $this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value')->group('o~5~bl');
 		$f->icon = "glyphicon glyphicon-pencil~blue";	
+		//Item Designs 
+		$f = $this->addField('designs')->type('text')->group('o~5~bl');
+		$f->icon = "glyphicon glyphicon-pencil~blue";
 
 		$this->hasMany('xShop/CategoryItem','item_id');
 		$this->hasMany('xShop/ItemImages','item_id');
