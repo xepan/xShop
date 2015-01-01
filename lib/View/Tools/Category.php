@@ -21,9 +21,9 @@ class View_Tools_Category extends \componentBase\View_Component{
 			// $this->js(true)->univ()->errorMessage('Please Specify Category URL Page');
 		}else{
 			
-			$categories->addCondition('categorygroup_id',$category_group);		
+			$categories->addCondition('application_id',$category_group);		
 			$categories->addCondition('is_active',true);
-			$categories->setOrder('order','asc');
+			$categories->setOrder('order_no','asc');
 
 			//todo OR Condition Using _DSQL 
 	        $categories->addCondition(
