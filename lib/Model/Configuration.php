@@ -31,6 +31,10 @@ class Model_Configuration extends \Model_Table {
 		$f = $this->addField('order_detail_email_body')->type('text')->display(array('form'=>'RichText'))->caption('Order Detail Email Body')->hint('Order Bill Email Body : this Bill send to member who placed order')->group('c~11');
 		$f->icon = "glyphicon glyphicon-send~blue";  
 
+		$f = $this->addField('party_type')->hint('comma separated value');
+		$f->icon = "glyphicon glyphicon-send~blue";
+	
+		
 		// TODO GROUP ACCESS of Category and other feature
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}

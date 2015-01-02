@@ -4,7 +4,8 @@ class page_xShop_page_owner_order extends page_xShop_page_owner_main{
 
 	function page_index(){
 
-		$crud=$this->app->layout->add('CRUD');
+		//$crud=$this->app->layout->add('CRUD');
+		$crud=$this->add('CRUD');
 		$orders=$this->add('xShop/Model_Order');
 		$orders->setOrder('id',true);
 		$crud->setModel($orders);

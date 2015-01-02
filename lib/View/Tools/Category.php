@@ -9,6 +9,8 @@ class View_Tools_Category extends \componentBase\View_Component{
 		$category_group=$this->html_attributes['xshop_categorygroup_id'];
 		$categories = $this->add('xShop/Model_Category',array('table_alias'=>'mc'));
 
+		$this->template->trySet('no_of_cols',$this->html_attributes['xshop-category-grid-column']);
+
 		if(!$category_group){
 			// throw new \Exception($category_group);
 			$this->add('View_Error')->set('Please Select Category Group or First Create Category Group');		
@@ -21,9 +23,9 @@ class View_Tools_Category extends \componentBase\View_Component{
 			// $this->js(true)->univ()->errorMessage('Please Specify Category URL Page');
 		}else{
 			
-			$categories->addCondition('categorygroup_id',$category_group);		
+			$categories->addCondition('application_id',$category_group);		
 			$categories->addCondition('is_active',true);
-			$categories->setOrder('order','asc');
+			$categories->setOrder('order_no','asc');
 
 			//todo OR Condition Using _DSQL 
 	        $categories->addCondition(
@@ -49,17 +51,17 @@ class View_Tools_Category extends \componentBase\View_Component{
 		
 		//loading custom CSS file	
 		$category_css = 'epans/'.$this->api->current_website['name'].'/xshopcategory.css';
-		$this->api->template->appendHTML('js_include','<link id="xshop-category-customcss-link" type="text/css" href="'.$category_css.'" rel="stylesheet" />'."\n");		
+		$this->api->template->appendHTML('js_include','<link id="xshop-category-customcss-link" type="text/css" href="'.$category_css.'" rel="stylesheet" />'."\n");
 	}
 
 	function getText($category,$page_name){
 		if($category->ref('SubCategories')->count()->getOne() > 0){
 			$sub_category = $category->ref('SubCategories');
 			$output = "<li aria-haspopup='true' class='xshop-category'>";
-			$output .="<a href='#'>"; 
+			$output .="<a href='#'>";
 			$output .= $category['name'];
 			$output .="</a>" ;
-			$output .= "<div class='grid-container3'>";			
+			$output .= "<div class='grid-container3'>";
 			$output .= "<ul>";
 			foreach ($sub_category as $junk_category) {
 				$output .= $this->getText($sub_category,$page_name);

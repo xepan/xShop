@@ -9,9 +9,9 @@ class Model_Item extends \Model_Table{
 	function init(){
 		parent::init();	
 		
-		$f = $this->hasOne('xShop/Supplier','supplier_id')->group('a~6');
-		$f->icon = "fa fa-user~blue";
-		$f = $this->hasOne('xShop/Manufacturer','manufacturer_id')->group('a~6');
+		// $f = $this->hasOne('xShop/Supplier','supplier_id')->group('a~6');
+		// $f->icon = "fa fa-user~blue";
+		$f = $this->hasOne('xShop/Party','party_id');
 		$f->icon = "fa fa-user~blue";
 		$this->hasOne('xShop/Application','application_id');
 		// $f->group='a/6';

@@ -40,7 +40,6 @@ class page_xShop_page_designer_rendertext extends Page {
 		}
 
 
-
 		if($_GET['underline']=='true'){
 			// 1-Text will be normal 2-Underline 3-Upperline 4- stroke-through  
 			$draw->setTextDecoration(2);
