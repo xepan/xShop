@@ -10,8 +10,10 @@ class Model_Party extends \Model_Table {
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 		
-		$f = $this->addField('party_type')->enum(array('Supplier','Manufacturer'));
-		$f->icon = "glyphicon glyphicon-send~blue";
+		// $f = $this->hasOne('xShop/Partytype','partytype_id');
+		// $f->icon = "fa fa-user~blue";
+		$f = $this->hasOne('xShop/PartyType','partytype_id');
+		$f->icon = "fa fa-user~blue";
 		$f = $this->addField('company_name')->caption('Company Name')->mandatory(true)->group('a~5~<i class="fa fa-info"></i> Basic Info')->sortable(true);
 		$f->icon = "fa fa-circle~red";
 		$f = $this->addField('name')->caption('Owner Name')->mandatory(true)->group('a~5~<i class="fa fa-info"></i> Basic Info')->sortable(true);
