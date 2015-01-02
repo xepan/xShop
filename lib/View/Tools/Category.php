@@ -51,17 +51,17 @@ class View_Tools_Category extends \componentBase\View_Component{
 		
 		//loading custom CSS file	
 		$category_css = 'epans/'.$this->api->current_website['name'].'/xshopcategory.css';
-		$this->api->template->appendHTML('js_include','<link id="xshop-category-customcss-link" type="text/css" href="'.$category_css.'" rel="stylesheet" />'."\n");		
+		$this->api->template->appendHTML('js_include','<link id="xshop-category-customcss-link" type="text/css" href="'.$category_css.'" rel="stylesheet" />'."\n");
 	}
 
 	function getText($category,$page_name){
 		if($category->ref('SubCategories')->count()->getOne() > 0){
 			$sub_category = $category->ref('SubCategories');
 			$output = "<li aria-haspopup='true' class='xshop-category'>";
-			$output .="<a href='#'>"; 
+			$output .="<a href='#'>";
 			$output .= $category['name'];
 			$output .="</a>" ;
-			$output .= "<div class='grid-container3'>";			
+			$output .= "<div class='grid-container3'>";
 			$output .= "<ul>";
 			foreach ($sub_category as $junk_category) {
 				$output .= $this->getText($sub_category,$page_name);
