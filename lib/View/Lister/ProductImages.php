@@ -3,7 +3,6 @@
 namespace xShop;
 class View_Lister_ProductImages extends \CompleteLister{
 
-
 	function setModel($model){
 		parent::setModel($model);
 		

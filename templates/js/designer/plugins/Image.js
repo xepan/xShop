@@ -4,11 +4,30 @@ xShop_Image_Editor = function(parent){
 	this.current_text_component = undefined;
 
 	this.element = $('<div id="xshop-designer-text-editor" style="display:block" class="xshop-options-editor"></div>').appendTo(this.parent);
-
-	this.image_manager = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-align-center"></span></div>').appendTo(this.element);
+	this.image_button_set = $('<div class="btn-group btn-group-xs" role="group"></div>').appendTo(this.element);
+	this.image_manager = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-film"></span></div>').appendTo(this.image_button_set);	
+	this.image_crop_resize = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-">C&R</span></div>').appendTo(this.image_button_set);
+	this.image_replace = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-">Replace</span></div>').appendTo(this.image_button_set);
+	this.image_duplicate = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-">Duplicate</span></div>').appendTo(this.image_button_set);
+	// this.image_manager = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-film"></span></div>').appendTo(this.image_button_set);
 
 	this.image_manager.click(function(event){
-		$.univ().frameURL('Hello','index.php?page=abcd');
+		options ={modal:false,
+					width:800	
+				};
+		$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
+	});
+
+	this.image_crop_resize.click(function(event){
+		//TODO CROP and RESIZE The Image not No
+	});
+
+	this.image_replace.click(function(event){
+		//TODO CROP and RESIZE The Image not No
+	});
+
+	this.image_duplicate.click(function(event){
+		//TODO CROP and RESIZE The Image not No
 	});
 
 	this.setImageComponent = function(component){
@@ -48,6 +67,7 @@ Image_Component = function (params){
 		colorable: true,
 		editable: true,
 		default_url:'templates/images/logo.png',
+		url:undefined,
 		z_index:0,
 		resizable: true,
 		auto_fit: false,
@@ -66,19 +86,24 @@ Image_Component = function (params){
 	}
 
 	this.initExisting = function(params){
-
+		alert('Hi called');
 	}
 
 	this.renderTool = function(parent){
 		var self=this;
 		this.parent = parent;
 		
-		tool_btn = $('<div class="btn btn-deault btn-xs"><i class="glyphicon glyphicon-picture"></i><br>Text</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+		tool_btn = $('<div class="btn btn-deault xshop-designer-image-toolbtn btn-xs"><i class="glyphicon glyphicon-picture"></i><br>Image</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset')).data('tool',self);
 		this.editor = new xShop_Image_Editor(parent.find('.xshop-designer-tool-topbar-options'));
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
-			// create new TextComponent type object
+			options ={modal:false,
+					width:800	
+				};
+			$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
+			
+			// create new ImageComponent type object
 			var new_image = new Image_Component();
 			new_image.init(self.designer_tool,self.canvas, self.editor);
 			// feed default values for its parameters
@@ -86,9 +111,7 @@ Image_Component = function (params){
 			new_image.y=0;
 			new_image.url="templates/images/logo.png";
 			// add this Object to canvas components array
-			
 			// console.log(self.designer_tool.current_page);
-
 			self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_image);
 			new_image.render();
 			
@@ -107,8 +130,6 @@ Image_Component = function (params){
 		        event.stopPropagation();
 			});
 		});
-
-
 	}
 
 
@@ -119,7 +140,7 @@ Image_Component = function (params){
 			this.element.draggable({
 				containment: 'parent',
 				smartguides:".xshop-designer-component",
-			    tolerance:5,
+				tolerance:5,
 				stop:function(e,ui){
 					var position = ui.position;
 					self.options.x = position.left / self.designer_tool.zoom;

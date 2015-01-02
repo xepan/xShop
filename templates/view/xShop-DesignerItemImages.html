@@ -1,0 +1,35 @@
+<div id="{$_name}" class="{$class}">
+	{$Content}
+	<div class="xshop-designer-itemimageslister row">
+	{rows}
+		{row}
+		<figure class="xshop-designer-item-images col-md-3 col-sm-3">
+			<img src="{item_image}{/}" class="xshop-designer-item-images thumbnail">
+       		 <figcaption class="xshop-designer-add-replace">
+            	<div class="xshop-designer-add-replace-button btn btn-primary" selectedimagesrc="{item_image}{/}">Add/Replace</div>
+        	</figcaption>
+    	</figure>
+		{/}	
+	{/}	
+	</div>
+	<script type="text/javascript">
+		$( function() {
+			//Load Designer Tool
+			designer = $(".xshop-designer-tool").data("ui-xepan_xshopdesigner");
+			// console.log(o);
+			//Image Hover add or replace 
+			$('.xshop-designer-item-images').hover( function(){
+				$(this).find('.xshop-designer-add-replace').fadeIn(300);
+			},function(){
+				$(this).find('.xshop-designer-add-replace').fadeOut(100);
+			});
+			$(".xshop-designer-add-replace-button").click(function(){
+				image_src = $(this).attr('selectedimagesrc');
+				var opener =  $('.xshop-designer-image-toolbtn').data('tool');
+				console.log(opener);
+				opener.initExisting();				
+			});
+			
+		});
+	</script>
+</div>	
