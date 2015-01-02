@@ -44,6 +44,17 @@
 								<td>
 									<input type='text' id='xshop_category_url_page_{$id}'/>
 								</td>
+								<td>
+									<select id="xshop-category-grid-column" type="number" class="" placeholder="Product in each Row">
+										<option value="0">Item in Each Row</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="6">6</option>
+										<option value="12">12</option>
+									</select>
+								</td>
 							</tr>
 							<tr>
 								<td>Edit CSS</td>
@@ -82,6 +93,10 @@ $('#xshop_categorygroup_{$id}').change(function(event){
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 
+$('#xshop-category-grid-column').change(function(event){
+	$(current_selected_component).attr('xshop-category-grid-column',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
 // on category click custom page redirect..
 $('#xshop_category_url_page_{$id}').change(function(event){
 	$(current_selected_component).attr('xshop_category_url_page',$(this).val());
@@ -117,6 +132,7 @@ var {$component_type}_options = {
 		$("#xshop_categorygroup_{$id}:contains(" + $(current_selected_component).attr('xshop_categorygroup_id') + ")").attr('selected', 'selected');
 
 		$('#xshop_category_url_page_{$id}').val($(current_selected_component).attr('xshop_category_url_page'));
+		$('#xshop-category-grid-column').val($(current_selected_component).attr('xshop-category-grid-column')?$(current_selected_component).attr('xshop-category-grid-column'):0);
 	}
 }
 </script>

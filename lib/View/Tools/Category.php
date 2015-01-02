@@ -9,6 +9,8 @@ class View_Tools_Category extends \componentBase\View_Component{
 		$category_group=$this->html_attributes['xshop_categorygroup_id'];
 		$categories = $this->add('xShop/Model_Category',array('table_alias'=>'mc'));
 
+		$this->template->trySet('no_of_cols',$this->html_attributes['xshop-category-grid-column']);
+
 		if(!$category_group){
 			// throw new \Exception($category_group);
 			$this->add('View_Error')->set('Please Select Category Group or First Create Category Group');		

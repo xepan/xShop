@@ -1,23 +1,13 @@
 <div id="{$_id}" class="xshop-category-mega-manu">
-	<style type="text/css">
-
-	.xshop-mega-menu{
-				
-	}
-	.xshop-mega-menu-anim-slide{
-
-	}
-	 .xshop-mega-menu-response-to-stack{
-
-	 }
-
-	</style>
+	<div noofcols="{$no_of_cols}"> </div>
 	{$Content}
 	<script type="text/javascript">
-	
-	$( document ).ready(function() {
-		$(".xshop-category-mega-manu ul").removeClass().addClass("xshop-mega-menu xshop-mega-menu-anim-slide xshop-mega-menu-response-to-stack");
-
-	});
+		$( document ).ready(function() {
+			$(".xshop-category-mega-manu  ul").removeClass().addClass("xshop-mega-menu xshop-mega-menu-anim-slide xshop-mega-menu-response-to-stack");
+			$(".xshop-category-mega-manu > ul ").addClass('row');
+			col = $(".xshop-category-mega-manu > div").attr('noofcols');
+			col_class = "col-md-"+(12/col);
+			$(".xshop-category-mega-manu > ul > li").addClass(col_class);
+		});
 	</script>
 </div>
