@@ -1,7 +1,7 @@
 xShop_Image_Editor = function(parent){
 	var self = this;
 	this.parent = parent;
-	this.current_text_component = undefined;
+	this.current_image_component = undefined;
 
 	this.element = $('<div id="xshop-designer-text-editor" style="display:block" class="xshop-options-editor"></div>').appendTo(this.parent);
 	this.image_button_set = $('<div class="btn-group btn-group-xs" role="group"></div>').appendTo(this.element);
@@ -19,6 +19,50 @@ xShop_Image_Editor = function(parent){
 	});
 
 	this.image_crop_resize.click(function(event){
+		// var self =this;
+		// console.log(self.current_image_component);
+		url = self.current_image_component.options.url;		
+		
+		xx= $('<div></div>');
+		crop_image = $('<img class="xshop-img" src='+url+'></img>').appendTo(xx);
+		x = $('<div></div>').appendTo(crop_image);
+		y = $('<div></div>').appendTo(crop_image);
+		width = $('<div></div>').appendTo(crop_image);
+		height = $('<div></div>').appendTo(crop_image);
+		
+		xx.dialog({
+			minWidth: 800,
+			modal:true,
+			open: function( event, ui ) {
+				$(crop_image).cropper({
+				    multiple: true,
+				    data: {
+					    x: 480,
+					    y: 60,
+					    width: 640,
+					    height: 360
+					  },  
+					done: function(data) {
+						$(x).val(Math.round(data.x));
+						$(y).val(Math.round(data.y));
+						$(width).val(Math.round(data.width));
+						$(height).val(Math.round(data.height));
+					    // console.log(Math.round(data.width));
+					  }
+				});
+			},
+
+			close: function( event, ui ) {
+				self.current_image_component.options.crop_x = $(x).val();
+				self.current_image_component.options.crop_y = $(y).val();
+				self.current_image_component.options.crop_width = $(width).val();
+				self.current_image_component.options.crop_height = $(height).val();
+				self.current_image_component.options.crop = true;
+				self.current_image_component.render();
+				console.log(self.current_image_component.canvas);
+			}
+		});
+		console.log(self.current_image_component);
 		//TODO CROP and RESIZE The Image not No
 	});
 
@@ -46,17 +90,14 @@ Image_Component = function (params){
 	this.options = {
 		x:0,
 		y:0,
-		width:'100%',
-		height:'100%',
+		width:'400',
+		height:'0',
 		url:'templates/images/logo.png',
-		font: "OpenSans",
-		font_size: '12',
-		color_cmyk:"0,0,0,100",
-		color_formatted:"#000000",
-		bold: false,
-		italic:false,
-		underline:false,
-		stokethrough:false,
+		crop_x: false,
+		crop_y:false,
+		crop_width:false,
+		crop_height:false,
+		crop:false,
 		rotation_angle:0,
 		locked: false,
 		alignment_left:false,
@@ -86,7 +127,40 @@ Image_Component = function (params){
 	}
 
 	this.initExisting = function(params){
-		alert('Hi called');
+		// alert('Hi called');
+	}
+
+	this.addImage = function(image_url){
+		var self=this;
+		//create new ImageComponent type object
+		var new_image = new Image_Component();
+		new_image.init(self.designer_tool,self.canvas, self.editor);
+		// feed default values for its parameters
+		new_image.x=0;
+		new_image.y=0;
+		new_image.options.url = image_url;
+		//Set Options
+		new_image.url = image_url;
+		console.log(new_image);
+		// add this Object to canvas components array
+		// console.log(self.designer_tool.current_page);
+		self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_image);
+		new_image.render();
+		
+		$(new_image.element).data('component',new_image);
+		
+		$(new_image.element).click(function(event) {
+            $('.ui-selected').removeClass('ui-selected');
+            $(this).addClass('ui-selected');
+            $('.xshop-options-editor').hide();
+            self.editor.element.show();
+            self.designer_tool.option_panel.show();
+            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
+            self.designer_tool.current_selected_component = new_image;
+            self.editor.setImageComponent(new_image);
+            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
+	        event.stopPropagation();
+		});
 	}
 
 	this.renderTool = function(parent){
@@ -102,33 +176,6 @@ Image_Component = function (params){
 					width:800	
 				};
 			$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
-			
-			// create new ImageComponent type object
-			var new_image = new Image_Component();
-			new_image.init(self.designer_tool,self.canvas, self.editor);
-			// feed default values for its parameters
-			new_image.x=0;
-			new_image.y=0;
-			new_image.url="templates/images/logo.png";
-			// add this Object to canvas components array
-			// console.log(self.designer_tool.current_page);
-			self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_image);
-			new_image.render();
-			
-			$(new_image.element).data('component',new_image);
-			
-			$(new_image.element).click(function(event) {
-	            $('.ui-selected').removeClass('ui-selected');
-	            $(this).addClass('ui-selected');
-	            $('.xshop-options-editor').hide();
-	            self.editor.element.show();
-	            self.designer_tool.option_panel.show();
-	            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
-	            self.designer_tool.current_selected_component = new_image;
-	            self.editor.setImageComponent(new_image);
-	            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
-		        event.stopPropagation();
-			});
 		});
 	}
 
@@ -146,6 +193,18 @@ Image_Component = function (params){
 					self.options.x = position.left / self.designer_tool.zoom;
 					self.options.y = position.top / self.designer_tool.zoom;
 				}
+			}).resizable({
+				aspectRatio: true,
+				autoHide: true,
+				handles: "ne,se,sw,nw",
+
+				stop:function(e,ui){
+					self.options.x = ui.position.left / self.designer_tool.zoom;
+					self.options.y = ui.position.top / self.designer_tool.zoom;
+					self.options.width = ui.originalSize.width;
+					self.options.height = ui.originalSize.height;
+					self.render();
+				}
 			});
 		}
 
@@ -161,21 +220,20 @@ Image_Component = function (params){
 			url: 'index.php?page=xShop_page_designer_renderimage',
 			type: 'GET',
 			data: {default_value: self.options.default_value,
-					color: self.options.color_formatted,
-					font: self.options.font,
-					font_size: self.options.font_size,
-					bold: self.options.bold,
-					italic: self.options.italic,
-					underline:self.options.underline,
-					stokethrough:self.options.stokethrough,
+					crop_x: self.options.crop_x,
+					crop_y: self.options.crop_y,
+					crop_height: self.options.crop_height,
+					crop_width: self.options.crop_width,
 					rotation_angle:self.options.rotation_angle,
-					alignment_left:self.options.alignment_left,
-					alignment_right:self.options.alignment_right,
-					alignment_center:self.options.alignment_center,
-					zoom: self.designer_tool.zoom
+					url:self.options.url,
+					crop:self.options.crop,
+					zoom: self.designer_tool.zoom,
+					width:self.options.width,
+					height:self.options.height
 					},
 		})
 		.done(function(ret) {
+			console.log(self);
 			$(ret).appendTo(self.element.find('span').html(''));
 			self.xhr=undefined;
 		})

@@ -107,3 +107,7 @@ textarea.xshop-designer-text-input{
 .xshop-designer-add-replace div{
     color: #fff;
 }
+
+.xshop-desiner-tool-canvas .ui-resizable-ne,.xshop-desiner-tool-canvas .ui-resizable-se,.xshop-desiner-tool-canvas .ui-resizable-sw,.xshop-desiner-tool-canvas .ui-resizable-nw{
+	background-color: gray;
+}
