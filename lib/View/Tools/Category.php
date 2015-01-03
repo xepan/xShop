@@ -1,7 +1,5 @@
 <?php
-
 namespace xShop;
-
 class View_Tools_Category extends \componentBase\View_Component{
 	function init(){
 		parent::init();
@@ -60,6 +58,13 @@ class View_Tools_Category extends \componentBase\View_Component{
 	}
 
 	function getText($category,$page_name){
+		$item=$this->add('xShop/Model_Item');
+		$cat_item_j=$item->join('xshop_category_item.item_id');
+		$cat_item_j->addField('category_id');
+		$item->addCondition('category_id',$category->id);
+		$item->setOrder('sale_price','asc');
+		$item->tryLoadAny();
+
 		if($category->ref('SubCategories')->count()->getOne() > 0){
 			$sub_category = $category->ref('SubCategories');
 			$output = "<li aria-haspopup='true' class='xshop-category'>";
@@ -79,7 +84,7 @@ class View_Tools_Category extends \componentBase\View_Component{
 			if($this->html_attributes['xshop_category_layout']=='Thumbnail'){
 				$output = "<li class='text-center'><a href='index.php?subpage=".$page_name."&category_id=".$category['id']."'><img src='$category[image_url]' /><div class='sky-menu-thumbnail-name'>".$category['name']."</div></a></li>";
 			}else
-				$output = "<li><a href='index.php?subpage=".$page_name."&category_id=".$category['id']."'>".$category['name']."</a></li>";
+				$output = "<li><a href='index.php?subpage=".$page_name."&category_id=".$category['id']."'>".$category['name']."".$item['sale_price']."</a></li>";
 
 		}
 
