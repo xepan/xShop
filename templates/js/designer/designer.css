@@ -88,3 +88,22 @@ textarea.xshop-designer-text-input{
 	overflow-y:scroll;
 	border-radius:0px ;
 }
+
+.xshop-designer-item-member-images{
+	/*Images Outer Div*/
+	/*width: 40px;*/
+}
+.xshop-designer-add-replace{
+	position: absolute;
+    top: 0;
+    height: 93%;
+    width: 90%;
+    /*opacity: 0.5;*/
+    text-align: center;
+    display: none; /* comment this out for CSS hover */
+    /*background-color: #333;*/
+    transition: all 0.5s ease;
+}
+.xshop-designer-add-replace div{
+    color: #fff;
+}

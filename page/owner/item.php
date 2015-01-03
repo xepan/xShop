@@ -85,14 +85,12 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 			$g = $crud->grid;
 			$g->addMethod('format_image_thumbnail',function($g,$f){
 				$g->current_row_html[$f] = '<img style="height:40px;max-height:40px;" src="'.$g->current_row[$f].'"/>';
-
 			});
-			$g->addFormatter('image_url','image_thumbnail');
-
+			$g->addFormatter('item_image','image_thumbnail');
+			$g->addQuickSearch(array('category_name'));
+			$g->addPaginator($ipp=50);
 		}
 
-		$g->addQuickSearch(array('category_name'));
-		$g->addPaginator($ipp=50);
 	}
 
 	function page_attachments(){
