@@ -30,3 +30,27 @@ Custome Field:
 editable_properties .. movable/text/color ????
 ex. color - can be different design on this
       fold - can be differrent design on this
+
+
+      /////////////
+       ☐ Install step2 update emails setting not update (error trying to get property of non-object)
+ ☐ Growl success Message prompt aborted by user" nsresult: "0x80040111 (NS_ERROR_NOT_AVAILABLE)" location: "JS frame :: resource://gre/components/nsPrompter.js :: openTabPrompt :: line 426" data: no]
+ ☐ Install.sql file updat with remove plugins xAi
+
+
+
+Toolbar Designer
+ ✔ Delete button  @done (15-01-03 18:05)
+ ✔ text Rotate 5deg  @done (15-01-03 18:07)
+ ☐ Background images and front images with crop options
+ ☐ Pdf Save Only One Path
+ ☐ image transaparency 
+ ☐ replace image button 
+ ☐ duplicate image button 
+ ☐ crop beautify 
+ ☐ Component type (text and Image) freelancer options
+ ☐ start editing from database for check 
+ ☐ page and layout view design
+ ☐ layout with gray scale and color or blank
+ ☐ non freelancer mode check
+ ☐ page and layput main layout can not be delete
