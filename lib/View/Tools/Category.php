@@ -10,6 +10,11 @@ class View_Tools_Category extends \componentBase\View_Component{
 		$categories = $this->add('xShop/Model_Category',array('table_alias'=>'mc'));
 
 		$this->template->trySet('no_of_cols',$this->html_attributes['xshop-category-grid-column']);
+		
+		// Define no of sub-category show in parent category
+		if($this->html_attributes['xshopcategoryshowlist']){
+			$this->template->trySet('xshopcategoryshowlist',$this->html_attributes['xshopcategoryshowlist']);
+		}
 
 		if(!$category_group){
 			// throw new \Exception($category_group);
