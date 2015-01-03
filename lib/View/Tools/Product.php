@@ -5,9 +5,8 @@ namespace xShop;
 class View_Tools_Product extends \componentBase\View_Component{
 	function init(){
 		parent::init();
-			
 		//for grid column width
-		$this->api->js()->_load('xShop-js');
+		// $this->api->js()->_load('xShop-js');
 		$this->api->stickyGET('search');
 		$this->api->stickyGET('category_id');
 
@@ -59,7 +58,7 @@ class View_Tools_Product extends \componentBase\View_Component{
 										'xshop_product_detail_on_image_click'=>$this->html_attributes['xshop_product_detail_on_image_click']										
 										));
 
-		$product_model=$this->add('xShop/Model_Product');
+		$product_model=$this->add('xShop/Model_Item');
 		$product_model->addCondition('is_publish',true);
 		$p_type=$this->html_attributes['xshop_producttype'];
 		// Selection of Product according to options 
@@ -69,11 +68,12 @@ class View_Tools_Product extends \componentBase\View_Component{
 			$product_model->addcondition($p_type,true);
 		//todo select product according to category group id
 		// Product Model according to category grooup
-		$p_join=$product_model->leftJoin('xshop_category_product.product_id','id');
-		$cp_join=$p_join->leftJoin('xshop_categories','category_id');
+		$p_join=$product_model->leftJoin('xshop_category_product.item_id','id');
 		$p_join->addField('category_id');
-		$cp_join->hasOne('xShop/CategoryGroup','categorygroup_id');
-		$product_model->addCondition('categorygroup_id',$cg_id);
+
+		$cp_join=$p_join->leftJoin('xshop_categories','category_id');
+		$cp_join->hasOne('xShop/Application','application_id');
+		$product_model->addCondition('application_id',$cg_id);
 		//end of product model accordiing to category group
 
 		//Category Wise Product Loading
@@ -94,11 +94,12 @@ class View_Tools_Product extends \componentBase\View_Component{
 		if($product_model->count()->getOne() != 0)
 			$product_lister_view->template->del('no_record_found');		
 		
-		$product_model->_dsql()->group('product_id'); // Multiple category association shows multiple times product so .. grouped
+		$product_model->_dsql()->group('item_id'); // Multiple category association shows multiple times product so .. grouped
 		$product_model->setOrder('created_at','desc');
 		
 		$product_lister_view->setModel($product_model);
 		
+			
 		//Add Painator to Product List	
 		$paginator = $product_lister_view->add('Paginator');
 		$paginator->ipp($this->html_attributes['xshop_product_paginator']?:12);

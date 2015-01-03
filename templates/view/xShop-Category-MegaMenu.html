@@ -1,13 +1,35 @@
-<div id="{$_id}" class="xshop-category-mega-manu">
-	<div noofcols="{$no_of_cols}"> </div>
+<div id="{$_name}" class="xshop-category-mega-manu">
+	<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/xshopcategory.css"/>
+	<script type="text/javascript" src="epan-components/xShop/templates/js/hideMaxListItem.js"></script>
+	<!--<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/iThing.css"/>
+	<script type="text/javascript" src="epan-components/xShop/templates/js/jQEditRangeSlider-min.js"></script>-->
+	<div noofcols="{$no_of_cols}" xshopcategoryshowlist="{xshopcategoryshowlist}"> </div>
 	{$Content}
+	<!-- <div id="slider"></div> -->
 	<script type="text/javascript">
-		$( document ).ready(function() {
+		$(function(){
 			$(".xshop-category-mega-manu  ul").removeClass().addClass("xshop-mega-menu xshop-mega-menu-anim-slide xshop-mega-menu-response-to-stack");
 			$(".xshop-category-mega-manu > ul ").addClass('row');
-			col = $(".xshop-category-mega-manu > div").attr('noofcols');
+			col = $("#{$_name} > div").attr('noofcols');
 			col_class = "col-md-"+(12/col);
 			$(".xshop-category-mega-manu > ul > li").addClass(col_class);
+			
+			cat_list = $("#{$_name} > div").attr('xshopcategoryshowlist');
+			$('ul.xshop-mega-menu ul ').hideMaxListItems({
+			 'max':cat_list,
+       		 'speed':500,
+    		'moreText':'READ MORE',
+			'lessText':'READ LESS'
+			});
+			// $("#slider").editRangeSlider({
+			// 	defaultValues:{
+			// 		min: 10,
+			// 		max: 100000},
+			// 	symmetricPositionning: false,
+			// 	range: {min: 0}
+			// 	// type: "number" 	 
+			// });
 		});
+
 	</script>
 </div>

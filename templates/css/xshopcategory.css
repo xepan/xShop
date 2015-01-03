@@ -916,3 +916,38 @@
 	border-color: #fd7337;
 }
 /*END OF CHANGING THEME OF CATEGORY COLOR COMBINATION*/
+
+/* Start Css of Mega Menu */
+
+.xshop-mega-menu{
+	/*padding: 0;*/
+	margin: 0;
+	list-style-type: none;
+	width: 100%;
+	/*background: #ffffff*/
+	background-color: #e2e0ca;
+
+}
+ul.xshop-mega-menu-anim-slide > li > a {
+	font-size: 22px;
+	text-transform: capitalize;
+	color: green !important;
+	opacity:0.95;
+	-moz-box-shadow:0px 3px 4px #d5d3bd inset;
+	-webkit-box-shadow:0px 3px 4px #d5d3bd inset;
+	-box-shadow:0px 3px 4px #d5d3bd inset;
+}
+.xshop-mega-menu-response-to-stack{
+
+}
+.xshop-category  {}
+
+div.grid-container3 > ul > li > a{
+	text-transform: capitalize;
+	color:#262626 !important;
+	font-size: 14px;
+	text-indent: 0;
+}
+div.grid-container3 > ul > li > a :hover{
+
+}
