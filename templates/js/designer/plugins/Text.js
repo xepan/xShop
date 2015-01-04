@@ -283,6 +283,7 @@ Text_Component = function (params){
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
+			self.designer_tool.current_selected_component = undefined;
 			// create new TextComponent type object
 			var new_text = new Text_Component();
 			new_text.init(self.designer_tool,self.canvas, self.editor);

@@ -23,7 +23,7 @@ xShop_Image_Editor = function(parent){
 		// console.log(self.current_image_component);
 		url = self.current_image_component.options.url;		
 		
-		xx= $('<div></div>');
+		xx= $('<div class="xshop-designer-image-crop"></div>');
 		crop_image = $('<img class="xshop-img" src='+url+'></img>').appendTo(xx);
 		x = $('<div></div>').appendTo(crop_image);
 		y = $('<div></div>').appendTo(crop_image);
@@ -50,19 +50,24 @@ xShop_Image_Editor = function(parent){
 					    // console.log(Math.round(data.width));
 					  }
 				});
+				var $titlebar = $.find('.ui-dialog-titlebar');
+				continue_btn = $('<button class="btn btn-default pull-right">Continue</button>').appendTo($titlebar);
+				continue_btn.click(function(){
+					self.current_image_component.options.crop_x = $(x).val();
+					self.current_image_component.options.crop_y = $(y).val();
+					self.current_image_component.options.crop_width = $(width).val();
+					self.current_image_component.options.crop_height = $(height).val();
+					self.current_image_component.options.crop = true;
+					self.current_image_component.render();
+					$('.xshop-designer-image-crop').dialog('close');
+				});
 			},
 
 			close: function( event, ui ) {
-				self.current_image_component.options.crop_x = $(x).val();
-				self.current_image_component.options.crop_y = $(y).val();
-				self.current_image_component.options.crop_width = $(width).val();
-				self.current_image_component.options.crop_height = $(height).val();
-				self.current_image_component.options.crop = true;
-				self.current_image_component.render();
 				console.log(self.current_image_component.canvas);
 			}
 		});
-		console.log(self.current_image_component);
+		// console.log(self.current_image_component);
 		//TODO CROP and RESIZE The Image not No
 	});
 
@@ -177,6 +182,7 @@ Image_Component = function (params){
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
+			self.designer_tool.current_selected_component = undefined;
 			options ={modal:false,
 					width:800	
 				};
