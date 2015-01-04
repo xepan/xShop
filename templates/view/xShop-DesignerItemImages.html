@@ -26,10 +26,21 @@
 			$(".xshop-designer-add-replace-button").click(function(){
 				image_src = $(this).attr('selectedimagesrc');
 				var opener = $('.xshop-designer-image-toolbtn').data('tool');
-				opener.addImage(image_src);
+				// console.log(opener);
+				if(opener.designer_tool.current_selected_component == undefined){
+					opener.addImage(image_src);
+				}else{
+					opener.designer_tool.current_selected_component.options.replace_image = true;
+					opener.designer_tool.current_selected_component.options.crop = false;
+					opener.designer_tool.current_selected_component.options.url = image_src;
+					opener.designer_tool.current_selected_component.render();
+					// console.log(opener.designer_tool.current_selected_component);
+					// console.log('undefinedd');
+				}
+
 				$(this).closest('.dialog').dialog('close');
 			});
-			
+
 		});
 	</script>
 </div>	

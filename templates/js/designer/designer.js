@@ -103,6 +103,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		$(this.canvas).click(function(event){
 			$('.ui-selected').removeClass('ui-selected');
 			self.option_panel.hide();
+			self.current_selected_component = undefined;
 			self.freelancer_panel.FreeLancerComponentOptions.element.hide();
 			$('div.guidex').css('display','none');
 			$('div.guidey').css('display','none');

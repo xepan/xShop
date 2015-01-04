@@ -67,7 +67,11 @@ xShop_Image_Editor = function(parent){
 	});
 
 	this.image_replace.click(function(event){
-		//TODO CROP and RESIZE The Image not No
+		options ={modal:false,
+					width:800	
+				};
+		$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
+
 	});
 
 	this.image_duplicate.click(function(event){
@@ -98,6 +102,7 @@ Image_Component = function (params){
 		crop_width:false,
 		crop_height:false,
 		crop:false,
+		replace_image: false,
 		rotation_angle:0,
 		locked: false,
 		alignment_left:false,
@@ -224,6 +229,7 @@ Image_Component = function (params){
 					crop_y: self.options.crop_y,
 					crop_height: self.options.crop_height,
 					crop_width: self.options.crop_width,
+					replace_image: self.options.replace_image,
 					rotation_angle:self.options.rotation_angle,
 					url:self.options.url,
 					crop:self.options.crop,
@@ -243,8 +249,7 @@ Image_Component = function (params){
 		})
 		.always(function() {
 			console.log("complete");
-		});
-		
+		});	
 
 		// this.element.text(this.text);
 		// this.element.css('left',this.x);
