@@ -17,7 +17,7 @@ class Model_ItemImages extends \Model_Table {
 		$f = $this->addField('title')->group('a~11~bl');
 		$f->icon ="glyphicon glyphicon-pencil~blue";
 
-		$this->add('dynamic_model/Controller_AutoCreator');		
+		// $this->add('dynamic_model/Controller_AutoCreator');		
 	}
 
 	function getImageUrl($item_id){

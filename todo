@@ -42,15 +42,23 @@ ex. color - can be different design on this
 Toolbar Designer
  ✔ Delete button  @done (15-01-03 18:05)
  ✔ text Rotate 5deg  @done (15-01-03 18:07)
- ☐ Background images and front images with crop options
- ☐ Pdf Save Only One Path
- ☐ image transaparency 
+ ✔ xhr abort on image resize @done (15-01-04 11:07)
  ☐ replace image button 
- ☐ duplicate image button 
- ☐ crop beautify 
+ ☐ page and layout view design
+ ☐ Background images and front images with crop options
  ☐ Component type (text and Image) freelancer options
  ☐ start editing from database for check 
- ☐ page and layout view design
  ☐ layout with gray scale and color or blank
  ☐ non freelancer mode check
  ☐ page and layput main layout can not be delete
+ ☐ Pdf Save Only One Path
+ ☐ duplicate image button 
+ ☐ crop beautify 
+ ☐ image transaparency 
+
+
+   Products/Item  :
+ ☐ custom field rate effect
+ ☐ Specifications
+ ☐ cart widget
+ ☐ 
