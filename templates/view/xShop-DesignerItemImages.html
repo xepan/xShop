@@ -35,7 +35,7 @@
 					opener.designer_tool.current_selected_component.options.replace_image = true;
 					opener.designer_tool.current_selected_component.options.crop = false;
 					opener.designer_tool.current_selected_component.options.url = image_src;
-					
+
 					if(opener.designer_tool.current_selected_component.options.type == "BackgroundImage"){
 						xx= $('<div class="xshop-designer-backgroundimage-crop"></div>');
 						crop_image = $('<img class="xshop-img" src='+image_src+'></img>').appendTo(xx);
@@ -44,7 +44,7 @@
 						width = $('<div></div>').appendTo(crop_image);
 						height = $('<div></div>').appendTo(crop_image);
 						$(this).closest('.dialog').dialog('close');
-						
+													
 						xx.dialog({
 							minWidth: 800,
 							modal:true,
@@ -52,6 +52,7 @@
 							open: function( event, ui ) {
 
 								$(crop_image).cropper({
+									aspectRatio: opener.designer_tool.canvas.width() / opener.designer_tool.canvas.height(),
 								    multiple: true,
 								    data: {
 									    x: 480,
