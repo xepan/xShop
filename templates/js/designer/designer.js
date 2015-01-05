@@ -21,6 +21,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	px_width:undefined,
 	option_panel: undefined,
 	freelancer_panel: undefined,
+	editors : [],
 
 	options:{
 		// Layout Options
@@ -69,7 +70,27 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 
 	loadDesign: function(){
-		
+		var self = this;
+		if(self.options.design =="") return;
+		saved_design = JSON.parse(self.options.design);
+		$.each(saved_design,function(page_name,page_object){
+			$.each(page_object,function(layout_name,layout_object){
+				console.log(layout_object.components);
+				$.each(layout_object.components,function(key,value){
+					value = JSON.parse(value);
+					var temp = new window[value.type + "_Component"]();
+					temp.init(self, self.canvas, self.editors[value.type]);
+					temp.options = value;
+					self.pages_and_layouts[page_name][layout_name]['components'][key] = temp;
+				});
+				
+				var temp = new BackgroundImage_Component();
+				temp.init(self, self.canvas);
+				temp.options = JSON.parse(layout_object.background);
+				self.pages_and_layouts[page_name][layout_name]['background'] = temp;
+			});
+
+		});
 	},
 
 	setupToolBar: function(){
@@ -107,6 +128,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			var temp = new window[component+"_Component"]();
 			temp.init(self, self.canvas);
 			tool_btn = temp.renderTool(top_bar) ;
+			self.editors[component] = temp.editor;
 		});
 		
 		//Page and Layout Setup
@@ -178,6 +200,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index, component) {
 			component.render();
 		});
+
+		self.pages_and_layouts[self.current_page][self.current_layout].background.render();
 	},
 
 	_getZoom:function(){

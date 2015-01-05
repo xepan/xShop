@@ -37,8 +37,11 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		// Jquery Cropper 
 		$this->api->jquery->addStylesheet('designer/cropper');
 		$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/cropper.js"></script>'."\n");
-			
-		$this->js(true)->xepan_xshopdesigner(array('width'=>210,'height'=>279,'trim'=>5,'unit'=>'mm','designer_mode'=>true,'design'=>array(array('type'=>'Text','text'=>'hello'),array('type'=>'Bacground','url'=>'path.jgp','crop'=>array(1,2,3,4)))));
+		
+		// $ited_id = $this->api->stickyGET('xshop_item_id');
+		$item_model = $this->add('xShop/Model_Item')->load(1);
+
+		$this->js(true)->xepan_xshopdesigner(array('width'=>210,'height'=>279,'trim'=>5,'unit'=>'mm','designer_mode'=>true,'design'=>$item_model['designs']));
 		parent::render();
 	}
 

@@ -230,11 +230,11 @@ FreeLancerPageLayoutManager = function(parent,designer, canvas){
 		this.page = $('<div></div>').appendTo(this.element);
 
 		this.pageblock = new PageBlock(this.page,this.designer_tool,this.canvas,this);
-		this.pageblock.init(['page1','page2','page3']);
+		// this.pageblock.init(['page1','page2','page3']);
 
 		this.layoutblock = new LayoutBlock(this.page,this.designer_tool,this.canvas,this);
 		this.layoutblock.init();
-		this.layoutblock.setPage('page1');
+		// this.layoutblock.setPage('page1');
 
 
 		this.page.dialog({autoOpen: false, modal: true, width:600});

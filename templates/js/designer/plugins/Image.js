@@ -157,20 +157,7 @@ Image_Component = function (params){
 		self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_image);
 		new_image.render();
 		
-		$(new_image.element).data('component',new_image);
 		
-		$(new_image.element).click(function(event) {
-            $('.ui-selected').removeClass('ui-selected');
-            $(this).addClass('ui-selected');
-            $('.xshop-options-editor').hide();
-            self.editor.element.show();
-            self.designer_tool.option_panel.show();
-            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
-            self.designer_tool.current_selected_component = new_image;
-            self.editor.setImageComponent(new_image);
-            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
-	        event.stopPropagation();
-		});
 	}
 
 	this.renderTool = function(parent){
@@ -216,6 +203,21 @@ Image_Component = function (params){
 					self.options.height = ui.originalSize.height;
 					self.render();
 				}
+			});
+
+			$(this.element).data('component',this);
+		
+			$(this.element).click(function(event) {
+	            $('.ui-selected').removeClass('ui-selected');
+	            $(this).addClass('ui-selected');
+	            $('.xshop-options-editor').hide();
+	            self.editor.element.show();
+	            self.designer_tool.option_panel.show();
+	            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
+	            self.designer_tool.current_selected_component = self;
+	            self.editor.setImageComponent(self);
+	            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
+		        event.stopPropagation();
 			});
 		}
 

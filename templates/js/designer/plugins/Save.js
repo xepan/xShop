@@ -28,12 +28,11 @@ Save_Component = function (params){
 					self.layout = index;
 					self.layout_array[self.page][index]=new Object;
 					self.layout_array[self.page][self.layout]['components']=[];
-					self.layout_array[self.page][self.layout]['background']=[];
 					$.each(layout.components,function(index,component){
 						self.layout_array[self.page][self.layout]['components'].push(JSON.stringify(component.options));
 					});
 					if(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'] != undefined)
-						self.layout_array[self.page][self.layout]['background'].push(JSON.stringify(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'].options));
+						self.layout_array[self.page][self.layout]['background'] = JSON.stringify(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'].options);
 				});	
 			});
 
