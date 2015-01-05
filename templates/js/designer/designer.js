@@ -107,9 +107,9 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		
 		//Page and Layout Setup
 		var temp = new window["PageLayout_Component"]();
-		temp.init(self, self.canvas);
-		bottom_tool_btn = temp.renderTool(bottom_bar) ;
-
+		temp.init(self, self.canvas, bottom_bar);
+		bottom_tool_btn = temp.renderTool() ;
+		self.bottom_bar = temp;
 		// Hide options if not clicked on any component
 		$(this.canvas).click(function(event){
 			$('.ui-selected').removeClass('ui-selected');

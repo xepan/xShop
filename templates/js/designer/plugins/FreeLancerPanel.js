@@ -25,6 +25,7 @@ PageBlock = function(parent,designer,canvas, manager){
 
 		this.add_btn.click(function(event){
 			self.addPage(self.input_box.val());
+			self.designer_tool.bottom_bar.renderTool();
 		});
 
 		// make a list of current pages with remove buton
@@ -68,8 +69,8 @@ PageBlock = function(parent,designer,canvas, manager){
 			});
 
 			rm_btn.click(function(event){
-				self.removePage($(this).data('page_name'));
-				$(this).closest(".page_row").remove();
+				if(self.removePage($(this).data('page_name')))
+					$(this).closest(".page_row").remove();
 			});
 
 			this.input_box.val("");
@@ -80,9 +81,14 @@ PageBlock = function(parent,designer,canvas, manager){
 	this.removePage = function(page_name){
 		// TODO Validation :: Do not remove if 'Fron Page'
  		// if(confirm('Are you sure?'))
-		this.designer_tool.pages_and_layouts[page_name] = null;	
-		delete this.designer_tool.pages_and_layouts[page_name];
-		console.log(this.designer_tool.pages_and_layouts);
+ 		if(page_name[0].firstChild.data == 'Front Page'){
+ 			$.univ().errorMessage('cannot Delete');
+ 			return false;
+ 		}else{
+			this.designer_tool.pages_and_layouts[page_name] = null;	
+			delete this.designer_tool.pages_and_layouts[page_name];
+ 			return true;
+ 		}
 	}
 
 	this.pageExist = function(page_name){
@@ -168,8 +174,8 @@ LayoutBlock = function(parent,designer,canvas, manager){
 			rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('layout_name',layout_name);
 
 			rm_btn.click(function(event){
-				self.removeLayout($(this).data('layout_name'));
-				$(this).closest(".layout_row").remove();
+				if(self.removeLayout($(this).data('layout_name')))
+					$(this).closest(".layout_row").remove();			
 			});
 
 			// console.log(this.designer_tool.pages_and_layouts[this.current_page]);
@@ -178,8 +184,14 @@ LayoutBlock = function(parent,designer,canvas, manager){
 	}
 
 	this.removeLayout = function(layout_name){
-		this.designer_tool.pages_and_layouts[this.current_page][layout_name] = null;
-		delete this.designer_tool.pages_and_layouts[this.current_page][layout_name];
+		if(layout_name == "Main Layout"){
+			$.univ().errorMessage('Cannot Delete');
+			return false;
+		}else{
+			this.designer_tool.pages_and_layouts[this.current_page][layout_name] = null;
+			delete this.designer_tool.pages_and_layouts[this.current_page][layout_name];	
+			return true;
+		}
 	}
 
 	this.layoutExist = function(layout_name){

@@ -124,9 +124,11 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
     background-color: gray;
     transition: all 0.5s ease;
     margin:0 1% 0 1% ;
+    background:linear-gradient(to bottom, #fefefe, #f0f2f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+	border:1px solid #b5babf;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .xshop-designer-pagebtn h3,.xshop-designer-layoutbtn h3{
-	margin-top:45%;
-	color: white;
+	margin-top:43%;
 }
