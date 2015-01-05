@@ -55,6 +55,7 @@ PageBlock = function(parent,designer,canvas, manager){
 			this.designer_tool.pages_and_layouts[page_name] =  new Object();
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'] =  new Object();
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].components = [];
+			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].background = undefined;
 			console.log('adding ' + page_name);
 			// add default layout to this page as well
 
@@ -167,6 +168,7 @@ LayoutBlock = function(parent,designer,canvas, manager){
 		if(!(new_layout) || !(this.layoutExist(layout_name))){
 			var new_layout= new Object();
 			new_layout.components=[];
+			new_layout.background=undefined;
 			this.designer_tool.pages_and_layouts[this.current_page][layout_name] =  new_layout;
 
 			layout_row = $('<div class="layout_row"></div>').appendTo(this.layout_list_div);

@@ -31,16 +31,17 @@ BackgroundImage_Component = function (params){
 	};
 
 	this.init = function(designer,canvas, editor){
+		var self=this;
 		this.designer_tool = designer;
 		this.canvas = canvas;
 		if(editor !== undefined)
 			this.editor = editor;
+		self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].background = self;
 	}
 
 	this.renderTool = function(parent){
 		var self=this;
 		this.parent = parent;
-		
 		tool_btn = $('<div class="btn btn-deault xshop-designer-backgroundimage-toolbtn btn-xs"><i class="glyphicon glyphicon-picture"></i><br>BGI</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset')).data('tool',self);
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
@@ -88,7 +89,21 @@ BackgroundImage_Component = function (params){
 					},
 		})
 		.done(function(ret) {
-			console.log(self);
+			//create new BGImageComponent type object
+			// var new_bgimage = new BackgroundImage_Component();
+			// new_bgimage.init(self.designer_tool,self.canvas, self.editor);
+			// new_bgimage.url = self.options.url;
+			// new_bgimage.options.url = self.options.url;
+			// //Fisrt delete all previous background image
+			// $.each(self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components,function(index,value){
+			// 	if(value.options.type == "BackgroundImage"){
+			// 		delete self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components[index];
+			// 	}
+			// });
+			// //add new background images 
+			// self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_bgimage);
+
+			// console.log(self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout]);
 			$(ret).appendTo(self.element.find('span').html(''));
 			self.xhr=undefined;
 		})
@@ -98,11 +113,7 @@ BackgroundImage_Component = function (params){
 		})
 		.always(function() {
 			console.log("BackgroundImage complete");
-		});	
-
-		// this.element.text(this.text);
-		// this.element.css('left',this.x);
-		// this.element.css('top',this.y);
+		});
 	}
 
 }

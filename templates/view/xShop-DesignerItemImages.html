@@ -37,6 +37,11 @@
 					opener.designer_tool.current_selected_component.options.url = image_src;
 
 					if(opener.designer_tool.current_selected_component.options.type == "BackgroundImage"){
+						// $.each(opener.designer_tool.pages_and_layouts[opener.designer_tool.current_page][opener.designer_tool.current_layout].components,function(index,value){
+						// 	if(value.options.type == "BackgroundImage"){
+						// 		delete opener.designer_tool.pages_and_layouts[opener.designer_tool.current_page][opener.designer_tool.current_layout].components[index];
+						// 	}
+						// });		
 						xx= $('<div class="xshop-designer-backgroundimage-crop"></div>');
 						crop_image = $('<img class="xshop-img" src='+image_src+'></img>').appendTo(xx);
 						x = $('<div></div>').appendTo(crop_image);
@@ -78,11 +83,14 @@
 									opener.designer_tool.current_selected_component.options.crop_height = $(height).val();
 									opener.designer_tool.current_selected_component.options.crop = true;
 									opener.designer_tool.current_selected_component.render();
+									// console.log(opener);
 									$('.xshop-designer-backgroundimage-crop').dialog('close');
 								});
 							},
-
 							close: function( event, ui ) {
+								//add new background images 
+								// opener.designer_tool.pages_and_layouts[opener.designer_tool.current_page][opener.designer_tool.current_layout].components.push(opener.designer_tool.current_selected_component);
+								// console.log(opener);
 							}
 						});	
 					}else{

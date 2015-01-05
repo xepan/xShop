@@ -3,7 +3,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	pages_and_layouts: {
 		"Front Page": {
 			"Main Layout": {
-				components: []
+				components: [],
+				background:undefined
 			}
 		}
 	},
@@ -12,7 +13,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	// components:[],
 	current_page:'Front Page',
 	current_layout: 'Main Layout',
-	item_id:undefined,
+	item_id:1,
 	canvas:undefined,
 	safe_zone: undefined,
 	zoom: 1,
@@ -35,7 +36,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	_create: function(){
 		this.setupLayout();
 	},
-
+		
 	setupLayout: function(){
 		var self = this;
 		// Load Plugin Files
@@ -59,13 +60,16 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 				if(self.options.showTopBar){
 					self.setupToolBar();
 				}
-
+				self.loadDesign();
 				self.render();
-
 			},200);
 		});
 
 		// this.setupComponentPanel(workplace);
+	},
+
+	loadDesign: function(){
+		
 	},
 
 	setupToolBar: function(){
