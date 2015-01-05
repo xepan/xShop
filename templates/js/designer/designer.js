@@ -48,6 +48,10 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/"+component+".js");
 		});
 
+		// Page Layout Load js
+		$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/PageLayout.js");
+		$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/PageLayout.js");
+
 		$.atk4(function(){
 			var workplace = self.setupWorkplace();
 			window.setTimeout(function(){
@@ -68,6 +72,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		var self=this;
 		var top_bar = $('<div class="xshop-designer-tool-topbar"></div>');
 		top_bar.prependTo(this.element);
+		var bottom_bar = $('<div class="xshop-designer-tool-bottombar"></div>');
+		bottom_bar.appendTo($.find('.col-md-12_removed'));
 
 		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
 		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none"></div>').appendTo(top_bar);
@@ -99,6 +105,11 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			tool_btn = temp.renderTool(top_bar) ;
 		});
 		
+		//Page and Layout Setup
+		var temp = new window["PageLayout_Component"]();
+		temp.init(self, self.canvas);
+		bottom_tool_btn = temp.renderTool(bottom_bar) ;
+
 		// Hide options if not clicked on any component
 		$(this.canvas).click(function(event){
 			$('.ui-selected').removeClass('ui-selected');
@@ -142,6 +153,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	render: function(param){
 		var self = this;
+
 		this.canvas.css('height',this.options.height + this.options.unit); // In Given Unit
 		// console.log(this.canvas.height());
 		this.canvas.height(this.canvas.height() * this._getZoom()); // get in pixel .height() and multiply by zoom 
