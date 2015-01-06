@@ -17,7 +17,7 @@ class page_xShop_page_owner_configuration extends page_xShop_page_owner_main{
 		$form->addSubmit('Go');
 		// $form->add('Controller_FormBeautifier');
 		if($form->Submitted()){
-			$form->Update();
+			$form->update();
 			$form->js()->univ()->successMessage('Update Successfully')->execute();	
 		}
 

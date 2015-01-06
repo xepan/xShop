@@ -7,12 +7,9 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		
 		$application_id=$this->api->recall('xshop_application_id');
 
-		$item_model = $this->add('xShop/Model_Item');
+		// $item_model = $this->add('xShop/Model_Item');
 		
-		$bg=$this->app->layout->add('View_BadgeGroup');
-		$v=$bg->add('View_Badge')->set(' Total Item ')->setCount($item_model->getItemCount($application_id))->setCountSwatch('ink');
-		$v=$bg->add('View_Badge')->set(' Publish Item ')->setCount($item_model->getPublishCount($application_id))->setCountSwatch('green');
-		$v=$bg->add('View_Badge')->set(' Unpublish Item ')->setCount($this->add('xShop/Model_Item')->getUnpublishCount($application_id))->setCountSwatch('red');
+		$bg=$this->app->layout->add('xShop/View_Badges_ItemPage');
 		
 		$model = $this->add('xShop/Model_Item');
 		$model = $model->applicationItems($application_id);
@@ -105,9 +102,9 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 			});
 			$g->addFormatter('attachment_url','attachment');
 
-		}
 		$g->addQuickSearch(array('category_name'));
 		$g->addPaginator($ipp=50);					
+		}
 	}
 
 	function page_custom_fields(){

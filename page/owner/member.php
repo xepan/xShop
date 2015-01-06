@@ -11,8 +11,8 @@ class page_xShop_page_owner_member extends page_xShop_page_owner_main{
 			$users_join = $members->join('users','users_id');
 			$users_join->addField('username','username');
 			$users_join->addField('email','email');
-			$users_join->addField('is Active','is_active');
-			$users_join->addField('joining date','created_at');
+			$users_join->addField('is Active','is_active')->type('boolean');
+			$users_join->addField('joining date','created_at')->type('date');
 		}
 
 		$members->setOrder('id',true);
