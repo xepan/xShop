@@ -1,5 +1,4 @@
 <?php
-
 namespace xShop;
 class Model_ItemOffer extends \Model_Table {
 	var $table= "xshop_itemoffers";
