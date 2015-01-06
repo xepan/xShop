@@ -11,19 +11,18 @@ class Grid_Item extends \Grid{
 		$this->addPaginator($ipp=100);
 	}
 
-	function recursiveRender(){	
-
-		$this->addColumn('expander','details');
+	function setModel($m,$fields){
+		parent::setModel($m,$fields);
+		// $this->addColumn('expander','details');
 		$this->addColumn('expander','categories');
-		$this->addColumn('expander','images');
-		$this->addColumn('expander','custom_fields');
-		$this->addColumn('expander','specifications');
-		$this->addColumn('expander','attachments');
-		$this->addColumn('actions','actions');
-		parent::recursiveRender();
+		$this->addColumn('expander','custom_fields',array("descr"=>"Custom Fields",'icon'=>'cog','icon_only'=>true));
+		$this->addColumn('expander','specifications',array("descr"=>"Specfications",'icon'=>'cog','icon_only'=>true));
+		$this->addColumn('expander','images',array("descr"=>"Images",'icon'=>'picture','icon_only'=>true));
+		$this->addColumn('expander','attachments',array("descr"=>"Docs",'icon'=>'folder','icon_only'=>true));
+		// $this->addColumn('pics_docs','pics_docs','Pics / Docs');
 	}
 
-	function init_actions($field){
+	function init_pics_docs($field){
 	    $this->columns[$field]['tpl']=$this->add('GiTemplate')->loadTemplate('column/item-grid');
 
 	    $m=$this->model;
@@ -31,13 +30,12 @@ class Grid_Item extends \Grid{
 	    $do_flag = $this->add('VirtualPage')->set(function($p)use($m){
 	        $name=$m->load($_GET['id'])['name'];
 	        // $m->flag();
-	        echo "sdf";
 	        return $p->js()->univ()->alert('You have flagged '.$name)->execute();
 	    });
 
-	    $this->on('click','.do-set-default')->univ()->ajaxec([$do_flag->getURL(), 'id'=>$this->js()->_selectorThis()->closest('tr')->data('id')]);
+	    $this->on('click','.do-set-default')->univ()->ajaxec(array($do_flag->getURL(), 'id'=>$this->js()->_selectorThis()->closest('tr')->data('id')));
 	}
-	function format_actions($field){
+	function format_pics_docs($field){
 	    $this->current_row_html[$field] = $this->columns[$field]['tpl']->render();
 	}
 
