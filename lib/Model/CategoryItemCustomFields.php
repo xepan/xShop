@@ -15,8 +15,11 @@ class Model_CategoryItemCustomFields extends \Model_Table{
 		$this->hasOne('xShop/Category','category_id');
 		$this->hasOne('xShop/Item','item_id');
 
+		$this->addField('values');
+		$this->addField('rate_effect');
+
 		$this->addField('created_at')->type('datetime')->defaultValue(date('Y-m-d H:i:s'));
-		$this->addField('is_allowed')->type('boolean')->defaultValue(false)->sortable(true);
+		$this->addField('is_active')->type('boolean')->defaultValue(true)->sortable(true);
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}

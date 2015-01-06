@@ -1,8 +1,8 @@
 <?php
 
 namespace xShop;
-class Model_Party extends \Model_Table {
-	var $table= "xshop_party";
+class Model_Affiliate extends \Model_Table {
+	var $table= "xshop_affiliate";
 	function init(){
 		parent::init();
 
@@ -12,7 +12,7 @@ class Model_Party extends \Model_Table {
 		
 		// $f = $this->hasOne('xShop/Partytype','partytype_id');
 		// $f->icon = "fa fa-user~blue";
-		$f = $this->hasOne('xShop/PartyType','partytype_id');
+		$f = $this->hasOne('xShop/AffiliateType','affiliatetype_id');
 		$f->icon = "fa fa-user~blue";
 		$f = $this->addField('company_name')->caption('Company Name')->mandatory(true)->group('a~5~<i class="fa fa-info"></i> Basic Info')->sortable(true);
 		$f->icon = "fa fa-circle~red";
@@ -42,13 +42,11 @@ class Model_Party extends \Model_Table {
 		$f->icon = "fa fa-pencil~blue";
 		
 	
+		// $this->addExpression('items')->set(function($m,$q){
+		// 	return $m->refSQL('xShop/Item')->count();
+		// });
 
-
-		$f = $this->hasMany('xShop/Item','party_id');
-		$f->icon = "fa fa-user~blue";
-		$this->addExpression('items')->set(function($m,$q){
-			return $m->refSQL('xShop/Item')->count();
-		});
+		$this->hasMany('xShop/ItemAffiliateAssociation','affiliate_id');
 
 		 $this->add('dynamic_model/Controller_AutoCreator');
 

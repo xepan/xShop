@@ -29,8 +29,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$item_id = $this->api->stickyGET('xshop_items_id');
 		$item = $this->add('xShop/Model_Item')->load($_GET['xshop_items_id']);
 		$grid=$this->add('Grid');
-		$app_cat_model=$this->add('xShop/Model_Category',array('table_alias'=>'mc'));
-		$app_cat_model = $app_cat_model->getActiveCategory($application_id);
+		$app_cat_model=$this->add('xShop/Model_ActiveCategory',array('table_alias'=>'mc'));
 
 		// selector form
 		$form = $this->add('Form');
@@ -138,5 +137,13 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		// 	}
 		// 	$form->js()->univ()->successMessage('Updated')->execute();
 		// }
+	}
+
+	function page_specifications(){
+		$item_id=$this->api->stickyGET('xshop_items_id');
+		$item = $this->add('xShop/Model_Item')->load($item_id);
+
+		$crud = $this->add('CRUD');
+		$crud->setModel($item->ref('xShop/ItemSpecificationAssociation'));
 	}
 }

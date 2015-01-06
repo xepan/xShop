@@ -17,6 +17,7 @@ class Grid_Item extends \Grid{
 		$this->addColumn('expander','categories');
 		$this->addColumn('expander','images');
 		$this->addColumn('expander','custom_fields');
+		$this->addColumn('expander','specifications');
 		$this->addColumn('expander','attachments');
 		parent::recursiveRender();
 	}

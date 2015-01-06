@@ -3,6 +3,29 @@ xShop:
  ☐ add image (for reverse side or broucher page) ?? rearrange
  ☐ minimum purchase quantity
  ☐ amount change as per qty
+ ☐ Stock
+ ☐ Soft Sales
+ ☐ Rentable
+ ☐ Negative Stock allow till qty
+ ☐ Publish via party and admin
+ ☐ Soldout products show/hide
+ ☐ SKU Code
+ ☐ Combo Pack ( Discount on Combo Purchase)
+ ☐ Related Products /Categories
+ ☐ Product reference (ISBN etc with URL etc)
+ ☐ Product Return Management
+ ☐ WishList
+ ☐ Compare Product
+ ☐ Share and send to friend a product
+ ☐ Water Mark on pictures
+ ☐ Customer Reviews Star ...
+ ☐ Sort Product by relavance, color, price
+ ☐ application config:
+     ☐ Catalog Mode
+     ☐ Legal notices
+     ☐ Minimum Purchase Amount
+     ☐ SKU autogenerate or manual
+
 
 Designer:
   category has many custom fields copied to each new product created.

@@ -15,12 +15,6 @@ class Grid_Category extends \Grid{
 		$this->addClass('panel panel-default');
 		$this->addClass('mygrid');//Todo for reload of crud->grid 
 		$this->js('reload')->reload();//adding trigger 
-		$this->addcolumn('Button','duplicate');
-		$this->addcolumn('expander','customfields');	
-		// $form = $this->add('Form');
-		// $selected_field = $form->addField('line','select');
-		// $form->addSubmit();
-
 
 		parent::recursiveRender();
 	}
