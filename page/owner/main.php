@@ -12,8 +12,6 @@ class page_xShop_page_owner_main extends page_componentBase_page_owner_main {
 		$xshop_m->addItem(array('Shops & Blogs','icon'=>'gauge-1'),'xShop_page_owner_shopsnblogs');
 		$xshop_m->addItem(array('Category','icon'=>'gauge-1'),'xShop_page_owner_category');
 		$xshop_m->addItem(array('Item','icon'=>'gauge-1'),'xShop_page_owner_item');
-		$xshop_m->addItem(array('Manufacturer','icon'=>'gauge-1'),'xShop_page_owner_manufacturer');
-		$xshop_m->addItem(array('supplier','icon'=>'gauge-1'),'xShop_page_owner_supplier');
 		$xshop_m->addItem(array('E-Voucher','icon'=>'gauge-1'),'xShop_page_owner_voucher');
 		$xshop_m->addItem(array('Member','icon'=>'gauge-1'),'xShop_page_owner_member');
 		$xshop_m->addItem(array('Order','icon'=>'gauge-1'),'xShop_page_owner_order');
