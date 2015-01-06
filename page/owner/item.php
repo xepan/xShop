@@ -5,18 +5,61 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 	function init(){
 		parent::init();
 		
-		$application_id=$this->api->recall('xshop_application_id');
+		$application_id=$this->api->recall('xshop_application_id');		
+		
+		$cols = $this->app->layout->add('Columns');
+		$cat_col = $cols->addColumn(3);
+		$item_col = $cols->addColumn(9);
+		
+		//Category
+		$cat_col->add('xShop/View_Badges_CategoryPage');
+		$category_model = $cat_col->add('xShop/Model_Category');
+		$category_model->addCondition('application_id',$application_id);	
+		$category_model->setOrder('id','desc');
+						
+		$cat_crud=$cat_col->add('CRUD',array('grid_class'=>'xShop/Grid_Category'));
+		$cat_crud->setModel($category_model,array('parent_id','name','order_no','is_active','meta_title','meta_description','meta_keywords','image_url','alt_text','description'),array('name'));
+		
+		if($cat_crud->isEditing()){	
+			$parent_model = $cat_crud->form->getElement('parent_id')->getModel();
+			$parent_model->title_field='category_name';
+			$parent_model->addCondition('application_id',$application_id);
+		}else{
+			$g = $cat_crud->grid;
+			$g->addMethod('format_filteritem',function($g,$f)use($item_col){
+				$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'. $item_col->js()->reload(array('category_id'=>$g->model->id)) .'">'.$g->current_row[$f].'</a>';
+			});
+			$g->addFormatter('name','filteritem');
+		}
 
-		// $item_model = $this->add('xShop/Model_Item');
-		
-		$bg=$this->app->layout->add('xShop/View_Badges_ItemPage');
-		
-		$model = $this->add('xShop/Model_Item');
-		$model = $model->applicationItems($application_id);
+		//Item
+		$item_col->add('xShop/View_Badges_ItemPage');
+		$item_model = $item_col->add('xShop/Model_Item');
+		$item_model = $item_model->applicationItems($application_id);
 
-		$crud=$this->app->layout->add('CRUD',array('grid_class'=>'xShop/Grid_Item'));
-		$crud->setModel($model,array('party_id','name','sku','is_publish','short_description','description','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','item_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags'),array('name','sku','sale_price','is_publish'));
+		if($_GET['category_id']){
+			$this->api->stickyGET('category_id');
+			$filter_box = $item_col->add('View_Box')->setHTML('Items for <b>'. $this->add('xShop/Model_Category')->load($_GET['category_id'])->get('name').'</b>' );
+
+			$filter_box->add('Icon',null,'Button')
+            ->addComponents(array('size'=>'mega'))
+            ->set('cancel-1')
+            ->addStyle(array('cursor'=>'pointer'))
+            ->on('click',function($js) use($filter_box,$item_col) {
+                $filter_box->api->stickyForget('category_id');
+                return $filter_box->js(null,$item_col->js()->reload())->hide()->execute();
+            });
+
+			$cat_item_join = $item_model->join('xshop_category_item.item_id');
+			$cat_item_join->addField('category_id');
+			$cat_item_join->addField('is_associate');
+			$item_model->addCondition('category_id',$_GET['category_id']);
+			$item_model->addCondition('is_associate',true);
+		}
 		
+		$item_crud=$item_col->add('CRUD',array('grid_class'=>'xShop/Grid_Item'));
+		$item_crud->setModel($item_model,array('party_id','name','sku','is_publish','short_description','description','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','item_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags'),array('name','sku','sale_price','is_publish'));
+			
 	}
 
 	function page_categories(){
@@ -102,8 +145,8 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 			});
 			$g->addFormatter('attachment_url','attachment');
 
-		$g->addQuickSearch(array('category_name'));
-		$g->addPaginator($ipp=50);					
+			$g->addQuickSearch(array('category_name'));
+			$g->addPaginator($ipp=50);					
 		}
 	}
 
@@ -143,4 +186,5 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$crud = $this->add('CRUD');
 		$crud->setModel($item->ref('xShop/ItemSpecificationAssociation'));
 	}
+
 }
