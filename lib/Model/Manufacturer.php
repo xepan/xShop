@@ -35,7 +35,8 @@ class Model_Manufacturer extends \Model_Table {
 		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'));
 		$f->icon = "fa fa-pencil~blue";
 		
-		$this->hasMany('xShop/Party','party_id');
+		$this->hasMany('xShop/Affillate','manufacturer_id');
+		$this->hasMany('xShop/Item','manufacturer_id');
 		$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}

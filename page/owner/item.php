@@ -145,7 +145,6 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 			});
 			$g->addFormatter('attachment_url','attachment');
 
-		}
 		$g->addQuickSearch(array('category_name'));
 		$g->addPaginator($ipp=50);					
 	}
