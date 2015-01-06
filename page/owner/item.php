@@ -76,15 +76,15 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$app_cat_field = $form->addField('hidden','app_cat')->set(json_encode($item->getAssociatedCategories()));
 		$form->addSubmit('Update');
 		
-		$app_cat_model->addExpression('status')->set(function($m,$q)use($item_id){
-			$category_prod_model=$m->add('xShop/Model_CategoryItem',array('table_alias'=>'c'));
-			$category_prod_model->addCondition('category_id',$q->getField('id'));
-			$category_prod_model->addCondition('item_id',$item_id);
-			$category_prod_model->addCondition('is_associate',true);
-			return $category_prod_model->count();
-		})->type('boolean');
+		// $app_cat_model->addExpression('status')->set(function($m,$q)use($item_id){
+		// 	$category_prod_model=$m->add('xShop/Model_CategoryItem',array('table_alias'=>'c'));
+		// 	$category_prod_model->addCondition('category_id',$q->getField('id'));
+		// 	$category_prod_model->addCondition('item_id',$item_id);
+		// 	$category_prod_model->addCondition('is_associate',true);
+		// 	return $category_prod_model->count();
+		// })->type('boolean');
 
-		$grid->setModel($app_cat_model,array('category_name','application','status'));
+		$grid->setModel($app_cat_model,array('category_name'));
 		$grid->addSelectable($app_cat_field);
 
 		if($form->isSubmitted()){
