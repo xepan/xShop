@@ -11,8 +11,8 @@ class Grid_Item extends \Grid{
 		$this->addPaginator($ipp=100);
 	}
 
-	function recursiveRender(){
-		
+	function recursiveRender(){	
+
 		$this->addColumn('expander','details');
 		$this->addColumn('expander','categories');
 		$this->addColumn('expander','images');
@@ -30,7 +30,6 @@ class Grid_Item extends \Grid{
 
 	    $do_flag = $this->add('VirtualPage')->set(function($p)use($m){
 	        $name=$m->load($_GET['id'])['name'];
-
 	        // $m->flag();
 	        echo "sdf";
 	        return $p->js()->univ()->alert('You have flagged '.$name)->execute();
