@@ -31,14 +31,14 @@ class Model_Supplier extends \Model_Table {
 		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'));
 		$f->icon = "fa fa-pencil~blue";
 		//$this->hasMany('xShop/Item','supplier_id');
-		$this->addHook('beforeDelete',$this);
+		//$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator');
 
 	}
 
-	function beforeDelete($m){
-		if($m->ref('xShop/Item')->count()->getOne())
-			$this->api->js(true)->univ()->errorMessage('First Delete,Associated Items')->execute();		
-	}
+	// function beforeDelete($m){
+	// 	if($m->ref('xShop/Item')->count()->getOne())
+	// 		$this->api->js(true)->univ()->errorMessage('First Delete,Associated Items')->execute();		
+	// }
 
 }

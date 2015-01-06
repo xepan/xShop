@@ -18,8 +18,6 @@ class page_xShop_page_owner_category extends page_xShop_page_owner_main{
 						
 		$crud=$this->app->layout->add('CRUD',array('grid_class'=>'xShop/Grid_Category'));
 		$crud->setModel($category_model,array('parent_id','name','order_no','is_active','meta_title','meta_description','meta_keywords','image_url','alt_text','description'),array('name','parent','order_no','is_active'));
-		// $crud->addClass('xshop-owner-category');
-		// $crud->add('Controller_FormBeautifier',array('params'=>array('f/addClass'=>'stacked')));
 		
 		if($crud->isEditing()){	
 			$parent_model = $crud->form->getElement('parent_id')->getModel();

@@ -10,6 +10,7 @@ class Model_Item extends \Model_Table{
 		parent::init();	
 		
 		$f = $this->hasOne('xShop/Affiliate','affiliate_id');
+		$this->hasOne('xShop/Manufacturer','manufacturer_id');
 		$this->hasOne('xShop/Application','application_id');
 
 		//for Mutiple Epan website

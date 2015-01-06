@@ -14,6 +14,7 @@ class Model_Affiliate extends \Model_Table {
 		// $f->icon = "fa fa-user~blue";
 		$f = $this->hasOne('xShop/AffiliateType','affiliatetype_id');
 		$f->icon = "fa fa-user~blue";
+		//$this->hasOne('xShop/Manufacturer','Affillate_id');
 		$f = $this->addField('company_name')->caption('Company Name')->mandatory(true)->group('a~5~<i class="fa fa-info"></i> Basic Info')->sortable(true);
 		$f->icon = "fa fa-circle~red";
 		$f = $this->addField('name')->caption('Owner Name')->mandatory(true)->group('a~5~<i class="fa fa-info"></i> Basic Info')->sortable(true);
