@@ -15,7 +15,7 @@ class page_xShop_page_owner_afflilate extends page_xShop_page_owner_main{
 		$v=$bg->add('View_Badge')->set('Total Manufacturer Item')->setCount($total_manufacturer_item)->setCountSwatch('ink');
 		$v=$bg->add('View_Badge')->set('Total Supplier Item')->setCount($total_supplier_item)->setCountSwatch('green');
 		
-		$party_model = $this->add('xShop/Model_Party');
+		$party_model = $this->add('xShop/Model_Afflilate');
 		$crud=$this->app->layout->add('CRUD');
 		// $party_model->removeElement('epan_id');
 		$crud->setModel($party_model);
