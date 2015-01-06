@@ -1,13 +1,13 @@
 <?php
 
 
-class page_xShop_page_owner_party extends page_xShop_page_owner_main{
+class page_xShop_page_owner_afflilate extends page_xShop_page_owner_main{
 	function init(){
 		parent::init();
 
 		$partyitemsvp = $this->partyitemsvp();
 		//View badge
-		$m = $this->add('xShop/Model_Party');
+		$m = $this->add('xShop/Model_Afflilate');
 		$bg=$this->app->layout->add('View_BadgeGroup');		
 		$total_manufacturer_item=$this->add('xShop/Model_Manufacturer')->count()->getOne();
 		$total_supplier_item=$this->add('xShop/Model_Supplier')->count()->getOne();
