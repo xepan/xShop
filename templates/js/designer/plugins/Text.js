@@ -283,6 +283,7 @@ Text_Component = function (params){
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
+			self.designer_tool.current_selected_component = undefined;
 			// create new TextComponent type object
 			var new_text = new Text_Component();
 			new_text.init(self.designer_tool,self.canvas, self.editor);
@@ -296,20 +297,6 @@ Text_Component = function (params){
 
 			self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_text);
 			new_text.render();
-			$(new_text.element).data('component',new_text);
-			
-			$(new_text.element).click(function(event) {
-	            $('.ui-selected').removeClass('ui-selected');
-	            $(this).addClass('ui-selected');
-	            $('.xshop-options-editor').hide();
-	            self.editor.element.show();
-	            self.designer_tool.option_panel.show();
-	            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
-	            self.designer_tool.current_selected_component = new_text;
-	            self.editor.setTextComponent(new_text);
-	            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
-		        event.stopPropagation();
-			});
 		});
 
 
@@ -328,6 +315,19 @@ Text_Component = function (params){
 					self.options.x = position.left / self.designer_tool.zoom;
 					self.options.y = position.top / self.designer_tool.zoom;
 				}
+			});
+			$(this.element).data('component',self);
+			$(this.element).click(function(event) {
+	            $('.ui-selected').removeClass('ui-selected');
+	            $(this).addClass('ui-selected');
+	            $('.xshop-options-editor').hide();
+	            self.editor.element.show();
+	            self.designer_tool.option_panel.show();
+	            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
+	            self.designer_tool.current_selected_component = self;
+	            self.editor.setTextComponent(self);
+	            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
+		        event.stopPropagation();
 			});
 		}
 

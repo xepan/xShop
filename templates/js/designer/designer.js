@@ -3,7 +3,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	pages_and_layouts: {
 		"Front Page": {
 			"Main Layout": {
-				components: []
+				components: [],
+				background:undefined
 			}
 		}
 	},
@@ -12,7 +13,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	// components:[],
 	current_page:'Front Page',
 	current_layout: 'Main Layout',
-	item_id:undefined,
+	item_id:1,
 	canvas:undefined,
 	safe_zone: undefined,
 	zoom: 1,
@@ -20,13 +21,14 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	px_width:undefined,
 	option_panel: undefined,
 	freelancer_panel: undefined,
+	editors : [],
 
 	options:{
 		// Layout Options
 		showTopBar: true,
 		// ComponentsIncluded: ['Background','Text','Image','Help'], // Plugins
 		IncludeJS: ['FreeLancerPanel'], // Plugins
-		ComponentsIncluded: ['Text','Image','PDF','ZoomPlus','ZoomMinus','Save'], // Plugins
+		ComponentsIncluded: ['BackgroundImage','Text','Image','PDF','ZoomPlus','ZoomMinus','Save'], // Plugins
 		design: [],
 		designer_mode: false,
 		width: undefined,
@@ -35,7 +37,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	_create: function(){
 		this.setupLayout();
 	},
-
+		
 	setupLayout: function(){
 		var self = this;
 		// Load Plugin Files
@@ -48,6 +50,10 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/"+component+".js");
 		});
 
+		// Page Layout Load js
+		$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/PageLayout.js");
+		$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/PageLayout.js");
+
 		$.atk4(function(){
 			var workplace = self.setupWorkplace();
 			window.setTimeout(function(){
@@ -55,19 +61,44 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 				if(self.options.showTopBar){
 					self.setupToolBar();
 				}
-
+				self.loadDesign();
 				self.render();
-
 			},200);
 		});
 
 		// this.setupComponentPanel(workplace);
 	},
 
+	loadDesign: function(){
+		var self = this;
+		if(self.options.design =="") return;
+		saved_design = JSON.parse(self.options.design);
+		$.each(saved_design,function(page_name,page_object){
+			$.each(page_object,function(layout_name,layout_object){
+				console.log(layout_object.components);
+				$.each(layout_object.components,function(key,value){
+					value = JSON.parse(value);
+					var temp = new window[value.type + "_Component"]();
+					temp.init(self, self.canvas, self.editors[value.type]);
+					temp.options = value;
+					self.pages_and_layouts[page_name][layout_name]['components'][key] = temp;
+				});
+				
+				var temp = new BackgroundImage_Component();
+				temp.init(self, self.canvas);
+				temp.options = JSON.parse(layout_object.background);
+				self.pages_and_layouts[page_name][layout_name]['background'] = temp;
+			});
+
+		});
+	},
+
 	setupToolBar: function(){
 		var self=this;
 		var top_bar = $('<div class="xshop-designer-tool-topbar"></div>');
 		top_bar.prependTo(this.element);
+		var bottom_bar = $('<div class="xshop-designer-tool-bottombar"></div>');
+		bottom_bar.appendTo($.find('.col-md-12_removed'));
 
 		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
 		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none"></div>').appendTo(top_bar);
@@ -97,12 +128,19 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			var temp = new window[component+"_Component"]();
 			temp.init(self, self.canvas);
 			tool_btn = temp.renderTool(top_bar) ;
+			self.editors[component] = temp.editor;
 		});
 		
+		//Page and Layout Setup
+		var temp = new window["PageLayout_Component"]();
+		temp.init(self, self.canvas, bottom_bar);
+		bottom_tool_btn = temp.renderTool() ;
+		self.bottom_bar = temp;
 		// Hide options if not clicked on any component
 		$(this.canvas).click(function(event){
 			$('.ui-selected').removeClass('ui-selected');
 			self.option_panel.hide();
+			self.current_selected_component = undefined;
 			self.freelancer_panel.FreeLancerComponentOptions.element.hide();
 			$('div.guidex').css('display','none');
 			$('div.guidey').css('display','none');
@@ -141,6 +179,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	render: function(param){
 		var self = this;
+
 		this.canvas.css('height',this.options.height + this.options.unit); // In Given Unit
 		// console.log(this.canvas.height());
 		this.canvas.height(this.canvas.height() * this._getZoom()); // get in pixel .height() and multiply by zoom 
@@ -161,6 +200,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index, component) {
 			component.render();
 		});
+
+		self.pages_and_layouts[self.current_page][self.current_layout].background.render();
 	},
 
 	_getZoom:function(){

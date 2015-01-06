@@ -23,7 +23,7 @@ xShop_Image_Editor = function(parent){
 		// console.log(self.current_image_component);
 		url = self.current_image_component.options.url;		
 		
-		xx= $('<div></div>');
+		xx= $('<div class="xshop-designer-image-crop"></div>');
 		crop_image = $('<img class="xshop-img" src='+url+'></img>').appendTo(xx);
 		x = $('<div></div>').appendTo(crop_image);
 		y = $('<div></div>').appendTo(crop_image);
@@ -50,24 +50,33 @@ xShop_Image_Editor = function(parent){
 					    // console.log(Math.round(data.width));
 					  }
 				});
+				var $titlebar = $.find('.ui-dialog-titlebar');
+				continue_btn = $('<button class="btn btn-default pull-right">Continue</button>').appendTo($titlebar);
+				continue_btn.click(function(){
+					self.current_image_component.options.crop_x = $(x).val();
+					self.current_image_component.options.crop_y = $(y).val();
+					self.current_image_component.options.crop_width = $(width).val();
+					self.current_image_component.options.crop_height = $(height).val();
+					self.current_image_component.options.crop = true;
+					self.current_image_component.render();
+					$('.xshop-designer-image-crop').dialog('close');
+				});
 			},
 
 			close: function( event, ui ) {
-				self.current_image_component.options.crop_x = $(x).val();
-				self.current_image_component.options.crop_y = $(y).val();
-				self.current_image_component.options.crop_width = $(width).val();
-				self.current_image_component.options.crop_height = $(height).val();
-				self.current_image_component.options.crop = true;
-				self.current_image_component.render();
 				console.log(self.current_image_component.canvas);
 			}
 		});
-		console.log(self.current_image_component);
+		// console.log(self.current_image_component);
 		//TODO CROP and RESIZE The Image not No
 	});
 
 	this.image_replace.click(function(event){
-		//TODO CROP and RESIZE The Image not No
+		options ={modal:false,
+					width:800	
+				};
+		$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
+
 	});
 
 	this.image_duplicate.click(function(event){
@@ -98,6 +107,7 @@ Image_Component = function (params){
 		crop_width:false,
 		crop_height:false,
 		crop:false,
+		replace_image: false,
 		rotation_angle:0,
 		locked: false,
 		alignment_left:false,
@@ -147,20 +157,7 @@ Image_Component = function (params){
 		self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_image);
 		new_image.render();
 		
-		$(new_image.element).data('component',new_image);
 		
-		$(new_image.element).click(function(event) {
-            $('.ui-selected').removeClass('ui-selected');
-            $(this).addClass('ui-selected');
-            $('.xshop-options-editor').hide();
-            self.editor.element.show();
-            self.designer_tool.option_panel.show();
-            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
-            self.designer_tool.current_selected_component = new_image;
-            self.editor.setImageComponent(new_image);
-            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
-	        event.stopPropagation();
-		});
 	}
 
 	this.renderTool = function(parent){
@@ -172,6 +169,7 @@ Image_Component = function (params){
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
+			self.designer_tool.current_selected_component = undefined;
 			options ={modal:false,
 					width:800	
 				};
@@ -206,6 +204,21 @@ Image_Component = function (params){
 					self.render();
 				}
 			});
+
+			$(this.element).data('component',this);
+		
+			$(this.element).click(function(event) {
+	            $('.ui-selected').removeClass('ui-selected');
+	            $(this).addClass('ui-selected');
+	            $('.xshop-options-editor').hide();
+	            self.editor.element.show();
+	            self.designer_tool.option_panel.show();
+	            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
+	            self.designer_tool.current_selected_component = self;
+	            self.editor.setImageComponent(self);
+	            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
+		        event.stopPropagation();
+			});
 		}
 
 		this.element.css('top',self.options.y  * self.designer_tool.zoom);
@@ -224,6 +237,7 @@ Image_Component = function (params){
 					crop_y: self.options.crop_y,
 					crop_height: self.options.crop_height,
 					crop_width: self.options.crop_width,
+					replace_image: self.options.replace_image,
 					rotation_angle:self.options.rotation_angle,
 					url:self.options.url,
 					crop:self.options.crop,
@@ -243,8 +257,7 @@ Image_Component = function (params){
 		})
 		.always(function() {
 			console.log("complete");
-		});
-		
+		});	
 
 		// this.element.text(this.text);
 		// this.element.css('left',this.x);
