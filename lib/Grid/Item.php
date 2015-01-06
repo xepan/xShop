@@ -29,7 +29,6 @@ class Grid_Item extends \Grid{
 
 	    $do_flag = $this->add('VirtualPage')->set(function($p)use($m){
 	        $name=$m->load($_GET['id'])['name'];
-
 	        // $m->flag();
 	        return $p->js()->univ()->alert('You have flagged '.$name)->execute();
 	    });
