@@ -18,10 +18,10 @@ class page_xShop_page_owner_order extends page_xShop_page_owner_main{
 		$crud=$this->app->layout->add('CRUD');
 		$crud->setModel($order_model);
 		
-		// if($crud->isEditing()){	
-		// 	$parent_model = $crud->form->getElement('parent_id')->getModel();
-		// 	$parent_model->title_field='order_name';
-		// 	$parent_model->addCondition('application_id',$application_id);
-		// }
+		if(!$crud->isEditing()){
+			$crud->grid->addQuickSearch(array('member','order_id','amount','billing_address','shipping_address','order_date'));
+			$crud->grid->addPaginator($ipp=50);
+		}
+
 	}
 }
