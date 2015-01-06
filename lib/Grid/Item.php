@@ -13,11 +13,11 @@ class Grid_Item extends \Grid{
 
 	function setModel($m,$fields){
 		parent::setModel($m,$fields);
-		$this->addColumn('expander','details');
+		// $this->addColumn('expander','details');
 		$this->addColumn('expander','categories');
-		$this->addColumn('expander','images');
 		$this->addColumn('expander','custom_fields');
 		$this->addColumn('expander','specifications');
+		$this->addColumn('expander','images');
 		$this->addColumn('expander','attachments');
 		$this->addColumn('actions','actions');
 	}
@@ -33,7 +33,7 @@ class Grid_Item extends \Grid{
 	        return $p->js()->univ()->alert('You have flagged '.$name)->execute();
 	    });
 
-	    $this->on('click','.do-set-default')->univ()->ajaxec([$do_flag->getURL(), 'id'=>$this->js()->_selectorThis()->closest('tr')->data('id')]);
+	    $this->on('click','.do-set-default')->univ()->ajaxec(array($do_flag->getURL(), 'id'=>$this->js()->_selectorThis()->closest('tr')->data('id')));
 	}
 	function format_actions($field){
 	    $this->current_row_html[$field] = $this->columns[$field]['tpl']->render();
