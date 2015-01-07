@@ -4,7 +4,7 @@ class View_Tools_Category extends \componentBase\View_Component{
 	function init(){
 		parent::init();
 
-		$category_group=$this->html_attributes['xshop_categorygroup_id'];
+		$application=$this->html_attributes['xshop_application_id'];
 		$categories = $this->add('xShop/Model_Category',array('table_alias'=>'mc'));
 
 		$this->template->trySet('no_of_cols',$this->html_attributes['xshop-category-grid-column']);
@@ -14,19 +14,16 @@ class View_Tools_Category extends \componentBase\View_Component{
 			$this->template->trySet('xshopcategoryshowlist',$this->html_attributes['xshopcategoryshowlist']);
 		}
 
-		if(!$category_group){
-			// throw new \Exception($category_group);
+		if(!$application){
 			$this->add('View_Error')->set('Please Select Application or First Create Application');
 			return;
-			// $this->js(true)->univ()->errorMessage('Please Select category group first');
 		}
 		elseif(!$this->html_attributes['xshop_category_url_page']){
 			$this->add('View_Error')->set('Please Specify Category URL Page Name (epan page name like.. about,contactus etc..)');		
 			return;
-			// $this->js(true)->univ()->errorMessage('Please Specify Category URL Page');
 		}else{
 			
-			$categories->addCondition('application_id',$category_group);		
+			$categories->addCondition('application_id',$application);		
 			$categories->addCondition('is_active',true);
 			$categories->setOrder('order_no','asc');
 

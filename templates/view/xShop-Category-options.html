@@ -32,7 +32,7 @@
 									Application
 								</td>
 								<td>
-									<select id='xshop_categorygroup_{$id}'>
+									<select id='xshop_application_{$id}'>
 									</select>
 								</td>
 							</tr>
@@ -44,7 +44,7 @@
 									<input type='text' id='xshop_category_url_page_{$id}'/>
 								</td>
 
-								<tr class="xshop-megamnulatout-option">
+								<tr class="xshop-megamenulatout-option">
 									
 								<td> Select Item in Each Row</td>
 								<td>
@@ -59,7 +59,7 @@
 									</select>
 								</td>
 								</tr >
-								<tr class="xshop-megamnulatout-option">
+								<tr class="xshop-megamenulatout-option">
 									<td>
 										Show Category list   
 									</td>
@@ -97,16 +97,16 @@ $('#xshop-category-editcss').click(function(){
 });
 
 $('#xshop_category_layout').change(function(event) {
-	$('.xshop-megamnulatout-option').hide();
+	$('.xshop-megamenulatout-option').hide();
 	$(current_selected_component).attr('xshop_category_layout',$(this).val());
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 	if($(this).val()=='MegaMenu'){
-		$('.xshop-megamnulatout-option').show();
+		$('.xshop-megamenulatout-option').show();
 	}
 });
 
-$('#xshop_categorygroup_{$id}').change(function(event){
-	$(current_selected_component).attr('xshop_categorygroup_id',$(this).val());
+$('#xshop_application_{$id}').change(function(event){
+	$(current_selected_component).attr('xshop_application_id',$(this).val());
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 
@@ -134,14 +134,19 @@ var {$component_type}_options = {
 				type: 'GET',
 				data: { },
 				success: function (data) {
-					$('#xshop_categorygroup_{$_id}').html(data);
-					$('#xshop_categorygroup_{$_id}').val($(current_selected_component).attr('xshop_categorygroup_id')?$(current_selected_component).attr('xshop_categorygroup_id'):0);
+					$('#xshop_application_{$_id}').html(data);
+					$('#xshop_application_{$_id}').val($(current_selected_component).attr('xshop_application_id')?$(current_selected_component).attr('xshop_application_id'):0);
 				}
 			});
 		
+		if($(current_selected_component).attr('xshop_category_layout')=='MegaMenu'){
+			$('.xshop-megamenulatout-option').show();		
+		}else
+			$('.xshop-megamenulatout-option').hide();
+
 		$('#xshop_category_layout').val($(current_selected_component).attr('xshop_category_layout')?$(current_selected_component).attr('xshop_category_layout'):'Horizontal');
 
-		$("#xshop_categorygroup_{$id}:contains(" + $(current_selected_component).attr('xshop_categorygroup_id') + ")").attr('selected', 'selected');
+		$("#xshop_application_{$id}:contains(" + $(current_selected_component).attr('xshop_application_id') + ")").attr('selected', 'selected');
 
 		$('#xshop_category_url_page_{$id}').val($(current_selected_component).attr('xshop_category_url_page'));
 
