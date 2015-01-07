@@ -12,17 +12,48 @@ class page_xShop_page_owner_shopsnblogs extends page_xShop_page_owner_main {
 	function page_shops(){
 		$crud= $this->add('CRUD',array('grid_class'=>'xShop/Grid_Shop'));
 		$crud->setModel('xShop/Shop');
-		
+
 		$cf_crud = $crud->addRef('xShop/CustomFields',array('label'=>'Custom Fields'));
 		$sp_crud = $crud->addRef('xShop/Specification',array('label'=>'Specifications'));
-		// if($cf_crud and $cf_crud->isEditing()){
-		// 	$cf_crud->form->getElement('type')->js('change',$this->js()->alert('asdasd'));
-		// }
+
+		if(!$crud->isEditing()){
+			$crud->grid->addColumn('expander','configuration',array("descr"=>"Configuration",'icon'=>'cog'));
+		}
 	}
 
 	function page_blogs(){
 		$crud= $this->add('CRUD',array('grid_class'=>'xShop/Grid_Blog'));
 		$crud->setModel('xShop/Blog');
 
+		if(!$crud->isEditing()){
+			$crud->grid->addColumn('expander','configuration',array("descr"=>"Configuration",'icon'=>'cog'));
+		}
 	}
+
+	function page_shops_configuration(){
+		$application_id = $this->api->StickyGET('xshop_application_id');
+		$config_model=$this->add('xShop/Model_Configuration')->addCondition('application_id',$application_id)->tryLoadAny();
+		$form=$this->add('Form');
+		$form->setModel($config_model);
+		$form->addSubmit('Go');
+		if($form->Submitted()){
+			// throw new \Exception("Error Processing Request".$application_id);	
+			$form->update();
+			$form->js()->univ()->successMessage('Update Successfully')->execute();	
+		}
+	}
+
+	function page_blogs_configuration(){
+		$application_id = $this->api->StickyGET('xshop_application_id');
+		$config_model=$this->add('xShop/Model_Configuration')->addCondition('application_id',$application_id)->tryLoadAny();
+		$form=$this->add('Form');
+		$form->setModel($config_model);
+		$form->addSubmit('Go');
+		if($form->Submitted()){
+			// throw new \Exception("Error Processing Request".$application_id);	
+			$form->update();
+			$form->js()->univ()->successMessage('Update Successfully')->execute();	
+		}
+	}
+
 }
