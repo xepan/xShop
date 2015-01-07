@@ -25,7 +25,9 @@ xShop:
      ☐ Legal notices
      ☐ Minimum Purchase Amount
      ☐ SKU autogenerate or manual
-
+ ☐ Shipping Management
+ ☐ Tax management
+ ☐ 
 
 Designer:
   category has many custom fields copied to each new product created.
