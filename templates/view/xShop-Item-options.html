@@ -1,0 +1,271 @@
+<div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
+	<div class="panel-group" id="accordion">
+		<div class="xepan-collasp-header component-header">
+			<div class="panel-heading">
+				<h3 class="panel-title">
+				<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-xshop-item">
+					{$component_type_name}
+				</a>
+				</h3>
+			</div>
+			<div id="collapse-xshop-item" class="panel-collapse collapse">
+				<div class="panel-body">
+					<div class='xepan-collasp-header'>
+						<table class="table table-condensed table-hover">
+							<tr>
+								<td>
+									Edit CSS
+								</td>
+								<td colspan="2">
+									<div id="xshop-item-editcss" class="btn btn-default btn-xs">Edit css</div>
+								</td>
+							</tr>
+							<tr>
+								<td >
+									Select item
+								</td>
+								<td colspan="2">
+									<select id='xShop-itemtype-root'>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td >
+									Display Layout
+								</td>
+								<td>
+									<div class="btn-group">
+										<button id="xShop-listbtn" type="button" class="btn btn-default glyphicon glyphicon-th-list btn btn-sm" title="List View"> </button>
+										<button id="xShop-gridbtn" type="button" class="btn btn-default glyphicon glyphicon-th btn-sm" title="Grid View"> </button>
+									</div>
+								</td>
+								<td>
+									<select id="xShop-grid-column" type="number" class="" placeholder="item in each Row">
+										<option value="0">Item in Each Row</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="6">6</option>
+										<option value="12">12</option>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td >
+									Application
+								</td>
+								<td colspan="2">
+									<select id='xshop-item-application'>
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									show/hide
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									item Topbar
+								</td>
+								<td>
+									<input id="xshop_item_topbar" type="checkbox"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Image Zoom on Click
+								</td>
+								<td>
+									<input id="xshop_item_fancy_box" type="checkbox"/>
+								</td>
+							</tr>
+							
+							<tr>
+								<td>
+									
+								</td>
+								<td >
+									Detail on click
+								</td>
+								<td>
+									<input id="xshop_item_hover" type="checkbox"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Detail on Image Click
+								</td>
+								<td>
+									<input id="xshop_item_detail_on_image_click" type="checkbox"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									
+								</td>
+								<td>
+									Short Description
+								</td>
+								<td>
+									<input id="xshop_item_short_description" type="checkbox"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									Items on Page
+								</td>
+								<td colspan="2">
+									<input id="xshop_item_paginator" type="text" placeHolder="no of items"/>
+								</td>
+							</tr>
+							<tr>
+								<td >
+									Item Detail Subpage
+								</td>
+								<td colspan="2">
+									<input id="xshop_item_hover_detail_page" type="text"/>
+								</td>
+							</tr>							
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div><br>
+	<table>
+		<tbody>
+			
+		</tbody>
+	</table>
+	<div><button id='xShopitemServerSide'>Server Side</button></div>
+</div>
+<script type="text/javascript">
+// ========== OPTION TO COMPONENT EFFECT ==============
+//
+// $(your_option_html_element).click(function(event,ui){
+		// 		$(current_selected_component).what to do ???
+// })
+$('#xShopitemServerSide').click(function(event){
+	$('#epan-quick-component-options').toggle('slideup');
+	$.univ.frameURL('xShop items','index.php?page=xShop_page_owner_main')
+});
+$('#xShop-itemtype-root').change(function(event) {
+	$(current_selected_component).attr('xshop_itemtype',$(this).val());
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop-item-application').change(function(event) {
+$(current_selected_component).attr('xshop_item_application_id',$(this).val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xShop-listbtn').click(function(event) {
+$(current_selected_component).attr('xshop_itemlayout','xShop-itemlist');
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xShop-gridbtn').click(function(event) {
+$(current_selected_component).attr('xshop_itemlayout','xShop-itemgrid');
+// $('#xShop-grid-column');
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xShop-grid-column').change(function(event){
+$(current_selected_component).attr('xshop-grid-column',$(this).val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop_item_topbar').change(function(event) {
+if($('#xshop_item_topbar').is(':checked')?$(current_selected_component).attr('xshop_item_topbar','true'):$(current_selected_component).attr('xshop_item_topbar','false'));
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop-item-editcss').click(function(){
+$(this).univ().frameURL('Edit CSS ( xShop item Display Layout )','index.php?page=xShop_page_itemlayoutcss&cut_page=1');
+});
+$('#xshop_item_fancy_box').change(function(event) {
+if($('#xshop_item_fancy_box').is(':checked')?$(current_selected_component).attr('xshop_item_fancy_box',1):$(current_selected_component).attr('xshop_item_fancy_box',0));
+
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop_item_hover').change(function(event) {
+if($('#xshop_item_hover').is(':checked')?$(current_selected_component).attr('xshop_item_hover','1'):$(current_selected_component).attr('xshop_item_hover','0'));
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop_item_hover_detail_page').change(function(event){
+$(current_selected_component).attr('xshop_item_hover_detail_page',$(this).val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+$('#xshop_item_detail_on_image_click').change(function(event){
+if($('#xshop_item_detail_on_image_click').is(':checked')?$(current_selected_component).attr('xshop_item_detail_on_image_click','1'):$(current_selected_component).attr('xshop_item_detail_on_image_click','0'));
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_item_short_description').change(function(event){
+	if($('#xshop_item_short_description').is(':checked')?$(current_selected_component).attr('xshop_item_short_description','1'):$(current_selected_component).attr('xshop_item_short_description','0'));
+	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+
+$('#xshop_item_paginator').change(function(event){
+$(current_selected_component).attr('xshop_item_paginator',$(this).val());
+$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+});
+var {$component_type}_options = {
+show: function (){
+// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
+// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
+// $(your_option_html_element).text($(current_selected_component).css('border'));
+$.ajax({
+url: 'index.php?page=xShop_page_getitemtype',
+type: 'GET',
+data: { },
+success: function (data) {
+$('#xShop-itemtype-root').html(data);
+$('#xShop-itemtype-root').val($(current_selected_component).attr('xshop_itemtype')?$(current_selected_component).attr('xshop_itemtype'):0);
+}
+});
+$.ajax({
+url: 'index.php?page=xEnquiryNSubscription_page_getforms',
+type: 'GET',
+data: { },
+success: function ( data ){
+$('#xshop_item_enquiry_form_no').html(data);
+}
+});
+$.ajax({
+url: 'index.php?page=xShop_page_getcategories',
+type: 'GET',
+data: { },
+success: function (data) {
+$('#xshop-item-application').html(data);
+$('#xshop-item-application').val($(current_selected_component).attr('xshop_item_application_id')?$(current_selected_component).attr('xshop_item_application_id'):0);
+}
+});
+$('#xshop-item-application').val($(current_selected_component).attr("xshop-item-application_id"));
+//display selected option into checkbox
+
+$('#xshop_item_topbar').attr('checked',$(current_selected_component).attr("xshop_item_topbar")=='true'?true:false);
+$('#xshop_item_fancy_box').attr('checked',$(current_selected_component).attr("xshop_item_fancy_box")==1?true:false);
+$('#xshop_item_hover').attr('checked',$(current_selected_component).attr("xshop_item_hover")==1?true:false);
+$('#xshop_item_hover_detail_page').val($(current_selected_component).attr('xshop_item_hover_detail_page'));
+
+$('#xShop-itemtype-root').val($(
+current_selected_component).attr('xshop_itemtype'));
+$('#xshop_item_detail_on_image_click').attr('checked',$(current_selected_component).attr("xshop_item_detail_on_image_click")==1?true:false);
+
+$('#xshop_item_paginator').val($(current_selected_component).attr("xshop_item_paginator"));
+if($(current_selected_component).attr("xshop_itemlayout") == undefined){
+	$(current_selected_component).attr('xshop_itemlayout',"xShop-itemgrid");
+}
+$(current_selected_component).attr("xshop_itemlayout")=='xShop-itemlist'?$('#xShop-listbtn').addClass('btn btn-success'):$('#xShop-gridbtn').addClass('btn btn-success');
+
+$('#xShop-grid-column').val($(current_selected_component).attr('xshop-grid-column')?$(current_selected_component).attr('xshop-grid-column'):0);
+$('#xshop_item_short_description').attr('checked',$(current_selected_component).attr("xshop_item_short_description")=='1'?true:false);
+}
+}
+</script>

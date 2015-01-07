@@ -1,0 +1,130 @@
+<!-- {id}{/id} -->
+<div class="row" style="margin-top:5px;margin-bottom:5px;">
+	<div class="col-md-4 col-sm-4">
+		<p class="panel panel-primary panel-footer">Name : {$name}</p>
+	</div>
+	<div class="col-md-2 col-sm-2">
+		<p class="panel panel-info panel-footer">Code : {$sku}</p>
+	</div>
+	<div class="col-md-2 col-sm-2">
+		<p class="panel panel-warning panel-footer">Original Price : {$original_price}</p>
+	</div>
+	<div class="col-md-2 col-sm-2">
+		<p class="panel panel-danger panel-footer">Sale Price : {$sale_price}</p>
+	</div>
+	<div class="col-md-2 col-sm-2">		
+		<p class="panel panel-success panel-footer">Created on : {$created_at}</p>	
+	</div>
+</div>
+<div class="row" style="margin-top:5px;margin-bottom:5px;">
+	<div class="col-md-6 col-sm-6">
+		<div class="well alert alert-info"><h4>Short Description :</h4>{short_description_html}{/short_description_html}</div>
+		<div class="well alert alert-success"><h4>Description :</h4>{description_html}{/description_html}</div>
+	</div>
+	<div class="col-md-6 col-sm-6">
+		<div class="row">
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Rank Weight : {$rank_weight}</p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Publish : {$published}</p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-warning panel-footer">Expire Date : {$expiry_date}</p>
+			</div>		
+		</div>
+		<div class="row" style="margin-top:5px;margin-bottom:5px;">
+			<div class="col-md-6 col-sm-6">
+				<p class="panel panel-success panel-footer">Supplier/Author : {$supplier}</p>
+			</div>
+			<div class="col-md-6 col-sm-6">
+				<p class="panel panel-success panel-footer">Manufacturer : {$manufacturer}</p>
+			</div>
+		</div>
+		<div class="row well well-sm" style="width:100%;margin:10px auto 10px auto;">
+			<h4 style="margin:5px;">Marked</h4>
+			<div class="col-md-3 col-sm-3" style="padding:0;">
+				<p class="panel panel-info panel-footer">New: {$marked_new}</p>
+			</div>
+			<div class="col-md-3 col-sm-3" style="padding:0;">
+				<p class="panel panel-success panel-footer">Feature: {$marked_feature}</p>	
+			</div>
+			<div class="col-md-3 col-sm-3" style="padding:0;">
+				<p class="panel panel-success panel-footer">Latest: {$marked_latest}</p>
+			</div>
+			<div class="col-md-3 col-sm-3" style="padding:0;">
+				<p class="panel panel-info panel-footer">Most View: {$marked_mostview}</p>				
+			</div>	
+		</div>
+
+		<div class="row well well-sm" style="width:100%;margin:10px auto 10px auto;">
+			<h4>Enquiry Send To</h4>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Owner: {$self}</p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Supplier: {$supplier123}</p>	
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Manufacturer: {$manufacturer123}</p>
+			</div>
+			<h4 style="margin-top:60px;"><span class="pull-right label label-info">Product Enquiry Auto Reply : {$auto_reply}</span></h4>
+		</div>
+
+		<div class="row well well-sm" style="width:100%;margin:10px auto 10px auto;">
+			<h4>Item Display Options</h4>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Offer: {$offer}</p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Detail: {$detail}</p>	
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Price: {$price}</p>
+			</div>
+			<h4 style="margin-top:60px;"><span class="pull-left label label-success">Manufacturer Detail : {$manufacturer_detail}</span></h4>	
+			<h4 class=""><span class="pull-right label label-warning">Supplier Detail : {$supplier_detail}</span></h4>		
+		</div>
+
+		<div class="row well well-sm" style="width:100%;margin:10px auto 10px auto;">
+			<h4>Item Allow Options</h4>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Attachment: {$attachment}</p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Enquiry: {$enquiry}</p>	
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Saleable: {$saleable}</p>
+			</div>				
+		</div>		
+
+		<div class="row well well-sm" style="width:100%;margin:10px auto 10px auto;">
+			<h4>Item Comment Options</h4>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Comment System: {$comment}</p>
+			</div>
+			<div class="col-md-8 col-sm-8">
+				<p class="panel panel-success panel-footer">Comment Api: {$comment_api}</p>	
+			</div>
+		</div>
+		
+		<div class="row well well-sm" style="width:100%;margin:10px auto 10px auto;">
+			<h4>Item Other Options</h4>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-info panel-footer">Custom Button: {$custom_button}</p>
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">Text: {$custom_button_text}</p>	
+			</div>
+			<div class="col-md-4 col-sm-4">
+				<p class="panel panel-success panel-footer">URL: {$custom_button_url}</p>
+			</div>
+
+			<h4 style="margin-top:60px;"><span class="label label-info">Meta Title : {$meta_title}</span></h4>		
+			<h4 style="margin-top:10px;"><span class="label label-warning">Meta Description : {$meta_description}</span></h4>		
+			<h4 style="margin-top:10px;"><span class="label label-success">Tags :{$tags}</span></h4>		
+		</div>
+
+	</div>
+</div>
