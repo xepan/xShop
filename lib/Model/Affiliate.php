@@ -9,6 +9,8 @@ class Model_Affiliate extends \Model_Table {
 		//TODO for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
+		$this->hasOne('xShop/Application','application_id');
+
 		
 		// $f = $this->hasOne('xShop/Partytype','partytype_id');
 		// $f->icon = "fa fa-user~blue";

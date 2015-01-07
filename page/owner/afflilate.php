@@ -4,44 +4,18 @@
 class page_xShop_page_owner_afflilate extends page_xShop_page_owner_main{
 	function init(){
 		parent::init();
-
-		//$partyitemsvp = $this->partyitemsvp();
-		//View badge
-		// $m = $this->add('xShop/Model_Affiliate');
-		// $bg=$this->app->layout->add('View_BadgeGroup');		
-		// $total_manufacturer_item=$this->add('xShop/Model_Manufacturer')->count()->getOne();
-		// $total_supplier_item=$this->add('xShop/Model_Supplier')->count()->getOne();
-		// $bg=$this->app->layout->add('View_BadgeGroup');
-		// $v=$bg->add('View_Badge')->set('Total Manufacturer Item')->setCount($total_manufacturer_item)->setCountSwatch('ink');
-		// $v=$bg->add('View_Badge')->set('Total Supplier Item')->setCount($total_supplier_item)->setCountSwatch('green');
-		
-		// $party_model = $this->add('xShop/Model_Affiliate');
-		// $crud=$this->app->layout->add('CRUD');
-		// // $party_model->removeElement('epan_id');
-		// $crud->setModel($party_model);
-		
-		// $item_category_model = $this->add('xShop/Model_CategoryItem');
-		// $item_category_model->hasMany('xShop/Item','item_category_id');
-		
-		// $crud->add('Controller_FormBeautifier');
-		// if(!$crud->isEditing()){
-		// 	$g = $crud->grid;
-		// 	$g->addMethod('format_items',function($g,$f)use($partyitemsvp){
-		// 		$g->current_row_html[$f]= '<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL('Items For "'.$g->model['name'].'"',$g->api->url($partyitemsvp,array('affiliate_id'=>$g->model->id))).'">'.$g->current_row[$f].'</a>';
-		// 	$g->addFormatter('items','items');
-		// 	});
-		// 	$g->addQuickSearch(array('name','mobile_no','address'));
-		// 	$g->addPaginator($ipp=50);
-		// }
+		$application_id=$this->api->recall('xshop_application_id');
 
 		$cols = $this->app->layout->add('Columns');
 		$type_col = $cols->addColumn(3);
 		$aff_col = $cols->addColumn(9);
 		$afflilate_type_model = $this->add('xShop/Model_AffiliateType');
+		$afflilate_type_model->addCondition('application_id',$application_id);
 		$type_crud=$type_col->add('CRUD');
 
 		$type_crud->setModel($afflilate_type_model);//,array('name'));
 		$afflilate_model = $this->add('xShop/Model_Affiliate');
+		$afflilate_model->addCondition('application_id',$application_id);
 
 		if(!$type_crud->isEditing()){
 			$g=$type_crud->grid;
