@@ -16,7 +16,7 @@ class View_Tools_Category extends \componentBase\View_Component{
 
 		if(!$category_group){
 			// throw new \Exception($category_group);
-			$this->add('View_Error')->set('Please Select Category Group or First Create Category Group');		
+			$this->add('View_Error')->set('Please Select Application or First Create Application');
 			return;
 			// $this->js(true)->univ()->errorMessage('Please Select category group first');
 		}

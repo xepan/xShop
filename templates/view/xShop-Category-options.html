@@ -1,4 +1,3 @@
-
 <div id='{$_name}' class='epan-component-options' component_type="{$component_type}">
 	<div class="panel-group" id="accordion">
 		<div class="xepan-collasp-header component-header">
@@ -19,7 +18,7 @@
 									 Layout
 								</td>
 								<td>
-									<select id='xshop_category_layout_{$id}'>
+									<select id='xshop_category_layout'>
 										<option value='0'>Please Select</option>
 										<option value='Horizontal'>Horizontal</option>
 										<option value='Vertical'>Vertical</option>
@@ -30,7 +29,7 @@
 							</tr>
 							<tr>
 								<td>
-									Category Group
+									Application
 								</td>
 								<td>
 									<select id='xshop_categorygroup_{$id}'>
@@ -45,7 +44,7 @@
 									<input type='text' id='xshop_category_url_page_{$id}'/>
 								</td>
 
-								<tr>
+								<tr class="xshop-megamnulatout-option">
 									
 								<td> Select Item in Each Row</td>
 								<td>
@@ -59,8 +58,8 @@
 										<option value="12">12</option>
 									</select>
 								</td>
-								</tr>
-								<tr>
+								</tr >
+								<tr class="xshop-megamnulatout-option">
 									<td>
 										Show Category list   
 									</td>
@@ -87,7 +86,7 @@
 // 
 // $(your_option_html_element).click(function(event,ui){
 // 		$(current_selected_component).what to do ???
-// }) 
+// })
 $('#xShopCategoryServerSide').click(function(event){
 	$('#epan-quick-component-options').toggle('slideup');
 	$.univ.frameURL('xShop Category','index.php?page=xShop_page_owner_main')
@@ -97,9 +96,13 @@ $('#xshop-category-editcss').click(function(){
 	$(this).univ().frameURL('Edit CSS ( xShop Category Display Layout )xshop_category_url_page_{$id}','index.php?page=xShop_page_categorylayoutcss&cut_page=1');
 });
 
-$('#xshop_category_layout_{$id}').change(function(event) {
+$('#xshop_category_layout').change(function(event) {
+	$('.xshop-megamnulatout-option').hide();
 	$(current_selected_component).attr('xshop_category_layout',$(this).val());
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+	if($(this).val()=='MegaMenu'){
+		$('.xshop-megamnulatout-option').show();
+	}
 });
 
 $('#xshop_categorygroup_{$id}').change(function(event){
@@ -121,15 +124,6 @@ $('#xshop_category_url_page_{$id}').change(function(event){
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 
-$('#xshop-category-theme-color').change(function(){
-	$.ajax({
-		url: "index.php/?page=xShop/page/categorytheme",
-		data: null,
-		success:alert('hello')
-		// dataType:GET
-		});
-});
-
 var {$component_type}_options = {
 	show: function (){
 		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
@@ -145,7 +139,7 @@ var {$component_type}_options = {
 				}
 			});
 		
-		$('#xshop_category_layout_{$id}').val($(current_selected_component).attr('xshop_category_layout')?$(current_selected_component).attr('xshop_category_layout'):'Horizontal');
+		$('#xshop_category_layout').val($(current_selected_component).attr('xshop_category_layout')?$(current_selected_component).attr('xshop_category_layout'):'Horizontal');
 
 		$("#xshop_categorygroup_{$id}:contains(" + $(current_selected_component).attr('xshop_categorygroup_id') + ")").attr('selected', 'selected');
 
