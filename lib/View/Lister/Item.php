@@ -10,7 +10,7 @@ class View_Lister_Item extends \CompleteLister{
 
 	function init(){
 		parent::init();
-		print_r($this->html_attributes);
+		// print_r($this->html_attributes);
 	}
 	
 	function formatRow(){
@@ -209,14 +209,14 @@ class View_Lister_Item extends \CompleteLister{
 			$this->html_attributes['order-personalized']
 			);
 
-		if(!isset($this->print_r)){
-			echo "<pre>";
-			print_r($html_objects);
-			echo "</pre>";
-			$this->print_r=true;
-		}
+		// if(!isset($this->print_r)){
+		// 	echo "<pre>";
+		// 	print_r($html_objects);
+		// 	echo "</pre>";
+		// 	$this->print_r=true;
+		// }
 
-		// $html_objects = $this->recursive_ksort($html_objects);
+		$this->recursive_ksort($html_objects);
 		$this->current_row_html['item'] = $this->getItemHTML($html_objects);
 
 	}
@@ -225,7 +225,7 @@ class View_Lister_Item extends \CompleteLister{
 		$class_ext=$class;
 		$style_ext=$style;
 		$empty_array=array();
-		if($if_test >= 1){
+		if($if_test){
 			if($if_test == 2){
 				$class_ext .= " xshop-item-show-on-hover";
 				$style_ext .= " display:none";
@@ -338,7 +338,7 @@ class View_Lister_Item extends \CompleteLister{
 		parent::render();
 	}
 
-	function recursive_ksort($array) {
+	function recursive_ksort(&$array) {
 	    foreach ($array as $k => $v) {
 	        if (is_array($v)) {
 	            $this->recursive_ksort($v);
