@@ -8,7 +8,8 @@ class Model_ItemImages extends \Model_Table {
 		parent::init();
 		
 		$this->hasOne('xShop/Item','item_id');
-				
+		$this->hasOne('xShop/CustomFieldValue','customefieldvalue_id');
+
 		$f = $this->add('filestore/Field_Image','item_image_id')->mandatory(true);
 		// $f = $this->addField('image_url');//->mandatory(true)->display(array('form'=>'ElImage'))->group('a~12~<i class="glyphicon glyphicon-picture"></i> Media Management');
 		$f->icon ="glyphicon glyphicon-picture~blue";
@@ -17,7 +18,7 @@ class Model_ItemImages extends \Model_Table {
 		$f = $this->addField('title')->group('a~11~bl');
 		$f->icon ="glyphicon glyphicon-pencil~blue";
 
-		// $this->add('dynamic_model/Controller_AutoCreator');		
+		$this->add('dynamic_model/Controller_AutoCreator');		
 	}
 
 	function getImageUrl($item_id){
