@@ -145,13 +145,36 @@
 									<table class="table table-condensed table-hover">
 									<tr>
 										<td>Item Name</td>
-										<td><input type='checkbox' id='xshop-item-customize-show-name' /></td>
-										<td><input type='number' id='xshop-item-customize-order-name' /></td>
+										<td>
+											<select id='xshop-show-name' data-attr="show-name" class="xshop-general-bind" >
+												<option value="0">Hide</option>
+												<option value="1">Show</option>
+												<option value="2">Hover</option>
+											</select>
+										</td>
+										<td><input type='number' id='xshop-order-name' data-attr="order-name" class="xshop-general-bind"/></td>
 									</tr>
 									<tr>
 										<td>Item Image</td>
-										<td><input type='checkbox' id='xshop-item-customize-show-image' /></td>
-										<td><input type='number' id='xshop-item-customize-order-image' /></td>
+										<td>
+											<select id='xshop-show-image' data-attr="show-image" class="xshop-general-bind" >
+												<option value="0">Hide</option>
+												<option value="1">Show</option>
+												<option value="2">Hover</option>
+											</select>
+										</td>
+										<td><input type='number' id='xshop-order-image' data-attr="order-image" class="xshop-general-bind"/></td>
+									</tr>
+									<tr>
+										<td>Old Price</td>
+										<td>
+											<select id='xshop-show-old-price' data-attr="show-old-price" class="xshop-general-bind" >
+												<option value="0">Hide</option>
+												<option value="1">Show</option>
+												<option value="2">Hover</option>
+											</select>
+										</td>
+										<td><input type='number' id='xshop-order-old-price' data-attr="order-old-price" class="xshop-general-bind"/></td>
 									</tr>
 									</table>
 								</td>
@@ -239,6 +262,12 @@ $('#xshop-item-customize-order-name').change(function(event){
 	$(current_selected_component).attr('customize-display-name', ($('#xshop-item-customize-show-image').is(':checked')?'1':'0') + '/' + $(this).val());
 });
 
+
+$('.xshop-general-bind').change(function(event){
+	$(current_selected_component).attr($(this).attr('data-attr'),$(this).val());
+});
+
+
 var {$component_type}_options = {
 show: function (){
 // ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
@@ -290,6 +319,12 @@ $(current_selected_component).attr("xshop_itemlayout")=='xShop-itemlist'?$('#xSh
 
 $('#xShop-grid-column').val($(current_selected_component).attr('xshop-grid-column')?$(current_selected_component).attr('xshop-grid-column'):0);
 $('#xshop_item_short_description').attr('checked',$(current_selected_component).attr("xshop_item_short_description")=='1'?true:false);
+
+$('.xshop-general-bind').each(function(index,value){
+	$(this).val($(current_selected_component).attr($(this).attr('data-attr')));
+});
+
 }
+
 }
 </script>

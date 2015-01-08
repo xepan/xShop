@@ -107,7 +107,7 @@ class View_Lister_Item extends \CompleteLister{
 			$html_objects,
 			'ItemAddToCartButton',
 			'Add To Cart',
-			'xshop-item-add-to-cart btn btn-default btn-xs',
+			'xshop-item-add-to-cart',
 			'$(".xshop-cart").xepan_xshop_cart("add_to_cart_default_func",'.$this->model->id.');',
 			'li/button',
 			$this->html_attributes['order-add-to-cart']
@@ -209,15 +209,19 @@ class View_Lister_Item extends \CompleteLister{
 	}
 
 	function &addSectionIF($if_test,&$parent_secition,$sectionName,$Content,$class,$url,$tag,$order,$style="",$extra_attr=array()){
-		if($if_test or true){
+		$empty_array=array();
+		if($if_test){
 			if($if_test == 2){
 				$class .= " xshop-item-show-on-hover";
 				$style .=" display:none";
 			}
-			if(!$order) $order = $this->order_count ++;
+
+			$this->order_count ++;
+			if(!$order) $order = $this->order_count;
 			$parent_secition['children'][$order] = $this->makeSection($sectionName,$Content,$class,$url,$tag, $style, $extra_attr);
 			return $parent_secition['children'][$order];
 		}
+		return $empty_array;
 	}
 
 	function &makeSection($sectionName,$Content,$class,$url,$tag,$style, $extra_attr){
