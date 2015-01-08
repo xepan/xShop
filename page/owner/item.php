@@ -162,6 +162,9 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 
 		$crud = $this->add('CRUD');
 		$crud->setModel($custom_fields,array('customfield_id','rate_effect','is_active'),array('customfield','rate_effect','is_active'));
+		if($crud->form){
+			$crud->form->getElement('customfield_id')->getModel()->addCondition('application_id',$application_id);
+		}
 		$crud->grid->addColumn('expander','values');
 	}	
 
@@ -175,6 +178,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$crud->setModel($custom_feild_values_model,array('name','rate_effect'));
 		
 		$crud->grid->addColumn('expander','images');
+		$crud->grid->addColumn('expander','filter');
 	}
 
 	function page_custom_fields_values_images(){
@@ -187,6 +191,29 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		
 		$crud = $this->add('CRUD');
 		$crud->setModel($image_model);
+	}
+
+	function page_custom_fields_values_filter(){
+		$item_id=$this->api->stickyGET('xshop_items_id');
+		$custom_field_asso_id=$this->api->stickyGET('xshop_category_item_customfields_id');
+		$application_id = $this->api->recall('xshop_application_id');
+
+		$custom_filed_value_id = $this->api->stickyGET('xshop_custom_fields_value_id');
+		
+		$filter_model = $this->add('xShop/Model_CustomFieldValueFilterAssociation');
+
+		$crud = $this->add('CRUD');
+		$crud->setModel($filter_model);
+		//for Custom Field Id
+		$temp = $this->add('xShop/Model_CategoryItemCustomFields');
+		$associated_customfiled = $temp->addCondition('item_id',$item_id)->addCondition('id','<>',$custom_field_asso_id)->_dsql()->del('fields')->field('customfield_id')->getAll();
+		$associated_customfiled = iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_customfiled)),false);
+		// ----------------------
+		if($crud->form){
+			$form_model = $crud->form->getElement('customfield_id')->getModel();
+			$form_model->addCondition('application_id',$application_id);
+			$form_model->addCondition('id','in',$associated_customfiled);
+		}
 	}
 
 	function page_specifications(){

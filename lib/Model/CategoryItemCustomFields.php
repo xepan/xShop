@@ -15,7 +15,7 @@ class Model_CategoryItemCustomFields extends \Model_Table{
 		$this->hasOne('xShop/Category','category_id');
 		$this->hasOne('xShop/Item','item_id');
 
-		$this->addField('rate_effect');
+		// $this->addField('rate_effect');
 		$this->addField('created_at')->type('datetime')->defaultValue(date('Y-m-d H:i:s'));
 		$this->addField('is_active')->type('boolean')->defaultValue(true)->sortable(true);
 
