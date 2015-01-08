@@ -209,13 +209,6 @@ class View_Lister_Item extends \CompleteLister{
 			$this->html_attributes['order-personalized']
 			);
 
-		if(!isset($this->print_r)){
-			echo "<pre>";
-			print_r($html_objects);
-			echo "</pre>";
-			$this->print_r=true;
-		}
-
 		// $html_objects = $this->recursive_ksort($html_objects);
 		$this->current_row_html['item'] = $this->getItemHTML($html_objects);
 

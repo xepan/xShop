@@ -360,7 +360,7 @@ if($('#xshop_item_topbar').is(':checked')?$(current_selected_component).attr('xs
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 $('#xshop-item-editcss').click(function(){
-$(this).univ().frameURL('Edit CSS ( xShop item Display Layout )','index.php?page=xShop_page_itemlayoutcss&cut_page=1');
+$(this).univ().frameURL('Edit CSS ( xShop item Display Layout )','index.php?page=xShop_page_itemlayoutcss&cut_page=1&xshop_item_layout='+$(current_selected_component).attr('xshop_itemlayout'));
 });
 $('#xshop_item_fancy_box').change(function(event) {
 if($('#xshop_item_fancy_box').is(':checked')?$(current_selected_component).attr('xshop_item_fancy_box',1):$(current_selected_component).attr('xshop_item_fancy_box',0));

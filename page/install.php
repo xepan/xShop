@@ -8,11 +8,10 @@ class page_xShop_page_install extends page_componentBase_page_install {
 		// Code To run before installing
 		
 		$this->install();
-
 		// Code to run after installation
-		// Loading Product CSS file 
-		$css_file = getcwd().DS.'epans/'.$this->api->current_website['name'].'/xshopcustom.css';
-		$css_file_orig = getcwd().DS.'epan-components/xShop/templates/css/xshopcustom.css';
+		// Loading Item CSS file
+		$css_file = getcwd().DS.'epans'.DS.$this->api->current_website['name'].DS.'xshop_itemgrid.css';
+		$css_file_orig = getcwd().DS.'epan-components'.DS.'xShop'.DS.'templates'.DS.'css'.DS.'xshop_itemgrid.css';
 		
 		if(!file_exists($css_file)){
 			$css_content_orig = file_get_contents($css_file_orig);
