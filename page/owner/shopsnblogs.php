@@ -31,16 +31,7 @@ class page_xShop_page_owner_shopsnblogs extends page_xShop_page_owner_main {
 	}
 
 	function page_shops_configuration(){
-		$application_id = $this->api->StickyGET('xshop_application_id');
-		$config_model=$this->add('xShop/Model_Configuration')->addCondition('application_id',$application_id)->tryLoadAny();
-		$form=$this->add('Form');
-		$form->setModel($config_model);
-		$form->addSubmit('Go');
-		if($form->Submitted()){
-			// throw new \Exception("Error Processing Request".$application_id);	
-			$form->update();
-			$form->js()->univ()->successMessage('Update Successfully')->execute();	
-		}
+		$this->page_blogs_configuration();
 	}
 
 	function page_blogs_configuration(){
@@ -54,6 +45,8 @@ class page_xShop_page_owner_shopsnblogs extends page_xShop_page_owner_main {
 			$form->update();
 			$form->js()->univ()->successMessage('Update Successfully')->execute();	
 		}
+		$form->addClass('panel panel-default');
+		$form->addStyle('padding','20px');
 	}
 
 }
