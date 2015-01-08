@@ -8,6 +8,15 @@ jQuery.widget("ui.xepan_xshop_item",{
 			$.univ().frameURL('HELLO','index.php');
 		});
 
+		$(this.element).hover(
+		function(event){
+			$(this).find('.xshop-item-show-on-hover').visible();
+		},
+		function(event){
+			$(this).find('.xshop-item-show-on-hover').invisible();
+		}
+		);
+
 	}
 	
 });

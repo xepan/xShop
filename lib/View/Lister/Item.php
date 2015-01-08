@@ -7,6 +7,11 @@ class View_Lister_Item extends \CompleteLister{
 	public $html_attributes;
 	
 	public $order_count = 0;
+
+	function init(){
+		parent::init();
+		// print_r($this->html_attributes);
+	}
 	
 	function formatRow(){
 		
@@ -69,7 +74,7 @@ class View_Lister_Item extends \CompleteLister{
 			);
 
 		$this->addSectionIF(
-			$this->html_attributes['show-old-price'] AND $this->model['show_price'],
+			($this->html_attributes['show-old-price'] AND $this->model['show_price']),
 			$html_objects,
 			'ItemOldPrice',
 			$this->model['original_price'],
@@ -107,7 +112,7 @@ class View_Lister_Item extends \CompleteLister{
 			$html_objects,
 			'ItemAddToCartButton',
 			'Add To Cart',
-			'xshop-item-add-to-cart btn btn-default btn-xs',
+			'xshop-item-add-to-cart',
 			'$(".xshop-cart").xepan_xshop_cart("add_to_cart_default_func",'.$this->model->id.');',
 			'li/button',
 			$this->html_attributes['order-add-to-cart']
@@ -172,7 +177,7 @@ class View_Lister_Item extends \CompleteLister{
 			);
 
 		$this->addSectionIF(
-			$this->html_attributes['show-discount'] AND ($this->item_model['original_price'] - $this->item_model['sale_price']),
+			$this->html_attributes['show-discount'] AND ($this->model['original_price'] - $this->model['sale_price']),
 			$html_objects,
 			'Discount',
 			$this->add('xShop/View_Item_Discount',array('name'=>'discount_'.$this->model->id,'item_model'=>$this->model))->getHTML(),
@@ -204,20 +209,35 @@ class View_Lister_Item extends \CompleteLister{
 			$this->html_attributes['order-personalized']
 			);
 
+		// if(!isset($this->print_r)){
+		// 	echo "<pre>";
+		// 	print_r($html_objects);
+		// 	echo "</pre>";
+		// 	$this->print_r=true;
+		// }
+
+		$this->recursive_ksort($html_objects);
 		$this->current_row_html['item'] = $this->getItemHTML($html_objects);
 
 	}
 
 	function &addSectionIF($if_test,&$parent_secition,$sectionName,$Content,$class,$url,$tag,$order,$style="",$extra_attr=array()){
-		if($if_test or true){
-			if($if_test == 2){
-				$class .= " xshop-item-show-on-hover";
-				$style .=" display:none";
+		$class_ext=$class;
+		$style_ext=$style;
+		$empty_array=array();
+		if($if_test_result = $if_test){
+			if($if_test_result == 2){
+				$class_ext .= " xshop-item-show-on-hover";
+				$style_ext .= " visibility:hidden";
 			}
-			if(!$order) $order = $this->order_count ++;
-			$parent_secition['children'][$order] = $this->makeSection($sectionName,$Content,$class,$url,$tag, $style, $extra_attr);
+
+			$this->order_count ++;
+			if(!$order) $order = $this->order_count;
+			if(isset($parent_secition['children'][$order])) $order = $this->order_count;
+			$parent_secition['children'][$order] = $this->makeSection($sectionName,$Content,$class_ext,$url,$tag, $style_ext, $extra_attr);
 			return $parent_secition['children'][$order];
 		}
+		return $empty_array;
 	}
 
 	function &makeSection($sectionName,$Content,$class,$url,$tag,$style, $extra_attr){
@@ -317,6 +337,15 @@ class View_Lister_Item extends \CompleteLister{
 	function render(){
 		$this->js(true)->_load('item/item')->_selector('.xshop-item')->xepan_xshop_item();
 		parent::render();
+	}
+
+	function recursive_ksort(&$array) {
+	    foreach ($array as $k => $v) {
+	        if (is_array($v)) {
+	            $this->recursive_ksort($v);
+	        }
+	    }
+	    return ksort($array);
 	}
 	
 }

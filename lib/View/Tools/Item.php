@@ -2,7 +2,7 @@
 
 namespace xShop;
 
-class View_Tools_Item extends \componentBase\View_Component{
+class View_Tools_Item extends \componentBase\View_ServerSideComponent{
 	function init(){
 		parent::init();
 		
@@ -61,8 +61,8 @@ class View_Tools_Item extends \componentBase\View_Component{
 		// $paginator->ipp($this->html_attributes['xshop_item_paginator']?:12);
 		// ------------------------------------------
 
-		//loading custom CSS file	
-		$item_css = 'epans/'.$this->api->current_website['name'].'/xshopcustom.css';
+		//loading custom CSS file
+		$item_css = 'epans'.DS.$this->api->current_website['name'].DS.$this->html_attributes['xshop_itemlayout'].".css";
 		$this->api->template->appendHTML('js_include','<link id="xshop-item-customcss-link" type="text/css" href="'.$item_css.'" rel="stylesheet" />'."\n");
 		// -------------------------------------------
 	}
