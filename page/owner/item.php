@@ -156,27 +156,37 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		
 		$item_model = $this->add('xShop/Model_Item')->load($item_id);
 		
-		$custom_fields = $this->add('xShop/Model_CustomFields');
-		$custom_fields->addCondition('application_id',$application_id);
+		$custom_fields = $this->add('xShop/Model_CategoryItemCustomFields');
+		$custom_fields->addCondition('item_id',$item_id);
 		$custom_fields->tryLoadAny();
 
-		$grid = $this->add('CRUD');
-		$grid->setModel($item_model->ref('xShop/CategoryItemCustomFields'));
+		$crud = $this->add('CRUD');
+		$crud->setModel($custom_fields,array('customfield_id','rate_effect','is_active'),array('customfield','rate_effect','is_active'));
+		$crud->grid->addColumn('expander','values');
+	}	
+
+	function page_custom_fields_values(){
+		$item_id=$this->api->stickyGET('xshop_items_id');
+		$custom_field_asso_id = $this->api->stickyGET('xshop_category_item_customfields_id');
+		$custom_field_id = $this->api->stickyGET('xshop_category_item_customfields_id');
 		
-		// $form = $this->add('Form');
-		// $selected_custom_fields = $form->addField('hidden','selected_custom_fields')->set(json_encode($item_model->getAssociatedCustomFields()));
-		// $form->addSubmit('Update');
+		$custom_feild_values_model = $this->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$custom_field_id)->tryLoadAny();
+		$crud = $this->add('CRUD');
+		$crud->setModel($custom_feild_values_model,array('name','rate_effect'));
+		
+		$crud->grid->addColumn('expander','images');
+	}
 
-		// $grid->addSelectable($selected_custom_fields);
-
-		// if($form->isSubmitted()){
-		// 	$item_model->ref('xShop/CategoryItemCustomFields')->_dsql()->set('is_allowed',0)->update();
-		// 	$selected_fields = json_decode($form['selected_custom_fields'],true);			
-		// 	foreach ($selected_fields as $customfield_id) {
-		// 		$item_model->addCustomField($customfield_id);
-		// 	}
-		// 	$form->js()->univ()->successMessage('Updated')->execute();
-		// }
+	function page_custom_fields_values_images(){
+		$item_id=$this->api->stickyGET('xshop_items_id');
+		$custom_filed_value_id = $this->api->stickyGET('xshop_custom_fields_value_id');
+		$image_model = $this->add('xShop/Model_ItemImages')
+					->addCondition('customefieldvalue_id',$custom_filed_value_id)
+					->addCondition('item_id',$item_id)
+					->tryLoadAny();
+		
+		$crud = $this->add('CRUD');
+		$crud->setModel($image_model);
 	}
 
 	function page_specifications(){

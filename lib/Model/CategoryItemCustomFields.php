@@ -15,14 +15,27 @@ class Model_CategoryItemCustomFields extends \Model_Table{
 		$this->hasOne('xShop/Category','category_id');
 		$this->hasOne('xShop/Item','item_id');
 
-		$this->addField('values');
 		$this->addField('rate_effect');
-
 		$this->addField('created_at')->type('datetime')->defaultValue(date('Y-m-d H:i:s'));
 		$this->addField('is_active')->type('boolean')->defaultValue(true)->sortable(true);
 
+		$this->hasMany('xShop/CustomFieldValue','itemcustomfiledasso_id');
+
+		$this->addHook('beforeSave',$this);
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 
+	function beforeSave(){
+		$old_model = $this->add('xShop/Model_CategoryItemCustomFields');
+		
+		$old_model->addCondition('item_id',$this['item_id'])
+				->addCondition('customfield_id',$this['customfield_id'])
+				->addCondition('id','<>',$this->id)
+				->tryLoadAny();
+		if($old_model->loaded()){
+			throw $this->Exception('Custom Filed Exist','ValidityCheck')->setField('customfield_id');
+		}
+
+	}
 		
 }
