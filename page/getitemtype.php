@@ -1,6 +1,6 @@
 <?php
 
-class page_xShop_page_getproducttype extends Page{
+class page_xShop_page_getitemtype extends Page{
 	function init(){
 		parent::init();
 		
