@@ -20,7 +20,7 @@ class Model_OrderDetails extends \Model_Table{
 		$this->addField('amount')->type('money');
 
 
-		// $this->add('dynamic_model/Controller_AutoCreator');
+		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 }
 

@@ -3,12 +3,12 @@
 		<div class="xepan-collasp-header component-header">
 			<div class="panel-heading">
 				<h3 class="panel-title">
-				<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-xshop-product">
+				<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-xshop-item">
 					{$component_type_name}
 				</a>
 				</h3>
 			</div>
-			<div id="collapse-xshop-product" class="panel-collapse collapse">
+			<div id="collapse-xshop-item" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div class='xepan-collasp-header'>
 						<table class="table table-condensed table-hover">
@@ -17,15 +17,15 @@
 									Edit CSS
 								</td>
 								<td colspan="2">
-									<div id="xshop-product-editcss" class="btn btn-default btn-xs">Edit css</div>
+									<div id="xshop-item-editcss" class="btn btn-default btn-xs">Edit css</div>
 								</td>
 							</tr>
 							<tr>
 								<td >
-									Select Product
+									Select item
 								</td>
 								<td colspan="2">
-									<select id='xShop-producttype-root'>
+									<select id='xShop-itemtype-root'>
 									</select>
 								</td>
 							</tr>
@@ -40,7 +40,7 @@
 									</div>
 								</td>
 								<td>
-									<select id="xShop-grid-column" type="number" class="" placeholder="Product in each Row">
+									<select id="xShop-grid-column" type="number" class="" placeholder="item in each Row">
 										<option value="0">Item in Each Row</option>
 										<option value="1">1</option>
 										<option value="2">2</option>
@@ -53,10 +53,10 @@
 							</tr>
 							<tr>
 								<td >
-									Category Group
+									Application
 								</td>
 								<td colspan="2">
-									<select id='xshop-product-categorygroup_{$_id}'>
+									<select id='xshop-item-application'>
 									</select>
 								</td>
 							</tr>
@@ -70,10 +70,10 @@
 									
 								</td>
 								<td>
-									Product Topbar
+									item Topbar
 								</td>
 								<td>
-									<input id="xshop_product_topbar" type="checkbox"/>
+									<input id="xshop_item_topbar" type="checkbox"/>
 								</td>
 							</tr>
 							<tr>
@@ -84,7 +84,7 @@
 									Image Zoom on Click
 								</td>
 								<td>
-									<input id="xshop_product_fancy_box" type="checkbox"/>
+									<input id="xshop_item_fancy_box" type="checkbox"/>
 								</td>
 							</tr>
 							
@@ -96,7 +96,7 @@
 									Detail on click
 								</td>
 								<td>
-									<input id="xshop_product_hover" type="checkbox"/>
+									<input id="xshop_item_hover" type="checkbox"/>
 								</td>
 							</tr>
 							<tr>
@@ -107,7 +107,7 @@
 									Detail on Image Click
 								</td>
 								<td>
-									<input id="xshop_product_detail_on_image_click" type="checkbox"/>
+									<input id="xshop_item_detail_on_image_click" type="checkbox"/>
 								</td>
 							</tr>
 							<tr>
@@ -126,7 +126,7 @@
 									Items on Page
 								</td>
 								<td colspan="2">
-									<input id="xshop_product_paginator" type="text" placeHolder="no of items"/>
+									<input id="xshop_item_paginator" type="text" placeHolder="no of items"/>
 								</td>
 							</tr>
 							<tr>
@@ -134,9 +134,28 @@
 									Item Detail Subpage
 								</td>
 								<td colspan="2">
-									<input id="xshop_product_hover_detail_page" type="text"/>
+									<input id="xshop_item_hover_detail_page" type="text"/>
 								</td>
-							</tr>							
+							</tr>
+							<tr>
+								<td >
+									Customize Item Display
+								</td>
+								<td colspan="2">
+									<table class="table table-condensed table-hover">
+									<tr>
+										<td>Item Name</td>
+										<td><input type='checkbox' id='xshop-item-customize-show-name' /></td>
+										<td><input type='number' id='xshop-item-customize-order-name' /></td>
+									</tr>
+									<tr>
+										<td>Item Image</td>
+										<td><input type='checkbox' id='xshop-item-customize-show-image' /></td>
+										<td><input type='number' id='xshop-item-customize-order-image' /></td>
+									</tr>
+									</table>
+								</td>
+							</tr>
 						</table>
 					</div>
 				</div>
@@ -148,7 +167,7 @@
 			
 		</tbody>
 	</table>
-	<div><button id='xShopProductServerSide'>Server Side</button></div>
+	<div><button id='xShopitemServerSide'>Server Side</button></div>
 </div>
 <script type="text/javascript">
 // ========== OPTION TO COMPONENT EFFECT ==============
@@ -156,24 +175,24 @@
 // $(your_option_html_element).click(function(event,ui){
 		// 		$(current_selected_component).what to do ???
 // })
-$('#xShopProductServerSide').click(function(event){
+$('#xShopitemServerSide').click(function(event){
 	$('#epan-quick-component-options').toggle('slideup');
-	$.univ.frameURL('xShop Products','index.php?page=xShop_page_owner_main')
+	$.univ.frameURL('xShop items','index.php?page=xShop_page_owner_main')
 });
-$('#xShop-producttype-root').change(function(event) {
-	$(current_selected_component).attr('xshop_producttype',$(this).val());
+$('#xShop-itemtype-root').change(function(event) {
+	$(current_selected_component).attr('xshop_itemtype',$(this).val());
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
-$('#xshop-product-categorygroup_{$_id}').change(function(event) {
-$(current_selected_component).attr('xshop_product_categorygroup_id',$(this).val());
+$('#xshop-item-application').change(function(event) {
+$(current_selected_component).attr('xshop_item_application_id',$(this).val());
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 $('#xShop-listbtn').click(function(event) {
-$(current_selected_component).attr('xshop_productlayout','xShop-productlist');
+$(current_selected_component).attr('xshop_itemlayout','xShop-itemlist');
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 $('#xShop-gridbtn').click(function(event) {
-$(current_selected_component).attr('xshop_productlayout','xShop-productgrid');
+$(current_selected_component).attr('xshop_itemlayout','xShop-itemgrid');
 // $('#xShop-grid-column');
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
@@ -181,28 +200,28 @@ $('#xShop-grid-column').change(function(event){
 $(current_selected_component).attr('xshop-grid-column',$(this).val());
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
-$('#xshop_product_topbar').change(function(event) {
-if($('#xshop_product_topbar').is(':checked')?$(current_selected_component).attr('xshop_product_topbar','true'):$(current_selected_component).attr('xshop_product_topbar','false'));
+$('#xshop_item_topbar').change(function(event) {
+if($('#xshop_item_topbar').is(':checked')?$(current_selected_component).attr('xshop_item_topbar','true'):$(current_selected_component).attr('xshop_item_topbar','false'));
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
-$('#xshop-product-editcss').click(function(){
-$(this).univ().frameURL('Edit CSS ( xShop Product Display Layout )','index.php?page=xShop_page_productlayoutcss&cut_page=1');
+$('#xshop-item-editcss').click(function(){
+$(this).univ().frameURL('Edit CSS ( xShop item Display Layout )','index.php?page=xShop_page_itemlayoutcss&cut_page=1');
 });
-$('#xshop_product_fancy_box').change(function(event) {
-if($('#xshop_product_fancy_box').is(':checked')?$(current_selected_component).attr('xshop_product_fancy_box',1):$(current_selected_component).attr('xshop_product_fancy_box',0));
+$('#xshop_item_fancy_box').change(function(event) {
+if($('#xshop_item_fancy_box').is(':checked')?$(current_selected_component).attr('xshop_item_fancy_box',1):$(current_selected_component).attr('xshop_item_fancy_box',0));
 
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
-$('#xshop_product_hover').change(function(event) {
-if($('#xshop_product_hover').is(':checked')?$(current_selected_component).attr('xshop_product_hover','1'):$(current_selected_component).attr('xshop_product_hover','0'));
+$('#xshop_item_hover').change(function(event) {
+if($('#xshop_item_hover').is(':checked')?$(current_selected_component).attr('xshop_item_hover','1'):$(current_selected_component).attr('xshop_item_hover','0'));
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
-$('#xshop_product_hover_detail_page').change(function(event){
-$(current_selected_component).attr('xshop_product_hover_detail_page',$(this).val());
+$('#xshop_item_hover_detail_page').change(function(event){
+$(current_selected_component).attr('xshop_item_hover_detail_page',$(this).val());
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
-$('#xshop_product_detail_on_image_click').change(function(event){
-if($('#xshop_product_detail_on_image_click').is(':checked')?$(current_selected_component).attr('xshop_product_detail_on_image_click','1'):$(current_selected_component).attr('xshop_product_detail_on_image_click','0'));
+$('#xshop_item_detail_on_image_click').change(function(event){
+if($('#xshop_item_detail_on_image_click').is(':checked')?$(current_selected_component).attr('xshop_item_detail_on_image_click','1'):$(current_selected_component).attr('xshop_item_detail_on_image_click','0'));
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 
@@ -211,22 +230,27 @@ $('#xshop_item_short_description').change(function(event){
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 
-$('#xshop_product_paginator').change(function(event){
-$(current_selected_component).attr('xshop_product_paginator',$(this).val());
+$('#xshop_item_paginator').change(function(event){
+$(current_selected_component).attr('xshop_item_paginator',$(this).val());
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
+
+$('#xshop-item-customize-order-name').change(function(event){
+	$(current_selected_component).attr('customize-display-name', ($('#xshop-item-customize-show-image').is(':checked')?'1':'0') + '/' + $(this).val());
+});
+
 var {$component_type}_options = {
 show: function (){
 // ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
 // TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
 // $(your_option_html_element).text($(current_selected_component).css('border'));
 $.ajax({
-url: 'index.php?page=xShop_page_getproducttype',
+url: 'index.php?page=xShop_page_getitemtype',
 type: 'GET',
 data: { },
 success: function (data) {
-$('#xShop-producttype-root').html(data);
-$('#xShop-producttype-root').val($(current_selected_component).attr('xshop_producttype')?$(current_selected_component).attr('xshop_producttype'):0);
+$('#xShop-itemtype-root').html(data);
+$('#xShop-itemtype-root').val($(current_selected_component).attr('xshop_itemtype')?$(current_selected_component).attr('xshop_itemtype'):0);
 }
 });
 $.ajax({
@@ -234,7 +258,7 @@ url: 'index.php?page=xEnquiryNSubscription_page_getforms',
 type: 'GET',
 data: { },
 success: function ( data ){
-$('#xshop_product_enquiry_form_no').html(data);
+$('#xshop_item_enquiry_form_no').html(data);
 }
 });
 $.ajax({
@@ -242,27 +266,27 @@ url: 'index.php?page=xShop_page_getcategories',
 type: 'GET',
 data: { },
 success: function (data) {
-$('#xshop-product-categorygroup_{$_id}').html(data);
-$('#xshop-product-categorygroup_{$_id}').val($(current_selected_component).attr('xshop_product_categorygroup_id')?$(current_selected_component).attr('xshop_product_categorygroup_id'):0);
+$('#xshop-item-application').html(data);
+$('#xshop-item-application').val($(current_selected_component).attr('xshop_item_application_id')?$(current_selected_component).attr('xshop_item_application_id'):0);
 }
 });
-$('#xshop-product-categorygroup_{$_id}').val($(current_selected_component).attr("xshop-product-categorygroup_id"));
+$('#xshop-item-application').val($(current_selected_component).attr("xshop-item-application_id"));
 //display selected option into checkbox
 
-$('#xshop_product_topbar').attr('checked',$(current_selected_component).attr("xshop_product_topbar")=='true'?true:false);
-$('#xshop_product_fancy_box').attr('checked',$(current_selected_component).attr("xshop_product_fancy_box")==1?true:false);
-$('#xshop_product_hover').attr('checked',$(current_selected_component).attr("xshop_product_hover")==1?true:false);
-$('#xshop_product_hover_detail_page').val($(current_selected_component).attr('xshop_product_hover_detail_page'));
+$('#xshop_item_topbar').attr('checked',$(current_selected_component).attr("xshop_item_topbar")=='true'?true:false);
+$('#xshop_item_fancy_box').attr('checked',$(current_selected_component).attr("xshop_item_fancy_box")==1?true:false);
+$('#xshop_item_hover').attr('checked',$(current_selected_component).attr("xshop_item_hover")==1?true:false);
+$('#xshop_item_hover_detail_page').val($(current_selected_component).attr('xshop_item_hover_detail_page'));
 
-$('#xShop-producttype-root').val($(
-current_selected_component).attr('xshop_producttype'));
-$('#xshop_product_detail_on_image_click').attr('checked',$(current_selected_component).attr("xshop_product_detail_on_image_click")==1?true:false);
+$('#xShop-itemtype-root').val($(
+current_selected_component).attr('xshop_itemtype'));
+$('#xshop_item_detail_on_image_click').attr('checked',$(current_selected_component).attr("xshop_item_detail_on_image_click")==1?true:false);
 
-$('#xshop_product_paginator').val($(current_selected_component).attr("xshop_product_paginator"));
-if($(current_selected_component).attr("xshop_productlayout") == undefined){
-	$(current_selected_component).attr('xshop_productlayout',"xShop-productgrid");
+$('#xshop_item_paginator').val($(current_selected_component).attr("xshop_item_paginator"));
+if($(current_selected_component).attr("xshop_itemlayout") == undefined){
+	$(current_selected_component).attr('xshop_itemlayout',"xShop-itemgrid");
 }
-$(current_selected_component).attr("xshop_productlayout")=='xShop-productlist'?$('#xShop-listbtn').addClass('btn btn-success'):$('#xShop-gridbtn').addClass('btn btn-success');
+$(current_selected_component).attr("xshop_itemlayout")=='xShop-itemlist'?$('#xShop-listbtn').addClass('btn btn-success'):$('#xShop-gridbtn').addClass('btn btn-success');
 
 $('#xShop-grid-column').val($(current_selected_component).attr('xshop-grid-column')?$(current_selected_component).attr('xshop-grid-column'):0);
 $('#xshop_item_short_description').attr('checked',$(current_selected_component).attr("xshop_item_short_description")=='1'?true:false);

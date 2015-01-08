@@ -2,7 +2,7 @@
 
 namespace xShop;
 
-class View_ProductDetail extends \View{
+class View_ItemDetail extends \View{
 	function init(){
 		parent::init();
 		
@@ -64,7 +64,7 @@ class View_ProductDetail extends \View{
 		//   		'css'=>'templates/css'
 		// 		)
 		// 	)->setParent($l);
-		return array('view/xShop-productdetailview');
+		return array('view/xShop-itemdetailview');
 	}
 	
 }

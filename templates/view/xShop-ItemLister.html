@@ -1,0 +1,21 @@
+<div id="{$_name}" class="row {$class}">	
+	
+	{rows}
+	{row}
+		{$item}
+	{/row}
+	{/rows}
+
+	{no_record_found}
+		<div class='epan-container'>
+			<div class="alert alert-success">
+				<p class='panel panel-warning text-center'>No Item in this category.</p> <br/> 
+				<small class="panel panel-Info text-center">Place your Item 
+				</small>
+			</div>
+		</div>
+	{/no_record_found}
+	
+	{$paginator}
+	{$Content}
+</div>

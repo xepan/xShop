@@ -1,8 +1,6 @@
 <div id="{$_name}" class="xshop-category-mega-manu">
 	<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/xshopcategory.css"/>
 	<script type="text/javascript" src="epan-components/xShop/templates/js/hideMaxListItem.js"></script>
-	<!--<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/iThing.css"/>
-	<script type="text/javascript" src="epan-components/xShop/templates/js/jQEditRangeSlider-min.js"></script>-->
 	<div noofcols="{$no_of_cols}" xshopcategoryshowlist="{xshopcategoryshowlist}"> </div>
 	{$Content}
 	<!-- <div id="slider"></div> -->
@@ -12,7 +10,7 @@
 			$(".xshop-category-mega-manu > ul ").addClass('row');
 			col = $("#{$_name} > div").attr('noofcols');
 			col_class = "col-md-"+(12/col);
-			$(".xshop-category-mega-manu > ul > li").addClass(col_class);
+			$(".xshop-category-mega-manu > ul > li").addClass(col_class).addClass('xshop-megamenu-li');
 			
 			cat_list = $("#{$_name} > div").attr('xshopcategoryshowlist');
 			$('ul.xshop-mega-menu ul ').hideMaxListItems({
@@ -21,14 +19,6 @@
     		'moreText':'READ MORE',
 			'lessText':'READ LESS'
 			});
-			// $("#slider").editRangeSlider({
-			// 	defaultValues:{
-			// 		min: 10,
-			// 		max: 100000},
-			// 	symmetricPositionning: false,
-			// 	range: {min: 0}
-			// 	// type: "number" 	 
-			// });
 		});
 
 	</script>

@@ -8,8 +8,8 @@ class page_xShop_page_owner_update extends page_componentBase_page_update {
 		parent::init();
 		// 
 		// Code To run before update
-		
-		$this->update(false); // All modls will be dynamic executed in here
+		f(!$_GET['pass-git'])
+			$this->update(false); // All modls will be dynamic executed in here
 
 		$model = $this->add('xShop/Model_CategoryGroup');
 		$model->add('dynamic_model/Controller_AutoCreator');

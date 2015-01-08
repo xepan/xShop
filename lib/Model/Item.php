@@ -24,7 +24,7 @@ class Model_Item extends \Model_Table{
 		$f = $this->addField('is_party_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 
 		$f = $this->addField('short_description')->type('text')->group('d~6');//->display(array('form'=>'RichText'));
-		$f = $this->addField('original_price')->mandatory(true)->group('d~3');
+		$f = $this->addField('original_price')->type('int')->mandatory(true)->group('d~3');
 		$f = $this->addField('sale_price')->type('int')->mandatory(true)->group('d~3')->sortable(true);
 		$f = $this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~6~dl');
 		$f = $this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'))->group('d~3~dl');				
@@ -47,7 +47,7 @@ class Model_Item extends \Model_Table{
 
 		//Item Display Options
 		$f = $this->hasOne('xShop/ItemOffer','offer_id');
-		$f = $this->addField('offer_position')->setValueList(array('top:0, left:0'=>'TopLeft','top:0, right:0'=>'TopRight','bottom:0, left:0'=>'BottomLeft','bottom:0, right:0'=>'BottomRight'));
+		$f = $this->addField('offer_position')->setValueList(array('top:0-left:0'=>'TopLeft','top:0-right:0'=>'TopRight','bottom:0-left:0'=>'BottomLeft','bottom:0-right:0'=>'BottomRight'));
 		
 		$f = $this->addField('show_detail')->type('boolean')->defaultValue(true)->group('i~2~Item');
 		$f = $this->addField('show_price')->type('boolean')->group('i~2');
