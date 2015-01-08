@@ -2,7 +2,7 @@
 
 namespace xShop;
 
-class View_Tools_Item extends \componentBase\View_Component{
+class View_Tools_Item extends \componentBase\View_ServerSideComponent{
 	function init(){
 		parent::init();
 		

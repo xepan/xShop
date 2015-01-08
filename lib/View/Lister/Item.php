@@ -225,15 +225,16 @@ class View_Lister_Item extends \CompleteLister{
 		$class_ext=$class;
 		$style_ext=$style;
 		$empty_array=array();
-		if($if_test){
-			if($if_test == 2){
+		if($if_test_result = $if_test){
+			if($if_test_result == 2){
 				$class_ext .= " xshop-item-show-on-hover";
-				$style_ext .= " display:none";
+				$style_ext .= " visibility:hidden";
 			}
 
 			$this->order_count ++;
 			if(!$order) $order = $this->order_count;
-			$parent_secition['children'][(int)$order] = $this->makeSection($sectionName,$Content,$class_ext,$url,$tag, $style_ext, $extra_attr);
+			if(isset($parent_secition['children'][$order])) $order = $this->order_count;
+			$parent_secition['children'][$order] = $this->makeSection($sectionName,$Content,$class_ext,$url,$tag, $style_ext, $extra_attr);
 			return $parent_secition['children'][$order];
 		}
 		return $empty_array;
