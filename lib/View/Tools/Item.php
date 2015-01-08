@@ -11,7 +11,7 @@ class View_Tools_Item extends \componentBase\View_Component{
 
 		$application_id=$this->html_attributes['xshop_item_application_id']?$this->html_attributes['xshop_item_application_id']:0;
 		if(!$application_id){
-			$this->add('View_Error')->set('Please Select category Group');
+			$this->add('View_Error')->set('Please Select Application');
 			return;
 		}
 			
@@ -20,19 +20,9 @@ class View_Tools_Item extends \componentBase\View_Component{
 		if($this->html_attributes['xshop-grid-column']){	
 			$width = 12 / $this->html_attributes['xshop-grid-column'];
 		}
-		$column_width = 'col-md-'.$width.' col-sm-'.$width.' col-xl-'.$width;
+		$this->html_attributes['column_width']= 'col-md-'.$width.' col-sm-'.$width.' col-xl-'.$width;
 
-		$item_lister_view=$this->add('xShop/View_Lister_Item',
-								array('xshop_item_display_layout'=>$this->html_attributes['xshop_itemlayout'],
-										'xshop_item_grid_column'=>$column_width,
-										'xshop_item_topbar'=>$this->html_attributes['xshop_item_topbar'],
-										'xshop_item_categorygroup_id'=>$this->html_attributes['xshop_item_categorygroup_id']?$this->html_attributes['xshop_item_categorygroup_id']:0,
-										'fancy_box_on'=>$this->html_attributes['xshop_item_fancy_box'],							
-										'item_detail_url'=>$this->html_attributes['xshop_item_hover_detail_page'],					
-										'item_detail_onclick'=>$this->html_attributes['xshop_item_hover'],
-										'item_short_description'=>$this->html_attributes['xshop_item_short_description'],
-										'xshop_item_detail_on_image_click'=>$this->html_attributes['xshop_item_detail_on_image_click']
-										));
+		$item_lister_view=$this->add('xShop/View_Lister_Item',array('html_attributes'=>$this->html_attributes));
 
 		$item_model=$this->add('xShop/Model_Item');
 		$item_model->addCondition('is_publish',true);

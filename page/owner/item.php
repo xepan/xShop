@@ -58,7 +58,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		}
 		
 		$item_crud=$item_col->add('CRUD',array('grid_class'=>'xShop/Grid_Item'));
-		$item_crud->setModel($item_model,array('party_id','name','sku','is_publish','short_description','description','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','item_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags'),array('name','sku','sale_price','is_publish'));
+		$item_crud->setModel($item_model,array('party_id','name','sku','is_publish','short_description','description','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','item_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags','offer_id','offer_position'),array('name','sku','sale_price','is_publish'));
 			
 	}
 
@@ -110,7 +110,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$item_id=$this->api->stickyGET('xshop_items_id');	
 		$item_model = $this->add('xShop/Model_Item');
 		$item_model->getItem($item_id);
-		$product_view = $this->add('xShop/View_ProductDetail');
+		$product_view = $this->add('xShop/View_ItemDetail');
 		$product_view->setModel($item_model);
 	}
 

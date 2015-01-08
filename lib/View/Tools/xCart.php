@@ -12,7 +12,7 @@ class View_Tools_xCart extends \componentBase\View_Component{
 		$this->js('reload')->reload(array('product_id'=>$this->js()->_selector('body')->attr('xshop_add_product_id')));		
 		//add Cart model work as a session
 		$cart_model=$this->add('xShop/Model_Cart');
-		$product_model=$this->add('xShop/Model_Product');
+		$product_model=$this->add('xShop/Model_Item');
 
 		if($_GET['product_id'] AND $_GET['product_id'] != 'undefined'){
 																			
@@ -120,16 +120,20 @@ class View_Tools_xCart extends \componentBase\View_Component{
 
 
 	function defaultTemplate(){
-		$l=$this->api->locate('addons',__NAMESPACE__, 'location');
-		$this->api->pathfinder->addLocation(
-			$this->api->locate('addons',__NAMESPACE__),
-			array(
-		  		'template'=>'templates',
-		  		'css'=>'templates/css',
-		  		'js'=>'templates/js'
-				)
-			)->setParent($l);
-			return array('view/xShop-xCart');		
+		$this->app->pathfinder->base_location->addRelativeLocation(
+		    'epan-components/'.__NAMESPACE__, array(
+		        'php'=>'lib',
+		        'template'=>'templates',
+		        'css'=>'templates/css',
+		        'js'=>'templates/js',
+		    )
+		);
+		return array('view/xShop-xCart');		
 	}	
+
+	function render(){
+		$this->js(true)->_load('cart/cart')->_selector('.xshop-cart')->xepan_xshop_cart();
+		parent::render();
+	}
 }
 

@@ -27,7 +27,7 @@ xShop:
      ☐ SKU autogenerate or manual
  ☐ Shipping Management
  ☐ Tax management
- ☐ 
+ ☐ Application Offer Management (CRUD)
 
 Designer:
   category has many custom fields copied to each new product created.

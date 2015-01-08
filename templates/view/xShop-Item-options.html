@@ -136,7 +136,26 @@
 								<td colspan="2">
 									<input id="xshop_item_hover_detail_page" type="text"/>
 								</td>
-							</tr>							
+							</tr>
+							<tr>
+								<td >
+									Customize Item Display
+								</td>
+								<td colspan="2">
+									<table class="table table-condensed table-hover">
+									<tr>
+										<td>Item Name</td>
+										<td><input type='checkbox' id='xshop-item-customize-show-name' /></td>
+										<td><input type='number' id='xshop-item-customize-order-name' /></td>
+									</tr>
+									<tr>
+										<td>Item Image</td>
+										<td><input type='checkbox' id='xshop-item-customize-show-image' /></td>
+										<td><input type='number' id='xshop-item-customize-order-image' /></td>
+									</tr>
+									</table>
+								</td>
+							</tr>
 						</table>
 					</div>
 				</div>
@@ -215,6 +234,11 @@ $('#xshop_item_paginator').change(function(event){
 $(current_selected_component).attr('xshop_item_paginator',$(this).val());
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
+
+$('#xshop-item-customize-order-name').change(function(event){
+	$(current_selected_component).attr('customize-display-name', ($('#xshop-item-customize-show-image').is(':checked')?'1':'0') + '/' + $(this).val());
+});
+
 var {$component_type}_options = {
 show: function (){
 // ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT

@@ -6,7 +6,7 @@ class Model_ItemOffer extends \Model_Table {
 		parent::init();
 
 		$this->addField('name');
-		$this->add('filestore/Field_Image','item_image_id')->mandatory(true);
+		$this->add('filestore/Field_Image','offer_image_id')->mandatory(true);
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
