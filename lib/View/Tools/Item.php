@@ -35,8 +35,8 @@ class View_Tools_Item extends \componentBase\View_ServerSideComponent{
 		$item_join=$item_model->leftJoin('xshop_category_item.item_id','id');
 		$item_join->addField('category_id');
 		//Category Wise item Loading
-		if($_GET['xshop_category_id']){
-			$item_model->addCondition('category_id',$_GET['xshop_category_id']);
+		if($_GET['xsnb_category_id']){
+			$item_model->addCondition('category_id',$_GET['xsnb_category_id']);
 		}
 		//-------------------------------------
 		
@@ -48,15 +48,17 @@ class View_Tools_Item extends \componentBase\View_ServerSideComponent{
 		}
 		//---------------------
 
-		if($item_model->count()->getOne() != 0)
-			$item_lister_view->template->del('no_record_found');
 		
 		$item_model->_dsql()->group('item_id'); // Multiple category association shows multiple times item so .. grouped
+		$item_model->_dsql()->having('item_id','<>',null); 
 		$item_model->setOrder('created_at','desc');
 		
+		// if($item_model->count()->getOne() != 0)
+			// $item_lister_view->template->del('no_record_found');
+
 		$item_lister_view->setModel($item_model);
 		
-		//Add Painator to item List
+		// Add Painator to item List
 		// $paginator = $item_lister_view->add('Paginator');
 		// $paginator->ipp($this->html_attributes['xshop_item_paginator']?:12);
 		// ------------------------------------------

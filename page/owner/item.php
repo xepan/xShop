@@ -58,7 +58,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		}
 		
 		$item_crud=$item_col->add('CRUD',array('grid_class'=>'xShop/Grid_Item'));
-		$item_crud->setModel($item_model,array('party_id','name','sku','is_publish','short_description','description','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_self','enquiry_send_to_supplier','enquiry_send_to_manufacturer','item_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags','offer_id','offer_position'),array('name','sku','sale_price','is_publish'));
+		$item_crud->setModel($item_model,array('name','sku','is_publish','short_description','description','default_qty','default_qty_unit','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_admin','item_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags','offer_id','offer_position','is_designable','designer_id'),array('name','sku','sale_price','is_publish'));
 			
 	}
 
@@ -165,7 +165,19 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		if($crud->form){
 			$crud->form->getElement('customfield_id')->getModel()->addCondition('application_id',$application_id);
 		}
-		$crud->grid->addColumn('expander','values');
+		$crud->grid->addColumn('expander','Values');
+		if(!$crud->isEditing()){	
+			$g = $crud->grid;
+			$g->addMethod('format_Values',function($g,$f){
+				$temp = $this->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$g->model->id)->tryLoadAny();
+				$str = "";
+				if($temp->count()->getOne())
+					$str = '<span class=" atk-label atk-swatch-green">'.$temp->count()->getOne()."</span>";
+							
+				$g->current_row_html[$f] = $g->current_row_html[$f].$str;
+			});
+			$g->addFormatter('Values','Values');
+		}
 	}	
 
 	function page_custom_fields_values(){
@@ -203,7 +215,6 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$filter_model = $this->add('xShop/Model_CustomFieldValueFilterAssociation');
 
 		$crud = $this->add('CRUD');
-		$crud->setModel($filter_model);
 		//for Custom Field Id
 		$temp = $this->add('xShop/Model_CategoryItemCustomFields');
 		$associated_customfiled = $temp->addCondition('item_id',$item_id)->addCondition('id','<>',$custom_field_asso_id)->_dsql()->del('fields')->field('customfield_id')->getAll();
@@ -214,6 +225,9 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 			$form_model->addCondition('application_id',$application_id);
 			$form_model->addCondition('id','in',$associated_customfiled);
 		}
+
+		// $filter_model->addCondition('customfield_id',);
+		$crud->setModel($filter_model);
 	}
 
 	function page_specifications(){

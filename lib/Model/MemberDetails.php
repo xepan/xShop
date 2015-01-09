@@ -25,6 +25,10 @@ class Model_MemberDetails extends \Model_Table{
 		$this->hasMany('xShop/Order','member_id');
 		$this->hasMany('xShop/DiscountVoucherUsed','member_id');
 		
+		$this->addExpression('name')->set(function($m,$q){
+			return $m->refSQL('users_id')->fieldQuery('name');
+		});
+
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}
 
