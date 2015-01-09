@@ -8,9 +8,11 @@ class View_Lister_Item extends \CompleteLister{
 	
 	public $order_count = 0;
 
-	function init(){
-		parent::init();
-		// print_r($this->html_attributes);
+	function setModel($model,$fields=null){
+		parent::setModel($model,$fields);
+		if($this->model->count()->getOne() > 0){
+			$this->template->tryDel('no_record_found');
+		}
 	}
 	
 	function formatRow(){

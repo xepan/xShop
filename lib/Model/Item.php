@@ -11,6 +11,7 @@ class Model_Item extends \Model_Table{
 		
 		$f = $this->hasOne('xShop/Affiliate','affiliate_id');
 		$this->hasOne('xShop/Application','application_id');
+		$this->hasOne('xShop/MemberDetails','designer_id');
 
 		//for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
@@ -20,12 +21,21 @@ class Model_Item extends \Model_Table{
 		$f = $this->addField('name')->mandatory(true)->group('b~6')->sortable(true);
 		$f = $this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique Item code ')->mandatory(true)->group('b~4')->sortable(true);
 		$f = $this->addField('reference')->PlaceHolder('Any Referance')->hint('Use URL for external link')->mandatory(true)->group('b~4')->sortable(true);
+		$f = $this->addField('theme_code')->hint('To club same theme code items in one')->mandatory(true)->group('b~4')->sortable(true);
 		$f = $this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 		$f = $this->addField('is_party_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 
 		$f = $this->addField('short_description')->type('text')->group('d~6');//->display(array('form'=>'RichText'));
+		
+
+		// Price and Qtuanitity Management
+		$f = $this->addField('minimum_order_qty')->type('int')->mandatory(true)->group('d~3');
+		$f = $this->addField('maximum_order_qty')->type('int')->mandatory(true)->group('d~3');
+		$f = $this->addField('qty_unit')->mandatory(true)->group('d~3');
+		
 		$f = $this->addField('original_price')->type('int')->mandatory(true)->group('d~3');
 		$f = $this->addField('sale_price')->type('int')->mandatory(true)->group('d~3')->sortable(true);
+
 		$f = $this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~6~dl');
 		$f = $this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'))->group('d~3~dl');				
 		$f = $this->addField('expiry_date')->type('date')->group('d~3~dl');
@@ -60,9 +70,9 @@ class Model_Item extends \Model_Table{
 		
 
 		//Enquiry Send To		
-		$f = $this->addField('enquiry_send_to_self')->caption('Self/ Owner')->type('boolean')->group('e~3~<i class=\'fa fa-cog\' > Enquiry Send To</i>');
-		$f = $this->addField('enquiry_send_to_supplier')->caption('Supplier')->type('boolean')->group('e~3');
-		$f= $this->addField('enquiry_send_to_manufacturer')->caption('Manufacturer')->type('boolean')->group('e~3');
+		$f = $this->addField('enquiry_send_to_admin')->type('boolean')->group('e~3~<i class=\'fa fa-cog\' > Enquiry Send To</i>');
+		// $f = $this->addField('enquiry_send_to_supplier')->caption('Supplier')->type('boolean')->group('e~3');
+		// $f= $this->addField('enquiry_send_to_manufacturer')->caption('Manufacturer')->type('boolean')->group('e~3');
 		$f = $this->addField('Item_enquiry_auto_reply')->caption('Item Enquiry Auto Reply')->type('boolean')->group('e~3');
 
 		//Item Comment Options
@@ -97,6 +107,8 @@ class Model_Item extends \Model_Table{
 		$this->hasMany('xShop/ItemSpecificationAssociation','item_id');
 		$this->hasMany('xShop/CategoryItemCustomFields','item_id');
 		$this->hasMany('xShop/Model_ItemReview','item_id');
+
+		$this->addExpression('theme_code_group_expression')->set('(IF(ISNULL('.$this->table_alias.'.theme_code),'.$this->table_alias.'.id,'.$this->table_alias.'.theme_code))');
 			
 		$this->addHook('beforeSave',$this);
 		$this->addHook('beforeDelete',$this);

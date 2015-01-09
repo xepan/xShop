@@ -67,6 +67,6 @@ class Model_Category extends \Model_Table{
 	}
 
 	function nameExistInParent(){ //Check Duplicasy on Name Exist in Parent Category
-		return $this->ref('parent_id')->ref('SubCategories')->addCondition('name',$this['name'])->addCondition('id','<>',$this->id)->tryLoadAny()->loaded();
+		return $this->ref('parent_id')->loaded()? $this->ref('parent_id')->ref('SubCategories')->addCondition('name',$this['name'])->addCondition('id','<>',$this->id)->tryLoadAny()->loaded(): false;
 	}
 }

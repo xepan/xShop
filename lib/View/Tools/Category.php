@@ -79,9 +79,9 @@ class View_Tools_Category extends \componentBase\View_Component{
 		}else{
 			// throw new \Exception($category['id'], 1);
 			if($this->html_attributes['xshop_category_layout']=='Thumbnail'){
-				$output = "<li class='text-center'><a href='index.php?subpage=".$page_name."&category_id=".$category['id']."'><img src='$category[image_url]' /><div class='sky-menu-thumbnail-name'>".$category['name']."</div></a></li>";
+				$output = "<li class='text-center'><a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'><img src='$category[image_url]' /><div class='sky-menu-thumbnail-name'>".$category['name']."</div></a></li>";
 			}else
-				$output = "<li><a href='index.php?subpage=".$page_name."&category_id=".$category['id']."'>".$category['name']."".$item['sale_price']."</a></li>";
+				$output = "<li><a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'>".$category['name']."".$item['sale_price']."</a></li>";
 
 		}
 
