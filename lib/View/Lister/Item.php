@@ -37,7 +37,7 @@ class View_Lister_Item extends \CompleteLister{
 			$html_objects,
 			'ItemName',
 			$this->model['name'],
-			'xshop-item-name',
+			'xshop-item-name panel-heading',
 			$detail_url,
 			'li/a',
 			$this->html_attributes['order-name']
@@ -69,7 +69,7 @@ class View_Lister_Item extends \CompleteLister{
 			$image_parent, 
 			'ItemImage',
 			'',
-			'xshop-item-img',
+			'xshop-item-img thumbnail',
 			$this->model->ref('xShop/ItemImages')->tryLoadAny()->get('item_image'),
 			'img',
 			$this->html_attributes['order-image']
@@ -114,7 +114,7 @@ class View_Lister_Item extends \CompleteLister{
 			$html_objects,
 			'ItemAddToCartButton',
 			'Add To Cart',
-			'xshop-item-add-to-cart',
+			'xshop-item-add-to-cart btn btn-default',
 			'$(".xshop-cart").xepan_xshop_cart("add_to_cart_default_func",'.$this->model->id.');',
 			'li/button',
 			$this->html_attributes['order-add-to-cart']
@@ -148,7 +148,7 @@ class View_Lister_Item extends \CompleteLister{
 			$this->html_attributes['show-enquiry-form'],
 			$html_objects,
 			'OpenEnquiryFormFrame',
-			'Enquire',
+			'Enquiry',
 			'xshop-item-enquiry-form-btn',
 			'#', // FrameURL JS CODE for Enquiry form
 			'li/a',

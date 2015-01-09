@@ -17,7 +17,7 @@ class page_xShop_page_install extends page_componentBase_page_install {
 			$css_content_orig = file_get_contents($css_file_orig);
 			// throw new \Exception($css_content_orig);
 			file_put_contents($css_file, "$css_content_orig");			
-			$this->api->template->appendHTML('js_include','<link id="xshop-product-customcss-link" type="text/css" href="'.$css_file.'" rel="stylesheet" />'."\n");
+			$this->api->template->appendHTML('js_include','<link id="xshop-item-customcss-link" type="text/css" href="'.$css_file.'" rel="stylesheet" />'."\n");
 		}
 		//Loading Category Css File
 		$css_file = getcwd().DS.'epans/'.$this->api->current_website['name'].'/xshopcategory.css';

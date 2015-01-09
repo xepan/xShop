@@ -9,9 +9,8 @@ class page_xShop_page_owner_category extends page_xShop_page_owner_main{
 		$application_id=$this->api->recall('xshop_application_id');
 		
 		//Badges 
-		$this->app->layout->add('xShop/View_Badges_CategoryPage');
+		$badge_view = $this->app->layout->add('xShop/View_Badges_CategoryPage');
 		
-
 		$category_model = $this->add('xShop/Model_Category');
 		$category_model->addCondition('application_id',$application_id);	
 		$category_model->setOrder('id','desc');
@@ -24,5 +23,8 @@ class page_xShop_page_owner_category extends page_xShop_page_owner_main{
 			$parent_model->title_field='category_name';
 			$parent_model->addCondition('application_id',$application_id);
 		}
+
+		$crud->grid->js('reload', $this->js(true)->alert('hello'));
+		
 	}
 }
