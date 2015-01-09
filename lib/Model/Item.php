@@ -95,7 +95,7 @@ class Model_Item extends \Model_Table{
 		$f = $this->addField('watermark_position')->enum(array('TopLeft','TopRight','BottomLeft','BottomRight','Center','Left Diagonal','Right Diagonal'));
 		$f = $this->addField('watermark_opacity');
 		
-		//Item Designs 
+		//Item Designs
 		$f = $this->addField('designs')->type('text')->group('o~5~bl');
 
 		$this->hasMany('xShop/CategoryItem','item_id');
@@ -105,6 +105,7 @@ class Model_Item extends \Model_Table{
 		$this->hasMany('xShop/ItemEnquiry','item_id');
 		$this->hasMany('xShop/OrderDetails','item_id');
 		$this->hasMany('xShop/ItemSpecificationAssociation','item_id');
+		$this->hasMany('xShop/CustomFieldValueFilterAssociation','item_id');
 		$this->hasMany('xShop/CategoryItemCustomFields','item_id');
 		$this->hasMany('xShop/Model_ItemReview','item_id');
 

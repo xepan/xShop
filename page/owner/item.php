@@ -220,14 +220,19 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$associated_customfiled = $temp->addCondition('item_id',$item_id)->addCondition('id','<>',$custom_field_asso_id)->_dsql()->del('fields')->field('customfield_id')->getAll();
 		$associated_customfiled = iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_customfiled)),false);
 		// ----------------------
+		$filter_model->addCondition('item_id',$item_id);		
+		$filter_model->addCondition('customefieldvalue_id',$custom_filed_value_id);
+		$crud->setModel($filter_model);
+		
 		if($crud->form){
 			$form_model = $crud->form->getElement('customfield_id')->getModel();
 			$form_model->addCondition('application_id',$application_id);
-			$form_model->addCondition('id','in',$associated_customfiled);
+			if(count($associated_customfiled) > 0)
+				$form_model->addCondition('id','in',$associated_customfiled);
+			else
+				$form_model->addCondition('id',-1);
 		}
 
-		// $filter_model->addCondition('customfield_id',);
-		$crud->setModel($filter_model);
 	}
 
 	function page_specifications(){

@@ -19,7 +19,7 @@ class Model_CustomFields extends \Model_Table{
 		$f = $this->addField('default_value')->group('a~6')->mandatory(true)->hint('Comma Separated Value like red,blue,green,etc..');
 		
 		$this->hasMany('xShop/CustomFieldValue','customefield_id');
-
+		$this->hasMany('xShop/CustomFieldValueFilterAssociation','customefield_id');
 		$this->hasMany('xShop/CategoryItemCustomFields','customfield_id');
 
 		$this->add('dynamic_model/Controller_AutoCreator');

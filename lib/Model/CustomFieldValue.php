@@ -20,6 +20,7 @@ class Model_CustomFieldValue extends \Model_Table{
 		$this->addField('is_active')->type('boolean')->defaultValue(true)->sortable(true);
 
 		$this->hasMany('xShop/ItemImages','customefieldvalue_id');
+		$this->hasMany('xShop/CustomFieldValueFilterAssociation','customefieldvalue_id');
 		$this->addHook('beforeSave',$this);
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
