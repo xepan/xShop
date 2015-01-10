@@ -10,7 +10,6 @@ class page_xShop_page_owner_order extends page_xShop_page_owner_main{
 		//Badges 
 		$this->app->layout->add('xShop/View_Badges_OrderPage');
 		
-
 		$order_model = $this->add('xShop/Model_Order');
 		//$order_model->addCondition('application_id',$application_id);	
 		$order_model->setOrder('id','desc');
