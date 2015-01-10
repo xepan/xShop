@@ -206,7 +206,7 @@ class View_Lister_Item extends \CompleteLister{
 			'Personalize',
 			'Personalize',
 			'xshop-item-personalize',
-			'#', // FrameURL JS CODE for Personalized JUMP
+			'$(this).univ().location("index.php?subpage='.$this->html_attributes['personalization-page'].'&xsnb_design_item_id='.$this->model->id.'")', // FrameURL JS CODE for Personalized JUMP
 			'li/div',
 			$this->html_attributes['order-personalized']
 			);
@@ -337,7 +337,7 @@ class View_Lister_Item extends \CompleteLister{
 	}
 
 	function render(){
-		$this->js(true)->_load('item/item')->_selector('.xshop-item')->xepan_xshop_item();
+		$this->js(true)->_load('item/item')->_load('item/customfield')->_selector('.xshop-item')->xepan_xshop_item();
 		parent::render();
 	}
 

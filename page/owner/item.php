@@ -169,7 +169,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		if(!$crud->isEditing()){	
 			$g = $crud->grid;
 			$g->addMethod('format_Values',function($g,$f){
-				$temp = $this->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$g->model->id)->tryLoadAny();
+				$temp = $g->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$g->model->id)->tryLoadAny();
 				$str = "";
 				if($temp->count()->getOne())
 					$str = '<span class=" atk-label atk-swatch-green">'.$temp->count()->getOne()."</span>";

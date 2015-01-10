@@ -9,12 +9,12 @@ jQuery.widget("ui.xepan_xshop_item",{
 		});
 
 		$(this.element).hover(
-		function(event){
-			$(this).find('.xshop-item-show-on-hover').visible();
-		},
-		function(event){
-			$(this).find('.xshop-item-show-on-hover').invisible();
-		}
+			function(event){
+				$(this).find('.xshop-item-show-on-hover').visible();
+			},
+			function(event){
+				$(this).find('.xshop-item-show-on-hover').invisible();
+			}
 		);
 
 	}
