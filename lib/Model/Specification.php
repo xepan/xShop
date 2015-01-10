@@ -14,9 +14,7 @@ class Model_Specification extends \Model_Table{
 
 		$f = $this->addField('name')->mandatory(true)->group('a~6~<i class=\'fa fa-cog\'> Item Custom Fields</i>')->mandatory(true);
 		$f->icon = 'fa fa-circle~blue';
-		
-		$f = $this->addField('default_value')->group('a~6')->mandatory(true);
-		
+			
 		$this->hasMany('xShop/ItemSpecificationAssociation','specification_id');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
