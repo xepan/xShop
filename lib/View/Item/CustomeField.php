@@ -32,7 +32,7 @@ class View_Item_CustomeField extends \View{
 					break;					
 			}
 			// $this->add('View')->set('Custom Fields - '.$custom_field['name']." - ".$custom_field['customfield_id']." - ".$custom_field['id'].'-'.$custom_field['type']);
-			$this->add('View')->setHTML($string);
+			$this->add('View')->setHTML($custom_field['name'] . ' '. $string);
 		}
 	}
 
@@ -62,6 +62,11 @@ class View_Item_CustomeField extends \View{
 			$html = '<input type="checkbox" name="">'.$junk['name']."</input>";
 		}
 		return $html;	
+	}
+
+	function render(){
+		$this->js(true)->xepan_xshop_item_customfield();
+		parent::render();
 	}
 
 }

@@ -39,7 +39,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/cropper.js"></script>'."\n");
 		
 		// $ited_id = $this->api->stickyGET('xshop_item_id');
-		$item_model = $this->add('xShop/Model_Item')->load(1);
+		$item_model = $this->add('xShop/Model_Item')->tryLoadAny();
 
 		$this->js(true)->xepan_xshopdesigner(array('width'=>210,'height'=>279,'trim'=>5,'unit'=>'mm','designer_mode'=>true,'design'=>$item_model['designs']));
 		parent::render();

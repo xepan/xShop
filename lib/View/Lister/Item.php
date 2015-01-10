@@ -337,7 +337,7 @@ class View_Lister_Item extends \CompleteLister{
 	}
 
 	function render(){
-		$this->js(true)->_load('item/item')->_selector('.xshop-item')->xepan_xshop_item();
+		$this->js(true)->_load('item/item')->_load('item/customfield')->_selector('.xshop-item')->xepan_xshop_item();
 		parent::render();
 	}
 

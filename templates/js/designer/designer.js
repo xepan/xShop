@@ -71,11 +71,10 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	loadDesign: function(){
 		var self = this;
-		if(self.options.design =="") return;
+		if(self.options.design == "" || !self.options.design) return;
 		saved_design = JSON.parse(self.options.design);
 		$.each(saved_design,function(page_name,page_object){
 			$.each(page_object,function(layout_name,layout_object){
-				console.log(layout_object.components);
 				$.each(layout_object.components,function(key,value){
 					value = JSON.parse(value);
 					var temp = new window[value.type + "_Component"]();
@@ -179,9 +178,9 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	render: function(param){
 		var self = this;
+		console.log('sdf');
 
 		this.canvas.css('height',this.options.height + this.options.unit); // In Given Unit
-		// console.log(this.canvas.height());
 		this.canvas.height(this.canvas.height() * this._getZoom()); // get in pixel .height() and multiply by zoom 
 
 		this.safe_zone.css('width',(this.options.width - (this.options.trim * 2)) + this.options.unit); // In given unit
