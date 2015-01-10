@@ -36,7 +36,7 @@ Save_Component = function (params){
 				});	
 			});
 
-			// console.log(self.layout_array);
+			// console.log(self);
 
 			$.ajax({
 					url: 'index.php?page=xShop_page_designer_save',
@@ -44,7 +44,7 @@ Save_Component = function (params){
 					datatype: "json",
 					data: {xshop_item_design: self.layout_array,//json object
 							item_id:self.designer_tool.item_id, //designed item id
-							// item_id:1 //designed item id
+							designer_mode:self.designer_tool.options.designer_mode
 						},
 				})
 				.done(function(ret) {

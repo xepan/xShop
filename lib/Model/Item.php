@@ -109,6 +109,7 @@ class Model_Item extends \Model_Table{
 		$this->hasMany('xShop/CustomFieldValueFilterAssociation','item_id');
 		$this->hasMany('xShop/CategoryItemCustomFields','item_id');
 		$this->hasMany('xShop/Model_ItemReview','item_id');
+		$this->hasMany('xShop/Model_ItemMemberDesign','item_id');
 
 		$this->addExpression('theme_code_group_expression')->set('(IF(ISNULL('.$this->table_alias.'.theme_code),'.$this->table_alias.'.id,'.$this->table_alias.'.theme_code))');
 			

@@ -22,6 +22,7 @@ class Model_ItemTemplate extends Model_Item{
 		$duplicate_template['name'] = $this['name'].'-Copy';
 		$duplicate_template['designer_id'] = $this->api->auth->model->id;
 		$duplicate_template['sku'] = $this['sku'].'-' . $duplicate_template->id;
+		$duplicate_template['is_template'] = false;
 		$duplicate_template->save();
 	}
 

@@ -41,14 +41,14 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 				$form->js(null,$crud->js()->reload())->univ()->successMessage('Design Duplicated')->execute();
 			}
 
-			$designed_template = $this->add('xShop/Model_ItemTemplate');
+			$designed_template = $this->add('xShop/Model_Item');
 			$designed_template->addCondition('designer_id',$this->api->auth->model->id);
 			$crud->setModel($designed_template,array('name','sku','is_party_publish','short_description'));
 			if(!$crud->isEditing()){
 				$g = $crud->grid;
 				$g->addColumn('design');
 				$g->addMethod('format_design',function($g,$f){
-					$g->current_row_html[$f]='<a href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model->id,'xsnb_designer_item_desgin_mode'=>true)).'>Design</a>';
+					$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model->id,'xsnb_designer_item_desgin_mode'=>true)).'>Design</a>';
 				});
 				$g->addFormatter('design','design');
 			}
