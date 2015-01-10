@@ -49,7 +49,7 @@ class Model_Item extends \Model_Table{
 		$f = $this->addField('is_rentable')->type('boolean')->group('f~3');
 		$f = $this->addField('is_enquiry_allow')->type('boolean')->group('f~3');
 		$f = $this->addField('is_template')->type('boolean')->defaultValue(false)->group('f~3');
-
+		
 		$f = $this->addField('negative_qty_allowed')->type('number');
 		$f = $this->addField('is_visible_sold')->type('boolean')->hint('If Product remains visible after sold');
 

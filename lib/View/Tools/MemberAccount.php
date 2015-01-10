@@ -30,17 +30,28 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 
 			// MEMBER DESIGNS
 			$design_tab = $tab->addTab('Designs','designs');
-			$design_tab->add('View')->set('Deisgns');
-			$form = $this->add('Form');
+			$form = $design_tab->add('Form');
+			$crud = $design_tab->add('CRUD',array('allow_add'=>false,'allow_del'=>false));
 			$template_model = $design_tab->add('xShop/Model_ItemTemplate');
 			$form->addField('dropdown','item_template')->setModel($template_model);
 
 			$form->addSubmit('Duplicate');
 			if($form->isSubmitted()){
 				$template_model->load($form['item_template'])->duplicate();
-				$form->js()->univ()->successMessage('Design Duplicated')->execute();
+				$form->js(null,$crud->js()->reload())->univ()->successMessage('Design Duplicated')->execute();
 			}
 
+			$designed_template = $this->add('xShop/Model_ItemTemplate');
+			$designed_template->addCondition('designer_id',$this->api->auth->model->id);
+			$crud->setModel($designed_template,array('name','sku','is_party_publish','short_description'));
+			if(!$crud->isEditing()){
+				$g = $crud->grid;
+				$g->addColumn('design');
+				$g->addMethod('format_design',function($g,$f){
+					$g->current_row_html[$f]='<a href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model->id,'xsnb_designer_item_desgin_mode'=>true)).'>Design</a>';
+				});
+				$g->addFormatter('design','design');
+			}
 		}
 		else{
 			$this->add('View_Error')->set('you are not Logged in');

@@ -15,15 +15,12 @@ class Model_ItemTemplate extends Model_Item{
 		$duplicate_template = $this->add('xShop/Model_ItemTemplate');
 		$fields=$this->getActualFields();
 		$fields = array_diff($fields,array('id','sku'));
-		// echo "<pre>";
-		// print_r($fields);
-		// echo "</pre>";
 		foreach ($fields as $fld) {
-			// throw new \Exception("Error Processing Request".$this['name']);
 			$duplicate_template[$fld] = $this[$fld];
 		}
 		$duplicate_template->save();
 		$duplicate_template['name'] = $this['name'].'-Copy';
+		$duplicate_template['designer_id'] = $this->api->auth->model->id;
 		$duplicate_template['sku'] = $this['sku'].'-' . $duplicate_template->id;
 		$duplicate_template->save();
 	}
