@@ -140,7 +140,9 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			$('.ui-selected').removeClass('ui-selected');
 			self.option_panel.hide();
 			self.current_selected_component = undefined;
-			self.freelancer_panel.FreeLancerComponentOptions.element.hide();
+			if(self.options.designer_mode){
+				self.freelancer_panel.FreeLancerComponentOptions.element.hide();
+			}
 			$('div.guidex').css('display','none');
 			$('div.guidey').css('display','none');
 			event.stopPropagation();
@@ -220,7 +222,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 
 	check: function(){
-		console.log(this.components);
+		// console.log(this.components);
 	}
 
 });

@@ -213,10 +213,12 @@ Image_Component = function (params){
 	            $('.xshop-options-editor').hide();
 	            self.editor.element.show();
 	            self.designer_tool.option_panel.show();
-	            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
+	            if(self.designer_tool.options.designer_mode){
+		            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
+		            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
+	            }
 	            self.designer_tool.current_selected_component = self;
 	            self.editor.setImageComponent(self);
-	            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
 		        event.stopPropagation();
 			});
 		}

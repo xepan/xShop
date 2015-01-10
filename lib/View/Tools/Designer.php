@@ -6,7 +6,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 	public $html_attributes=array(); // ONLY Available in server side components
 	public $item=null;
 	public $render_designer=false;
-	public $designer_mode=true;
+	public $designer_mode=false;
 
 	function init(){
 		parent::init();
