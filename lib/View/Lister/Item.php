@@ -69,8 +69,8 @@ class View_Lister_Item extends \CompleteLister{
 			$image_parent, 
 			'ItemImage',
 			'',
-			'xshop-item-img thumbnail',
-			$this->model->ref('xShop/ItemImages')->tryLoadAny()->get('item_image'),
+			'xshop-item-img',
+			$this->model->ref('xShop/ItemImages')->tryLoadAny()->get('item_image')?:"epan-components/xShop/templates/images/item_no_image.png",
 			'img',
 			$this->html_attributes['order-image']
 			);
@@ -205,7 +205,7 @@ class View_Lister_Item extends \CompleteLister{
 			$html_objects,
 			'Personalize',
 			'Personalize',
-			'xshop-item-personalize',
+			'xshop-item-personalize btn btn-success',
 			'$(this).univ().location("index.php?subpage='.$this->html_attributes['personalization-page'].'&xsnb_design_item_id='.$this->model->id.'")', // FrameURL JS CODE for Personalized JUMP
 			'li/div',
 			$this->html_attributes['order-personalized']

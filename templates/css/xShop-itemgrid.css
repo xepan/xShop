@@ -55,10 +55,12 @@
 .xshop-item-add-to-cart{
 	width: 100%;
 	text-align: center;
+	margin: 5px 0 0 0;
 }
 
 .xshop-item-custom-fields{
 	font-size: 10px;
+	margin: 5px 0 5px 0;
 }
 
 .xshop-item-details-in-frame-btn{
@@ -78,18 +80,21 @@
 
 .xshop-item-discount{
 	font-size: 10px;
-	text-align: center;
+	margin: 5px 0 5px 0;
+	/*text-align: center;*/
 	color: green;
 }
 
 .xshop-item-specifications{
 	font-size: 10px;
+	margin: 0 0 5px 0;
 
 }
 
 .xshop-item-personalize{
 	font-size: 10px;
-}
+	
+}	
 
 .row {
 	margin: 0 auto 0 auto;
