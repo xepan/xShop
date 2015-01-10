@@ -7,6 +7,7 @@ class View_Item_Review extends \View{
 	public $name;
 	function init(){
 		parent::init();
-		$this->add('View')->set(' Reviews *****');
+		$view=$this->add('View')->setElement('img')->setAttr('src','5-stars.png')->setStyle(array('width'=>'70px'));
+		
 	}
 }
