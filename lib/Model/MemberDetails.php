@@ -112,7 +112,7 @@ class Model_MemberDetails extends \Model_Table{
 	function loadLoggedIn(){
 		if($this->loaded()) $this->unload();
 		if(!$this->api->auth->isLoggedIn()) return false;
-
+		
 		$this->addCondition('users_id',$this->api->auth->model->id);
 		$this->tryLoadAny();
 		if(!$this->loaded()) return false;

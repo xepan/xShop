@@ -346,6 +346,7 @@ Text_Component = function (params){
 			url: 'index.php?page=xShop_page_designer_rendertext',
 			type: 'GET',
 			data: {default_value: self.options.default_value,
+					text:self.options.text,
 					color: self.options.color_formatted,
 					font: self.options.font,
 					font_size: self.options.font_size,
@@ -366,7 +367,7 @@ Text_Component = function (params){
 		})
 		.fail(function(ret) {
 			// evel(ret);
-			console.log("error");
+			console.log("Text Error");
 		})
 		.always(function() {
 			console.log("complete");
