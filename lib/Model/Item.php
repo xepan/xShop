@@ -227,7 +227,7 @@ class Model_Item extends \Model_Table{
 	function updateContent($id,$content){
 		if($this->loaded())
 			throw new \Exception("Model_loaded at time of item");
-		$this->loadAny($id);
+		$this->load($id);
 		$this['description']=$content;
 		$this->save();
 		return 'true';
