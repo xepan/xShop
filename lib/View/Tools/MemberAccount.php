@@ -37,29 +37,34 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 
 			$form->addSubmit('Duplicate');
 			if($form->isSubmitted()){
-				$template_model->load($form['item_template'])->duplicate();
+				$new_item = $template_model->load($form['item_template'])->duplicate($create_default_design_also=true);
+				// create default design as well for this new template that is just duplicated
+
 				$form->js(null,$crud->js()->reload())->univ()->successMessage('Design Duplicated')->execute();
 			}
 
-			$designed_template = $this->add('xShop/Model_Item');
 			$designer = $this->add('xShop/Model_MemberDetails');
 			$designer->loadLoggedIn();
-			$designed_template->addCondition('designer_id',$designer->id);
-			$crud->setModel($designed_template,array('name','sku','is_party_publish','short_description'));
+
+			$my_designs_model = $this->add('xShop/Model_ItemMemberDesign');
+			$crud->setModel($my_designs_model);
+
 			if(!$crud->isEditing()){
 				$g = $crud->grid;
 				//Edit Template
 				$g->addColumn('edit_template');
 				$g->addMethod('format_edit_template',function($g,$f)use($designer){
-					if($g->model['designer_id'] == $designer->id)
-						$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model->id,'xsnb_designer_item_desgin_mode'=>'true')).'>Edit Template</a>';
+					if($g->model->ref('item_id')->get('designer_id') == $designer->id)
+						$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model['item_id'],'xsnb_design_template'=>'true')).'>Edit Template</a>';
+					else
+						$g->current_row_html[$f]='';
+						
 				});
 				$g->addFormatter('edit_template','edit_template');
 				//Edit Design
 				$g->addColumn('design');
 				$g->addMethod('format_design',function($g,$f)use($designer){
-					if($g->model['designer_id'] != $designer->id)
-					$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model->id,'xsnb_designer_item_desgin_mode'=>'false','item_member_design_id'=>$designer->id)).'>Design</a>';
+					$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>'not-available','xsnb_design_template'=>'false','item_member_design_id'=>$g->model->id)).'>Design</a>';
 				});
 				$g->addFormatter('design','design');
 			}

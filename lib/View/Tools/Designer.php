@@ -18,35 +18,52 @@ class View_Tools_Designer extends \componentBase\View_Component{
 			$this->api->xepan_xshopdesigner_included = true;
 		}
 
-		if($_GET['xsnb_design_item_id']){
-			$item = $this->item = $this->add('xShop/Model_Item')->tryLoad($_GET['xsnb_design_item_id']);
-			if(!$item->loaded()) return;
-			if($_GET['xsnb_designer_item_desgin_mode']=='true'){
-				if($this->api->auth->isLoggedIn()){
-					$designer = $this->add('xShop/Model_MemberDetails');
-					if(!$designer->loadLoggedIn()) return;
-					if($item['designer_id'] == $designer->id){
-						$this->designer_mode = $_GET['xsnb_designer_item_desgin_mode'];
-					}
-				}
-			}else{
-				$designer = $this->add('xShop/Model_MemberDetails');
-				if(!$designer->loadLoggedIn()) return;
+		$designer = $this->add('xShop/Model_MemberDetails');
+		if(!$designer->loadLoggedIn()) {
+			// Current logged in user, either user is logged out or does not have any member entry
+			// So...
+			return; 
+		}
+		
+		if($_GET['item_member_design_id']){
+			$target = $this->item = $this->add('xShop/Model_ItemMemberDesign')->tryLoad($_GET['item_member_design_id']);
+			if(!$target->loaded()) return;
+		}
 
-				$item = $this->item = $this->add('xShop/Model_ItemMemberDesign')
-									->addCondition('item_id',$_GET['xsnb_design_item_id'])
-									->addCondition('member_id',$designer->id)
-									->tryLoadAny();
-				if(!$item->loaded()) return;
-				if($this->api->auth->isLoggedIn()){
-					if($item['member_id'] == $designer->id){
-						$this->designer_mode = $_GET['xsnb_designer_item_desgin_mode'];
-					}
-				}
-			}
+		if($_GET['xsnb_design_item_id']  and !isset($target)){
+			$target = $this->item = $this->add('xShop/Model_Item')->tryLoad($_GET['xsnb_design_item_id']);
+			if(!$target->loaded()){
+				$this->add('View')->set('But why mammma');
+				return;	
+			} 
 		}
 
 
+
+		if(isset($target) and $_GET['xsnb_design_template']=='true' and $target['designer_id']== $designer->id){
+			// am I the designer of item ?? .. checked in if condition above
+
+			// check for required specifications like width / height
+
+			// set designer_mode=true to desginer js
+			$this->designer_mode = true;	
+			$this->render_designer = true;	
+			$this->add('View')->set('Am i relly here');
+		}elseif(isset($target) and $_GET['xsnb_design_template']=='false' and $target['member_id'] == $designer->id ){
+			// set target model to member_item_assos
+			// set designer_mode=false to desginer js
+
+			$this->render_designer = true;	
+		}else{
+			// NOTHING ??? .. Something wrong .. 
+			// url not proper
+			// Or target cold not be get
+			// or trying to design template whose owner is not you (HAKINGGGGG)
+			// or trying to edit a design not made by you (Hakinggg)
+			// Put Common error for all
+			// throw $this->exception('Something gone wrong... Please try again later');
+			$this->add('View_Error')->set('Something gone wrong');
+		}
 	}
 
 	function render(){
@@ -61,7 +78,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		    )
 		);
 
-		if(!$this->render_designer){
+		if($this->render_designer){
 			$this->api->jquery->addStylesheet('designer/designer');
 			$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/designer.js"></script>'."\n");
 			//Jquery Color Picker
@@ -75,7 +92,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 														'height'=>279,
 														'trim'=>5,
 														'unit'=>'mm',
-														'designer_mode'=>$this->designer_mode,
+														'designer_mode'=> $this->designer_mode,
 														'design'=>$this->item['designs'],
 														'item_id'=>$_GET['xsnb_design_item_id'],
 														'item_member_design_id' => $_GET['item_member_design_id']
