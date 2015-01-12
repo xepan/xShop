@@ -43,6 +43,8 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		if(isset($target) and $_GET['xsnb_design_template']=='true' and $target['designer_id']== $designer->id){
 			// am I the designer of item ?? .. checked in if condition above
 
+			// check for required specifications like width / height
+
 			// set designer_mode=true to desginer js
 			$this->designer_mode = true;	
 			$this->render_designer = true;	
@@ -90,7 +92,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 														'height'=>279,
 														'trim'=>5,
 														'unit'=>'mm',
-														'designer_mode'=>$this->designer_mode,
+														'designer_mode'=> $this->designer_mode,
 														'design'=>$this->item['designs'],
 														'item_id'=>$_GET['xsnb_design_item_id'],
 														'item_member_design_id' => $_GET['item_member_design_id']
