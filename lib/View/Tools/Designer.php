@@ -21,7 +21,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		if($_GET['xsnb_design_item_id']){
 			$item = $this->item = $this->add('xShop/Model_Item')->tryLoad($_GET['xsnb_design_item_id']);
 			if(!$item->loaded()) return;
-			if($_GET['xsnb_designer_item_desgin_mode']){
+			if($_GET['xsnb_designer_item_desgin_mode']=='true'){
 				if($this->api->auth->isLoggedIn()){
 					$designer = $this->add('xShop/Model_MemberDetails');
 					if(!$designer->loadLoggedIn()) return;
@@ -35,7 +35,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 
 				$item = $this->item = $this->add('xShop/Model_ItemMemberDesign')
 									->addCondition('item_id',$_GET['xsnb_design_item_id'])
-									->addCondition('member_id',$designer_id)
+									->addCondition('member_id',$designer->id)
 									->tryLoadAny();
 				if(!$item->loaded()) return;
 				if($this->api->auth->isLoggedIn()){
@@ -71,7 +71,15 @@ class View_Tools_Designer extends \componentBase\View_Component{
 			$this->api->jquery->addStylesheet('designer/cropper');
 			$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/cropper.js"></script>'."\n");
 			
-			$this->js(true)->xepan_xshopdesigner(array('width'=>210,'height'=>279,'trim'=>5,'unit'=>'mm','designer_mode'=>$this->designer_mode,'design'=>$this->item['designs']));
+			$this->js(true)->xepan_xshopdesigner(array('width'=>210,
+														'height'=>279,
+														'trim'=>5,
+														'unit'=>'mm',
+														'designer_mode'=>$this->designer_mode,
+														'design'=>$this->item['designs'],
+														'item_id'=>$_GET['xsnb_design_item_id'],
+														'item_member_design_id' => $_GET['item_member_design_id']
+												));
 		}
 		parent::render();
 	}

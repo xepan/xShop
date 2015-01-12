@@ -31,7 +31,7 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 			// MEMBER DESIGNS
 			$design_tab = $tab->addTab('My Designs','designs');
 			$form = $design_tab->add('Form');
-			$crud = $design_tab->add('CRUD',array('allow_add'=>false,'allow_del'=>false));
+			$crud = $design_tab->add('CRUD',array('allow_add'=>false));
 			$template_model = $design_tab->add('xShop/Model_ItemTemplate');
 			$form->addField('dropdown','item_template')->setModel($template_model);
 
@@ -42,22 +42,24 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 			}
 
 			$designed_template = $this->add('xShop/Model_Item');
-			$designed_template->addCondition('designer_id',$this->api->auth->model->id);
+			$designer = $this->add('xShop/Model_MemberDetails');
+			$designer->loadLoggedIn();
+			$designed_template->addCondition('designer_id',$designer->id);
 			$crud->setModel($designed_template,array('name','sku','is_party_publish','short_description'));
 			if(!$crud->isEditing()){
 				$g = $crud->grid;
 				//Edit Template
 				$g->addColumn('edit_template');
-				$g->addMethod('format_edit_template',function($g,$f){
-					if($g->model['designer_id'] == $this->api->auth->model->id)
-						$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model->id,'xsnb_designer_item_desgin_mode'=>true)).'>Edit Template</a>';
+				$g->addMethod('format_edit_template',function($g,$f)use($designer){
+					if($g->model['designer_id'] == $designer->id)
+						$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model->id,'xsnb_designer_item_desgin_mode'=>'true')).'>Edit Template</a>';
 				});
 				$g->addFormatter('edit_template','edit_template');
 				//Edit Design
 				$g->addColumn('design');
-				$g->addMethod('format_design',function($g,$f){
-					if($g->model['designer_id'] != $this->api->auth->model->id)
-					$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model->id,'xsnb_designer_item_desgin_mode'=>false)).'>Design</a>';
+				$g->addMethod('format_design',function($g,$f)use($designer){
+					if($g->model['designer_id'] != $designer->id)
+					$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model->id,'xsnb_designer_item_desgin_mode'=>'false','item_member_design_id'=>$designer->id)).'>Design</a>';
 				});
 				$g->addFormatter('design','design');
 			}

@@ -56,10 +56,10 @@ class page_xShop_page_designer_rendertext extends Page {
 			$draw->setTextAlignment(1);
 
 
-		$metrics = $image->queryFontMetrics ($draw, $_GET['default_value']);
+		$metrics = $image->queryFontMetrics ($draw, $_GET['text']);
 		print_r($metrics);
 		
-		$draw->annotation(0, $metrics['ascender'], $_GET['default_value']);
+		$draw->annotation(0, $metrics['ascender'], $_GET['text']);
 
 		//these are the values which accurately described the extent of the text and where it is to be drawn:
 		$baseline = $metrics['boundingBox']['y2'];
@@ -94,16 +94,14 @@ class page_xShop_page_designer_rendertext extends Page {
 		// $draw->rotate(90);
 
 		// $image->drawImage($draw);
-		$image->annotateImage($draw,0,$textheight,0, $_GET['default_value']);
+		$image->annotateImage($draw,0,$textheight,0, $_GET['text']);
 		$image->rotateimage($pixel,$_GET['rotation_angle']);
 		/* Give image a format */
 		$image->setImageFormat('png');
-
-
 		/* Output the image with headers */
 		header('Content-type: image/png');
 		// echo $image;
-		echo "<img src='data:image/png;base64,".base64_encode($image)."' />";	
+		echo "<img src='data:image/png;base64,".base64_encode($image)."' />";
 		
 		$image->clear();
 		$image->destroy();
