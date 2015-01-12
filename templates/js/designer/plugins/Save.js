@@ -34,17 +34,18 @@ Save_Component = function (params){
 					if(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'] != undefined)
 						self.layout_array[self.page][self.layout]['background'] = JSON.stringify(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'].options);
 				});	
+				console.log(self);
 			});
 
-			// console.log(self);
 
 			$.ajax({
 					url: 'index.php?page=xShop_page_designer_save',
 					type: 'POST',
 					datatype: "json",
-					data: {xshop_item_design: self.layout_array,//json object
-							item_id:self.designer_tool.item_id, //designed item id
-							designer_mode:self.designer_tool.options.designer_mode
+					data: {xshop_item_design:self.layout_array,//json object
+							item_id:self.designer_tool.options.item_id,//designed item id
+							designer_mode:self.designer_tool.options.designer_mode,
+							item_member_design_id:self.designer_tool.options.item_member_design_id
 						},
 				})
 				.done(function(ret) {
@@ -53,7 +54,7 @@ Save_Component = function (params){
 						console.log('Item Design Saved Successfully');
 					}
 					else
-						$.univ().errorMessage('Not Saved, some thing wrong');					
+						$.univ().errorMessage('Not Saved, some thing wrong');
 				})
 				.fail(function() {
 					console.log("error");
