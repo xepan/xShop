@@ -58,7 +58,7 @@ class Model_Item extends \Model_Table{
 
 		//Item Display Options
 		$f = $this->hasOne('xShop/ItemOffer','offer_id');
-		$f = $this->addField('offer_position')->setValueList(array('top:0-left:0'=>'TopLeft','top:0-right:0'=>'TopRight','bottom:0-left:0'=>'BottomLeft','bottom:0-right:0'=>'BottomRight'));
+		$f = $this->addField('offer_position')->setValueList(array('top:0;-left:0;'=>'TopLeft','top:0;-right:0;'=>'TopRight','bottom:0;-left:0;'=>'BottomLeft','bottom:0;-right:0;'=>'BottomRight'));
 		
 		$f = $this->addField('show_detail')->type('boolean')->defaultValue(true)->group('i~2~Item');
 		$f = $this->addField('show_price')->type('boolean')->group('i~2');
