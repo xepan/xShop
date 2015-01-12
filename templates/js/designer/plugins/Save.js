@@ -43,7 +43,7 @@ Save_Component = function (params){
 					type: 'POST',
 					datatype: "json",
 					data: {xshop_item_design: self.layout_array,//json object
-							item_id:self.designer_tool.item_id, //designed item id
+							item_id:self.designer_tool.item_id,//designed item id
 							designer_mode:self.designer_tool.options.designer_mode
 						},
 				})
@@ -53,7 +53,7 @@ Save_Component = function (params){
 						console.log('Item Design Saved Successfully');
 					}
 					else
-						$.univ().errorMessage('Not Saved, some thing wrong');					
+						$.univ().errorMessage('Not Saved, some thing wrong');
 				})
 				.fail(function() {
 					console.log("error");

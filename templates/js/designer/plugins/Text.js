@@ -365,7 +365,7 @@ Text_Component = function (params){
 		})
 		.fail(function(ret) {
 			// evel(ret);
-			console.log("error");
+			console.log("Text Error");
 		})
 		.always(function() {
 			console.log("complete");
