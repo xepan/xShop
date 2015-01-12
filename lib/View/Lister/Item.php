@@ -138,7 +138,7 @@ class View_Lister_Item extends \CompleteLister{
 			'ItemAddToCartButton',
 			'Add To Cart',
 			'xshop-item-add-to-cart btn btn-default',
-			'$(".xshop-cart").xepan_xshop_cart("add_to_cart_default_func",'.$this->model->id.');',
+			'#',
 			'li/button',
 			$this->html_attributes['order-add-to-cart']
 			);
