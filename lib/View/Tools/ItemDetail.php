@@ -2,7 +2,7 @@
 
 namespace xShop;
 
-class View_Tools_ProductDetail extends \componentBase\View_Component{
+class View_Tools_ItemDetail extends \componentBase\View_Component{
 	public $html_attributes=array(); // ONLY Available in server side components
 	function init(){
 		parent::init();
@@ -11,8 +11,8 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		$this->js(true)->_load('jquery-elevatezoom');
 		$this->api->stickyGET('xshop_item_id');
 		$config_model=$this->add('xShop/Model_Configuration');
-		$product=$this->add('xShop/Model_Product');
-		$manu_join = $product->leftJoin('xshop_manufacturer','manufacturer_id');	
+		$product=$this->add('xShop/Model_Item');
+		$manu_join = $product->leftJoin('xshop_Model_Affiliate','affiliate_id');	
 		$manu_join->addField('manufacturer_name','name');
 		$manu_join->addField('manufacturer_office_address','office_address');
 		$manu_join->addField('manufacturer_email_id','email_id');
@@ -25,7 +25,7 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		$manu_join->addField('manufacturer_phone_no','phone_no');
 		$manu_join->addField('manufacturer_description','description');
 
-		$supp_join = $product->leftJoin('xShop_supplier','supplier_id');		
+		$supp_join = $product->leftJoin('xshop_Model_Affiliate','affiliate_id');		
 		$s_name=$supp_join->addField('supplier_name','name');
 		$supp_join->addField('supplier_email_id','email_id');
 		$supp_join->addField('supplier_office_address','office_address');
@@ -40,7 +40,7 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 
 		if($product['show_attachment']){
 			$attachment_model=$this->add('xShop/Model_Attachments');
-			$attachment_model->addCondition('product_id',$_GET['xshop_item_id']);
+			$attachment_model->addCondition('item_id',$_GET['xshop_item_id']);
 			$attachment_model->tryLoadAny();
 			$this->template->set('attachment_url',$attachment_model['attachment_url']);
 			$this->template->set('attachment_name',$attachment_model['name']);
@@ -79,7 +79,7 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		
 		$details = $this->add('xShop/View_Lister_CustomFields',null,'product_custom_fields');
 		$custom_field_model=$this->add('xShop/Model_CustomFields');
-		$custom_field_model->addCondition('product_id',$_GET['xshop_item_id']);
+		$custom_field_model->addCondition('item_id',$_GET['xshop_item_id']);
 		$details->setModel($custom_field_model);
 							
 		// do adding multiple images of a single product
@@ -182,19 +182,15 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 	}
 
 	function defaultTemplate(){
-		$l=$this->api->locate('addons',__NAMESPACE__, 'location');
-		$this->api->pathfinder->addLocation(
-			$this->api->locate('addons',__NAMESPACE__),
-			array(
-		  		'template'=>'templates',
-		  		'css'=>'templates/css',
-		  		'js'=>'templates/js'
-				)
-			)->setParent($l);
-
-		return array('view/xShop-ProductDetail');
+		$this->app->pathfinder->base_location->addRelativeLocation(
+		    'epan-components/'.__NAMESPACE__, array(
+		        'php'=>'lib',
+		        'template'=>'templates',
+		        'css'=>'templates/css',
+		        'js'=>'templates/js',
+		    )
+		);
+		
+		return array('view/xShop-ItemDetail');
 	}
-
-	// defined in parent class
-	// Template of this tool is view/namespace-ToolName.html
 }
