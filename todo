@@ -28,6 +28,7 @@ xShop:
  ☐ Shipping Management
  ☐ Tax management
  ☐ Application Offer Management (CRUD)
+ ☐ Shop configuration rich text not saving
 
 Designer:
   category has many custom fields copied to each new product created.

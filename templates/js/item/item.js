@@ -1,8 +1,12 @@
 jQuery.widget("ui.xepan_xshop_item",{
 	
+	qty:1,
+	custom_fields: { },
+	
+
 	_create: function(){
 		var self = this;
-		
+
 		// $(this.element).css('border','2px solid red');
 		// console.log($(this.element).data('xshop-item-id'));
 
