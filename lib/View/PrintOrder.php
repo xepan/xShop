@@ -5,15 +5,16 @@ namespace xShop;
 class View_PrintOrder extends \View{
 	function init(){
 		parent::init();
-		
+
 	}  
 
 	function setModel($model){
-
-		$user_model = $this->add('xShop/Model_MemberDetails');
-		$user_model->getAllDetail($this->api->auth->model->id);
+		$application_id=$this->api->recall('xshop_application_id');
 		
-		$config_model = $this->add('xShop/Model_Configuration');
+		$user_model = $this->add('xShop/Model_MemberDetails');
+		$user_model->getAllDetail($model['member_id']);
+		
+		$config_model = $this->add('xShop/Model_Configuration')->addCondition('application_id',$application_id);
 		$config_model->tryLoadAny();
 		$order_template = $config_model['order_detail_email_body'];
 		
