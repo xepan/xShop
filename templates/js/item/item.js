@@ -10,7 +10,7 @@ jQuery.widget("ui.xepan_xshop_item",{
 			$.univ().frameURL('HELLO','index.php');
 		});
 		$(this.element).find('.xshop-item-details-in-frame-btn').click(function(event){
-			$.univ().frameURL('Details','index.php?page=xShop_page_item_itemdetail&item_id='+ $(this.element).data('xshop-item-id'));
+			$.univ().frameURL('Details','index.php?page=xShop_page_item_itemdetail&xshop_item_id='+ $(self.element).data('xshop-item-id'));
 		});
 
 		$(this.element).hover(
