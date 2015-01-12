@@ -204,6 +204,7 @@ xShop_Text_Editor = function(parent){
 		if(self.current_text_component.designer_tool.options.designer_mode){
 			self.current_text_component.options.default_value= $(el).val();
 		}
+		self.current_text_component.options.text= $(el).val();
 		self.current_text_component.render();
 	},500);
 	
