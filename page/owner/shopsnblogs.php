@@ -15,7 +15,7 @@ class page_xShop_page_owner_shopsnblogs extends page_xShop_page_owner_main {
 
 		$cf_crud = $crud->addRef('xShop/CustomFields',array('label'=>'Custom Fields'));
 		$sp_crud = $crud->addRef('xShop/Specification',array('label'=>'Specifications'));
-
+		$itemoffer_crud=$crud->addRef('xShop/ItemOffer',array('label'=>'Item Offers'));
 		if(!$crud->isEditing()){
 			$crud->grid->addColumn('expander','configuration',array("descr"=>"Configuration",'icon'=>'cog'));
 		}

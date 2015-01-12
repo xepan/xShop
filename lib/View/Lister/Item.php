@@ -50,7 +50,7 @@ class View_Lister_Item extends \CompleteLister{
 
 		if($this->html_attributes['xshop_item_fancy_box']){
 			$image_anchor_url="big_image_url"; // TODOOOOOOOOOOOOOOO
-			$image_anchor_class="fancybox";
+			$image_anchor_class.=" fancybox";
 		}
 		
 		$image_parent =& $this->addSectionIF(
@@ -73,6 +73,18 @@ class View_Lister_Item extends \CompleteLister{
 			$this->model->ref('xShop/ItemImages')->tryLoadAny()->get('item_image')?:"epan-components/xShop/templates/images/item_no_image.png",
 			'img',
 			$this->html_attributes['order-image']
+			);
+
+		$this->addSectionIF(
+			$this->html_attributes['show-offer'] AND $this->model['offer_id'],
+			$image_parent,
+			'Item Offer',
+			'',
+			'xshop-item-offer',
+			$this->model->ref('offer_id')->get('offer_image'),
+			'img',
+			$this->html_attributes['order-offer'],
+			str_replace('-'," ", $this->model['offer_position'])."position:absolute;"
 			);
 
 		$this->addSectionIF(
@@ -115,7 +127,7 @@ class View_Lister_Item extends \CompleteLister{
 			'ItemAddToCartButton',
 			'Add To Cart',
 			'xshop-item-add-to-cart btn btn-default',
-			'$(".xshop-cart").xepan_xshop_cart("add_to_cart_default_func",'.$this->model->id.');',
+			'#',
 			'li/button',
 			$this->html_attributes['order-add-to-cart']
 			);
@@ -164,18 +176,6 @@ class View_Lister_Item extends \CompleteLister{
 			'#', // FrameURL JS CODE for Review Details PopOUT
 			'li/div',
 			$this->html_attributes['order-enquiry-form']
-			);
-
-		$this->addSectionIF(
-			$this->html_attributes['show-offer'] AND $this->model['offer_id'],
-			$html_objects,
-			'Item Offer',
-			'',
-			'xshop-item-offer',
-			$this->model->ref('offer_id')->get('offer_image'),
-			'li/img',
-			$this->html_attributes['order-offer'],
-			str_replace('-', ', ', $this->model['offer_position'])
 			);
 
 		$this->addSectionIF(

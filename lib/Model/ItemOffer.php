@@ -5,6 +5,7 @@ class Model_ItemOffer extends \Model_Table {
 	function init(){
 		parent::init();
 
+		$this->hasOne('xShop/Application','application_id');
 		$this->addField('name');
 		$this->add('filestore/Field_Image','offer_image_id')->mandatory(true);
 
