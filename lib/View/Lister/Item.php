@@ -49,7 +49,7 @@ class View_Lister_Item extends \CompleteLister{
 		$image_anchor_class="xshop-item-image-anchor";
 
 		if($this->html_attributes['xshop_item_fancy_box']){
-			$image_anchor_url="big_image_url"; // TODOOOOOOOOOOOOOOO
+			$image_anchor_url='index.php?page=image&image='.($this->model->ref('xShop/ItemImages')->tryLoadAny()->get('item_image')?:"epan-components/xShop/templates/images/item_no_image.png"); // TODOOOOOOOOOOOOOOO
 			$image_anchor_class.=" fancybox";
 		}
 		
@@ -70,7 +70,7 @@ class View_Lister_Item extends \CompleteLister{
 			'ItemImage',
 			'',
 			'xshop-item-img',
-			$this->model->ref('xShop/ItemImages')->tryLoadAny()->get('item_image')?:"epan-components/xShop/templates/images/item_no_image.png",
+			'index.php?page=image&image='.($this->model->ref('xShop/ItemImages')->tryLoadAny()->get('item_image')?:"epan-components/xShop/templates/images/item_no_image.png")."&width=".$this->html_attributes['item-image-width']."&height=".$this->html_attributes['item-image-height'],
 			'img',
 			$this->html_attributes['order-image']
 			);
@@ -86,6 +86,17 @@ class View_Lister_Item extends \CompleteLister{
 			$this->html_attributes['order-offer'],
 			str_replace('-'," ", $this->model['offer_position'])."position:absolute;"
 			);
+		$this->addSectionIF(
+			$this->html_attributes['show-details-in-frame'],
+			$html_objects,
+			'OpenDetailsInFrame',
+			'Details IN Frame',
+			'xshop-item-details-in-frame-btn',
+			'#', // FrameURL JS CODE for details page
+			'li/a',
+			$this->html_attributes['order-details-in-frame']
+			);
+
 
 		$this->addSectionIF(
 			($this->html_attributes['show-old-price'] AND $this->model['show_price']),
@@ -144,17 +155,6 @@ class View_Lister_Item extends \CompleteLister{
 			);
 		// short description, add to cart, 
 		// <more btn>, <enquiry>, custom fields, reviews stars, Offer (hot new ..) and discounts, specifications, add to compare, add to wishlist, personalized, open in frame url
-
-		$this->addSectionIF(
-			$this->html_attributes['show-details-in-frame'],
-			$html_objects,
-			'OpenDetailsInFrame',
-			'Details IN Frame',
-			'xshop-item-details-in-frame-btn',
-			'#', // FrameURL JS CODE for details page
-			'li/div',
-			$this->html_attributes['order-details-in-frame']
-			);
 
 		$this->addSectionIF(
 			$this->html_attributes['show-enquiry-form'],
@@ -338,6 +338,13 @@ class View_Lister_Item extends \CompleteLister{
 
 	function render(){
 		$this->js(true)->_load('item/item')->_load('item/customfield')->_selector('.xshop-item')->xepan_xshop_item();
+		
+		$this->api->jquery->addStylesheet('fancybox/jquery.fancybox');
+		$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/fancybox/jquery.fancybox.js"></script>'."\n");
+		$this->api->jquery->addStylesheet('fancybox/jquery.fancybox-buttons');
+		$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/fancybox/jquery.fancybox-buttons.js"></script>'."\n");
+
+		$this->js(true)->_selector('.fancybox')->fancybox(array('openEffect'=>'elastic','closeEffect'=>'elastic'));
 		parent::render();
 	}
 

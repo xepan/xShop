@@ -27,17 +27,6 @@ class View_Lister_ProductImages extends \CompleteLister{
 		        'js'=>'templates/js',
 		    )
 		);
-		
-		// $l=$this->api->locate('addons',__NAMESPACE__, 'location');
-		// $this->api->pathfinder->addLocation(
-		// 	$this->api->locate('addons',__NAMESPACE__),
-		// 	array(
-		//   		'template'=>'templates',
-		//   		'css'=>'templates/css',
-		//   		'js'=>'templates/js'
-		// 		)
-		// 	)->setParent($l);
-
-		return array('view/xShop-ProductImage');
+		return array('view/xShop-ItemImage');
 	}
 }

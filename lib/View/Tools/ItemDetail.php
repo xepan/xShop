@@ -2,45 +2,47 @@
 
 namespace xShop;
 
-class View_Tools_ProductDetail extends \componentBase\View_Component{
+class View_Tools_ItemDetail extends \componentBase\View_Component{
 	public $html_attributes=array(); // ONLY Available in server side components
 	function init(){
 		parent::init();
-		
+		// $_GET['xshop_item_id'];
+		// echo $_GET['xshop_item_id'];
+		// exit;
 
 		$this->js(true)->_load('jquery-elevatezoom');
 		$this->api->stickyGET('xshop_item_id');
 		$config_model=$this->add('xShop/Model_Configuration');
-		$product=$this->add('xShop/Model_Product');
-		$manu_join = $product->leftJoin('xshop_manufacturer','manufacturer_id');	
-		$manu_join->addField('manufacturer_name','name');
-		$manu_join->addField('manufacturer_office_address','office_address');
-		$manu_join->addField('manufacturer_email_id','email_id');
-		$manu_join->addField('manufacturer_mobile_no','mobile_no');
-		$manu_join->addField('manufacturer_logo_url','logo_url');
-		$manu_join->addField('manufacturer_city','city');
-		$manu_join->addField('manufacturer_state','state');
-		$manu_join->addField('manufacturer_country','country');
-		$manu_join->addField('manufacturer_zip_code','zip_code');
-		$manu_join->addField('manufacturer_phone_no','phone_no');
-		$manu_join->addField('manufacturer_description','description');
+		$product=$this->add('xShop/Model_Item');
+		// $manu_join = $product->leftJoin('xshop_affiliate','affiliate_id');	
+		// $manu_join->addField('manufacturer_name','name');
+		// $manu_join->addField('manufacturer_office_address','office_address');
+		// $manu_join->addField('manufacturer_email_id','email_id');
+		// $manu_join->addField('manufacturer_mobile_no','mobile_no');
+		// $manu_join->addField('manufacturer_logo_url','logo_url');
+		// $manu_join->addField('manufacturer_city','city');
+		// $manu_join->addField('manufacturer_state','state');
+		// $manu_join->addField('manufacturer_country','country');
+		// $manu_join->addField('manufacturer_zip_code','zip_code');
+		// $manu_join->addField('manufacturer_phone_no','phone_no');
+		// $manu_join->addField('manufacturer_description','description');
 
-		$supp_join = $product->leftJoin('xShop_supplier','supplier_id');		
-		$s_name=$supp_join->addField('supplier_name','name');
-		$supp_join->addField('supplier_email_id','email_id');
-		$supp_join->addField('supplier_office_address','office_address');
-		$supp_join->addField('supplier_phone_no','phone_no');
-		$supp_join->addField('supplier_mobile_no','mobile_no');
-		$supp_join->addField('supplier_address','address');
-		$supp_join->addField('supplier_zip_code','zip_code');
-		$supp_join->addField('supplier_city','city');
-		$supp_join->addField('supplier_state','state');
-		$supp_join->addField('supplier_country','country');
-		$supp_join->addField('supplier_description','description')->allowHtml(true);
+		// $supp_join = $product->leftJoin('xshop_affiliate','affiliate_id');		
+		// $s_name=$supp_join->addField('supplier_name','name');
+		// $supp_join->addField('supplier_email_id','email_id');
+		// $supp_join->addField('supplier_office_address','office_address');
+		// $supp_join->addField('supplier_phone_no','phone_no');
+		// $supp_join->addField('supplier_mobile_no','mobile_no');
+		// $supp_join->addField('supplier_address','address');
+		// $supp_join->addField('supplier_zip_code','zip_code');
+		// $supp_join->addField('supplier_city','city');
+		// $supp_join->addField('supplier_state','state');
+		// $supp_join->addField('supplier_country','country');
+		// $supp_join->addField('supplier_description','description')->allowHtml(true);
 
 		if($product['show_attachment']){
 			$attachment_model=$this->add('xShop/Model_Attachments');
-			$attachment_model->addCondition('product_id',$_GET['xshop_item_id']);
+			$attachment_model->addCondition('item_id',$_GET['xshop_item_id']);
 			$attachment_model->tryLoadAny();
 			$this->template->set('attachment_url',$attachment_model['attachment_url']);
 			$this->template->set('attachment_name',$attachment_model['name']);
@@ -57,7 +59,7 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 			$this->template->tryDel('xshop_product_detail_live_edit_start');
 			$this->template->tryDel('xshop_product_detail_live_edit_end');
 		}
-		//end  
+		 //end  
 
 		//PANEL OPTIONS
 			$this->template->trySetHTML('xshop_product_detail_panel_label',$this->html_attributes['xshop_product_detail_panel_label']);
@@ -78,33 +80,33 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 		$this->template->Set('xshop_product_tags',str_replace(',', " ", $product['tags']));		
 		
 		$details = $this->add('xShop/View_Lister_CustomFields',null,'product_custom_fields');
-		$custom_field_model=$this->add('xShop/Model_CustomFields');
-		$custom_field_model->addCondition('product_id',$_GET['xshop_item_id']);
+		$custom_field_model=$this->add('xShop/Model_CategoryItemCustomFields');
+		$custom_field_model->addCondition('item_id',$_GET['xshop_item_id']);
 		$details->setModel($custom_field_model);
 							
 		// do adding multiple images of a single product
 		// $images = $this->add('xShop/View_Lister_ProductImages',null,'product_images');			
-		// $images->setModel($this->add('xShop/Model_ProductImages')->addCondition('product_id',$_GET['xshop_item_id']));	
+		// $images->setModel($this->add('xShop/Model_ItemImages')->addCondition('item_id',$_GET['xshop_item_id']));	
 		
 		$this->setModel($product);
 
 		$this->api->template->trySet('page_title',$product['name']);
 
-		if(!$product['allow_enquiry'])
-			$this->template->tryDel('xshop_product_enquiry');	
+		// if(!$product['allow_enquiry'])
+		// 	$this->template->tryDel('xshop_product_enquiry');	
 
-		if(!$product['show_supplier_detail'])
-			$this->template->tryDel('xshop_product_supplier');
-		$this->template->trySet('supplier_caption',$this->html_attributes['xshop_pd_supplier_caption']?:'Supplier');
+		// if(!$product['show_supplier_detail'])
+		// 	$this->template->tryDel('xshop_product_supplier');
+		// $this->template->trySet('supplier_caption',$this->html_attributes['xshop_pd_supplier_caption']?:'Supplier');
 
 		if(!$product['show_price']){
 			// throw new \Exception("Error Processing Request", 1);
 			$this->template->tryDel('xshop_productdetail_price');
 		}
 
-		if(!$product['show_manufacturer_detail'])
-			$this->template->tryDel('xshop_product_manufacturer');
-		$this->template->trySet('manufacturer_caption',$this->html_attributes['xshop_pd_manufacturer_caption']?:'Manufacturer');
+		// if(!$product['show_manufacturer_detail'])
+		// 	$this->template->tryDel('xshop_product_manufacturer');
+		// $this->template->trySet('manufacturer_caption',$this->html_attributes['xshop_pd_manufacturer_caption']?:'Manufacturer');
 		
 		if($this->html_attributes['xshop_product_detail_images']==1){
 			$this->template->tryDel('xshop_product_detail_images');	
@@ -182,19 +184,15 @@ class View_Tools_ProductDetail extends \componentBase\View_Component{
 	}
 
 	function defaultTemplate(){
-		$l=$this->api->locate('addons',__NAMESPACE__, 'location');
-		$this->api->pathfinder->addLocation(
-			$this->api->locate('addons',__NAMESPACE__),
-			array(
-		  		'template'=>'templates',
-		  		'css'=>'templates/css',
-		  		'js'=>'templates/js'
-				)
-			)->setParent($l);
-
-		return array('view/xShop-ProductDetail');
+		$this->app->pathfinder->base_location->addRelativeLocation(
+		    'epan-components/'.__NAMESPACE__, array(
+		        'php'=>'lib',
+		        'template'=>'templates',
+		        'css'=>'templates/css',
+		        'js'=>'templates/js',
+		    )
+		);
+		
+		return array('view/xShop-ItemDetail');
 	}
-
-	// defined in parent class
-	// Template of this tool is view/namespace-ToolName.html
 }

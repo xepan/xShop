@@ -13,6 +13,9 @@ jQuery.widget("ui.xepan_xshop_item",{
 		$(this.element).find('.xshop-item-enquiry-form-btn').click(function(event){
 			$.univ().frameURL('HELLO','index.php');
 		});
+		$(this.element).find('.xshop-item-details-in-frame-btn').click(function(event){
+			$.univ().frameURL('Details','index.php?page=xShop_page_item_itemdetail&xshop_item_id='+ $(self.element).data('xshop-item-id'));
+		});
 
 		$(this.element).hover(
 			function(event){
