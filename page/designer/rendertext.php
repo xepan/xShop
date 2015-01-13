@@ -14,7 +14,7 @@ class page_xShop_page_designer_rendertext extends Page {
 
 		$draw->setFillColor($_GET['color']);
 		
-		$draw->setFontSize($_GET['font_size'] * $zoom * 1.328352013);
+		$draw->setFontSize($_GET['font_size'] * $zoom * 1.328352013); // Font size to pixel conversion
 
 		if($_GET['bold']=='true'){
 			if(file_exists(getcwd().'/epan-components/xShop/templates/fonts/'.$_GET['font'].'-Bold.ttf'))
