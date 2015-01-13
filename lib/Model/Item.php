@@ -323,14 +323,14 @@ class Model_Item extends \Model_Table{
 	}
 
 	function specification($specification=null){
-		$specs_assos = $this->ref('xShop/ItemSpecificationAssociation');
+		$specs_assos = $this->add('xShop/Model_ItemSpecificationAssociation')->addCondition('item_id',$this->id);
 		$specs_j = $specs_assos->join('xshop_specifications','specification_id');
 		$specs_j->addField('name');
 
 		if($specification){
 			$specs_assos->addCondition('name',$specification);
 			$specs_assos->tryLoadAny();
-			if($specs_assos->loaded()) return $specs_assos;
+			if($specs_assos->loaded()) return $specs_assos['value'];
 			return false;
 		}
 
