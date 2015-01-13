@@ -32,17 +32,6 @@ class View_Lister_Item extends \CompleteLister{
 
 		$detail_url = $this->app->url($this->html_attributes['xshop-detail-page']?:null,array('xitem-id'=>$this->model->id))->getURL();
 
-		$this->addSectionIF(
-			$this->html_attributes['show-name'],
-			$html_objects,
-			'ItemName',
-			$this->model['name'],
-			'xshop-item-name panel-heading',
-			$detail_url,
-			'li/a',
-			$this->html_attributes['order-name']
-			);
-		
 		// handle image
 		$image_parent = $html_objects;
 		$image_anchor_url = $detail_url;
@@ -87,16 +76,15 @@ class View_Lister_Item extends \CompleteLister{
 			str_replace('-'," ", $this->model['offer_position'])."position:absolute;"
 			);
 		$this->addSectionIF(
-			$this->html_attributes['show-details-in-frame'],
+			$this->html_attributes['show-name'],
 			$html_objects,
-			'OpenDetailsInFrame',
-			'Details IN Frame',
-			'xshop-item-details-in-frame-btn',
-			'#', // FrameURL JS CODE for details page
+			'ItemName',
+			$this->model['name'],
+			'xshop-item-name panel-heading',
+			$detail_url,
 			'li/a',
-			$this->html_attributes['order-details-in-frame']
+			$this->html_attributes['order-name']
 			);
-
 
 		$this->addSectionIF(
 			($this->html_attributes['show-old-price'] AND $this->model['show_price']),
@@ -139,8 +127,29 @@ class View_Lister_Item extends \CompleteLister{
 			'Add To Cart',
 			'xshop-item-add-to-cart btn btn-default',
 			'#',
-			'li/button',
+			'button',
 			$this->html_attributes['order-add-to-cart']
+			);
+		$this->addSectionIF(
+			$this->html_attributes['show-details-in-frame'],
+			$html_objects,
+			'OpenDetailsInFrame',
+			'<i class="glyphicon glyphicon-edit"></i>',
+			'xshop-item-details-in-frame-btn btn btn-default ',
+			'#', // FrameURL JS CODE for details page
+			'button',
+			$this->html_attributes['order-details-in-frame']
+			);
+
+		$this->addSectionIF(
+			$this->html_attributes['show-enquiry-form'],
+			$html_objects,
+			'OpenEnquiryFormFrame',
+			'Enquiry',
+			'xshop-item-enquiry-form-btn btn btn-default',
+			'#', // FrameURL JS CODE for Enquiry form
+			'button',
+			$this->html_attributes['order-enquiry-form']
 			);
 
 		$this->addSectionIF(
@@ -155,17 +164,6 @@ class View_Lister_Item extends \CompleteLister{
 			);
 		// short description, add to cart, 
 		// <more btn>, <enquiry>, custom fields, reviews stars, Offer (hot new ..) and discounts, specifications, add to compare, add to wishlist, personalized, open in frame url
-
-		$this->addSectionIF(
-			$this->html_attributes['show-enquiry-form'],
-			$html_objects,
-			'OpenEnquiryFormFrame',
-			'Enquiry',
-			'xshop-item-enquiry-form-btn',
-			'#', // FrameURL JS CODE for Enquiry form
-			'li/a',
-			$this->html_attributes['order-enquiry-form']
-			);
 
 		$this->addSectionIF(
 			$this->html_attributes['show-reviews'],
