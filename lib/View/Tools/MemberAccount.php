@@ -70,8 +70,7 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 			}
 		}
 		else{
-			echo "false";
-			exit;
+			$this->add('View_Warning')->set('Please Log in first');
 		}
 
 	}

@@ -53,8 +53,12 @@ Save_Component = function (params){
 						$.univ().successMessage('Saved Successfully');
 						console.log('Item Design Saved Successfully');
 					}
-					else
+					else if(ret.indexOf('false')===0){
 						$.univ().errorMessage('Not Saved, some thing wrong');
+					}else{
+						// self.designer_tool.options.item_member_design_id = ret;
+						$.univ().successMessage('Saved Successfully');
+					}
 				})
 				.fail(function() {
 					console.log("error");

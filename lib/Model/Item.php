@@ -322,5 +322,20 @@ class Model_Item extends \Model_Table{
 		}
 	}
 
+	function specification($specification=null){
+		$specs_assos = $this->ref('xShop/ItemSpecificationAssociation');
+		$specs_j = $specs_assos->join('xshop_specifications','specification_id');
+		$specs_j->addField('name');
+
+		if($specification){
+			$specs_assos->addCondition('name',$specification);
+			$specs_assos->tryLoadAny();
+			if($specs_assos->loaded()) return $specs_assos;
+			return false;
+		}
+
+		return $specs_assos;
+	}
+
 }	
 
