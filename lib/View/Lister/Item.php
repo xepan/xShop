@@ -32,17 +32,6 @@ class View_Lister_Item extends \CompleteLister{
 
 		$detail_url = $this->app->url($this->html_attributes['xshop-detail-page']?:null,array('xitem-id'=>$this->model->id))->getURL();
 
-		$this->addSectionIF(
-			$this->html_attributes['show-name'],
-			$html_objects,
-			'ItemName',
-			$this->model['name'],
-			'xshop-item-name panel-heading',
-			$detail_url,
-			'li/a',
-			$this->html_attributes['order-name']
-			);
-
 		// handle image
 		$image_parent = $html_objects;
 		$image_anchor_url = $detail_url;
@@ -85,6 +74,16 @@ class View_Lister_Item extends \CompleteLister{
 			'img',
 			$this->html_attributes['order-offer'],
 			str_replace('-'," ", $this->model['offer_position'])."position:absolute;"
+			);
+		$this->addSectionIF(
+			$this->html_attributes['show-name'],
+			$html_objects,
+			'ItemName',
+			$this->model['name'],
+			'xshop-item-name panel-heading',
+			$detail_url,
+			'li/a',
+			$this->html_attributes['order-name']
 			);
 
 		$this->addSectionIF(

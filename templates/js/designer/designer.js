@@ -181,8 +181,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	render: function(param){
 		var self = this;
-		console.log('sdf');
 
+		// console.log('sdf');
 		this.canvas.css('height',this.options.height + this.options.unit); // In Given Unit
 		this.canvas.height(this.canvas.height() * this._getZoom()); // get in pixel .height() and multiply by zoom 
 
@@ -198,7 +198,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		this.safe_zone.css('margin-top',trim_in_px);
 		this.safe_zone.css('margin-bottom',trim_in_px);
 		
-		console.log('Components in '+ self.pages_and_layouts[self.current_page][self.current_layout].components.length);
+		// console.log('Components in '+ self.pages_and_layouts[self.current_page][self.current_layout].components.length);
 		$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index, component) {
 			component.render();
 		});
