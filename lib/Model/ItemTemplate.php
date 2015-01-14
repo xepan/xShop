@@ -29,6 +29,7 @@ class Model_ItemTemplate extends Model_Item{
 		$duplicate_template['designer_id'] = $designer->id;
 		$duplicate_template['sku'] = $this['sku'].'-' . $duplicate_template->id;
 		$duplicate_template['is_template'] = false;
+		$duplicate_template['is_publish'] = false;
 		$duplicate_template->save();
 
 		if($create_default_design_also){
