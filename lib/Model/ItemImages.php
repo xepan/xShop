@@ -26,5 +26,18 @@ class Model_ItemImages extends \Model_Table {
 		$this->tryLoadAny();
 		return $this;
 	}
+
+	function duplicate($item_id,$customefieldvalue_id=null){
+		$new = $this->add('xShop/Model_ItemImages');
+		foreach ($this as $junk) {
+			$new['item_id'] = $item_id;
+			if($customefieldvalue_id)
+				$new['customefieldvalue_id'] = $customefieldvalue_id;
+			$new['item_image_id'] = $this['item_image_id'];
+			$new['alt_text'] = $this['alt_text'];
+			$new['title'] = $this['title'];
+			$new->saveAndUnload();
+		}
+	}
 }
 
