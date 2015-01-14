@@ -42,4 +42,10 @@ class Model_CategoryItem extends \Model_Table{
 		return $this;
 	}
 
+	function duplicate($item_id){
+		$new = $this->add('xShop/Model_CategoryItem');
+		foreach ($this as $junk){
+			$new->createNew($this['category_id'],$item_id);
+		}
+	}
 }	
