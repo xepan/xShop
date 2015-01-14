@@ -16,7 +16,7 @@ class View_Lister_Item extends \CompleteLister{
 	}
 	
 	function formatRow(){
-		
+		$children_array =array();
 		$html_objects=array(
 					'sectionName' => 'ItemDiv',
 					'Content'=>'',
@@ -27,7 +27,7 @@ class View_Lister_Item extends \CompleteLister{
 					'extra_attr'=>array(
 						'data-xshop-item-id'=>$this->model->id
 						),
-					'children'=>array()
+					'children'=>$children_array
 					);
 
 		$detail_url = $this->app->url($this->html_attributes['xshop-detail-page']?:null,array('xitem-id'=>$this->model->id))->getURL();
@@ -216,7 +216,6 @@ class View_Lister_Item extends \CompleteLister{
 		// 	$this->print_r=true;
 		// }
 
-		$this->recursive_ksort($html_objects);
 		$this->current_row_html['item'] = $this->getItemHTML($html_objects);
 
 	}
@@ -233,14 +232,15 @@ class View_Lister_Item extends \CompleteLister{
 
 			$this->order_count ++;
 			if(!$order) $order = $this->order_count;
-			if(isset($parent_secition['children'][$order])) $order = $this->order_count;
-			$parent_secition['children'][$order] = $this->makeSection($sectionName,$Content,$class_ext,$url,$tag, $style_ext, $extra_attr);
+			if($parent_secition['children'][$order]) $order = $this->order_count;
+			$parent_secition['children'][(int)$order] = $this->makeSection($sectionName,$Content,$class_ext,$url,$tag, $style_ext, $extra_attr);
 			return $parent_secition['children'][$order];
 		}
 		return $empty_array;
 	}
 
 	function &makeSection($sectionName,$Content,$class,$url,$tag,$style, $extra_attr){
+		$children_array=array();
 		$section =  array(
 				'sectionName' => $sectionName,
 				'Content'=>$Content,
@@ -249,7 +249,7 @@ class View_Lister_Item extends \CompleteLister{
 				'tag' => $tag,
 				'style'=>$style,
 				'extra_attr'=>$extra_attr,
-				'children'=>array()
+				'children'=>$children_array
 			);
 		return $section;
 	}
@@ -260,12 +260,16 @@ class View_Lister_Item extends \CompleteLister{
 		return $str;
 	}
 
-	function renderSection($section){
+	function renderSection(&$section){
 		$html="";
-
+		
 		$html.= $this->renderTagOpen($section); // only opening tag creation
 		$html.= $section['Content'];
-		foreach ($section['children'] as $sub_sections) {
+		$chilren = $section['children'];
+		uksort($chilren,function($a,$b){
+			return $a>$b;
+		});
+		foreach ($chilren as &$sub_sections) {
 			$html .= $this->renderSection($sub_sections);
 		}
 		$html.= $this->renderTagClose($section); // only opening tag creation
@@ -344,16 +348,6 @@ class View_Lister_Item extends \CompleteLister{
 
 		$this->js(true)->_selector('.fancybox')->fancybox(array('openEffect'=>'elastic','closeEffect'=>'elastic'));
 		parent::render();
-	}
-
-	function recursive_ksort(&$array) {
-	    foreach ($array as $k => $v) {
-	        if (is_array($v)) {
-	            $this->recursive_ksort($v);
-	        }
-	    }
-	    return ksort($array);
-	}
-	
+	}	
 }
 
