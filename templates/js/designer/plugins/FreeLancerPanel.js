@@ -32,10 +32,10 @@ PageBlock = function(parent,designer,canvas, manager){
 		this.page_list_div = $('<div class="list-group"></div>').appendTo(this.element);
 
 		$.each(pages_data_array,function(index,page){
-			self.addPage(page);
+			self.addPageView(page);
+			// self.addPage(page);
 		});
-
-
+	
 		// on click of any page update layoutblock
 	}
 
@@ -58,25 +58,54 @@ PageBlock = function(parent,designer,canvas, manager){
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].background = undefined;
 			console.log('adding ' + page_name);
 			// add default layout to this page as well
+			this.addPageView(page_name);
+			// page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
+			// div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
+			// page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
+			// rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('page_name',page_name);
+			// div.click(function(event){
+			// 	$(this).parent().siblings().find('a').removeClass('active').addClass('activeOff');
+			// 	$(this).addClass('active').removeClass('activeOff');
+			// 	self.manager.layoutblock.setPage($(this).find('span.xshop-designer-ft-page-name').html());
+			// 	console.log(self);
+			// });
 
-			page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
-			div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
-			page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
-			rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('page_name',page_name);
-			div.click(function(event){
-				$(this).parent().siblings().find('a').removeClass('active').addClass('activeOff');
-				$(this).addClass('active').removeClass('activeOff');
-				self.manager.layoutblock.setPage($(this).find('span.xshop-designer-ft-page-name').html());
-			});
+			// rm_btn.click(function(event){
+			// 	if(self.removePage($(this).data('page_name')))
+			// 		$(this).closest(".page_row").remove();
+			// });
 
-			rm_btn.click(function(event){
-				if(self.removePage($(this).data('page_name')))
-					$(this).closest(".page_row").remove();
-			});
-
-			this.input_box.val("");
+			// this.input_box.val("");
 		}
 		// add page to pagelistdiv and add to designertool pagesnadlayout object
+
+	}
+
+	//Return array of all pages of loaded designs
+	this.allPage = function(){
+		var page_array = [];
+		$.each(this.designer_tool.pages_and_layouts,function(index,value){
+			page_array.push(index);
+		});
+		return page_array;
+	}
+
+	this.addPageView = function(page_name){
+		var self = this; 
+		page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
+		div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
+		page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
+		rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('page_name',page_name);
+		div.click(function(event){
+			$(this).parent().siblings().find('a').removeClass('active').addClass('activeOff');
+			$(this).addClass('active').removeClass('activeOff');
+			self.manager.layoutblock.setPage($(this).find('span.xshop-designer-ft-page-name').html());
+		});
+
+		rm_btn.click(function(event){
+			if(self.removePage($(this).data('page_name')))
+				$(this).closest(".page_row").remove();
+		});
 	}
 
 	this.removePage = function(page_name){
@@ -230,12 +259,13 @@ FreeLancerPageLayoutManager = function(parent,designer, canvas){
 		this.page = $('<div></div>').appendTo(this.element);
 
 		this.pageblock = new PageBlock(this.page,this.designer_tool,this.canvas,this);
-		// this.pageblock.init(['page1','page2','page3']);
+		console.log('PageLayoutMG');
+		console.log(this.pageblock.allPage());
+		this.pageblock.init(this.pageblock.allPage());
 
 		this.layoutblock = new LayoutBlock(this.page,this.designer_tool,this.canvas,this);
 		this.layoutblock.init();
 		// this.layoutblock.setPage('page1');
-
 
 		this.page.dialog({autoOpen: false, modal: true, width:600});
 		this.element.click(function(event){

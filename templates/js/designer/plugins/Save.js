@@ -34,15 +34,14 @@ Save_Component = function (params){
 					if(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'] != undefined)
 						self.layout_array[self.page][self.layout]['background'] = JSON.stringify(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'].options);
 				});	
-				console.log(self);
 			});
-
-
+			
+			console.log(self.layout_array);
 			$.ajax({
 					url: 'index.php?page=xShop_page_designer_save',
 					type: 'POST',
 					datatype: "json",
-					data: {xshop_item_design:self.layout_array,//json object
+					data: {xshop_item_design:JSON.stringify(self.layout_array),//json object
 							item_id:self.designer_tool.options.item_id,//designed item id
 							designer_mode:self.designer_tool.options.designer_mode,
 							item_member_design_id:self.designer_tool.options.item_member_design_id

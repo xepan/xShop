@@ -76,7 +76,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		saved_design = JSON.parse(self.options.design);
 		$.each(saved_design,function(page_name,page_object){
 			$.each(page_object,function(layout_name,layout_object){
-				if(layout_object.components != undefined){
+				if(layout_object.components != undefined && layout_object.components.length != 0){
 					$.each(layout_object.components,function(key,value){
 						value = JSON.parse(value);
 						var temp = new window[value.type + "_Component"]();
@@ -84,15 +84,27 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 						temp.options = value;
 						self.pages_and_layouts[page_name][layout_name]['components'][key] = temp;
 					});
+				}else{
+					self.pages_and_layouts[page_name]={};
+					self.pages_and_layouts[page_name][layout_name]={};
+					self.pages_and_layouts[page_name][layout_name]['components']=[];
 				}
 				
-				var temp = new BackgroundImage_Component();
-				temp.init(self, self.canvas);
-				temp.options = JSON.parse(layout_object.background);
-				self.pages_and_layouts[page_name][layout_name]['background'] = temp;
+				if(layout_object.background != undefined ){
+					var temp = new BackgroundImage_Component();
+					temp.init(self, self.canvas);
+					temp.options = JSON.parse(layout_object.background);
+					self.pages_and_layouts[page_name][layout_name]['background'] = temp;
+				}else{
+					self.pages_and_layouts[page_name]={};
+					self.pages_and_layouts[page_name][layout_name]={};
+					self.pages_and_layouts[page_name][layout_name]['background']=[];	
+				}
+
 			});
 
 		});
+		console.log(self);
 	},
 
 	setupToolBar: function(){
@@ -201,11 +213,15 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		this.safe_zone.css('margin-bottom',trim_in_px);
 		
 		// console.log('Components in '+ self.pages_and_layouts[self.current_page][self.current_layout].components.length);
-		$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index, component) {
-			component.render();
-		});
-
-		self.pages_and_layouts[self.current_page][self.current_layout].background.render();
+		if(self.pages_and_layouts[self.current_page][self.current_layout].components != undefined && self.pages_and_layouts[self.current_page][self.current_layout].components.length != 0){
+			$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index, component) {
+				component.render();
+			});
+		}
+			
+		if(self.pages_and_layouts[self.current_page][self.current_layout].background != undefined && self.pages_and_layouts[self.current_page][self.current_layout].background.length != 0){
+			self.pages_and_layouts[self.current_page][self.current_layout].background.render();
+		}
 	},
 
 	_getZoom:function(){
