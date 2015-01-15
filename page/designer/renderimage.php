@@ -24,7 +24,8 @@ class page_xShop_page_designer_renderimage extends Page {
 	   	// 	}	
 	   			
 	   		
-	   		header( "Content-Type: image/png");
+	   		// header( "Content-Type: image/png");
+	   		// echo $new_image;
 	   		echo "<img src='data:image/png;base64,".base64_encode($new_image)."' style='max-width:100%; width:100%'/>".rand(1000,9999);
 			$new_image->clear();
 			$new_image->destroy();
