@@ -14,7 +14,7 @@ class Model_CustomFieldValue extends \Model_Table{
 		$this->hasOne('xShop/CategoryItemCustomFields','itemcustomfiledasso_id');
 		$this->hasOne('xShop/CustomFields','customefield_id');
 		
-		$this->addField('name');
+		$this->addField('name'); // actually ... its value
 		$this->addField('rate_effect');
 		$this->addField('created_at')->type('datetime')->defaultValue(date('Y-m-d H:i:s'));
 		$this->addField('is_active')->type('boolean')->defaultValue(true)->sortable(true);

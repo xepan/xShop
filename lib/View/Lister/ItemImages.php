@@ -1,7 +1,7 @@
 <?php
 
 namespace xShop;
-class View_Lister_ProductImages extends \CompleteLister{
+class View_Lister_ItemImages extends \CompleteLister{
 
 	function setModel($model){
 		parent::setModel($model);
@@ -12,10 +12,10 @@ class View_Lister_ProductImages extends \CompleteLister{
 		$this->template->trySet('zoom3_image_url',$one_image['image_url']?:"epan-components/xShop/templates/images/item_no_image.png ");
 			
 	}
-	// function formatRow(){
-	// 	$this->current_row['zoom3_image_url'] = $this->model['image_url'];
-
-	// }
+	
+	function formatRow(){
+		$this->current_row['image_url'] = $this->model['image_url'];
+	}
 
 	function defaultTemplate(){
 

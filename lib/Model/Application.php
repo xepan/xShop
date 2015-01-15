@@ -23,7 +23,7 @@ class Model_Application extends \Model_Table{
 		$this->hasMany('xShop/ItemOffer','application_id');
 		$this->addHook('beforeDelete',$this);
 		
-		$this->add('dynamic_model/Controller_AutoCreator'); 
+		// $this->add('dynamic_model/Controller_AutoCreator'); 
 	}
 
 	function beforeDelete($m){

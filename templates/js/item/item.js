@@ -26,9 +26,40 @@ jQuery.widget("ui.xepan_xshop_item",{
 			}
 		);
 
-		// add to cart management
+		// ADD TO CART management
 		$(this.element).find('.xshop-item-add-to-cart').click(function(){
-			alert(self.element.data('xshop-item-id'));
+
+			var qty_to_add=1;
+			// Have Qty Field ??
+			if(self.element.find('.shop-item-qty').length){
+				qty_to_add = self.element.find('.shop-item-qty').val();
+			}
+
+			// all custom fields values
+			custom_field_values = {};
+			self.element.find('.xshop-item-custom-fields select').each(function(index,cf_field){
+				custom_field_values[$(this).attr('field')] = $(this).val();
+			});
+
+			$.ajax({
+					url: 'index.php?page=xShop_page_addtocart',
+					type: 'POST',
+					datatype: "json",
+					data: { 
+						item_id: self.element.data('xsnb-item-id'),
+						qty: qty_to_add,
+						custome_fields: JSON.stringify(custom_field_values)
+					},
+				})
+				.done(function(ret) {
+					eval(ret);
+				})
+				.fail(function() {
+					console.log("error");
+				})
+				.always(function() {
+					console.log("complete");
+				});
 		})
 
 	},
