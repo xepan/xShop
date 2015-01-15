@@ -57,7 +57,7 @@ class page_xShop_page_designer_save extends Page {
 				echo $target['id'];
 				exit;
 			}		
-		}elseif(isset($target) and ($_POST['designer_mode']=='false' OR !isset($_POST['designer_mode'])) and !isset($_POST['item_member_design_id'])){
+		}elseif(isset($target) and ($_POST['designer_mode']=='false' OR !isset($_POST['designer_mode'])) and !$_POST['item_member_design_id']){
 			$target = $this->add('xShop/Model_ItemMemberDesign');
 			$target['item_id']= $_POST['item_id'];
 			$target['member_id'] = $designer->id;

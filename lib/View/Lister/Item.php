@@ -30,7 +30,7 @@ class View_Lister_Item extends \CompleteLister{
 					'children'=>$children_array
 					);
 
-		$detail_url = $this->app->url($this->html_attributes['xshop-detail-page']?:null,array('xitem-id'=>$this->model->id))->getURL();
+		$detail_url = $this->app->url(null,array('xitem-id'=>$this->model->id,'subpage'=>$this->html_attributes['xshop-detail-page']))->getURL();
 
 		// handle image
 		$image_parent = $html_objects;
@@ -199,7 +199,7 @@ class View_Lister_Item extends \CompleteLister{
 			);
 
 		$this->addSectionIF(
-			$this->html_attributes['show-personalized'],
+			$this->html_attributes['show-personalized'] ,
 			$html_objects,
 			'Personalize',
 			'Personalize',

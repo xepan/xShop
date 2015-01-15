@@ -103,7 +103,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		bottom_bar.appendTo($.find('.col-md-12_removed'));
 
 		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
-		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none"></div>').appendTo(top_bar);
+		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none; z-index:100"></div>').appendTo(top_bar);
 		
 		this.remove_btn = $('<div>X</div>').appendTo(this.option_panel);
 

@@ -20,15 +20,15 @@ class View_Item_CustomeField extends \View{
 			
 			switch ($custom_field['type']) {
 				case 'DropDown': 
-					$string = $this->getDropDown($custom_field['id']);
+					$string = $this->getDropDown($custom_field['id'], $custom_field['name']);
 					break;
 
 				case 'Radio Button':
-					$string = $this->getRadioButton($custom_field['id']);					
+					$string = $this->getRadioButton($custom_field['id'],$custom_field['name']);
 					break;
 
 				case 'CheckBox':
-					$string = $this->getCheckBox($custom_field['id']);					
+					$string = $this->getCheckBox($custom_field['id'],$custom_field['name']);
 					break;					
 			}
 			// $this->add('View')->set('Custom Fields - '.$custom_field['name']." - ".$custom_field['customfield_id']." - ".$custom_field['id'].'-'.$custom_field['type']);
@@ -36,9 +36,9 @@ class View_Item_CustomeField extends \View{
 		}
 	}
 
-	function getDropDown($association_id){
+	function getDropDown($association_id, $field_name){
 		$custom_field_value = $this->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$association_id);
-		$html = "<select>";
+		$html = "<select field='$field_name'>";
 		foreach ($custom_field_value as $junk) {
 			$html .="<option>".$junk['name']."</options>"; 
 		}
@@ -46,20 +46,20 @@ class View_Item_CustomeField extends \View{
 		return $html;
 	} 
 
-	function getRadioButton($association_id){
+	function getRadioButton($association_id, $field_name){
 		$custom_field_value = $this->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$association_id);
 		$html = "";
 		foreach ($custom_field_value as $junk) {
-			$html = '<input type="radio" name="">'.$junk['name']."</input>";
+			$html = '<input type="radio" name="" field="'.$field_name.'">'.$junk['name']."</input>";
 		}
 		return $html;
 	}
 
-	function getCheckBox($association_id){
+	function getCheckBox($association_id, $field_name){
 		$custom_field_value = $this->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$association_id);
 		$html = "";
 		foreach ($custom_field_value as $junk) {
-			$html = '<input type="checkbox" name="">'.$junk['name']."</input>";
+			$html = '<input type="checkbox" name="" field="'.$field_name.'">'.$junk['name']."</input>";
 		}
 		return $html;	
 	}
