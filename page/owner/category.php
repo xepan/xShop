@@ -16,7 +16,7 @@ class page_xShop_page_owner_category extends page_xShop_page_owner_main{
 		$category_model->setOrder('id','desc');
 						
 		$crud=$this->app->layout->add('CRUD',array('grid_class'=>'xShop/Grid_Category'));
-		$crud->setModel($category_model,array('parent_id','name','order_no','is_active','meta_title','meta_description','meta_keywords','image_url','alt_text','description'),array('name','parent','order_no','is_active'));
+		$crud->setModel($category_model,array('parent_id','name','order_no','is_active','meta_title','meta_description','meta_keywords','image_url_id','alt_text','description'),array('name','parent','order_no','is_active'));
 		
 		if($crud->isEditing()){	
 			$parent_model = $crud->form->getElement('parent_id')->getModel();
