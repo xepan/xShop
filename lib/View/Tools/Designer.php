@@ -71,6 +71,12 @@ class View_Tools_Designer extends \componentBase\View_Component{
 			// set target model to member_item_assos
 			// set designer_mode=false to desginer js
 
+		}elseif(isset($target) and ($_POST['designer_mode']=='false' OR !isset($_POST['designer_mode'])) and $designer_loaded){
+			// $target = $this->add('xShop/Model_ItemMemberDesign');
+			// $target->addCondition('item_id', $_GET['xsnb_design_item_id']);
+			// $target->addCondition('member_id', $designer->id);
+			// $target->tryLoadAny();
+			// $this->item = $target;
 		}else{
 			// NOTHING ??? .. Something wrong .. 
 			// url not proper
