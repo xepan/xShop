@@ -18,7 +18,7 @@ class View_CartItem extends \View{
 		$this->template->Set('item_name',$model['item_name']);		
 		$this->template->Set('item_id',$model['item_id']);
 
-		$pimg_model=$this->add('xShop/Model_ProductImages');
+		$pimg_model=$this->add('xShop/Model_ItemImages');
 		$pimg_model->getImageUrl($model['item_id']);
 
 		$this->template->Set('xshop_item_image',$pimg_model['image_url']);
@@ -40,6 +40,8 @@ class View_CartItem extends \View{
 		$btn_submit=$form->add('View')->addClass('btn btn-warning btn-sm')->addStyle(array('margin-top'=>'25px','margin-left'=>'5px'))->set('Update');
 		$btn_submit->js('click')->submit();
 		
+		// $this->add('View')->set("dfsdf".print_r($model['custom_fields'],true));
+
 		// $btn_remove=$form->add('Button')->addClass('btn btn-danger')->addStyle(array('margin-top'=>'25px','margin-left'=>'5px'))->set('Remove');
 		// if($btn_remove->isClicked()){
 		// 	$this->api->stickyGet('btn_id');

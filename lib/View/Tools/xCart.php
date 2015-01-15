@@ -9,7 +9,7 @@ class View_Tools_xCart extends \componentBase\View_Component{
 		$this->addClass('xshop-cart');
 
 		// value passing game via body using attr from add to cart button 
-		$this->js('reload')->reload(array('product_id'=>$this->js()->_selector('body')->attr('xshop_add_product_id')));		
+		$this->js('reload')->reload(array('product_id'=>$this->js()->_selector('body')->attr('xshop_add_product_id')));
 		//add Cart model work as a session
 		$cart_model=$this->add('xShop/Model_Cart');
 		$product_model=$this->add('xShop/Model_Item');

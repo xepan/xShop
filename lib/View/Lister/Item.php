@@ -13,7 +13,6 @@ class View_Lister_Item extends \CompleteLister{
 		if($this->model->count()->getOne() > 0){
 			$this->template->tryDel('no_record_found');
 		}
-		// print_r($this->html_attributes);
 	}
 	
 	function formatRow(){
@@ -200,7 +199,7 @@ class View_Lister_Item extends \CompleteLister{
 			);
 
 		$this->addSectionIF(
-			$this->html_attributes['show-personalized'],
+			$this->html_attributes['show-personalized'] and $this->model['is_designable'],
 			$html_objects,
 			'Personalize',
 			'Personalize',
