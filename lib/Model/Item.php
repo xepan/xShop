@@ -114,6 +114,7 @@ class Model_Item extends \Model_Table{
 		$this->addExpression('theme_code_group_expression')->set('(IF(ISNULL('.$this->table_alias.'.theme_code),'.$this->table_alias.'.id,'.$this->table_alias.'.theme_code))');
 			
 		$this->addHook('beforeSave',$this);
+		$this->addHook('afterInsert',$this);
 		$this->addHook('beforeDelete',$this);
 		// $this->add('dynamic_model/Controller_AutoCreator');
 	}
@@ -143,6 +144,20 @@ class Model_Item extends \Model_Table{
 								$this['sale_price']
 							;
 
+	}
+
+	function afterInsert($obj,$new_item_id){
+		$new_item =  $this->add('xShop/Model_Item')->load($new_item_id);
+
+		// if designable add as with admin => member's design too
+		$designer = $this->add('xShop/Model_MemberDetails');
+		$designer->load($new_item['designer_id']);
+
+		$target = $this->item = $this->add('xShop/Model_ItemMemberDesign');
+		$target['item_id'] = $new_item_id;
+		$target['member_id'] = $designer->id;
+		$target['designs'] = "";
+		$target->save();
 	}
 
 	function getCategory($item_id=null){

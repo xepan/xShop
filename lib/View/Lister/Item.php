@@ -121,7 +121,7 @@ class View_Lister_Item extends \CompleteLister{
 			);
 
 		$this->addSectionIF(
-			$this->html_attributes['show-add-to-cart'],
+			$this->html_attributes['show-add-to-cart'] and !$this->model['is_designable'],
 			$html_objects,
 			'ItemAddToCartButton',
 			'Add To Cart',
