@@ -1,7 +1,7 @@
 <?php
 
 namespace xShop;
-class View_Lister_ProductImages extends \CompleteLister{
+class View_Lister_ItemImages extends \CompleteLister{
 
 	function setModel($model){
 		parent::setModel($model);
