@@ -13,6 +13,7 @@ class View_Lister_Item extends \CompleteLister{
 		if($this->model->count()->getOne() > 0){
 			$this->template->tryDel('no_record_found');
 		}
+		// print_r($this->html_attributes);
 	}
 	
 	function formatRow(){
@@ -25,12 +26,12 @@ class View_Lister_Item extends \CompleteLister{
 					'tag' => 'ul',
 					'style'=>'',
 					'extra_attr'=>array(
-						'data-xshop-item-id'=>$this->model->id
+						'data-xsnb-item-id'=>$this->model->id
 						),
 					'children'=>$children_array
 					);
 
-		$detail_url = $this->app->url($this->html_attributes['xshop-detail-page']?:null,array('xitem-id'=>$this->model->id))->getURL();
+		$detail_url = $this->app->url(null,array('xsnb_item_id'=>$this->model->id,'subpage'=>$this->html_attributes['xshop-detail-page']))->getURL();
 
 		// handle image
 		$image_parent = $html_objects;
