@@ -134,7 +134,7 @@
 									Item Detail Subpage
 								</td>
 								<td colspan="2">
-									<input id="xshop_item_hover_detail_page" type="text"/>
+									<input type='text' id='xshop_item_detail_page' data-attr="xshop-detail-page" class="xshop-general-bind"/>
 								</td>
 							</tr>
 							<tr>
@@ -385,10 +385,7 @@ $('#xshop_item_hover').change(function(event) {
 if($('#xshop_item_hover').is(':checked')?$(current_selected_component).attr('xshop_item_hover','1'):$(current_selected_component).attr('xshop_item_hover','0'));
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
-$('#xshop_item_hover_detail_page').change(function(event){
-$(current_selected_component).attr('xshop_item_hover_detail_page',$(this).val());
-$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
+
 $('#xshop_item_detail_on_image_click').change(function(event){
 if($('#xshop_item_detail_on_image_click').is(':checked')?$(current_selected_component).attr('xshop_item_detail_on_image_click','1'):$(current_selected_component).attr('xshop_item_detail_on_image_click','0'));
 $(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
@@ -452,7 +449,6 @@ $('#xshop-item-application').val($(current_selected_component).attr("xshop-item-
 $('#xshop_item_topbar').attr('checked',$(current_selected_component).attr("xshop_item_topbar")=='true'?true:false);
 $('#xshop_item_fancy_box').attr('checked',$(current_selected_component).attr("xshop_item_fancy_box")==1?true:false);
 $('#xshop_item_hover').attr('checked',$(current_selected_component).attr("xshop_item_hover")==1?true:false);
-$('#xshop_item_hover_detail_page').val($(current_selected_component).attr('xshop_item_hover_detail_page'));
 
 $('#xShop-itemtype-root').val($(
 current_selected_component).attr('xshop_itemtype'));
