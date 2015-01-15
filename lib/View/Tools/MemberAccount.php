@@ -64,7 +64,10 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 				//Edit Design
 				$g->addColumn('design');
 				$g->addMethod('format_design',function($g,$f)use($designer){
-					$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>'not-available','xsnb_design_template'=>'false','item_member_design_id'=>$g->model->id)).'>Design</a>';
+					if(!$g->model['is_dummy'])
+						$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>'not-available','xsnb_design_template'=>'false','item_member_design_id'=>$g->model->id)).'>Design</a>';
+					else
+						$g->current_row_html[$f] ='';
 				});
 				$g->addFormatter('design','design');
 			}

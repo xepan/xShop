@@ -21,7 +21,14 @@ class Grid_Item extends \Grid{
 		$this->addColumn('expander','specifications',array("descr"=>"Specfications",'icon'=>'cog','icon_only'=>true));
 		$this->addColumn('expander','images',array("descr"=>"Images",'icon'=>'picture','icon_only'=>true));
 		$this->addColumn('expander','attachments',array("descr"=>"Docs",'icon'=>'folder','icon_only'=>true));
+		$this->addColumn('Button','duplicate',array("descr"=>"Duplicate",'icon'=>'folder','icon_only'=>true));
 		// $this->addColumn('pics_docs','pics_docs','Pics / Docs');
+
+		if($_GET['duplicate']){
+			$this->add('xShop/Model_ItemTemplate')->load($_GET['duplicate'])->duplicate();
+			$this->js()->reload()->execute();
+		}
+
 	}
 	function recursiveRender(){
 		$this->addMethod('format_name',function($g,$f){

@@ -30,6 +30,8 @@ xShop:
  ☐ Application Offer Management (CRUD)
  ☐ Shop configuration rich text not saving
 
+ ☐  default Image for category and items (even if image given but not_exists)
+
 Designer:
   category has many custom fields copied to each new product created.
   Frontend product creation tool.

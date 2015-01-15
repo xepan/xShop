@@ -108,8 +108,8 @@ class Model_Item extends \Model_Table{
 		$this->hasMany('xShop/ItemSpecificationAssociation','item_id');
 		$this->hasMany('xShop/CustomFieldValueFilterAssociation','item_id');
 		$this->hasMany('xShop/CategoryItemCustomFields','item_id');
-		$this->hasMany('xShop/Model_ItemReview','item_id');
-		$this->hasMany('xShop/Model_ItemMemberDesign','item_id');
+		$this->hasMany('xShop/ItemReview','item_id');
+		$this->hasMany('xShop/ItemMemberDesign','item_id');
 
 		$this->addExpression('theme_code_group_expression')->set('(IF(ISNULL('.$this->table_alias.'.theme_code),'.$this->table_alias.'.id,'.$this->table_alias.'.theme_code))');
 			
@@ -147,6 +147,8 @@ class Model_Item extends \Model_Table{
 	function afterInsert($obj,$new_item_id){
 		$new_item =  $this->add('xShop/Model_Item')->load($new_item_id);
 
+		if(!$new_item['designer_id']) return;
+
 		// if designable add as with admin => member's design too
 		$designer = $this->add('xShop/Model_MemberDetails');
 		$designer->load($new_item['designer_id']);
@@ -155,6 +157,7 @@ class Model_Item extends \Model_Table{
 		$target['item_id'] = $new_item_id;
 		$target['member_id'] = $designer->id;
 		$target['designs'] = "";
+		$target['is_dummy'] = true;
 		$target->save();
 	}
 

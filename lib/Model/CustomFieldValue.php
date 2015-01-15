@@ -42,6 +42,7 @@ class Model_CustomFieldValue extends \Model_Table{
 		$new_custom_value['itemcustomfiledasso_id'] = $asso_id;
 		$new_custom_value['customefield_id'] = $this['customefield_id'];
 		$new_custom_value['name'] = $this['name'];
+		$new_custom_value['rate_effect'] = $this['rate_effect'];
 		$new_custom_value['is_active'] = $this['is_active'];
 		$new_custom_value->save();
 
