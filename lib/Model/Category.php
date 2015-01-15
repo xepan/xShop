@@ -19,8 +19,9 @@ class Model_Category extends \Model_Table{
 		$f = $this->addField('order_no')->type('int')->hint('Greatest order number display first and only integer number require')->defaultValue(0)->sortable(true)->group('a~4');
 		$f->icon = "fa fa-sort-amount-desc~blue";
 		$f = $this->addField('is_active')->type('boolean')->defaultValue(true)->group('a~2');
-		$f->icon = "fa fa-exclamation~blue";		
-		$f = $this->addField('image_url')->display(array('form'=>'ElImage'))->group('b~6~Category Images');
+		$f->icon = "fa fa-exclamation~blue";
+		$f = $this->add('filestore/Field_Image','image_url_id')->group('b~6~Category Images');
+		// $f = $this->addField('image_url')->display(array('form'=>'ElImage'));
 		$f->icon = "glyphicon glyphicon-picture~blue";		
 		$f = $this->addField('alt_text')->group('b~6');
 		$f->icon = "glyphicon glyphicon-pencil~blue";		
