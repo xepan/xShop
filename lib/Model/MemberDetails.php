@@ -5,7 +5,7 @@ class Model_MemberDetails extends \Model_Table{
 	function init(){
 		parent::init();
 
-		$this->hasOne('xShop/Users','users_id');
+		$this->hasOne('xShop/Users','users_id')->mandatory(true);
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 		
@@ -21,6 +21,8 @@ class Model_MemberDetails extends \Model_Table{
 		$this->addField('country');
 		$this->addField('mobile_number');
 		$this->addField('pincode');
+		
+		$this->addField('is_active')->type('boolean')->defaultValue(true);
 						
 		$this->hasMany('xShop/Order','member_id');
 		$this->hasMany('xShop/DiscountVoucherUsed','member_id');
@@ -30,7 +32,24 @@ class Model_MemberDetails extends \Model_Table{
 			return $m->refSQL('users_id')->fieldQuery('name');
 		});
 
-		// $this->add('dynamic_model/Controller_AutoCreator');
+		$this->addHook('beforeSave',$this);
+		$this->addHook('beforeDelete',$this);
+
+		$this->add('dynamic_model/Controller_AutoCreator');
+	}
+
+	function beforeDelete(){
+		throw $this->exception('TODOOOOOOOOOOO');
+	}
+
+
+	function beforeSave(){
+		$existing_check = $this->add('xShop/Model_MemberDetails');
+		$existing_check->addCondition('users_id',$this['users_id']);
+		$existing_check->addCondition('id','<>',$this->id);
+		$existing_check->tryLoadAny();
+		if($existing_check->loaded())
+			throw $this->exception('User is already member','ValidityCheck')->setField('users_id');
 	}
 
 	function Verify($emailId,$activation_code){

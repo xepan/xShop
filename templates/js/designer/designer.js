@@ -115,7 +115,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		bottom_bar.appendTo($.find('.col-md-12_removed'));
 
 		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
-		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none; z-index:100"></div>').appendTo(top_bar);
+		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none;"></div>').appendTo(top_bar);
 		
 		this.remove_btn = $('<div>X</div>').appendTo(this.option_panel);
 
@@ -175,7 +175,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	setupCanvas: function(workplace){
 		var self = this;
 		var outer_column = $('<div class="col-md-12_removed"></div>').appendTo(workplace);
-		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative"></div>').appendTo(outer_column);
+		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative; z-index:100"></div>').appendTo(outer_column);
 		
 		this.canvas.css('width',this.options.width + this.options.unit); // In given Unit
 		this.px_width = this.canvas.width(); // Save in pixel for actual should be width

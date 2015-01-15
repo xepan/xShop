@@ -124,11 +124,10 @@ class Model_Item extends \Model_Table{
 		$item_old=$this->add('xShop/Model_Item');
 		if($this->loaded())
 			$item_old->addCondition('id','<>',$this->id);
-
-		$item_old->addCondition('sku',$this['sku']);		
 		$item_old->tryLoadAny();
+
 		//TODO Rank Weight Auto Increment 
-		if($item_old->loaded())
+		if($item_old['sku'] == $this['sku'])
 			throw $this->Exception('Item Code is Allready Exist','ValidityCheck')->setField('sku');
 
 
@@ -143,7 +142,6 @@ class Model_Item extends \Model_Table{
 								$this["meta_description"]. " ".
 								$this['sale_price']
 							;
-
 	}
 
 	function afterInsert($obj,$new_item_id){
