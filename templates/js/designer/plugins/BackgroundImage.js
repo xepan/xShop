@@ -61,6 +61,8 @@ BackgroundImage_Component = function (params){
 		var self = this;
 		if(this.element == undefined){
 			this.element = $('<div style="position:absolute;z-index:-10;" class="xshop-designer-component"><span></span></div>').appendTo(this.canvas);
+		}else{
+			this.element.show();
 		}
 
 		this.element.css('top',self.options.y  * self.designer_tool.zoom);

@@ -332,6 +332,8 @@ Text_Component = function (params){
 	            }
 		        event.stopPropagation();
 			});
+		}else{
+			this.element.show();
 		}
 
 		this.element.css('top',self.options.y  * self.designer_tool.zoom);

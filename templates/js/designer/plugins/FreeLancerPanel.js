@@ -173,7 +173,7 @@ LayoutBlock = function(parent,designer,canvas, manager){
 		page_name = $.trim(page_name);
 
 		this.current_page = page_name;
-		console.log('changed page to ' + page_name);
+		// console.log('changed page to ' + page_name);
 		//Show Active on Current Page
 		$( "div.xshop-designer-ft-page" ).find( 'a.list-group-item:contains('+page_name+')' ).addClass('active');
 		//Empty all html:remove repeating layout
@@ -184,7 +184,7 @@ LayoutBlock = function(parent,designer,canvas, manager){
 		// create layout dis with remove button and its event
 	}
 
-	this.addLayout = function(layout_name,new_layout){	
+	this.addLayout = function(layout_name,is_new_layout){	
 		var self = this;
 		layout_name = $.trim(layout_name);
 		// validate page_name
@@ -194,11 +194,14 @@ LayoutBlock = function(parent,designer,canvas, manager){
 			this.input_box.css('border-color','red');
 			return;
 		}
-		if(!(new_layout) || !(this.layoutExist(layout_name))){
-			var new_layout= new Object();
-			new_layout.components=[];
-			new_layout.background=undefined;
-			this.designer_tool.pages_and_layouts[this.current_page][layout_name] =  new_layout;
+		if(!is_new_layout || !(this.layoutExist(layout_name))){
+			
+			if(is_new_layout){
+				var new_layout= new Object();
+				new_layout.components=[];
+				new_layout.background=undefined;
+				this.designer_tool.pages_and_layouts[this.current_page][layout_name] =  new_layout;
+			}
 
 			layout_row = $('<div class="layout_row"></div>').appendTo(this.layout_list_div);
 			div = $('<a href="#" class="list-group-item"></a>').appendTo(layout_row).html(layout_name);
@@ -227,16 +230,15 @@ LayoutBlock = function(parent,designer,canvas, manager){
 
 	this.layoutExist = function(layout_name){
 		layout_name = $.trim(layout_name);
-		return_value = false;
 		$.each(this.designer_tool.pages_and_layouts[this.current_page],function(index,layout){
 			// console.log(index+"::"+layout_name);
 			if(index === layout_name){
 				alert('Layout exist');
-				return_value = true;
+				return true;
 			}
 		});
 		
-		return return_value;
+		return false;
 		
 	}
 

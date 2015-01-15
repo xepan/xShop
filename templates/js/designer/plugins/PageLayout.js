@@ -12,19 +12,18 @@ Layout_Tool = function(parent){
 
 	this.renderTool = function(page_name){
 		var self = this;
-		console.log(page_name);
-		console.log(self);
+		// console.log(page_name);
+		// console.log(self);
 		$.each(self.designer_tool.pages_and_layouts[page_name],function(index,layout){
-			self.layout_name = index;
 			//display the page button
 			$('.xshop-designer-show-page').show();
 			//hide page button view
 			$('.xshop-designer-pagelayout').hide();
 			//add new Layout of current selected page
-			layout_btn = $('<div class="xshop-designer-layoutbtn"><h3>'+index+'</h3></div>').appendTo($.find('.xshop-designer-layout'));
+			layout_btn = $('<div class="xshop-designer-layoutbtn"><h3>'+index+'</h3></div>').appendTo($.find('.xshop-designer-layout')).data('layout',index);
 				layout_btn.click(function(){
 					self.designer_tool.current_page = page_name;
-					self.designer_tool.current_layout = self.layout_name;
+					self.designer_tool.current_layout = $(this).data('layout');
 					self.designer_tool.render();
 					console.log(self.designer_tool);
 				});

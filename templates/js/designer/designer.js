@@ -85,9 +85,9 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 						self.pages_and_layouts[page_name][layout_name]['components'][key] = temp;
 					});
 				}else{
-					self.pages_and_layouts[page_name]={};
-					self.pages_and_layouts[page_name][layout_name]={};
-					self.pages_and_layouts[page_name][layout_name]['components']=[];
+					// self.pages_and_layouts[page_name]={};
+					// self.pages_and_layouts[page_name][layout_name]={};
+					// self.pages_and_layouts[page_name][layout_name]['components']=[];
 				}
 				
 				if(layout_object.background != undefined ){
@@ -96,15 +96,16 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 					temp.options = JSON.parse(layout_object.background);
 					self.pages_and_layouts[page_name][layout_name]['background'] = temp;
 				}else{
-					self.pages_and_layouts[page_name]={};
-					self.pages_and_layouts[page_name][layout_name]={};
-					self.pages_and_layouts[page_name][layout_name]['background']=[];	
+					// self.pages_and_layouts[page_name]={};
+					// self.pages_and_layouts[page_name][layout_name]={};
+					// self.pages_and_layouts[page_name][layout_name]['background']=[];	
 				}
 
 			});
 
 		});
-		console.log(self);
+		console.log('sdfsdf');
+		console.log(this.options.width);
 	},
 
 	setupToolBar: function(){
@@ -212,6 +213,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		this.safe_zone.css('margin-top',trim_in_px);
 		this.safe_zone.css('margin-bottom',trim_in_px);
 		
+		this.canvas.find('.xshop-designer-component').hide();
 		// console.log('Components in '+ self.pages_and_layouts[self.current_page][self.current_layout].components.length);
 		if(self.pages_and_layouts[self.current_page][self.current_layout].components != undefined && self.pages_and_layouts[self.current_page][self.current_layout].components.length != 0){
 			$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index, component) {

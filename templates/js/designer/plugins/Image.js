@@ -221,6 +221,8 @@ Image_Component = function (params){
 	            self.editor.setImageComponent(self);
 		        event.stopPropagation();
 			});
+		}else{
+			this.element.show();
 		}
 
 		this.element.css('top',self.options.y  * self.designer_tool.zoom);
