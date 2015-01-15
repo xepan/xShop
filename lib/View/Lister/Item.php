@@ -25,12 +25,12 @@ class View_Lister_Item extends \CompleteLister{
 					'tag' => 'ul',
 					'style'=>'',
 					'extra_attr'=>array(
-						'data-xshop-item-id'=>$this->model->id
+						'data-xsnb-item-id'=>$this->model->id
 						),
 					'children'=>$children_array
 					);
 
-		$detail_url = $this->app->url(null,array('xitem-id'=>$this->model->id,'subpage'=>$this->html_attributes['xshop-detail-page']))->getURL();
+		$detail_url = $this->app->url(null,array('xsnb_item_id'=>$this->model->id,'subpage'=>$this->html_attributes['xshop-detail-page']))->getURL();
 
 		// handle image
 		$image_parent = $html_objects;
@@ -199,7 +199,7 @@ class View_Lister_Item extends \CompleteLister{
 			);
 
 		$this->addSectionIF(
-			$this->html_attributes['show-personalized'] ,
+			$this->html_attributes['show-personalized'] and $this->model['is_designable'],
 			$html_objects,
 			'Personalize',
 			'Personalize',

@@ -46,7 +46,7 @@ jQuery.widget("ui.xepan_xshop_item",{
 					type: 'POST',
 					datatype: "json",
 					data: { 
-						item_id: self.element.data('xshop-item-id'),
+						item_id: self.element.data('xsnb-item-id'),
 						qty: qty_to_add,
 						custome_fields: JSON.stringify(custom_field_values)
 					},
