@@ -6,12 +6,12 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 	public $html_attributes=array(); // ONLY Available in server side components
 	function init(){
 		parent::init();
-		// $_GET['xshop_item_id'];
-		// echo $_GET['xshop_item_id'];
+		// $_GET['xsnb_item_id'];
+		// echo $_GET['xsnb_item_id'];
 		// exit;
 
 		$this->js(true)->_load('jquery-elevatezoom');
-		$this->api->stickyGET('xshop_item_id');
+		$this->api->stickyGET('xsnb_item_id');
 		$config_model=$this->add('xShop/Model_Configuration');
 		$product=$this->add('xShop/Model_Item');
 		// $manu_join = $product->leftJoin('xshop_affiliate','affiliate_id');	
@@ -42,7 +42,7 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 
 		if($product['show_attachment']){
 			$attachment_model=$this->add('xShop/Model_Attachments');
-			$attachment_model->addCondition('item_id',$_GET['xshop_item_id']);
+			$attachment_model->addCondition('item_id',$_GET['xsnb_item_id']);
 			$attachment_model->tryLoadAny();
 			$this->template->set('attachment_url',$attachment_model['attachment_url']);
 			$this->template->set('attachment_name',$attachment_model['name']);
@@ -69,8 +69,8 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 			}
 
 		//END OF PANEL OPTIONS
-		if($_GET['xshop_item_id']){
-			$product->load($_GET['xshop_item_id']);		
+		if($_GET['xsnb_item_id']){
+			$product->load($_GET['xsnb_item_id']);		
 		}else{
 			return;
 		}
@@ -81,12 +81,12 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		
 		$details = $this->add('xShop/View_Lister_CustomFields',null,'product_custom_fields');
 		$custom_field_model=$this->add('xShop/Model_CategoryItemCustomFields');
-		$custom_field_model->addCondition('item_id',$_GET['xshop_item_id']);
+		$custom_field_model->addCondition('item_id',$_GET['xsnb_item_id']);
 		$details->setModel($custom_field_model);
 							
 		// do adding multiple images of a single product
 		// $images = $this->add('xShop/View_Lister_ProductImages',null,'product_images');			
-		// $images->setModel($this->add('xShop/Model_ItemImages')->addCondition('item_id',$_GET['xshop_item_id']));	
+		// $images->setModel($this->add('xShop/Model_ItemImages')->addCondition('item_id',$_GET['xsnb_item_id']));	
 		
 		$this->setModel($product);
 
