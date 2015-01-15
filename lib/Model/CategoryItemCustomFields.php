@@ -36,7 +36,15 @@ class Model_CategoryItemCustomFields extends \Model_Table{
 		if($old_model->loaded()){
 			throw $this->Exception('Custom Filed Exist','ValidityCheck')->setField('customfield_id');
 		}
+	}
 
+	function duplicate($new_item_id){
+		$new_asso = $this->add('xShop/Model_CategoryItemCustomFields');
+		$new_asso['customfield_id'] = $this['customfield_id'];
+		$new_asso['item_id'] = $new_item_id;
+		$new_asso['is_active'] = $this['is_active'];
+		$new_asso->save();
+		return $new_asso;
 	}
 		
 }

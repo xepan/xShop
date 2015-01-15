@@ -16,7 +16,7 @@ Save_Component = function (params){
 		this.page = undefined;
 		this.layout = undefined;
 		this.parent = parent;
-		tool_btn = $('<div class="btn btn-deault btn-xs"><i class="glyphicon glyphicon-floppy-saved"></i><br>Save</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+		tool_btn = $('<div class="btn btn-deault btn-xs xshop-render-tool-save-btn "><i class="glyphicon glyphicon-floppy-saved"></i><br>Save</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
 		
 		tool_btn.click(function(event){
 			// console.log(self);
@@ -57,6 +57,7 @@ Save_Component = function (params){
 						$.univ().errorMessage('Not Saved, some thing wrong');
 					}else{
 						// self.designer_tool.options.item_member_design_id = ret;
+						eval(ret);
 						$.univ().successMessage('Saved Successfully');
 					}
 				})

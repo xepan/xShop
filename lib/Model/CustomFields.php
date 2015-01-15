@@ -16,7 +16,6 @@ class Model_CustomFields extends \Model_Table{
 		$f->icon = 'fa fa-circle~blue';
 		$this->addField('type')->enum(array('DropDown','Radio Button','Color','CheckBox'));
 		$f->icon = 'fa fa-circle~red';
-		$f = $this->addField('default_value')->group('a~6')->mandatory(true)->hint('Comma Separated Value like red,blue,green,etc..');
 		
 		$this->hasMany('xShop/CustomFieldValue','customefield_id');
 		$this->hasMany('xShop/CustomFieldValueFilterAssociation','customefield_id');

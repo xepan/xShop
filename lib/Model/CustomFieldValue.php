@@ -37,4 +37,25 @@ class Model_CustomFieldValue extends \Model_Table{
 		}
 	}
 
+	function duplicate($asso_id,$item_id=null){
+		$new_custom_value = $this->add('xShop/Model_CustomFieldValue');
+		$new_custom_value['itemcustomfiledasso_id'] = $asso_id;
+		$new_custom_value['customefield_id'] = $this['customefield_id'];
+		$new_custom_value['name'] = $this['name'];
+		$new_custom_value['is_active'] = $this['is_active'];
+		$new_custom_value->save();
+
+		//filter Value
+		$filter = $this->ref('xShop/CustomFieldValueFilterAssociation');
+		if($filter->count()->getOne()){
+			$filter->duplicate($item_id,$new_custom_value['id']);
+		}
+
+		$images= $this->ref('xShop/ItemImages');
+		if($images->count()->getOne()){
+			$images->duplicate($item_id,$new_custom_value['id']);
+		}
+		return $new_custom_value;
+	}
+
 }

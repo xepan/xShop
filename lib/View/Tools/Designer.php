@@ -20,13 +20,9 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		}
 
 		$designer = $this->add('xShop/Model_MemberDetails');
-		if(!$designer->loadLoggedIn()) {
-			// Current logged in user, either user is logged out or does not have any member entry
-			// So...
-			return; 
-		}
+		$designer_loaded = $designer->loadLoggedIn();
 		
-		if($_GET['item_member_design_id']){
+		if($_GET['item_member_design_id'] and $designer_loaded){
 			$target = $this->item = $this->add('xShop/Model_ItemMemberDesign')->tryLoad($_GET['item_member_design_id']);
 			if(!$target->loaded()) return;
 			$item = $target->ref('item_id');
@@ -61,24 +57,20 @@ class View_Tools_Designer extends \componentBase\View_Component{
 
 			preg_match_all("/^([0-9]+)\s*([a-zA-Z]+)\s*$/", $this->specification['trim'],$temp);
 			$this->specification['trim']= $temp[1][0];
-			// print_r($this->specification);
-			// exit;
-			$this->render_designer = false;
 		}
 
 
 
 
+		$this->render_designer = true;	
 		if(isset($target) and $_GET['xsnb_design_template']=='true' and $target['designer_id']== $designer->id){
 			// am I the designer of item ?? .. checked in if condition above
 			// set designer_mode=true to desginer js
 			$this->designer_mode = true;	
-			$this->render_designer = true;	
-		}elseif(isset($target) and $_GET['xsnb_design_template']=='false' and $target['member_id'] == $designer->id ){
+		}elseif(isset($target) and ($_GET['xsnb_design_template']=='false' or !isset($_GET['xsnb_design_template'])) and $target['member_id'] == $designer->id ){
 			// set target model to member_item_assos
 			// set designer_mode=false to desginer js
 
-			$this->render_designer = true;	
 		}else{
 			// NOTHING ??? .. Something wrong .. 
 			// url not proper
@@ -87,6 +79,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 			// or trying to edit a design not made by you (Hakinggg)
 			// Put Common error for all
 			// throw $this->exception('Something gone wrong... Please try again later');
+			$this->render_designer = false;	
 			$this->add('View_Error')->set('Something gone wrong, Don\'t know what to design or security broken');
 		}
 	}

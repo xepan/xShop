@@ -12,9 +12,10 @@ class Model_ItemTemplate extends Model_Item{
 	}
 
 	function duplicate($create_default_design_also=true){
+	
 		$duplicate_template = $this->add('xShop/Model_Item');
 		$fields=$this->getActualFields();
-		$fields = array_diff($fields,array('id','sku','designer_id'));
+		$fields = array_diff($fields,array('id','sku','designer_id','created_at'));
 		
 		foreach ($fields as $fld) {
 			$duplicate_template[$fld] = $this[$fld];
@@ -28,6 +29,7 @@ class Model_ItemTemplate extends Model_Item{
 		$duplicate_template['designer_id'] = $designer->id;
 		$duplicate_template['sku'] = $this['sku'].'-' . $duplicate_template->id;
 		$duplicate_template['is_template'] = false;
+		$duplicate_template['is_publish'] = false;
 		$duplicate_template->save();
 
 		if($create_default_design_also){
@@ -37,6 +39,35 @@ class Model_ItemTemplate extends Model_Item{
 			$new_design['designs'] = $duplicate_template['designs'];
 			$new_design->save();
 		}
+
+		//Specification and value Duplicate
+		$old_specification = $this->add('xShop/Model_ItemSpecificationAssociation')->addCondition('item_id',$this->id);
+		$new_asso = $old_specification->duplicate($duplicate_template['id']);
+
+		//Custom and value Field Duplicate
+		$old_asso = $this->add('xShop/Model_CategoryItemCustomFields')->addCondition('item_id',$this->id);
+		foreach ($old_asso as $junk){
+			$new_asso = $old_asso->duplicate($duplicate_template['id']);
+			//New Custom Field Association with old Vlaues
+			$old_custom_value = $this->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$old_asso['id']);
+			foreach ($old_custom_value as $junk){
+				$new_custom_value = $old_custom_value->duplicate($new_asso['id'],$duplicate_template['id']);
+				$new_custom_value->unload();
+				}
+			$new_asso->unload();
+		}
+
+		//Category Association Duplicate
+		$cat_item_asso = $this->add('xShop/Model_CategoryItem')->addCondition('item_id',$this->id);
+		$cat_item_asso->duplicate($duplicate_template['id']);
+		
+		//Image Dupliacte
+		$image = $this->add('xShop/Model_ItemImages')->addCondition('customefieldvalue_id',Null)->addCondition('item_id',$this->id);
+		$image->duplicate($duplicate_template['id']);
+
+		//Attachment Document Dupliacte
+		$docs = $this->add('xShop/Model_Attachments')->addCondition('item_id',$this->id);
+		$docs->duplicate($duplicate_template['id']);
 
 		return $duplicate_template;
 	}
