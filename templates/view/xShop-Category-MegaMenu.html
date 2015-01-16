@@ -1,3 +1,25 @@
-<div id="{$_id}">
+<div id="{$_name}" class="xshop-category-mega-manu">
+	<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/xshopcategory.css"/>
+	<script type="text/javascript" src="epan-components/xShop/templates/js/hideMaxListItem.js"></script>
+	<div noofcols="{$no_of_cols}" xshopcategoryshowlist="{xshopcategoryshowlist}"> </div>
 	{$Content}
+	<!-- <div id="slider"></div> -->
+	<script type="text/javascript">
+		$(function(){
+			$(".xshop-category-mega-manu  ul").removeClass().addClass("xshop-mega-menu xshop-mega-menu-anim-slide xshop-mega-menu-response-to-stack");
+			$(".xshop-category-mega-manu > ul ").addClass('row');
+			col = $("#{$_name} > div").attr('noofcols');
+			col_class = "col-md-"+(12/col);
+			$(".xshop-category-mega-manu > ul > li").addClass(col_class).addClass('xshop-megamenu-li');
+			
+			cat_list = $("#{$_name} > div").attr('xshopcategoryshowlist');
+			$('ul.xshop-mega-menu ul ').hideMaxListItems({
+			 'max':cat_list,
+       		 'speed':500,
+    		'moreText':'READ MORE',
+			'lessText':'READ LESS'
+			});
+		});
+
+	</script>
 </div>

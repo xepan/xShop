@@ -1,0 +1,117 @@
+/* CSS CLASS FOR XSHOP PRODUCT Grid LAYOUT */
+.xshop-item-name{ /*Item name*/
+	color: #666;
+	text-align: center;
+    font-size: 1.3em;
+    line-height: 1.167em;
+    margin-top: 5px;
+    text-transform: capitalize;
+    overflow: hidden;
+    text-decoration: none !important;
+}
+
+.xshop-item-image-anchor{
+
+}
+
+.ItemImage_Facny_or_Anchor{ /* BiG Image*/
+	
+}
+
+.xshop-item-img{
+	position: relative;
+	max-width: 100%;
+	width: 100%;
+	text-align: center ;
+	text-align:right;
+}
+
+ul.xshop-item > li{
+	position: inherit;
+}
+
+.xshop-item-old-price{
+	width: 50%;
+	color: #333333;
+	text-align: center ;
+	text-decoration: line-through ;
+	list-style-type: none;
+	margin-top: 10px;
+	float: left;
+}
+
+.xshop-item-price{
+	color: #333333;
+	width: 50%;
+	margin-top: 10px;
+	text-align: center ;
+	float: left;
+}
+
+.xshop-item-short-description{
+	font-size: 10px;
+	text-align: justify;
+	color: #666;
+    /*line-height: 1.167em;*/
+
+}
+
+.xshop-item-add-to-cart{
+	font-size: 10px;
+	text-align: center;
+	/*float: left;*/
+}
+
+.xshop-item-custom-fields{
+	font-size: 10px;
+}
+/*.xshop-item-custom-fields div {
+	border: none !important;
+}*/
+
+.xshop-item-details-in-frame-btn{
+	font-size: 10px;
+	width: auto;
+	/*float: left;*/
+}
+
+.xshop-item-enquiry-form-btn{
+	font-size: 10px;
+	width: auto;
+}
+
+.xshop-item-reviews{
+	font-size: 10px;
+
+}
+
+.xshop-item-discount{
+	font-size: 10px;
+	text-align: center;
+	color: green;
+}
+
+.xshop-item-specifications{
+	font-size: 10px;
+
+}
+
+.xshop-item-personalize{
+	font-size: 10px;
+	width: 100%;
+}
+
+.row {
+	margin: 0 auto 0 auto;
+}
+ul.xshop-item{
+	list-style-type: none;
+	border:none !important;
+} 
+ul.xshop-item:hover{
+	/*border: solid 2px yellow !important;*/
+	outline: solid 2px yellow !important;
+	-webkit-box-shadow: 3px 3px 5px 6px #ccc;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+  	-moz-box-shadow: 3px 3px 5px 6px #ccc;  /* Firefox 3.5 - 3.6 */
+  	box-shadow: 3px 3px 5px 6px #ccc;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+}

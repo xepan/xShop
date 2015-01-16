@@ -4,25 +4,17 @@ class page_xShop_page_designer_rendertext extends Page {
 	function init(){
 		parent::init();
 
-		$zoom= $_GET['zoom'];
+		$zoom = $_GET['zoom'];
 		$point_size = $_GET['font_size'];
 		$font = $_GET['font'].'-Regular';
-
-		$image = new Imagick();
-		$draw = new ImagickDraw();
-		$pixel = new ImagickPixel( 'none' );
-
-		$draw->setFillColor($_GET['color']);
-		
-		$draw->setFontSize($_GET['font_size'] * $zoom * 1.328352013);
-
-
+		$text = $_GET['text'];
+		$desired_width=$_GET['width'];
 
 		if($_GET['bold']=='true'){
 			if(file_exists(getcwd().'/epan-components/xShop/templates/fonts/'.$_GET['font'].'-Bold.ttf'))
 				$font = $_GET['font'].'-Bold';
-			else
-				$draw->setFontWeight(700);
+			// else
+				// $draw->setFontWeight(700);
 		}
 
 		if($_GET['italic']=='true'){
@@ -38,6 +30,23 @@ class page_xShop_page_designer_rendertext extends Page {
 			else
 				$font = $_GET['font'].'-Regular';
 		}
+
+
+		$p= new PHPImage(100,100);
+		$p->setFont(getcwd().'/epan-components/xShop/templates/fonts/'.$font.'.ttf');
+	    $p->textBox('Lorem ipsum dolor sit amet, consectetur adipiscing elit.', array('width' => 100, 'fontSize' => 8, 'x' => 50, 'y' => 70));
+	    $p->show();
+
+		return;
+
+		$image = new Imagick();
+		$draw = new ImagickDraw();
+		$pixel = new ImagickPixel( 'none' );
+
+		$draw->setFillColor($_GET['color']);
+		
+		$draw->setFontSize($_GET['font_size'] * $zoom * 1.328352013); // Font size to pixel conversion
+
 
 
 		if($_GET['underline']=='true'){
@@ -58,10 +67,10 @@ class page_xShop_page_designer_rendertext extends Page {
 			$draw->setTextAlignment(1);
 
 
-		$metrics = $image->queryFontMetrics ($draw, $_GET['default_value']);
+		$metrics = $image->queryFontMetrics ($draw, $_GET['text']);
 		print_r($metrics);
 		
-		$draw->annotation(0, $metrics['ascender'], $_GET['default_value']);
+		$draw->annotation(0, $metrics['ascender'], $_GET['text']);
 
 		//these are the values which accurately described the extent of the text and where it is to be drawn:
 		$baseline = $metrics['boundingBox']['y2'];
@@ -96,16 +105,14 @@ class page_xShop_page_designer_rendertext extends Page {
 		// $draw->rotate(90);
 
 		// $image->drawImage($draw);
-		$image->annotateImage($draw,0,$textheight,0, $_GET['default_value']);
+		$image->annotateImage($draw,0,$textheight,0, $_GET['text']);
 		$image->rotateimage($pixel,$_GET['rotation_angle']);
 		/* Give image a format */
 		$image->setImageFormat('png');
-
-
 		/* Output the image with headers */
 		header('Content-type: image/png');
 		// echo $image;
-		echo "<img src='data:image/png;base64,".base64_encode($image)."' />";	
+		echo "<img src='data:image/png;base64,".base64_encode($image)."' />";
 		
 		$image->clear();
 		$image->destroy();

@@ -9,13 +9,54 @@ class Model_CustomFieldValue extends \Model_Table{
 		parent::init();
 		
 		//TODO for Mutiple Epan website
-		// $this->hasOne('Epan','epan_id');
 		// $this->addCondition('epan_id',$this->api->current_website->id);
 			
+		$this->hasOne('xShop/CategoryItemCustomFields','itemcustomfiledasso_id');
 		$this->hasOne('xShop/CustomFields','customefield_id');
 		
-		$this->addField('name');
+		$this->addField('name'); // actually ... its value
+		$this->addField('rate_effect');
+		$this->addField('created_at')->type('datetime')->defaultValue(date('Y-m-d H:i:s'));
+		$this->addField('is_active')->type('boolean')->defaultValue(true)->sortable(true);
 
-		// $this->add('dynamic_model/Controller_AutoCreator');
+		$this->hasMany('xShop/ItemImages','customefieldvalue_id');
+		$this->hasMany('xShop/CustomFieldValueFilterAssociation','customefieldvalue_id');
+		$this->addHook('beforeSave',$this);
+		$this->add('dynamic_model/Controller_AutoCreator');
 	}
+
+	function beforeSave(){
+		$old_model = $this->add('xShop/Model_CustomFieldValue');
+		
+		$old_model->addCondition('itemcustomfiledasso_id',$this['itemcustomfiledasso_id'])
+				->addCondition('name',$this['name'])
+				->addCondition('id','<>',$this->id)
+				->tryLoadAny();
+		if($old_model->loaded()){
+			throw $this->Exception('Custom Value Already Exist','ValidityCheck')->setField('name');
+		}
+	}
+
+	function duplicate($asso_id,$item_id=null){
+		$new_custom_value = $this->add('xShop/Model_CustomFieldValue');
+		$new_custom_value['itemcustomfiledasso_id'] = $asso_id;
+		$new_custom_value['customefield_id'] = $this['customefield_id'];
+		$new_custom_value['name'] = $this['name'];
+		$new_custom_value['rate_effect'] = $this['rate_effect'];
+		$new_custom_value['is_active'] = $this['is_active'];
+		$new_custom_value->save();
+
+		//filter Value
+		$filter = $this->ref('xShop/CustomFieldValueFilterAssociation');
+		if($filter->count()->getOne()){
+			$filter->duplicate($item_id,$new_custom_value['id']);
+		}
+
+		$images= $this->ref('xShop/ItemImages');
+		if($images->count()->getOne()){
+			$images->duplicate($item_id,$new_custom_value['id']);
+		}
+		return $new_custom_value;
+	}
+
 }

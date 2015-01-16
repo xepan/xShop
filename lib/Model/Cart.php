@@ -18,7 +18,7 @@ class Model_Cart extends \Model{
 		
 	}
 
-	function addToCart($id,$code,$name,$qty,$rate,$custom_fields=null,$otherfield=null){			
+	function addToCart($id,$code,$name,$qty,$rate,$custom_fields=null,$otherfield=null){
 		
 		$this['item_id'] = $id;
 		$this['item_code'] = $code;

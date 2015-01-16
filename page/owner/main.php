@@ -1,5 +1,4 @@
 <?php
-
 class page_xShop_page_owner_main extends page_componentBase_page_owner_main {
 	function init(){
 		parent::init();
@@ -11,10 +10,8 @@ class page_xShop_page_owner_main extends page_componentBase_page_owner_main {
 		$xshop_m->addItem(array('Dashboard','icon'=>'gauge-1'),'xShop_page_owner_dashboard');
 		$xshop_m->addItem(array('Shops & Blogs','icon'=>'gauge-1'),'xShop_page_owner_shopsnblogs');
 		$xshop_m->addItem(array('Category','icon'=>'gauge-1'),'xShop_page_owner_category');
-		$xshop_m->addItem(array('Item Specifications','icon'=>'gauge-1'),'xShop_page_owner_itemspecification');
 		$xshop_m->addItem(array('Item','icon'=>'gauge-1'),'xShop_page_owner_item');
-		$xshop_m->addItem(array('Manufacturer','icon'=>'gauge-1'),'xShop_page_owner_manufacturer');
-		$xshop_m->addItem(array('supplier','icon'=>'gauge-1'),'xShop_page_owner_supplier');
+		$xshop_m->addItem(array('Affiliate','icon'=>'gauge-1'),'xShop_page_owner_afflilate');
 		$xshop_m->addItem(array('E-Voucher','icon'=>'gauge-1'),'xShop_page_owner_voucher');
 		$xshop_m->addItem(array('Member','icon'=>'gauge-1'),'xShop_page_owner_member');
 		$xshop_m->addItem(array('Order','icon'=>'gauge-1'),'xShop_page_owner_order');

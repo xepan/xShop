@@ -1,7 +1,38 @@
-/*Category CSS for Sky Mega  Change According to your Requirement */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,700);
 /*For changing Color Combination Read at Button*/
-/**/
+/*Working for Horizontal Vertical and Thumbnail Menu*/
+.sky-mega-menu li:hover > a,
+.sky-mega-menu li.current > a {
+	background-color: #fd7337;
+	color:black;
+}
+/*change text color*/
+.sky-mega-menu li > a{
+	
+}
+/*===================*/
+
+/*For MegaMenu CSS finds at Bottom*/
+.xshop-mega-menu {/*For ul*/
+}
+.xshop-mega-menu-anim-slide{/*For ul*/
+
+}
+.xshop-mega-menu-response-to-stack{/*For ul*/
+
+}
+.xshop-megamenu-li{
+	
+}
+li.xshop-megamenu-li > a{
+	
+}
+.xshop-category{ /*For Child Cat*/
+
+}
+/*End of MagaMenu CSS*/
+/*=================*/
+
+
 /* defaults */
 /**/
 .sky-mega-menu,
@@ -12,17 +43,13 @@
 	border: 0;
 	background: none;
 }
-.sky-mega-menu {
-	font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
 
 /**/
 /* level 1 */
 /**/
 .sky-mega-menu {
 	position: relative;
-	z-index: 999;
+	/*z-index: 999;*/
 	background: rgba(255,255,255,0.9);
 	box-shadow: 0 0 20px rgba(0,0,0,.3);
 	font-size: 0;
@@ -60,7 +87,7 @@
 }
 .sky-mega-menu li > div {
 	position: absolute;
-	z-index: 1000;
+	/*z-index: 1000;*/
 	top: 100%;
 	left: -9999px;
 	margin-top: 8px;
@@ -916,3 +943,38 @@
 	border-color: #fd7337;
 }
 /*END OF CHANGING THEME OF CATEGORY COLOR COMBINATION*/
+
+/* Start Css of Mega Menu */
+
+.xshop-mega-menu{
+	/*padding: 0;*/
+	margin: 0;
+	list-style-type: none;
+	width: 100%;
+	/*background: #ffffff*/
+	background-color: #e2e0ca;
+
+}
+ul.xshop-mega-menu-anim-slide > li > a {
+	font-size: 22px;
+	text-transform: capitalize;
+	color: green !important;
+	opacity:0.95;
+	-moz-box-shadow:0px 3px 4px #d5d3bd inset;
+	-webkit-box-shadow:0px 3px 4px #d5d3bd inset;
+	-box-shadow:0px 3px 4px #d5d3bd inset;
+}
+.xshop-mega-menu-response-to-stack{
+
+}
+.xshop-category  {}
+
+div.grid-container3 > ul > li > a{
+	text-transform: capitalize;
+	color:#262626 !important;
+	font-size: 14px;
+	text-indent: 0;
+}
+div.grid-container3 > ul > li > a :hover{
+
+}

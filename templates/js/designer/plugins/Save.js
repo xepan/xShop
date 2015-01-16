@@ -16,9 +16,10 @@ Save_Component = function (params){
 		this.page = undefined;
 		this.layout = undefined;
 		this.parent = parent;
-		tool_btn = $('<div class="btn btn-deault btn-xs"><i class="glyphicon glyphicon-floppy-saved"></i><br>Save</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+		tool_btn = $('<div class="btn btn-deault btn-xs xshop-render-tool-save-btn "><i class="glyphicon glyphicon-floppy-saved"></i><br>Save</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
 		
 		tool_btn.click(function(event){
+			// console.log(self);
 			self.layout_array = {};
 			$.each(self.designer_tool.pages_and_layouts,function(index,pages){
 				self.page = index;
@@ -30,15 +31,20 @@ Save_Component = function (params){
 					$.each(layout.components,function(index,component){
 						self.layout_array[self.page][self.layout]['components'].push(JSON.stringify(component.options));
 					});
-				});
+					if(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'] != undefined)
+						self.layout_array[self.page][self.layout]['background'] = JSON.stringify(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'].options);
+				});	
 			});
+			
 			console.log(self.layout_array);
 			$.ajax({
 					url: 'index.php?page=xShop_page_designer_save',
 					type: 'POST',
 					datatype: "json",
-					data: {xshop_item_design: self.layout_array,//json object
-							item_id:self.designer_tool.item_id //designed item id
+					data: {xshop_item_design:JSON.stringify(self.layout_array),//json object
+							item_id:self.designer_tool.options.item_id,//designed item id
+							designer_mode:self.designer_tool.options.designer_mode,
+							item_member_design_id:self.designer_tool.options.item_member_design_id
 						},
 				})
 				.done(function(ret) {
@@ -46,16 +52,20 @@ Save_Component = function (params){
 						$.univ().successMessage('Saved Successfully');
 						console.log('Item Design Saved Successfully');
 					}
-					else
-						$.univ().errorMessage('Not Saved, some thing wrong');					
+					else if(ret.indexOf('false')===0){
+						$.univ().errorMessage('Not Saved, some thing wrong');
+					}else{
+						// self.designer_tool.options.item_member_design_id = ret;
+						eval(ret);
+						$.univ().successMessage('Saved Successfully');
+					}
 				})
 				.fail(function() {
 					console.log("error");
 				})
 				.always(function() {
 					console.log("complete");
-				});	
-
+				});
 		});
 	}
 }

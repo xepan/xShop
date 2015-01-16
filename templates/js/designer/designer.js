@@ -3,7 +3,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	pages_and_layouts: {
 		"Front Page": {
 			"Main Layout": {
-				components: []
+				components: [],
+				background:undefined
 			}
 		}
 	},
@@ -13,6 +14,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	current_page:'Front Page',
 	current_layout: 'Main Layout',
 	item_id:undefined,
+	item_member_design_id:undefined,
 	canvas:undefined,
 	safe_zone: undefined,
 	zoom: 1,
@@ -20,13 +22,14 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	px_width:undefined,
 	option_panel: undefined,
 	freelancer_panel: undefined,
+	editors : [],
 
 	options:{
 		// Layout Options
 		showTopBar: true,
 		// ComponentsIncluded: ['Background','Text','Image','Help'], // Plugins
 		IncludeJS: ['FreeLancerPanel'], // Plugins
-		ComponentsIncluded: ['Text','Image','PDF','ZoomPlus','ZoomMinus','Save'], // Plugins
+		ComponentsIncluded: ['BackgroundImage','Text','Image','PDF','ZoomPlus','ZoomMinus','Save'], // Plugins
 		design: [],
 		designer_mode: false,
 		width: undefined,
@@ -35,7 +38,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	_create: function(){
 		this.setupLayout();
 	},
-
+		
 	setupLayout: function(){
 		var self = this;
 		// Load Plugin Files
@@ -48,6 +51,9 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/"+component+".js");
 		});
 
+		// Page Layout Load js
+		$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/PageLayout.js");
+
 		$.atk4(function(){
 			var workplace = self.setupWorkplace();
 			window.setTimeout(function(){
@@ -55,13 +61,56 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 				if(self.options.showTopBar){
 					self.setupToolBar();
 				}
-
+				self.loadDesign();
+				self.setupPageLayoutBar();
 				self.render();
-
 			},200);
 		});
 
 		// this.setupComponentPanel(workplace);
+	},
+
+	loadDesign: function(){
+		var self = this;
+		if(self.options.design == "" || !self.options.design) return;
+		saved_design = JSON.parse(self.options.design);
+		$.each(saved_design,function(page_name,page_object){
+			self.pages_and_layouts[page_name]={};
+
+			$.each(page_object,function(layout_name,layout_object){
+				self.pages_and_layouts[page_name][layout_name]={};
+				self.pages_and_layouts[page_name][layout_name]['components']=[];
+			
+				if(layout_object.components != undefined && layout_object.components.length != 0){
+					$.each(layout_object.components,function(key,value){
+						value = JSON.parse(value);
+						var temp = new window[value.type + "_Component"]();
+						temp.init(self, self.canvas, self.editors[value.type]);
+						temp.options = value;
+						self.pages_and_layouts[page_name][layout_name]['components'][key] = temp;
+					});
+				}
+				
+				if(layout_object.background != undefined ){
+					var temp = new BackgroundImage_Component();
+					temp.init(self, self.canvas);
+					temp.options = JSON.parse(layout_object.background);
+					self.pages_and_layouts[page_name][layout_name]['background'] = temp;
+				}
+			});
+
+		});
+	},
+
+	setupPageLayoutBar : function(){
+		//Page and Layout Setup
+		var self = this;
+		var bottom_bar = $('<div class="xshop-designer-tool-bottombar"></div>');
+		bottom_bar.appendTo(this.element);
+		var temp = new PageLayout_Component();
+		temp.init(self, self.canvas, bottom_bar);
+		bottom_tool_btn = temp.renderTool() ;
+		self.bottom_bar = temp;
 	},
 
 	setupToolBar: function(){
@@ -70,7 +119,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		top_bar.prependTo(this.element);
 
 		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
-		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none"></div>').appendTo(top_bar);
+		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none;"></div>').appendTo(top_bar);
 		
 		this.remove_btn = $('<div>X</div>').appendTo(this.option_panel);
 
@@ -97,13 +146,17 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			var temp = new window[component+"_Component"]();
 			temp.init(self, self.canvas);
 			tool_btn = temp.renderTool(top_bar) ;
+			self.editors[component] = temp.editor;
 		});
 		
 		// Hide options if not clicked on any component
 		$(this.canvas).click(function(event){
 			$('.ui-selected').removeClass('ui-selected');
 			self.option_panel.hide();
-			self.freelancer_panel.FreeLancerComponentOptions.element.hide();
+			self.current_selected_component = undefined;
+			if(self.options.designer_mode){
+				self.freelancer_panel.FreeLancerComponentOptions.element.hide();
+			}
 			$('div.guidex').css('display','none');
 			$('div.guidey').css('display','none');
 			event.stopPropagation();
@@ -120,17 +173,20 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	setupCanvas: function(workplace){
 		var self = this;
-		var outer_column = $('<div class="col-md-12_removed"></div>').appendTo(workplace);
-		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative"></div>').appendTo(outer_column);
+		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative; z-index:100"></div>').appendTo(workplace);
 		
 		this.canvas.css('width',this.options.width + this.options.unit); // In given Unit
 		this.px_width = this.canvas.width(); // Save in pixel for actual should be width
-
+		// this.canvas.css('max-width',this.px_width+'px');
+		this.canvas.css('overflow','hidden');
+		console.log(workplace);
 		if(this.canvas.width() > workplace.width()){
+			console.log('here');
 			this.canvas.css('width', workplace.width() - 20 + 'px');
 		}
 
 		if(this.canvas.width() < (workplace.width()/2)){
+			console.log('here 2');
 			this.canvas.width((workplace.width()/2));
 		}
 		
@@ -141,8 +197,9 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	render: function(param){
 		var self = this;
+
+		// console.log('sdf');
 		this.canvas.css('height',this.options.height + this.options.unit); // In Given Unit
-		// console.log(this.canvas.height());
 		this.canvas.height(this.canvas.height() * this._getZoom()); // get in pixel .height() and multiply by zoom 
 
 		this.safe_zone.css('width',(this.options.width - (this.options.trim * 2)) + this.options.unit); // In given unit
@@ -157,10 +214,17 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		this.safe_zone.css('margin-top',trim_in_px);
 		this.safe_zone.css('margin-bottom',trim_in_px);
 		
-		console.log('Components in '+ self.pages_and_layouts[self.current_page][self.current_layout].components.length);
-		$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index, component) {
-			component.render();
-		});
+		this.canvas.find('.xshop-designer-component').hide();
+		// console.log('Components in '+ self.pages_and_layouts[self.current_page][self.current_layout].components.length);
+		if(self.pages_and_layouts[self.current_page][self.current_layout].components != undefined && self.pages_and_layouts[self.current_page][self.current_layout].components.length != 0){
+			$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index, component) {
+				component.render();
+			});
+		}
+			
+		if(self.pages_and_layouts[self.current_page][self.current_layout].background != undefined && self.pages_and_layouts[self.current_page][self.current_layout].background.length != 0){
+			self.pages_and_layouts[self.current_page][self.current_layout].background.render();
+		}
 	},
 
 	_getZoom:function(){
@@ -180,7 +244,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 
 	check: function(){
-		console.log(this.components);
+		// console.log(this.components);
 	}
 
 });

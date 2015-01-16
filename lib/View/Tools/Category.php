@@ -1,29 +1,31 @@
 <?php
-
 namespace xShop;
-
 class View_Tools_Category extends \componentBase\View_Component{
 	function init(){
 		parent::init();
 
-		$category_group=$this->html_attributes['xshop_categorygroup_id'];
+		$application=$this->html_attributes['xshop_application_id'];
 		$categories = $this->add('xShop/Model_Category',array('table_alias'=>'mc'));
 
-		if(!$category_group){
-			// throw new \Exception($category_group);
-			$this->add('View_Error')->set('Please Select Category Group or First Create Category Group');		
+		$this->template->trySet('no_of_cols',$this->html_attributes['xshop-category-grid-column']);
+		
+		// Define no of sub-category show in parent category
+		if($this->html_attributes['xshopcategoryshowlist']){
+			$this->template->trySet('xshopcategoryshowlist',$this->html_attributes['xshopcategoryshowlist']);
+		}
+
+		if(!$application){
+			$this->add('View_Error')->set('Please Select Application or First Create Application');
 			return;
-			// $this->js(true)->univ()->errorMessage('Please Select category group first');
 		}
 		elseif(!$this->html_attributes['xshop_category_url_page']){
 			$this->add('View_Error')->set('Please Specify Category URL Page Name (epan page name like.. about,contactus etc..)');		
 			return;
-			// $this->js(true)->univ()->errorMessage('Please Specify Category URL Page');
 		}else{
 			
-			$categories->addCondition('categorygroup_id',$category_group);		
+			$categories->addCondition('application_id',$application);		
 			$categories->addCondition('is_active',true);
-			$categories->setOrder('order','asc');
+			$categories->setOrder('order_no','asc');
 
 			//todo OR Condition Using _DSQL 
 	        $categories->addCondition(
@@ -49,17 +51,24 @@ class View_Tools_Category extends \componentBase\View_Component{
 		
 		//loading custom CSS file	
 		$category_css = 'epans/'.$this->api->current_website['name'].'/xshopcategory.css';
-		$this->api->template->appendHTML('js_include','<link id="xshop-category-customcss-link" type="text/css" href="'.$category_css.'" rel="stylesheet" />'."\n");		
+		$this->api->template->appendHTML('js_include','<link id="xshop-category-customcss-link" type="text/css" href="'.$category_css.'" rel="stylesheet" />'."\n");
 	}
 
 	function getText($category,$page_name){
+		$item=$this->add('xShop/Model_Item');
+		$cat_item_j=$item->join('xshop_category_item.item_id');
+		$cat_item_j->addField('category_id');
+		$item->addCondition('category_id',$category->id);
+		$item->setOrder('sale_price','asc');
+		$item->tryLoadAny();
+
 		if($category->ref('SubCategories')->count()->getOne() > 0){
 			$sub_category = $category->ref('SubCategories');
 			$output = "<li aria-haspopup='true' class='xshop-category'>";
-			$output .="<a href='#'>"; 
+			$output .="<a href='#'>";
 			$output .= $category['name'];
 			$output .="</a>" ;
-			$output .= "<div class='grid-container3'>";			
+			$output .= "<div class='grid-container3'>";
 			$output .= "<ul>";
 			foreach ($sub_category as $junk_category) {
 				$output .= $this->getText($sub_category,$page_name);
@@ -70,9 +79,9 @@ class View_Tools_Category extends \componentBase\View_Component{
 		}else{
 			// throw new \Exception($category['id'], 1);
 			if($this->html_attributes['xshop_category_layout']=='Thumbnail'){
-				$output = "<li class='text-center'><a href='index.php?subpage=".$page_name."&category_id=".$category['id']."'><img src='$category[image_url]' /><div class='sky-menu-thumbnail-name'>".$category['name']."</div></a></li>";
+				$output = "<li class='text-center'><a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'><img src='$category[image_url]' /><div class='sky-menu-thumbnail-name'>".$category['name']."</div></a></li>";
 			}else
-				$output = "<li><a href='index.php?subpage=".$page_name."&category_id=".$category['id']."'>".$category['name']."</a></li>";
+				$output = "<li><a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'>".$category['name']."".$item['sale_price']."</a></li>";
 
 		}
 

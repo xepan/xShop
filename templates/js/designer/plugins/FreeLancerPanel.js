@@ -25,16 +25,17 @@ PageBlock = function(parent,designer,canvas, manager){
 
 		this.add_btn.click(function(event){
 			self.addPage(self.input_box.val());
+			self.designer_tool.bottom_bar.renderTool();
 		});
 
 		// make a list of current pages with remove buton
 		this.page_list_div = $('<div class="list-group"></div>').appendTo(this.element);
 
 		$.each(pages_data_array,function(index,page){
-			self.addPage(page);
+			self.addPageView(page);
+			// self.addPage(page);
 		});
-
-
+	
 		// on click of any page update layoutblock
 	}
 
@@ -54,35 +55,70 @@ PageBlock = function(parent,designer,canvas, manager){
 			this.designer_tool.pages_and_layouts[page_name] =  new Object();
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'] =  new Object();
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].components = [];
+			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].background = undefined;
 			console.log('adding ' + page_name);
 			// add default layout to this page as well
+			this.addPageView(page_name);
+			// page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
+			// div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
+			// page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
+			// rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('page_name',page_name);
+			// div.click(function(event){
+			// 	$(this).parent().siblings().find('a').removeClass('active').addClass('activeOff');
+			// 	$(this).addClass('active').removeClass('activeOff');
+			// 	self.manager.layoutblock.setPage($(this).find('span.xshop-designer-ft-page-name').html());
+			// 	console.log(self);
+			// });
 
-			page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
-			div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
-			page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
-			rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('page_name',page_name);
-			div.click(function(event){
-				$(this).parent().siblings().find('a').removeClass('active').addClass('activeOff');
-				$(this).addClass('active').removeClass('activeOff');
-				self.manager.layoutblock.setPage($(this).find('span.xshop-designer-ft-page-name').html());
-			});
+			// rm_btn.click(function(event){
+			// 	if(self.removePage($(this).data('page_name')))
+			// 		$(this).closest(".page_row").remove();
+			// });
 
-			rm_btn.click(function(event){
-				self.removePage($(this).data('page_name'));
-				$(this).closest(".page_row").remove();
-			});
-
-			this.input_box.val("");
+			// this.input_box.val("");
 		}
 		// add page to pagelistdiv and add to designertool pagesnadlayout object
+
+	}
+
+	//Return array of all pages of loaded designs
+	this.allPage = function(){
+		var page_array = [];
+		$.each(this.designer_tool.pages_and_layouts,function(index,value){
+			page_array.push(index);
+		});
+		return page_array;
+	}
+
+	this.addPageView = function(page_name){
+		var self = this; 
+		page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
+		div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
+		page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
+		rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('page_name',page_name);
+		div.click(function(event){
+			$(this).parent().siblings().find('a').removeClass('active').addClass('activeOff');
+			$(this).addClass('active').removeClass('activeOff');
+			self.manager.layoutblock.setPage($(this).find('span.xshop-designer-ft-page-name').html());
+		});
+
+		rm_btn.click(function(event){
+			if(self.removePage($(this).data('page_name')))
+				$(this).closest(".page_row").remove();
+		});
 	}
 
 	this.removePage = function(page_name){
 		// TODO Validation :: Do not remove if 'Fron Page'
  		// if(confirm('Are you sure?'))
-		this.designer_tool.pages_and_layouts[page_name] = null;	
-		delete this.designer_tool.pages_and_layouts[page_name];
-		console.log(this.designer_tool.pages_and_layouts);
+ 		if(page_name[0].firstChild.data == 'Front Page'){
+ 			$.univ().errorMessage('cannot Delete');
+ 			return false;
+ 		}else{
+			this.designer_tool.pages_and_layouts[page_name] = null;	
+			delete this.designer_tool.pages_and_layouts[page_name];
+ 			return true;
+ 		}
 	}
 
 	this.pageExist = function(page_name){
@@ -137,7 +173,7 @@ LayoutBlock = function(parent,designer,canvas, manager){
 		page_name = $.trim(page_name);
 
 		this.current_page = page_name;
-		console.log('changed page to ' + page_name);
+		// console.log('changed page to ' + page_name);
 		//Show Active on Current Page
 		$( "div.xshop-designer-ft-page" ).find( 'a.list-group-item:contains('+page_name+')' ).addClass('active');
 		//Empty all html:remove repeating layout
@@ -148,7 +184,7 @@ LayoutBlock = function(parent,designer,canvas, manager){
 		// create layout dis with remove button and its event
 	}
 
-	this.addLayout = function(layout_name,new_layout){	
+	this.addLayout = function(layout_name,is_new_layout){	
 		var self = this;
 		layout_name = $.trim(layout_name);
 		// validate page_name
@@ -158,18 +194,22 @@ LayoutBlock = function(parent,designer,canvas, manager){
 			this.input_box.css('border-color','red');
 			return;
 		}
-		if(!(new_layout) || !(this.layoutExist(layout_name))){
-			var new_layout= new Object();
-			new_layout.components=[];
-			this.designer_tool.pages_and_layouts[this.current_page][layout_name] =  new_layout;
+		if(!is_new_layout || !(this.layoutExist(layout_name))){
+			
+			if(is_new_layout){
+				var new_layout= new Object();
+				new_layout.components=[];
+				new_layout.background=undefined;
+				this.designer_tool.pages_and_layouts[this.current_page][layout_name] =  new_layout;
+			}
 
 			layout_row = $('<div class="layout_row"></div>').appendTo(this.layout_list_div);
 			div = $('<a href="#" class="list-group-item"></a>').appendTo(layout_row).html(layout_name);
 			rm_btn = $('<span class="label label-danger pull-right">x</span>').appendTo(div).data('layout_name',layout_name);
 
 			rm_btn.click(function(event){
-				self.removeLayout($(this).data('layout_name'));
-				$(this).closest(".layout_row").remove();
+				if(self.removeLayout($(this).data('layout_name')))
+					$(this).closest(".layout_row").remove();			
 			});
 
 			// console.log(this.designer_tool.pages_and_layouts[this.current_page]);
@@ -178,22 +218,27 @@ LayoutBlock = function(parent,designer,canvas, manager){
 	}
 
 	this.removeLayout = function(layout_name){
-		this.designer_tool.pages_and_layouts[this.current_page][layout_name] = null;
-		delete this.designer_tool.pages_and_layouts[this.current_page][layout_name];
+		if(layout_name == "Main Layout"){
+			$.univ().errorMessage('Cannot Delete');
+			return false;
+		}else{
+			this.designer_tool.pages_and_layouts[this.current_page][layout_name] = null;
+			delete this.designer_tool.pages_and_layouts[this.current_page][layout_name];	
+			return true;
+		}
 	}
 
 	this.layoutExist = function(layout_name){
 		layout_name = $.trim(layout_name);
-		return_value = false;
 		$.each(this.designer_tool.pages_and_layouts[this.current_page],function(index,layout){
 			// console.log(index+"::"+layout_name);
 			if(index === layout_name){
 				alert('Layout exist');
-				return_value = true;
+				return true;
 			}
 		});
 		
-		return return_value;
+		return false;
 		
 	}
 
@@ -216,12 +261,13 @@ FreeLancerPageLayoutManager = function(parent,designer, canvas){
 		this.page = $('<div></div>').appendTo(this.element);
 
 		this.pageblock = new PageBlock(this.page,this.designer_tool,this.canvas,this);
-		this.pageblock.init(['page1','page2','page3']);
+		console.log('PageLayoutMG');
+		console.log(this.pageblock.allPage());
+		this.pageblock.init(this.pageblock.allPage());
 
 		this.layoutblock = new LayoutBlock(this.page,this.designer_tool,this.canvas,this);
 		this.layoutblock.init();
-		this.layoutblock.setPage('page1');
-
+		// this.layoutblock.setPage('page1');
 
 		this.page.dialog({autoOpen: false, modal: true, width:600});
 		this.element.click(function(event){

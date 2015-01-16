@@ -142,11 +142,17 @@ xShop_Text_Editor = function(parent){
 
 	//Ordered List
 	this.text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Orderd List"></div>').appendTo(this.element);
-	this.text_order_list_ul_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-list"></span></div>').appendTo(this.text_button_set);
-	this.text_indent_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-left"></span></div>').appendTo(this.text_button_set);
-	this.text_indent_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-right"></div>').appendTo(this.text_button_set);
-	this.text_symbol_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-plus"></div>').appendTo(this.text_button_set);
+	// this.text_order_list_ul_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-list"></span></div>').appendTo(this.text_button_set);
+	// this.text_indent_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-left"></span></div>').appendTo(this.text_button_set);
+	// this.text_indent_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-right"></div>').appendTo(this.text_button_set);
+	// this.text_symbol_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-plus"></div>').appendTo(this.text_button_set);
 	
+	// Text Indent Left
+	$(this.text_indent_left_btn).click(function(){
+		self.current_text_component.options.indent_left != self.current_text_component.options.indent_left;
+		$('.xshop-designer-tool').xepan_xshopdesigner('check');
+		self.current_text_component.render();
+	});	
 	// Angle
 	this.text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(this.element);
 	this.text_rotate_anticlockwise = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat" style="-moz-transform: scaleX(-1);-o-transform: scaleX(-1);-webkit-transform: scaleX(-1);transform: scaleX(-1);filter: FlipH;-ms-filter: "FlipH";"></span></div>').appendTo(this.text_button_set);
@@ -198,6 +204,7 @@ xShop_Text_Editor = function(parent){
 		if(self.current_text_component.designer_tool.options.designer_mode){
 			self.current_text_component.options.default_value= $(el).val();
 		}
+		self.current_text_component.options.text= $(el).val();
 		self.current_text_component.render();
 	},500);
 	
@@ -277,44 +284,27 @@ Text_Component = function (params){
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
+			self.designer_tool.current_selected_component = undefined;
 			// create new TextComponent type object
 			var new_text = new Text_Component();
 			new_text.init(self.designer_tool,self.canvas, self.editor);
 			// feed default values for its parameters
-			new_text.x=0;
-			new_text.y=0;
-			new_text.text="Your Text";
 			// add this Object to canvas components array
-			
 			// console.log(self.designer_tool.current_page);
 
 			self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_text);
-			new_text.render();
-			$(new_text.element).data('component',new_text);
-			
-			$(new_text.element).click(function(event) {
-	            $('.ui-selected').removeClass('ui-selected');
-	            $(this).addClass('ui-selected');
-	            $('.xshop-options-editor').hide();
-	            self.editor.element.show();
-	            self.designer_tool.option_panel.show();
-	            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
-	            self.designer_tool.current_selected_component = new_text;
-	            self.editor.setTextComponent(new_text);
-	            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
-		        event.stopPropagation();
-			});
+			new_text.render(true);
 		});
 
 
 	}
 
-	this.render = function(){
+	this.render = function(place_in_center){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div style="position:absolute" class="xshop-designer-component"><span></span></div>').appendTo(this.canvas);
+			this.element = $('<div style="position:absolute" class="xshop-designer-component"><span><img></img></span></div>').appendTo(this.canvas);
 			this.element.draggable({
-				containment: 'parent',
+				containment: self.designer_tool.safe_zone,
 				smartguides:".xshop-designer-component",
 			    tolerance:5,
 				stop:function(e,ui){
@@ -322,7 +312,32 @@ Text_Component = function (params){
 					self.options.x = position.left / self.designer_tool.zoom;
 					self.options.y = position.top / self.designer_tool.zoom;
 				}
+			}).resizable({
+				containment: self.designer_tool.safe_zone,
+				handles: 'e, w',
+				stop: function(e,ui){
+					self.options.width = ui.size.width;
+					self.render();
+				}
 			});
+			;
+			$(this.element).data('component',self);
+			$(this.element).click(function(event) {
+	            $('.ui-selected').removeClass('ui-selected');
+	            $(this).addClass('ui-selected');
+	            $('.xshop-options-editor').hide();
+	            self.editor.element.show();
+	            self.designer_tool.option_panel.show();
+	            self.designer_tool.current_selected_component = self;
+	            self.editor.setTextComponent(self);
+	            if(self.designer_tool.options.designer_mode){
+		            self.designer_tool.freelancer_panel.FreeLancerComponentOptions.element.show();
+		            self.designer_tool.freelancer_panel.setComponent($(this).data('component'));
+	            }
+		        event.stopPropagation();
+			});
+		}else{
+			this.element.show();
 		}
 
 		this.element.css('top',self.options.y  * self.designer_tool.zoom);
@@ -337,6 +352,7 @@ Text_Component = function (params){
 			url: 'index.php?page=xShop_page_designer_rendertext',
 			type: 'GET',
 			data: {default_value: self.options.default_value,
+					text:self.options.text,
 					color: self.options.color_formatted,
 					font: self.options.font,
 					font_size: self.options.font_size,
@@ -348,16 +364,25 @@ Text_Component = function (params){
 					alignment_left:self.options.alignment_left,
 					alignment_right:self.options.alignment_right,
 					alignment_center:self.options.alignment_center,
-					zoom: self.designer_tool.zoom
+					zoom: self.designer_tool.zoom,
+					width: self.options.width
 					},
 		})
 		.done(function(ret) {
-			$(ret).appendTo(self.element.find('span').html(''));
+			self.element.find('img').attr('src','data:image/png;base64, '+ ret);
+			// $(ret).appendTo(self.element.find('span').html(''));
 			self.xhr=undefined;
+			if(place_in_center === true){
+				window.setTimeout(function(){
+					self.element.center(self.designer_tool.canvas);
+					self.options.x = self.element.css('left').replace('px','') / self.designer_tool.zoom;
+					self.options.y = self.element.css('top').replace('px','') / self.designer_tool.zoom;
+				},200);
+			}
 		})
 		.fail(function(ret) {
 			// evel(ret);
-			console.log("error");
+			console.log("Text Error");
 		})
 		.always(function() {
 			console.log("complete");

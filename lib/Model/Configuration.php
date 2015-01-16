@@ -10,7 +10,8 @@ class Model_Configuration extends \Model_Table {
 		//TODO for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
-		
+		$this->hasOne('xShop/Application','application_id');
+			
 		$f = $this->addField('subject')->caption('Auto Reply Mail Subject')->group('a~12~<i class="fa fa-envelope"></i> Item Enquiry Auto Reply Email');		
 		$f->icon = "glyphicon glyphicon-send~blue";  
 		$f = $this->addField('message')->type('text')->display(array('form'=>'RichText'))->caption('Auto Reply Mail Message')->group('a~11~dl');		
@@ -28,15 +29,10 @@ class Model_Configuration extends \Model_Table {
 			
 		$f = $this->addField('order_detail_email_subject')->group('c~12~<i class="fa fa-envelope"></i> Order Detail ( Bill ) Email');
 		$f->icon = "glyphicon glyphicon-send~blue";  
-		$f = $this->addField('order_detail_email_body')->type('text')->display(array('form'=>'RichText'))->caption('Order Detail Email Body')->hint('Order Bill Email Body : this Bill send to member who placed order')->group('c~11');
-		$f->icon = "glyphicon glyphicon-send~blue";  
-
-		$f = $this->addField('party_type')->hint('comma separated value');
+		$f = $this->addField('order_detail_email_body')->type('text')->caption('Order Detail Email Body')->hint('Order Bill Email Body : this Bill send to member who placed order, {{user_name}},{{mobile_number}},{{billing_address}},{{shipping_address}},{{order_destination}}')->group('c~11')->display(array('form'=>'RichText'));
 		$f->icon = "glyphicon glyphicon-send~blue";
-	
-		
 		// TODO GROUP ACCESS of Category and other feature
-		// $this->add('dynamic_model/Controller_AutoCreator');
+		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 	
 }
