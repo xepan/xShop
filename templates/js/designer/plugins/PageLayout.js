@@ -40,7 +40,7 @@ PageLayout_Component = function (params){
 		this.designer_tool = designer;
 		this.canvas = canvas;
 		this.parent = parent;
-		this.show_page_btn = $('<div class="xshop-designer-show-page glyphicon glyphicon-thumbs-up" style="display:none;">Show Page</div>').appendTo($.find(".xshop-designer-tool-bottombar"));
+		this.show_page_btn = $('<div class="xshop-designer-show-page glyphicon glyphicon-thumbs-up" style="display:none;">Show Page</div>').appendTo(parent);
 		this.show_page_btn.click(function(){
 			$('.xshop-designer-pagelayout').show();
 			$('.xshop-designer-layout').hide();	

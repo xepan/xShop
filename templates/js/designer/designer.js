@@ -53,7 +53,6 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 		// Page Layout Load js
 		$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/PageLayout.js");
-		$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/PageLayout.js");
 
 		$.atk4(function(){
 			var workplace = self.setupWorkplace();
@@ -63,6 +62,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 					self.setupToolBar();
 				}
 				self.loadDesign();
+				self.setupPageLayoutBar();
 				self.render();
 			},200);
 		});
@@ -75,7 +75,12 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		if(self.options.design == "" || !self.options.design) return;
 		saved_design = JSON.parse(self.options.design);
 		$.each(saved_design,function(page_name,page_object){
+			self.pages_and_layouts[page_name]={};
+
 			$.each(page_object,function(layout_name,layout_object){
+				self.pages_and_layouts[page_name][layout_name]={};
+				self.pages_and_layouts[page_name][layout_name]['components']=[];
+			
 				if(layout_object.components != undefined && layout_object.components.length != 0){
 					$.each(layout_object.components,function(key,value){
 						value = JSON.parse(value);
@@ -84,10 +89,6 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 						temp.options = value;
 						self.pages_and_layouts[page_name][layout_name]['components'][key] = temp;
 					});
-				}else{
-					// self.pages_and_layouts[page_name]={};
-					// self.pages_and_layouts[page_name][layout_name]={};
-					// self.pages_and_layouts[page_name][layout_name]['components']=[];
 				}
 				
 				if(layout_object.background != undefined ){
@@ -95,25 +96,27 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 					temp.init(self, self.canvas);
 					temp.options = JSON.parse(layout_object.background);
 					self.pages_and_layouts[page_name][layout_name]['background'] = temp;
-				}else{
-					// self.pages_and_layouts[page_name]={};
-					// self.pages_and_layouts[page_name][layout_name]={};
-					// self.pages_and_layouts[page_name][layout_name]['background']=[];	
 				}
-
 			});
 
 		});
-		console.log('sdfsdf');
-		console.log(this.options.width);
+	},
+
+	setupPageLayoutBar : function(){
+		//Page and Layout Setup
+		var self = this;
+		var bottom_bar = $('<div class="xshop-designer-tool-bottombar"></div>');
+		bottom_bar.appendTo(this.element);
+		var temp = new PageLayout_Component();
+		temp.init(self, self.canvas, bottom_bar);
+		bottom_tool_btn = temp.renderTool() ;
+		self.bottom_bar = temp;
 	},
 
 	setupToolBar: function(){
 		var self=this;
 		var top_bar = $('<div class="xshop-designer-tool-topbar"></div>');
 		top_bar.prependTo(this.element);
-		var bottom_bar = $('<div class="xshop-designer-tool-bottombar"></div>');
-		bottom_bar.appendTo($.find('.col-md-12_removed'));
 
 		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
 		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none;"></div>').appendTo(top_bar);
@@ -146,11 +149,6 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			self.editors[component] = temp.editor;
 		});
 		
-		//Page and Layout Setup
-		var temp = new window["PageLayout_Component"]();
-		temp.init(self, self.canvas, bottom_bar);
-		bottom_tool_btn = temp.renderTool() ;
-		self.bottom_bar = temp;
 		// Hide options if not clicked on any component
 		$(this.canvas).click(function(event){
 			$('.ui-selected').removeClass('ui-selected');
