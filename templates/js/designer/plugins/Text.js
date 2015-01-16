@@ -289,26 +289,22 @@ Text_Component = function (params){
 			var new_text = new Text_Component();
 			new_text.init(self.designer_tool,self.canvas, self.editor);
 			// feed default values for its parameters
-			new_text.x=0;
-			new_text.y=0;
-			new_text.text="Your Text";
 			// add this Object to canvas components array
-			
 			// console.log(self.designer_tool.current_page);
 
 			self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_text);
-			new_text.render();
+			new_text.render(true);
 		});
 
 
 	}
 
-	this.render = function(){
+	this.render = function(place_in_center){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div style="position:absolute" class="xshop-designer-component"><span></span></div>').appendTo(this.canvas);
+			this.element = $('<div style="position:absolute" class="xshop-designer-component"><span><img></img></span></div>').appendTo(this.canvas);
 			this.element.draggable({
-				containment: 'parent',
+				containment: self.designer_tool.safe_zone,
 				smartguides:".xshop-designer-component",
 			    tolerance:5,
 				stop:function(e,ui){
@@ -316,7 +312,15 @@ Text_Component = function (params){
 					self.options.x = position.left / self.designer_tool.zoom;
 					self.options.y = position.top / self.designer_tool.zoom;
 				}
+			}).resizable({
+				containment: self.designer_tool.safe_zone,
+				handles: 'e, w',
+				stop: function(e,ui){
+					self.options.width = ui.size.width;
+					self.render();
+				}
 			});
+			;
 			$(this.element).data('component',self);
 			$(this.element).click(function(event) {
 	            $('.ui-selected').removeClass('ui-selected');
@@ -360,12 +364,21 @@ Text_Component = function (params){
 					alignment_left:self.options.alignment_left,
 					alignment_right:self.options.alignment_right,
 					alignment_center:self.options.alignment_center,
-					zoom: self.designer_tool.zoom
+					zoom: self.designer_tool.zoom,
+					width: self.options.width
 					},
 		})
 		.done(function(ret) {
-			$(ret).appendTo(self.element.find('span').html(''));
+			self.element.find('img').attr('src','data:image/png;base64, '+ ret);
+			// $(ret).appendTo(self.element.find('span').html(''));
 			self.xhr=undefined;
+			if(place_in_center === true){
+				window.setTimeout(function(){
+					self.element.center(self.designer_tool.canvas);
+					self.options.x = self.element.css('left').replace('px','') / self.designer_tool.zoom;
+					self.options.y = self.element.css('top').replace('px','') / self.designer_tool.zoom;
+				},200);
+			}
 		})
 		.fail(function(ret) {
 			// evel(ret);

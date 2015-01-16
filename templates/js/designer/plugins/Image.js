@@ -183,7 +183,7 @@ Image_Component = function (params){
 		if(this.element == undefined){
 			this.element = $('<div style="position:absolute" class="xshop-designer-component"><span></span></div>').appendTo(this.canvas);
 			this.element.draggable({
-				containment: 'parent',
+				containment: self.designer_tool.safe_zone,
 				smartguides:".xshop-designer-component",
 				tolerance:5,
 				stop:function(e,ui){

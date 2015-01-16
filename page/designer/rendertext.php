@@ -4,23 +4,17 @@ class page_xShop_page_designer_rendertext extends Page {
 	function init(){
 		parent::init();
 
-		$zoom= $_GET['zoom'];
+		$zoom = $_GET['zoom'];
 		$point_size = $_GET['font_size'];
 		$font = $_GET['font'].'-Regular';
-
-		$image = new Imagick();
-		$draw = new ImagickDraw();
-		$pixel = new ImagickPixel( 'none' );
-
-		$draw->setFillColor($_GET['color']);
-		
-		$draw->setFontSize($_GET['font_size'] * $zoom * 1.328352013); // Font size to pixel conversion
+		$text = $_GET['text'];
+		$desired_width=$_GET['width'];
 
 		if($_GET['bold']=='true'){
 			if(file_exists(getcwd().'/epan-components/xShop/templates/fonts/'.$_GET['font'].'-Bold.ttf'))
 				$font = $_GET['font'].'-Bold';
-			else
-				$draw->setFontWeight(700);
+			// else
+				// $draw->setFontWeight(700);
 		}
 
 		if($_GET['italic']=='true'){
@@ -36,6 +30,23 @@ class page_xShop_page_designer_rendertext extends Page {
 			else
 				$font = $_GET['font'].'-Regular';
 		}
+
+
+		$p= new PHPImage(100,100);
+		$p->setFont(getcwd().'/epan-components/xShop/templates/fonts/'.$font.'.ttf');
+	    $p->textBox('Lorem ipsum dolor sit amet, consectetur adipiscing elit.', array('width' => 100, 'fontSize' => 8, 'x' => 50, 'y' => 70));
+	    $p->show();
+
+		return;
+
+		$image = new Imagick();
+		$draw = new ImagickDraw();
+		$pixel = new ImagickPixel( 'none' );
+
+		$draw->setFillColor($_GET['color']);
+		
+		$draw->setFontSize($_GET['font_size'] * $zoom * 1.328352013); // Font size to pixel conversion
+
 
 
 		if($_GET['underline']=='true'){

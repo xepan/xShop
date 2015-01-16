@@ -173,17 +173,20 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	setupCanvas: function(workplace){
 		var self = this;
-		var outer_column = $('<div class="col-md-12_removed"></div>').appendTo(workplace);
-		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative; z-index:100"></div>').appendTo(outer_column);
+		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative; z-index:100"></div>').appendTo(workplace);
 		
 		this.canvas.css('width',this.options.width + this.options.unit); // In given Unit
 		this.px_width = this.canvas.width(); // Save in pixel for actual should be width
-
+		// this.canvas.css('max-width',this.px_width+'px');
+		this.canvas.css('overflow','hidden');
+		console.log(workplace);
 		if(this.canvas.width() > workplace.width()){
+			console.log('here');
 			this.canvas.css('width', workplace.width() - 20 + 'px');
 		}
 
 		if(this.canvas.width() < (workplace.width()/2)){
+			console.log('here 2');
 			this.canvas.width((workplace.width()/2));
 		}
 		

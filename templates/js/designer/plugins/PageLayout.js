@@ -6,7 +6,7 @@ Layout_Tool = function(parent){
 		this.designer_tool = designer;
 		this.canvas = canvas;
 		if(this.parent == undefined)
-			this.parent = $('<div class="xshop-designer-layout"></div>').appendTo($.find(".xshop-designer-tool-bottombar"));
+			this.parent = $('<div class="xshop-designer-layout clearfix"></div>').appendTo($.find(".xshop-designer-tool-bottombar"));
 
 	}
 
@@ -20,7 +20,7 @@ Layout_Tool = function(parent){
 			//hide page button view
 			$('.xshop-designer-pagelayout').hide();
 			//add new Layout of current selected page
-			layout_btn = $('<div class="xshop-designer-layoutbtn"><h3>'+index+'</h3></div>').appendTo($.find('.xshop-designer-layout')).data('layout',index);
+			layout_btn = $('<div class="xshop-designer-layoutbtn clearfix"><h3>'+index+'</h3></div>').appendTo($.find('.xshop-designer-layout')).data('layout',index);
 				layout_btn.click(function(){
 					self.designer_tool.current_page = page_name;
 					self.designer_tool.current_layout = $(this).data('layout');
@@ -56,7 +56,7 @@ PageLayout_Component = function (params){
 		var self = this;
 		$('.xshop-designer-pagelayout').show();
 		$('.xshop-designer-pagebtn').remove();
-		page_layout_toolbar = $('<div class="xshop-designer-pagelayout"></div>').appendTo($.find(".xshop-designer-tool-bottombar"));
+		page_layout_toolbar = $('<div class="xshop-designer-pagelayout clearfix"></div>').appendTo($.find(".xshop-designer-tool-bottombar"));
 		
 		$.each(self.designer_tool.pages_and_layouts,function(index,page){
 			page_btn = $('<div class="xshop-designer-pagebtn"><h3>'+index+'</h3></div>').appendTo(page_layout_toolbar);
