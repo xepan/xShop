@@ -22,6 +22,7 @@ class Grid_Item extends \Grid{
 		$this->addColumn('expander','images',array("descr"=>"Images",'icon'=>'picture','icon_only'=>true));
 		$this->addColumn('expander','attachments',array("descr"=>"Docs",'icon'=>'folder','icon_only'=>true));
 		$this->addColumn('Button','duplicate',array("descr"=>"Duplicate",'icon'=>'folder','icon_only'=>true));
+		$this->addColumn('expander','rate_effect',array("descr"=>"Rate Effect",'icon'=>'cog','icon_only'=>true));
 		// $this->addColumn('pics_docs','pics_docs','Pics / Docs');
 
 		if($_GET['duplicate']){

@@ -151,7 +151,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 	}
 
 	function page_custom_fields(){
-		$item_id=$this->api->stickyGET('xshop_items_id');
+		$item_id=$this->api->stickyGET('xshop_items_id');	
 		$application_id = $this->api->recall('xshop_application_id');
 		
 		$item_model = $this->add('xShop/Model_Item')->load($item_id);
@@ -243,4 +243,29 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$crud->setModel($item->ref('xShop/ItemSpecificationAssociation'));
 	}
 
+	function page_rate_effect(){
+		$cf_value_array = array();
+		$item_id=$this->api->stickyGET('xshop_items_id');	
+		$application_id = $this->api->recall('xshop_application_id');
+		$item_model = $this->add('xShop/Model_Item')->load($item_id);
+		
+		$custom_fields = $this->add('xShop/Model_CategoryItemCustomFields');		
+		$custom_fields->addCondition('item_id',$item_id);
+		
+		$custom_field_array = $custom_fields->getRows();
+
+		// $m= $this->add('Model');
+	 	// 	$m->setSource('Array',$custom_field_value_array);
+		// $crud = $this->add('CRUD');
+		// $crud->setModel($m);
+
+		// $array =['7','8','9','red','green','blue'];//all custom filed Value
+	 	// 	// initialize by adding the empty set
+	  	//  		 $results = array(array( ));
+	  	//   	foreach ($array as $element){
+	  	//       	foreach ($results as $combination)
+	  	//         	array_push($results, array_merge(array($element), $combination));
+	  	// }
+
+	}
 }
