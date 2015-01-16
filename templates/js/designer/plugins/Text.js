@@ -237,8 +237,8 @@ Text_Component = function (params){
 	this.options = {
 		x:0,
 		y:0,
-		width:'100%',
-		height:'100%',
+		width:'100',
+		height:'100',
 		text:'Enter Text',
 		font: "OpenSans",
 		font_size: '12',
@@ -369,7 +369,7 @@ Text_Component = function (params){
 					},
 		})
 		.done(function(ret) {
-			self.element.find('img').attr('src','data:image/png;base64, '+ ret);
+			self.element.find('img').attr('src','data:image/jpg;base64, '+ ret);
 			// $(ret).appendTo(self.element.find('span').html(''));
 			self.xhr=undefined;
 			if(place_in_center === true){
