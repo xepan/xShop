@@ -12,7 +12,7 @@ class View_Tools_Search extends \componentBase\View_Component{
 		$search_result_subpage="home";
 	}
 
-	$search_model = $this->add('xShop/Model_Product'); 	
+	$search_model = $this->add('xShop/Model_Item'); 	
 	$form=$this->add('Form');
    	$form_field=$form->addField('line','search')->setAttr('PlaceHolder','Type Your Search String here');
    	$form_field->setModel($search_model);
