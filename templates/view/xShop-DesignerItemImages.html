@@ -73,25 +73,23 @@
 									    // console.log(Math.round(data.width));
 									  }
 								});
-
-					            var $titlebar = $.find('.ui-dialog-titlebar');
-					            continue_btn = $('<button class="btn btn-default pull-right">Continue</button>').appendTo($titlebar);
-								continue_btn.click(function(){
-									opener.designer_tool.current_selected_component.options.crop_x = $(x).val();
-									opener.designer_tool.current_selected_component.options.crop_y = $(y).val();
-									opener.designer_tool.current_selected_component.options.crop_width = $(width).val();
-									opener.designer_tool.current_selected_component.options.crop_height = $(height).val();
-									opener.designer_tool.current_selected_component.options.crop = true;
-									opener.designer_tool.current_selected_component.render();
-									// console.log(opener);
-									$('.xshop-designer-backgroundimage-crop').dialog('close');
-								});
 							},
 							close: function( event, ui ) {
 								//add new background images 
 								// opener.designer_tool.pages_and_layouts[opener.designer_tool.current_page][opener.designer_tool.current_layout].components.push(opener.designer_tool.current_selected_component);
 								// console.log(opener);
-							}
+							},
+							buttons: {
+				                Continue: function() {
+				                    opener.designer_tool.current_selected_component.options.crop_x = $(x).val();
+									opener.designer_tool.current_selected_component.options.crop_y = $(y).val();
+									opener.designer_tool.current_selected_component.options.crop_width = $(width).val();
+									opener.designer_tool.current_selected_component.options.crop_height = $(height).val();
+									opener.designer_tool.current_selected_component.options.crop = true;
+									opener.designer_tool.current_selected_component.render();
+				                    $(this).dialog("close"); //closing on Ok click
+				                }
+				            }
 						});	
 					}else{
 						$(this).closest('.dialog').dialog('close');
