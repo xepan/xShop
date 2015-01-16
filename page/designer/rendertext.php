@@ -5,10 +5,11 @@ class page_xShop_page_designer_rendertext extends Page {
 		parent::init();
 
 		$zoom = $_GET['zoom'];
-		$point_size = $_GET['font_size'];
+		$font_size = $_GET['font_size'] * ($zoom / 1.328352013);
 		$font = $_GET['font'].'-Regular';
 		$text = $_GET['text'];
-		$desired_width=$_GET['width'];
+		$text_color = $_GET['color'];
+		$desired_width=$_GET['width'] * $zoom;
 
 		if($_GET['bold']=='true'){
 			if(file_exists(getcwd().'/epan-components/xShop/templates/fonts/'.$_GET['font'].'-Bold.ttf'))
@@ -31,21 +32,35 @@ class page_xShop_page_designer_rendertext extends Page {
 				$font = $_GET['font'].'-Regular';
 		}
 
+		$font_path = getcwd().'/epan-components/xShop/templates/fonts/'.$font.'.ttf';
 
-		$p= new PHPImage(100,100);
-		$p->setFont(getcwd().'/epan-components/xShop/templates/fonts/'.$font.'.ttf');
-	    $p->textBox('Lorem ipsum dolor sit amet, consectetur adipiscing elit.', array('width' => 100, 'fontSize' => 8, 'x' => 50, 'y' => 70));
-	    $p->show();
+		$p= new PHPImage($desired_width,10);
+		$p->setFont($font_path);
+		$p->setFontSize($font_size);
+	    $p->textBox($text, array('width' => $desired_width, 'x' => 0, 'y' => 0));
+	    $size = $p->getTextBoxSize($font_size, 0, $font_path, $p->last_text);
 
+		$new_width = abs($size[0]) + abs($size[2]); // distance from left to right
+		$new_height = abs($size[1]) + abs($size[5]); // distance from top to bottom
+
+	    $p1 = new PHPImage($desired_width , $new_height); 
+	    $p1->setFont($font_path);
+		$p1->setFontSize($font_size);
+	    $p1->setTextColor($p1->hex2rgb($text_color));
+	    $p1->setAlignHorizontal('right');
+	    $p1->textBox($text, array('width' => $new_width, 'x' => 0, 'y' => 0));
+	    $p1->setOutput('png',3);
+	    $p1->show();
+		
 		return;
 
 		$image = new Imagick();
 		$draw = new ImagickDraw();
 		$pixel = new ImagickPixel( 'none' );
 
-		$draw->setFillColor($_GET['color']);
+		$draw->setFillColor($text_color);
 		
-		$draw->setFontSize($_GET['font_size'] * $zoom * 1.328352013); // Font size to pixel conversion
+		$draw->setFontSize($font_size * $zoom * 1.328352013); // Font size to pixel conversion
 
 
 
@@ -67,10 +82,10 @@ class page_xShop_page_designer_rendertext extends Page {
 			$draw->setTextAlignment(1);
 
 
-		$metrics = $image->queryFontMetrics ($draw, $_GET['text']);
-		print_r($metrics);
+		$metrics = $image->queryFontMetrics ($draw, $text);
+		// print_r($metrics);
 		
-		$draw->annotation(0, $metrics['ascender'], $_GET['text']);
+		$draw->annotation(0, $metrics['ascender'], $text);
 
 		//these are the values which accurately described the extent of the text and where it is to be drawn:
 		$baseline = $metrics['boundingBox']['y2'];
@@ -110,9 +125,8 @@ class page_xShop_page_designer_rendertext extends Page {
 		/* Give image a format */
 		$image->setImageFormat('png');
 		/* Output the image with headers */
-		header('Content-type: image/png');
 		// echo $image;
-		echo "<img src='data:image/png;base64,".base64_encode($image)."' />";
+		echo base64_encode($image);
 		
 		$image->clear();
 		$image->destroy();
