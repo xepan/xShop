@@ -1,12 +1,52 @@
 <?php
 
+/*
+default_value: self.options.default_value,
+crop:self.options.crop,
+crop_x: self.options.crop_x,
+crop_y: self.options.crop_y,
+crop_height: self.options.crop_height,
+crop_width: self.options.crop_width,
+replace_image: self.options.replace_image,
+rotation_angle:self.options.rotation_angle,
+url:self.options.url,
+zoom: self.designer_tool.zoom,
+width:self.options.width,
+height:self.options.height,
+max_width: self.designer_tool.safe_zone.width(),
+max_height: self.designer_tool.safe_zone.height(),
+auto_fit: is_new_image===true;
+*/
+
 class page_xShop_page_designer_renderimage extends Page {
 	
 	function init(){
 		parent::init();
-		
-		if($_GET['url']){
+		$image_path = dirname(getcwd()).$_GET['url'];
+		if(!file_exists($image_path)) return;
 
+		$zoom = $_GET['zoom'];
+		$width = $_GET['width'] * $zoom ;
+		$height = $_GET['height'] * $zoom;
+		$max_width = $_GET['max_width'];
+		$max_height = $_GET['max_height'];
+
+		$p= new PHPImage($image_path);
+		
+		if($width==0 and $height==0){
+			if($p->getWidth() > $p->getHeight()){
+				$width = $max_width;
+				$height = $width * ($p->getHeight() / $p->getWidth());
+			}else{
+				$height = $max_height;
+				$width = $height * ($p->getWidth() / $p->getHeight());
+			}
+		}
+
+		$p->resize($width,$height,false,false,false);
+		$p->setOutput('png',3);
+		$p->show(true);
+		return;
 			$image = file_get_contents(dirname(getcwd()).$_GET['url']);
 	   		$name = tempnam("/tmp", "image");
 	   		file_put_contents($name, $image);
@@ -29,7 +69,6 @@ class page_xShop_page_designer_renderimage extends Page {
 	   		echo "<img src='data:image/png;base64,".base64_encode($new_image)."' style='max-width:100%; width:100%'/>".rand(1000,9999);
 			$new_image->clear();
 			$new_image->destroy();
-		}
 			// echo "<img src='$url'/>";
 		exit;
 	}

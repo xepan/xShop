@@ -4,9 +4,10 @@
 	{rows}
 		{row}
 		<figure class="xshop-designer-item-images col-md-3 col-sm-3">
-			<img src="{item_image}{/}" class="xshop-designer-item-images thumbnail">
+			<img src="{image}{/}" class="xshop-designer-item-images thumbnail">
        		 <figcaption class="xshop-designer-add-replace">
-            	<div class="xshop-designer-add-replace-button btn btn-primary" selectedimagesrc="{$item_image}">Add/Replace</div>
+            	<div class="xshop-designer-add-replace-button btn btn-primary" selectedimagesrc="{$image}" data-image-id="{$id}">Add/Replace</div>
+            	<div id="xshop-designer-remove-member-image-button" class="btn btn-primary" >Remove</div>
         	</figcaption>
     	</figure>
 		{/}	
@@ -26,9 +27,12 @@
 
 			$(".xshop-designer-add-replace-button").click(function(){
 				image_src = $(this).attr('selectedimagesrc');
+				image_id = $(this).data('image-id');
+				
 				var opener = $('.xshop-designer-image-toolbtn').data('tool');
 				// console.log(opener);
 				if(opener.designer_tool.current_selected_component == undefined){
+					
 					opener.addImage(image_src);
 					$(this).closest('.dialog').dialog('close');
 				}else{
@@ -95,13 +99,19 @@
 						$(this).closest('.dialog').dialog('close');
 					}
 					opener.designer_tool.current_selected_component.render();
+
 					// console.log(opener.designer_tool.current_selected_component);
 					// console.log('undefinedd');
 				}
 
 				
 			});
-
+			
+			$('#xshop-designer-remove-member-image-button').click(function(event) {
+				alert('Mr. Rakesh do something with my css please');
+				alert('Only delete if not in use by search url like in item designs');
+			});
+	
 		});
 	</script>
 </div>	

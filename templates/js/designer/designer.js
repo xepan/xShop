@@ -15,6 +15,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	current_layout: 'Main Layout',
 	item_id:undefined,
 	item_member_design_id:undefined,
+	workplace:undefined,
 	canvas:undefined,
 	safe_zone: undefined,
 	zoom: 1,
@@ -55,9 +56,9 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		$.atk4.includeJS("epan-components/xShop/templates/js/designer/plugins/PageLayout.js");
 
 		$.atk4(function(){
-			var workplace = self.setupWorkplace();
+			self.setupWorkplace();
 			window.setTimeout(function(){
-				self.setupCanvas(workplace);
+				self.setupCanvas();
 				if(self.options.showTopBar){
 					self.setupToolBar();
 				}
@@ -164,31 +165,29 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 
 	setupWorkplace: function(){
-		return $('<div class="xshop-designer-tool-workplace"></div>').appendTo(this.element);
+		this.workplace = $('<div class="xshop-designer-tool-workplace" style="width:100%"></div>').appendTo(this.element);
 	},
 
 	setupComponentPanel: function(workplace){
 		this.component_panel = $('<div id="xshop-designer-component-panel" class=" col-md-3">Nothing Selecetd</div>').appendTo(workplace);
 	},
 
-	setupCanvas: function(workplace){
+	setupCanvas: function(){
 		var self = this;
-		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative; z-index:100"></div>').appendTo(workplace);
+		this.canvas = $('<div class="xshop-desiner-tool-canvas atk-move-center" style="position:relative; z-index:100"></div>').appendTo(this.workplace);
 		
 		this.canvas.css('width',this.options.width + this.options.unit); // In given Unit
 		this.px_width = this.canvas.width(); // Save in pixel for actual should be width
 		// this.canvas.css('max-width',this.px_width+'px');
 		this.canvas.css('overflow','hidden');
-		console.log(workplace);
-		if(this.canvas.width() > workplace.width()){
-			console.log('here');
-			this.canvas.css('width', workplace.width() - 20 + 'px');
+		if(this.canvas.width() > this.workplace.width()){
+			this.canvas.css('width', this.workplace.width() - 20 + 'px');
 		}
 
-		if(this.canvas.width() < (workplace.width()/2)){
-			console.log('here 2');
-			this.canvas.width((workplace.width()/2));
+		if(this.canvas.width() < (this.workplace.width()/2)){
+			this.canvas.width((this.workplace.width()/2));
 		}
+		console.log(this.canvas.width());
 		
 		this.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(this.canvas);
 		this.guidex= $('<div class="guidex"></div>').appendTo($('body'));
@@ -233,19 +232,30 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			this.delta_zoom = this.zoom + zoom;
 			this.zoom = zoom;
 		}
+		console.log(this.zoom);
 		return this.zoom;
 	},
 
 	_isDesignerMode:function(){
 		return this.options.designer_mode;
 	},
+
 	get_widget: function(){
 		return this;
 	},
 
 	check: function(){
 		// console.log(this.components);
+	},
+
+	screen2option: function(val){
+		return val / this._getZoom();
+	},
+
+	option2screen: function(val){
+		return val * this._getZoom();
 	}
+
 
 });
 

@@ -99,7 +99,7 @@ Image_Component = function (params){
 	this.options = {
 		x:0,
 		y:0,
-		width:'400',
+		width:'0',
 		height:'0',
 		url:'templates/images/logo.png',
 		crop_x: false,
@@ -146,18 +146,15 @@ Image_Component = function (params){
 		var new_image = new Image_Component();
 		new_image.init(self.designer_tool,self.canvas, self.editor);
 		// feed default values for its parameters
-		new_image.x=0;
-		new_image.y=0;
-		new_image.options.url = image_url;
 		//Set Options
-		new_image.url = image_url;
-		console.log(new_image);
+		new_image.options.x=0;
+		new_image.options.y=0;
+		new_image.options.url = image_url;
+		// console.log(new_image);
 		// add this Object to canvas components array
 		// console.log(self.designer_tool.current_page);
 		self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_image);
-		new_image.render();
-		
-		
+		new_image.render(true);
 	}
 
 	this.renderTool = function(parent){
@@ -178,29 +175,32 @@ Image_Component = function (params){
 	}
 
 
-	this.render = function(){
+	this.render = function(is_new_image){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div style="position:absolute" class="xshop-designer-component"><span></span></div>').appendTo(this.canvas);
+			
+			// self.options.width = self.designer_tool.px_width / 2;
+
+			this.element = $('<div style="position:absolute" class="xshop-designer-component"><span><img></img></span></div>').appendTo(this.canvas);
 			this.element.draggable({
 				containment: self.designer_tool.safe_zone,
 				smartguides:".xshop-designer-component",
 				tolerance:5,
 				stop:function(e,ui){
 					var position = ui.position;
-					self.options.x = position.left / self.designer_tool.zoom;
-					self.options.y = position.top / self.designer_tool.zoom;
+					self.options.x = self.designer_tool.screen2option(position.left);
+					self.options.y = self.designer_tool.screen2option(position.top);
 				}
 			}).resizable({
-				aspectRatio: true,
+				aspectRatio: false,
 				autoHide: true,
-				handles: "ne,se,sw,nw",
-
+				handles: "all",
+				
 				stop:function(e,ui){
-					self.options.x = ui.position.left / self.designer_tool.zoom;
-					self.options.y = ui.position.top / self.designer_tool.zoom;
-					self.options.width = ui.originalSize.width;
-					self.options.height = ui.originalSize.height;
+					// self.options.x = ui.position.left / self.designer_tool.zoom;
+					// self.options.y = ui.position.top / self.designer_tool.zoom;
+					self.options.width = self.designer_tool.screen2option(ui.size.width) ;
+					self.options.height = self.designer_tool.screen2option(ui.size.height) ;
 					self.render();
 				}
 			});
@@ -225,10 +225,12 @@ Image_Component = function (params){
 			this.element.show();
 		}
 
-		this.element.css('top',self.options.y  * self.designer_tool.zoom);
-		this.element.css('left',self.options.x * self.designer_tool.zoom);
-		// this.element.find('img').width((this.element.find('img').width() * self.designer_tool.delta_zoom /100));
-		// this.element.find('img').height((this.element.find('img').height() * self.designer_tool.delta_zoom/100));
+		if(is_new_image == undefined){
+			this.element.css('top',self.designer_tool.option2screen(self.options.y));
+			this.element.css('left',self.designer_tool.option2screen(self.options.x));
+			this.element.css('width',self.designer_tool.option2screen(self.options.width));
+			this.element.css('height',self.designer_tool.option2screen(self.options.height));
+		}
 
 		if(this.xhr != undefined)
 			this.xhr.abort();
@@ -236,7 +238,9 @@ Image_Component = function (params){
 		this.xhr = $.ajax({
 			url: 'index.php?page=xShop_page_designer_renderimage',
 			type: 'GET',
-			data: {default_value: self.options.default_value,
+			data: {
+					default_value: self.options.default_value,
+					crop:self.options.crop,
 					crop_x: self.options.crop_x,
 					crop_y: self.options.crop_y,
 					crop_height: self.options.crop_height,
@@ -244,15 +248,20 @@ Image_Component = function (params){
 					replace_image: self.options.replace_image,
 					rotation_angle:self.options.rotation_angle,
 					url:self.options.url,
-					crop:self.options.crop,
 					zoom: self.designer_tool.zoom,
 					width:self.options.width,
-					height:self.options.height
-					},
+					height:self.options.height,
+					max_width: self.designer_tool.safe_zone.width()/1.5,
+					max_height: self.designer_tool.safe_zone.height()/1.5,
+					auto_fit: is_new_image===true
+				},
 		})
 		.done(function(ret) {
-			console.log(self);
-			$(ret).appendTo(self.element.find('span').html(''));
+			self.element.find('img').attr('src','data:image/jpg;base64, '+ ret);
+			if(is_new_image===true){
+				self.options.width = self.designer_tool.screen2option(self.element.find('img').width());
+				self.options.height = self.designer_tool.screen2option(self.element.find('img').height());
+			}
 			self.xhr=undefined;
 		})
 		.fail(function(ret) {

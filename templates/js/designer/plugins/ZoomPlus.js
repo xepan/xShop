@@ -25,9 +25,14 @@ ZoomPlus_Component = function (params){
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		this.tool_btn.click(function(event){
 			// create new TextComponent type object
-			self.designer_tool.canvas.width(self.designer_tool.canvas.width() + (self.designer_tool.canvas.width() * 10/100));
-			self.designer_tool.render();
-
+			var new_width = self.designer_tool.canvas.width() + (self.designer_tool.canvas.width() * 10/100);
+			if(new_width > (self.designer_tool.workplace.width() - 40) ){
+				new_width = self.designer_tool.workplace.width() - 40;
+			}
+			if(new_width < (self.designer_tool.workplace.width()-40)){
+				self.designer_tool.canvas.width(new_width);
+				self.designer_tool.render();
+			}
 		});
 
 	}
