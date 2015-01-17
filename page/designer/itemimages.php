@@ -22,7 +22,7 @@ class page_xShop_page_designer_itemimages extends Page {
       //Form
       $form = $this->add('Form');
       $item_images_lister = $this->add('xShop/View_Lister_DesignerItemImages');
-      $form->setModel($image_model,array('image_id'));
+      $form->setModel($image_model,array('member_id','image_id'));
       $form->addSubmit();
       if($form->isSubmitted()){
         $form->update();

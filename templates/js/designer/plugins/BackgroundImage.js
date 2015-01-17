@@ -9,7 +9,7 @@ BackgroundImage_Component = function (params){
 	this.options = {
 		x:0,
 		y:0,
-		width:'400',
+		width:'0',
 		height:'0',
 		url:'templates/images/logo.png',
 		crop_x: false,
@@ -60,11 +60,11 @@ BackgroundImage_Component = function (params){
 	this.render = function(){
 		var self = this;
 		if(this.element == undefined){
-			this.element = $('<div style="position:absolute;z-index:-10;" class="xshop-designer-component"><span></span></div>').appendTo(this.canvas);
+			this.element = $('<div style="position:absolute;z-index:-10;" class="xshop-designer-component"><span><img></img></span></div>').appendTo(this.canvas);
 		}else{
 			this.element.show();
 		}
-
+		console.log(self);
 		this.element.css('top',self.options.y  * self.designer_tool.zoom);
 		this.element.css('left',self.options.x * self.designer_tool.zoom);
 		// this.element.find('img').width((this.element.find('img').width() * self.designer_tool.delta_zoom /100));
@@ -106,7 +106,7 @@ BackgroundImage_Component = function (params){
 			// self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_bgimage);
 
 			// console.log(self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout]);
-			$(ret).appendTo(self.element.find('span').html(''));
+			self.element.find('img').attr('src','data:image/jpg;base64, '+ ret);
 			self.xhr=undefined;
 		})
 		.fail(function(ret) {

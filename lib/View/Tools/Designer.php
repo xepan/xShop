@@ -19,6 +19,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 			$this->api->xepan_xshopdesigner_included = true;
 		}
 
+
 		$designer = $this->add('xShop/Model_MemberDetails');
 		$designer_loaded = $designer->loadLoggedIn();
 		
@@ -45,7 +46,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		}
 
 		// 2. New personalized item
-		if($_GET['xsnb_design_item_id'] and $_GET['xsnb_design_template'] !='true' and !isset($target)){
+		if($_GET['xsnb_design_item_id'] and is_numeric($_GET['xsnb_design_item_id']) and $_GET['xsnb_design_template'] !='true' and !isset($target)){
 			$item = $this->add('xShop/Model_Item')->tryLoad($_GET['xsnb_design_item_id']);
 			if(!$item->loaded()) {
 				return;
@@ -59,7 +60,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		
 		if(!isset($target)){
 			$this->render_designer = false;
-			$this->add('View_Warning')->set('Insufficient Values, Item unknown');
+			$this->add('View_Warning')->set('Insufficient Values, Item unknown or Not Authorised');
 			return;
 		}
 

@@ -314,7 +314,7 @@ Text_Component = function (params){
 				}
 			}).resizable({
 				containment: self.designer_tool.safe_zone,
-				handles: 'e',
+				handles: 'all',
 				autoHide: true,
 				stop: function(e,ui){
 					self.options.width = self.designer_tool.screen2option(ui.size.width);

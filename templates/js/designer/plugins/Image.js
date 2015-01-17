@@ -202,7 +202,7 @@ Image_Component = function (params){
 			}).resizable({
 				aspectRatio: false,
 				autoHide: true,
-				handles: "all",
+				handles: "e, se, s",
 				
 				stop:function(e,ui){
 					// self.options.x = ui.position.left / self.designer_tool.zoom;
