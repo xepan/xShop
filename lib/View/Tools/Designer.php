@@ -45,7 +45,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		}
 
 		// 2. New personalized item
-		if($_GET['xsnb_design_item_id'] and $designer_loaded and $_GET['xsnb_design_template'] !='true' and !isset($target)){
+		if($_GET['xsnb_design_item_id'] and $_GET['xsnb_design_template'] !='true' and !isset($target)){
 			$item = $this->add('xShop/Model_Item')->tryLoad($_GET['xsnb_design_item_id']);
 			if(!$item->loaded()) {
 				return;

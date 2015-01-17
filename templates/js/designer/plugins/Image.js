@@ -22,6 +22,7 @@ xShop_Image_Editor = function(parent){
 		// var self =this;
 		// console.log(self.current_image_component);
 		url = self.current_image_component.options.url;		
+		o = self.current_image_component.options;
 		
 		xx= $('<div class="xshop-designer-image-crop"></div>');
 		crop_image = $('<img class="xshop-img" src='+url+'></img>').appendTo(xx);
@@ -37,10 +38,10 @@ xShop_Image_Editor = function(parent){
 				$(crop_image).cropper({
 				    multiple: true,
 				    data: {
-					    x: 480,
-					    y: 60,
-					    width: 640,
-					    height: 360
+					    x: o.crop == 'true'? o.crop_x: 0,
+					    y: o.crop == 'true'? o.crop_y: 0,
+					    width: o.crop == 'true'? o.crop_width: $(crop_image).width(),
+					    height: o.crop == 'true'? o.crop_height: $(crop_image).height()
 					  },  
 					done: function(data) {
 						$(x).val(Math.round(data.x));
@@ -51,20 +52,22 @@ xShop_Image_Editor = function(parent){
 					  }
 				});
 				var $titlebar = $.find('.ui-dialog-titlebar');
-				continue_btn = $('<button class="btn btn-default pull-right">Continue</button>').appendTo($titlebar);
-				continue_btn.click(function(){
-					self.current_image_component.options.crop_x = $(x).val();
-					self.current_image_component.options.crop_y = $(y).val();
-					self.current_image_component.options.crop_width = $(width).val();
-					self.current_image_component.options.crop_height = $(height).val();
-					self.current_image_component.options.crop = true;
-					self.current_image_component.render();
-					$('.xshop-designer-image-crop').dialog('close');
-				});
 			},
 
 			close: function( event, ui ) {
 				console.log(self.current_image_component.canvas);
+			},
+
+			buttons: {
+				Continue: function(){
+					self.current_image_component.options.crop = true;
+					self.current_image_component.options.crop_x = $(x).val();
+					self.current_image_component.options.crop_y = $(y).val();
+					self.current_image_component.options.crop_width = $(width).val();
+					self.current_image_component.options.crop_height = $(height).val();
+					self.current_image_component.render();
+					$(this).dialog('close');
+				}
 			}
 		});
 		// console.log(self.current_image_component);
@@ -263,6 +266,7 @@ Image_Component = function (params){
 				self.options.height = self.designer_tool.screen2option(self.element.find('img').height());
 			}
 			self.xhr=undefined;
+			console.log(self.element.find('img').width());
 		})
 		.fail(function(ret) {
 			// evel(ret);

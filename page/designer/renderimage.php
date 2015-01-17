@@ -31,6 +31,14 @@ class page_xShop_page_designer_renderimage extends Page {
 		$max_width = $_GET['max_width'];
 		$max_height = $_GET['max_height'];
 
+		$crop = $_GET['crop'] =='true';
+		$crop_x = $_GET['crop_x'];
+		$crop_y = $_GET['crop_y'];
+
+		$crop_width = $_GET["crop_width"];
+		$crop_height = $_GET["crop_height"];
+		
+
 		$p= new PHPImage($image_path);
 		
 		if($width==0 and $height==0){
