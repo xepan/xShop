@@ -9,102 +9,107 @@ class View_Tools_xCart extends \componentBase\View_Component{
 		$this->addClass('xshop-cart');
 
 		// value passing game via body using attr from add to cart button 
-		$this->js('reload')->reload(array('product_id'=>$this->js()->_selector('body')->attr('xshop_add_product_id')));
+		$this->js('reload')->reload(array('item_id'=>$this->js()->_selector('body')->attr('xshop_add_item_id')));
 		//add Cart model work as a session
 		$cart_model=$this->add('xShop/Model_Cart');
-		$product_model=$this->add('xShop/Model_Item');
+		$item_model=$this->add('xShop/Model_Item');
 
-		if($_GET['product_id'] AND $_GET['product_id'] != 'undefined'){
-																			
-			// from simple add to cart button on product lister
-				// $this->add('View')->set(rand(1000,9999). ' ' . $_GET['product_id'] );
-				$product_model->load($_GET['product_id']);			
-				$cart_model->addToCart($_GET['product_id'],$product_model['sku'],$product_model['name'],1,$product_model['sale_price'], null,null);						
+		if($_GET['item_id'] AND $_GET['item_id'] != 'undefined'){														
+			// from simple add to cart button on Item lister
+			$item_model->load($_GET['item_id']);			
+			$cart_model->addToCart($_GET['item_id'],$item_model['sku'],$item_model['name'],1,$item_model['sale_price'], null,null);						
 		}
 
-		//Get Total amount and Total Item	
+		//Get Total amount and Total Item
 		$total_amount=$cart_model->getTotalAmount();
 		$total_item=$cart_model->getItemCount();
 
 
 		switch ($this->html_attributes['xshop_cart_layout']) {
-				case 1:
-					$this->template->tryDel('xshop_cart_with_item_price_btn');
-					$this->template->tryDel('xshop_cart_lg');
-					$this->template->Set('xshop_item_count',$total_item);
-					$url="index.php?subpage=home";
-					if($this->html_attributes['xshop_ic_cartdetail_page']){
-						$url="index.php?subpage=".$this->html_attributes['xshop_ic_cartdetail_page'];
+			case 2:
+				// Show Total Item added in Cart
+				if($this->html_attributes['xshop_ipb_cart_items']=='false'){
+					$this->template->tryDel('xshop_cart_items');
+				}else {
+					$str = '<div class="xshop-cart-item-count"><span class="xshop-cart-item-count-label">';
+					$str.=$total_item;
+					$str.=" item(s)</span></div>";
+					$this->template->setHtml('xshop_cart_items',$str);
+				}
+
+				// Show Cart Total Price
+				if($this->html_attributes['xshop_ipb_cart_price']=='false'){
+					$this->template->tryDel('xshop_cart_price');
+				}else{
+					$str = '<div class="xshop-cart-price-count"><span class="xshop-cart-currency-sign">';
+					$str.= ' ₹ </span><span class="xshop-cart-price-count-label">';
+					$str.= $total_amount;
+					$str .='</span></div>';
+					$this->template->setHtml('xshop_cart_price',$str);
+				}
+
+				//Empty Button
+				if($this->html_attributes['xshop_ipb_cart_empty_btn']=='false'){
+					$this->template->tryDel('xshop_cart_empty_btn');
+				}else{
+					$empty_btn=$this->add('Button',null,'xshop_cart_empty_btn')->set('empty')->addClass('btn xshop-cart-empty-btn');
+					if($empty_btn->isClicked()){
+						$cart_model->emptyCart();								
+						$this->api->js()->univ()->redirect('/')->execute();
 					}
-					$this->template->trySet('xshop_cart_detail_page',$url);
-					break;
-				case 2:
+				}
 
-					$this->template->tryDel('xshop_cart_with_item_no');
-					$this->template->tryDel('xshop_cart_lg');				
-						
-						if($this->html_attributes['xshop_ipb_cart_empty_btn']=='false'){
-							$this->template->tryDel('xshop_ipb_cart_empty_btn');
+				//CheckOut button
+				if($this->html_attributes['xshop_ipb_cart_checkout_btn']=='false'){
+					$this->template->tryDel('xshop_cart_checkout_btn');
+				}else{
+					$checkout_btn=$this->add('Button',null,'xshop_cart_checkout_btn')->set('Check out')->addClass('btn xshop-cart-checkout-btn');
+					if($checkout_btn->isClicked()){
+						$this->api->js()->univ()->redirect(null,array('subpage'=>$this->html_attributes['xshop_ipb_checkout_page']))->execute();
+					}
+				}
+
+				//Detail Cart btn
+				if($this->html_attributes['xshop_ipb_cart_viewcart_btn']=='false'){
+					$this->template->tryDel('xshop_cart_viewcart_btn');
+				}else{
+					//Virtual Page added
+					$xshop_cart = $this->add('VirtualPage')->set(function($p)use($total_item,$cart_model){
+						if($total_item <= 0){
+							$p->add('View_Error')->set('Cart is Empty');
 						}else{
-							$empty_btn=$this->add('Button',null,'xshop_ipb_cart_empty')->set('empty')->addClass('btn btn-default btn-block');
-							if($empty_btn->isClicked()){
-								$cart_model->emptyCart();								
-								$this->api->js()->univ()->redirect('/')->execute();
+							//Cart All Item added
+							foreach ($cart_model as $junk){
+								$ci_view=$p->add('xShop/View_CartItem',array('new'=>$cart_model['id']));
+								$ci_view->setModel($cart_model);
 							}
 						}
 
-						if($this->html_attributes['xshop_ipb_cart_checkout_btn']=='false'){
-							$this->template->tryDel('xshop_ipb_cart_checkout_btn');
-						}else{
-							$checkout_btn=$this->add('Button',null,'xshop_ipb_cart_checkout_btn1')->set('Check out')->addClass('btn btn-default btn-block');
-							if($checkout_btn->isClicked()){
-							// $this->js()->univ()->alert("khk")->execute();
-								$this->api->js()->univ()->redirect(null,array('subpage'=>$this->html_attributes['xshop_ipb_checkout_page']))->execute();
-							}
-						}
+					});
 
-						if($this->html_attributes['xshop_ipb_cart_viewcart_btn']=='false'){
-							$this->template->tryDel('xshop_ipb_cart_viewcart_btn');
-						}else{
-							$view_btn=$this->add('Button',null,'xshop_ipb_cart_viewcart_btn1')->set('View Cart')->addClass('btn btn-default btn-block');
-							if($view_btn->isClicked()){
-							// $this->js()->univ()->alert("khk")->execute();
-								$this->api->js()->univ()->redirect(null,array('subpage'=>$this->html_attributes['xshop_ipb_cart_detail_page']))->execute();
-							}
-						}
+					$view_btn=$this->add('Button',null,'xshop_cart_viewcart_btn')->set('View Cart')->addClass('btn xshop-cart-viewcart-btn');
+					if($view_btn->isClicked()){
+						$this->api->js()->univ()->frameURL('Cart Detail',$this->api->url($xshop_cart->getURL()))->execute();
+						// $this->api->js()->univ()->redirect(null,array('subpage'=>$this->html_attributes['xshop_ipb_cart_detail_page']))->execute();
+					}
+				}
 
-			
-						if($this->html_attributes['xshop_ipb_cart_items']=='false'){
-							$this->template->tryDel('xshop_ipb_cart_items');
-						}else {
-							$this->template->Set('xshop_item_count',$total_item);
-						}
-						
-						if($this->html_attributes['xshop_ipb_cart_price']=='false'){
-							$this->template->tryDel('xshop_ipb_cart_price');
-						}else
-							$this->template->Set('xshop_cart_total_price',$total_amount);
-
-						if($this->html_attributes['xshop_ipb_cart_detail_page']){
-							$this->template->trySet('xshop_ipb_cart_detail_page',$this->html_attributes['xshop_ipb_cart_detail_page']);
-							}else
-								$this->template->tryDel('xshop_ipb_cart_detail_page');
-					
-					break;
-				case 3:
-					$this->template->tryDel('xshop_cart_with_item_no');
-					$this->template->tryDel('xshop_cart_with_item_price_btn');											
-					
+				if($this->html_attributes['xshop_cart_detail'] or 1){
 					if($total_item <= 0){
 						$this->add('View_Error')->set('Cart is Empty');
 					}else{
 						foreach ($cart_model as $junk) {
-							$ci_view=$this->add('xShop/View_CartItem',array('new'=>$cart_model['id']),'xshop_cart_lg');
+							$ci_view=$this->add('xShop/View_CartItem',array('new'=>$cart_model['id']),'xshop_cart_detail');
 							$ci_view->setModel($cart_model);
 						}
-						$this->add('View',null,'xshop_cart_proceed')->set('Proceed')->setElement('a')->setAttr('href','index.php?subpage='.$this->html_attributes['xshop_cartdetail_checkout_subpage']);						
-					}	
-					break;	
+						$this->add('View',null,'xshop_cart_proceed')->set('Proceed')->setElement('a')->setAttr('href','index.php?subpage='.$this->html_attributes['xshop_cartdetail_checkout_subpage']);
+					}
+				}else{
+					$this->template->tryDel('xshop_cart_detail');
+				}
+					
+		break;
+
 				default:
 					$this->template->tryDel('xshop_cart_with_item_no');
 					$this->template->tryDel('xshop_cart_with_item_price_btn');

@@ -9,19 +9,18 @@ class View_CartItem extends \View{
 		parent::init();
 		
 		$this->addClass('xshop-cartdetail');
-		// $this->addClass('xshop-cart');
-		
 	}
+	
 	function setModel($model){
 
 		$this->template->Set('item_code',$model['item_code']);
 		$this->template->Set('item_name',$model['item_name']);		
 		$this->template->Set('item_id',$model['item_id']);
 
-		$pimg_model=$this->add('xShop/Model_ItemImages');
-		$pimg_model->getImageUrl($model['item_id']);
+		$img_model=$this->add('xShop/Model_ItemImages');
+		$img_model->getImageUrl($model['item_id']);
 
-		$this->template->Set('xshop_item_image',$pimg_model['image_url']);
+		$this->template->Set('xshop_item_image',$img_model['image_url']?:'logo.svg');
 		$this->template->Set('id',$model['id']);
 
 		$form=$this->add('Form',null,'qty',array('form_horizontal'));
@@ -40,14 +39,6 @@ class View_CartItem extends \View{
 		$btn_submit=$form->add('View')->addClass('btn btn-warning btn-sm')->addStyle(array('margin-top'=>'25px','margin-left'=>'5px'))->set('Update');
 		$btn_submit->js('click')->submit();
 		
-		// $this->add('View')->set("dfsdf".print_r($model['custom_fields'],true));
-
-		// $btn_remove=$form->add('Button')->addClass('btn btn-danger')->addStyle(array('margin-top'=>'25px','margin-left'=>'5px'))->set('Remove');
-		// if($btn_remove->isClicked()){
-		// 	$this->api->stickyGet('btn_id');
-		// 	$form->js()->reload();
-		// 	throw new \Exception("Error Processing Request"."BTN is Clicked");		
-		// }
 		if($form->isSubmitted()){
 			$all_cart_item_model = $this->add('xShop/Model_Cart');
 			foreach ($all_cart_item_model as $item) {
@@ -70,17 +61,6 @@ class View_CartItem extends \View{
 		        'js'=>'templates/js',
 		    )
 		);
-		
-		// $l=$this->api->locate('addons',__NAMESPACE__, 'location');
-		// $this->api->pathfinder->addLocation(
-		// 	$this->api->locate('addons',__NAMESPACE__),
-		// 	array(
-		//   		'template'=>'templates',
-		//   		'css'=>'templates/css',
-		//   		'js'=>'templates/js'
-		// 		)
-		// 	)->setParent($l);
-
 		return array('view/xShop-CartItem');	
 	}
 }	

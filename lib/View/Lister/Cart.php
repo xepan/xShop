@@ -9,7 +9,7 @@ class View_Lister_Cart extends \CompleteLister{
 		$product_model=$this->add('xShop/Model_Product');
 		$product_model->addCondition('sku',$this->model['item_code']);
 		$product_model->tryLoadAny();
-		$this->current_row['xshop_cart_lg_item_img_value'] = $product_model->ref('xShop/ProductImages')->tryLoadAny()->get('image_url');			
+		$this->current_row['xshop_cart_lg_item_img_value'] = $product_model->ref('xShop/ProductImages')->tryLoadAny()->get('image_url');
 		$this->current_row['xshop_cart_lg_item_text_value'] = $this->model['item_code']." ".$this->model['item_name'];
 		$this->current_row['xshop_cart_lg_item_price_value'] = $this->model['rate'];
 		$this->current_row['xshop_cart_lg_item_qty_value'] =  $this->model['qty'];
