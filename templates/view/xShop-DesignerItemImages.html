@@ -32,7 +32,6 @@
 				var opener = $('.xshop-designer-image-toolbtn').data('tool');
 				// console.log(opener);
 				if(opener.designer_tool.current_selected_component == undefined){
-					
 					opener.addImage(image_src);
 					$(this).closest('.dialog').dialog('close');
 				}else{
@@ -41,11 +40,7 @@
 					opener.designer_tool.current_selected_component.options.url = image_src;
 
 					if(opener.designer_tool.current_selected_component.options.type == "BackgroundImage"){
-						// $.each(opener.designer_tool.pages_and_layouts[opener.designer_tool.current_page][opener.designer_tool.current_layout].components,function(index,value){
-						// 	if(value.options.type == "BackgroundImage"){
-						// 		delete opener.designer_tool.pages_and_layouts[opener.designer_tool.current_page][opener.designer_tool.current_layout].components[index];
-						// 	}
-						// });		
+						o = opener.designer_tool.current_selected_component.options;
 						xx= $('<div class="xshop-designer-backgroundimage-crop"></div>');
 						crop_image = $('<img class="xshop-img" src='+image_src+'></img>').appendTo(xx);
 						x = $('<div></div>').appendTo(crop_image);
@@ -53,7 +48,7 @@
 						width = $('<div></div>').appendTo(crop_image);
 						height = $('<div></div>').appendTo(crop_image);
 						$(this).closest('.dialog').dialog('close');
-													
+						
 						xx.dialog({
 							minWidth: 800,
 							modal:true,
@@ -64,10 +59,10 @@
 									aspectRatio: opener.designer_tool.canvas.width() / opener.designer_tool.canvas.height(),
 								    multiple: true,
 								    data: {
-									    x: 480,
-									    y: 60,
-									    width: 640,
-									    height: 360
+									    x: o.crop == true? o.crop_x: 0,
+									    y: o.crop == true? o.crop_y: 0,
+									    width: o.crop == true? o.crop_width: $(crop_image).width(),
+									    height: o.crop == true? o.crop_height: $(crop_image).height()
 									  },  
 									done: function(data) {
 										$(x).val(Math.round(data.x));
@@ -85,11 +80,11 @@
 							},
 							buttons: {
 				                Continue: function() {
+									opener.designer_tool.current_selected_component.options.crop = true;
 				                    opener.designer_tool.current_selected_component.options.crop_x = $(x).val();
 									opener.designer_tool.current_selected_component.options.crop_y = $(y).val();
 									opener.designer_tool.current_selected_component.options.crop_width = $(width).val();
 									opener.designer_tool.current_selected_component.options.crop_height = $(height).val();
-									opener.designer_tool.current_selected_component.options.crop = true;
 									opener.designer_tool.current_selected_component.render();
 				                    $(this).dialog("close"); //closing on Ok click
 				                }
@@ -97,8 +92,8 @@
 						});	
 					}else{
 						$(this).closest('.dialog').dialog('close');
+						opener.designer_tool.current_selected_component.render();
 					}
-					opener.designer_tool.current_selected_component.render();
 
 					// console.log(opener.designer_tool.current_selected_component);
 					// console.log('undefinedd');

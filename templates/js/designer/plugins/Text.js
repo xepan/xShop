@@ -195,6 +195,21 @@ xShop_Text_Editor = function(parent){
         	$('.xshop-designer-tool').xepan_xshopdesigner('check');
         }
 	});
+	
+	//Remove BTN
+	this.text_remove = $('<div class="btn"><span class="glyphicon glyphicon-empty">Remove</span></div>').appendTo(this.element);
+	this.text_remove.click(function(){
+		dt  = self.current_text_component.designer_tool;
+		$.each(dt.pages_and_layouts[dt.current_page][dt.current_layout].components, function(index,cmp){
+			if(cmp === dt.current_selected_component){
+				// console.log(self.pages_and_layouts);
+				$(dt.current_selected_component.element).remove();
+				dt.pages_and_layouts[dt.current_page][dt.current_layout].components.splice(index,1);
+				dt.current_selected_component = null;
+				dt.option_panel.hide();
+			}
+		});
+	});
 
 	div = $('<div class="xshop-designer-text-input-outer-div"></div>').appendTo(this.element);
 	this.text_input = $('<textarea class="xshop-designer-text-input" rows="1"></textarea>').appendTo(div);
@@ -314,7 +329,7 @@ Text_Component = function (params){
 				}
 			}).resizable({
 				containment: self.designer_tool.safe_zone,
-				handles: 'all',
+				handles: "e",
 				autoHide: true,
 				stop: function(e,ui){
 					self.options.width = self.designer_tool.screen2option(ui.size.width);
