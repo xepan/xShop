@@ -5,17 +5,30 @@ xShop_Image_Editor = function(parent){
 
 	this.element = $('<div id="xshop-designer-image-editor" style="display:block" class="xshop-options-editor"></div>').appendTo(this.parent);
 	this.image_button_set = $('<div class="btn-group" role="group"></div>').appendTo(this.element);
-	this.image_manager = $('<div class="btn "><span class="glyphicon glyphicon-film"></span></div>').appendTo(this.image_button_set);	
-	this.image_crop_resize = $('<div class="btn "><span class="glyphicon glyphicon-">C&R</span></div>').appendTo(this.image_button_set);
-	this.image_replace = $('<div class="btn "><span class="glyphicon glyphicon-">Replace</span></div>').appendTo(this.image_button_set);
-	this.image_duplicate = $('<div class="btn "><span class="glyphicon glyphicon-">Duplicate</span></div>').appendTo(this.image_button_set);
 	// this.image_manager = $('<div class="btn "><span class="glyphicon glyphicon-film"></span></div>').appendTo(this.image_button_set);
+	this.image_crop_resize = $('<div class="btn "><span class="glyphicon glyphicon-">Crop</span></div>').appendTo(this.image_button_set);
+	// this.image_replace = $('<div class="btn "><span class="glyphicon glyphicon-">Replace</span></div>').appendTo(this.image_button_set);
+	// this.image_duplicate = $('<div class="btn "><span class="glyphicon glyphicon-">Duplicate</span></div>').appendTo(this.image_button_set);
+	// this.image_manager = $('<div class="btn "><span class="glyphicon glyphicon-film"></span></div>').appendTo(this.image_button_set);
+	this.image_remove = $('<div class="btn"><span class="glyphicon glyphicon-empty">Remove</span></div>').appendTo(this.image_button_set);
 
-	this.image_manager.click(function(event){
-		options ={modal:false,
-					width:800	
-				};
-		$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
+	// this.image_manager.click(function(event){
+	// 	options ={modal:false,
+	// 				width:800	
+	// 			};
+	// 	$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
+	// });
+	this.image_remove.click(function(){
+		console.log(self);
+		$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index,cmp){
+			if(cmp === self.current_selected_component){
+				// console.log(self.pages_and_layouts);
+				$(self.current_selected_component.element).remove();
+				self.pages_and_layouts[self.current_page][self.current_layout].components.splice(index,1);
+				self.current_selected_component = null;
+				self.option_panel.hide();
+			}
+		});
 	});
 
 	this.image_crop_resize.click(function(event){
@@ -77,17 +90,17 @@ xShop_Image_Editor = function(parent){
 		//TODO CROP and RESIZE The Image not No
 	});
 
-	this.image_replace.click(function(event){
-		options ={modal:false,
-					width:800	
-				};
-		$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
+	// this.image_replace.click(function(event){
+	// 	options ={modal:false,
+	// 				width:800	
+	// 			};
+	// 	$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
 
-	});
+	// });
 
-	this.image_duplicate.click(function(event){
-		//TODO CROP and RESIZE The Image not No
-	});
+	// this.image_duplicate.click(function(event){
+	// 	//TODO CROP and RESIZE The Image not No
+	// });
 
 	this.setImageComponent = function(component){
 		this.current_image_component  = component;
