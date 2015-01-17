@@ -19,7 +19,7 @@ jQuery.widget("ui.TextPanel",{
 	setupPanel: function(){
 		var self=this;
 		this.panel = $('<div class="xshop-designer-component-panel-options" style="display:none"></div>').appendTo('#xshop-designer-component-panel');
-		var new_btn = $('<div class="btn btn-default btn-block">ADD NEW TEXT</div>').appendTo(this.panel);
+		var new_btn = $('<div class="btn btn-block">ADD NEW TEXT</div>').appendTo(this.panel);
 		$(new_btn).click(function(event) {
 			$("#"+self.designer_widget_id).xepan_xshopdesigner('render',{msg:"GVS"});
 		});

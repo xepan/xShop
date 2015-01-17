@@ -46,10 +46,10 @@ xShop_Text_Editor = function(parent){
 
 	// B/I/U
 	this.text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Bold/Italic/Underline"></div>').appendTo(this.element);
-	this.text_bold_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-bold"></span></div>').appendTo(this.text_button_set);
-	this.text_italic_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-italic"></span></div>').appendTo(this.text_button_set);
-	this.text_underline_btn = $('<div class="btn btn-default"><span class="icon-underline"></span></div>').appendTo(this.text_button_set);
-	this.text_strokethrough_btn = $('<div class="btn btn-default"><span class="icon-strike"></span></div>').appendTo(this.text_button_set);
+	this.text_bold_btn = $('<div class="btn"><span class="glyphicon glyphicon-bold"></span></div>').appendTo(this.text_button_set);
+	this.text_italic_btn = $('<div class="btn"><span class="glyphicon glyphicon-italic"></span></div>').appendTo(this.text_button_set);
+	this.text_underline_btn = $('<div class="btn"><span class="icon-underline"></span></div>').appendTo(this.text_button_set);
+	this.text_strokethrough_btn = $('<div class="btn"><span class="icon-strike"></span></div>').appendTo(this.text_button_set);
 	/*Bold Text Render*/
 	$(this.text_bold_btn).click(function(event){
 		if(!self.current_text_component.options.bold)
@@ -97,9 +97,9 @@ xShop_Text_Editor = function(parent){
 
 	// L/M/R/J align
 	this.text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(this.element);
-	this.text_align_center_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-center"></span></div>').appendTo(this.text_button_set);
-	this.text_align_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-right"></span></div>').appendTo(this.text_button_set);
-	this.text_align_justify_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-align-justify"></div>').appendTo(this.text_button_set);
+	this.text_align_center_btn = $('<div class="btn"><span class="glyphicon glyphicon-align-center"></span></div>').appendTo(this.text_button_set);
+	this.text_align_right_btn = $('<div class="btn"><span class="glyphicon glyphicon-align-right"></span></div>').appendTo(this.text_button_set);
+	this.text_align_justify_btn = $('<div class="btn"><span class="glyphicon glyphicon-align-justify"></div>').appendTo(this.text_button_set);
 	
 	//LEFT Text Alignment
 	$(this.text_align_left_btn).click(function(){
@@ -142,10 +142,10 @@ xShop_Text_Editor = function(parent){
 
 	//Ordered List
 	this.text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Orderd List"></div>').appendTo(this.element);
-	// this.text_order_list_ul_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-list"></span></div>').appendTo(this.text_button_set);
-	// this.text_indent_left_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-left"></span></div>').appendTo(this.text_button_set);
-	// this.text_indent_right_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-indent-right"></div>').appendTo(this.text_button_set);
-	// this.text_symbol_btn = $('<div class="btn btn-default"><span class="glyphicon glyphicon-plus"></div>').appendTo(this.text_button_set);
+	// this.text_order_list_ul_btn = $('<div class="btn"><span class="glyphicon glyphicon-list"></span></div>').appendTo(this.text_button_set);
+	// this.text_indent_left_btn = $('<div class="btn"><span class="glyphicon glyphicon-indent-left"></span></div>').appendTo(this.text_button_set);
+	// this.text_indent_right_btn = $('<div class="btn"><span class="glyphicon glyphicon-indent-right"></div>').appendTo(this.text_button_set);
+	// this.text_symbol_btn = $('<div class="btn"><span class="glyphicon glyphicon-plus"></div>').appendTo(this.text_button_set);
 	
 	// Text Indent Left
 	$(this.text_indent_left_btn).click(function(){
@@ -155,8 +155,8 @@ xShop_Text_Editor = function(parent){
 	});	
 	// Angle
 	this.text_button_set = $('<div class="btn-group btn-group-xs" role="group" aria-label="Text Alignment"></div>').appendTo(this.element);
-	this.text_rotate_anticlockwise = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat" style="-moz-transform: scaleX(-1);-o-transform: scaleX(-1);-webkit-transform: scaleX(-1);transform: scaleX(-1);filter: FlipH;-ms-filter: "FlipH";"></span></div>').appendTo(this.text_button_set);
-	this.text_rotate_clockwise = $('<div class="btn btn-default btn-xs"><span class="glyphicon glyphicon-repeat"></span></div>').appendTo(this.text_button_set);
+	this.text_rotate_anticlockwise = $('<div class="btn"><span class="glyphicon glyphicon-repeat" style="-moz-transform: scaleX(-1);-o-transform: scaleX(-1);-webkit-transform: scaleX(-1);transform: scaleX(-1);filter: FlipH;-ms-filter: "FlipH";"></span></div>').appendTo(this.text_button_set);
+	this.text_rotate_clockwise = $('<div class="btn"><span class="glyphicon glyphicon-repeat"></span></div>').appendTo(this.text_button_set);
 
 	//Rotation AntiClockWise Difference with -45 deg
 	$(this.text_rotate_anticlockwise).click(function(event){
@@ -196,7 +196,7 @@ xShop_Text_Editor = function(parent){
         }
 	});
 
-	div = $('<div></div>').appendTo(this.element);
+	div = $('<div class="xshop-designer-text-input-outer-div"></div>').appendTo(this.element);
 	this.text_input = $('<textarea class="xshop-designer-text-input" rows="1"></textarea>').appendTo(div);
 
 	$(this.text_input).delayKeyup(function(el){
@@ -279,7 +279,7 @@ Text_Component = function (params){
 		var self=this;
 		this.parent = parent;
 		
-		tool_btn = $('<div class="btn btn-deault btn-xs"><i class="glyphicon glyphicon-text-height"></i><br>Text</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+		tool_btn = $('<div class="btn btn-deault"><i class="glyphicon glyphicon-text-height"></i><br>Text</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
 		this.editor = new xShop_Text_Editor(parent.find('.xshop-designer-tool-topbar-options'));
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS

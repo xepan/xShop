@@ -42,7 +42,7 @@ BackgroundImage_Component = function (params){
 	this.renderTool = function(parent){
 		var self=this;
 		this.parent = parent;
-		tool_btn = $('<div class="btn btn-deault xshop-designer-backgroundimage-toolbtn btn-xs"><i class="glyphicon glyphicon-picture"></i><br>BGI</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset')).data('tool',self);
+		tool_btn = $('<div class="btn xshop-designer-backgroundimage-toolbtn"><i class="glyphicon glyphicon-picture"></i><br>BGI</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset')).data('tool',self);
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
 			self.designer_tool.current_selected_component = self;

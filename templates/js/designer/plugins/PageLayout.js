@@ -7,7 +7,6 @@ Layout_Tool = function(parent){
 		this.canvas = canvas;
 		if(this.parent == undefined)
 			this.parent = $('<div class="xshop-designer-layout clearfix"></div>').appendTo($.find(".xshop-designer-tool-bottombar"));
-
 	}
 
 	this.renderTool = function(page_name){
@@ -65,6 +64,7 @@ PageLayout_Component = function (params){
 				layout.init(self.designer_tool,self.canvas);
 				layout.renderTool(index);
 			});
-		});			
+		});
+
 	}
 }

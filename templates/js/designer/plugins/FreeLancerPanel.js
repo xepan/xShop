@@ -21,7 +21,7 @@ PageBlock = function(parent,designer,canvas, manager){
 
 		this.add_div = $('<div class="input-group"></div>').appendTo(this.element);
 		this.input_box =$('<input type="text" class="form-control" placeholder="New Page"/>').appendTo(this.add_div);
-		this.add_btn = $('<span class="input-group-btn"><button class="btn btn-default" type="button">Add</button></span>').appendTo(this.add_div);
+		this.add_btn = $('<span class="input-group-btn"><button class="btn" type="button">Add</button></span>').appendTo(this.add_div);
 
 		this.add_btn.click(function(event){
 			self.addPage(self.input_box.val());
@@ -157,7 +157,7 @@ LayoutBlock = function(parent,designer,canvas, manager){
 		// add input box and add button
 		this.add_div = $('<div class="input-group"></div>').appendTo(this.element);
 		this.input_box =$('<input type="text" class="form-control" placeholder="New Layout"/>').appendTo(this.add_div);
-		this.add_btn = $('<span class="input-group-btn"><button class="btn btn-default" type="button">Add</button></span>').appendTo(this.add_div);
+		this.add_btn = $('<span class="input-group-btn"><button class="btn" type="button">Add</button></span>').appendTo(this.add_div);
 
 		this.add_btn.click(function(event){
 			self.addLayout(self.input_box.val(),true);
@@ -257,7 +257,7 @@ FreeLancerPageLayoutManager = function(parent,designer, canvas){
 
 	this.init = function(){
 		var self = this;
-		this.element = $('<div class="btn btn-xs xshop-designer-freelancer-tool"><i class="glyphicon glyphicon-list-alt"></i><br>P&L</div>').appendTo(this.parent);
+		this.element = $('<div class="btn xshop-designer-freelancer-tool"><i class="glyphicon glyphicon-list-alt"></i><br>P&L</div>').appendTo(this.parent);
 		this.page = $('<div></div>').appendTo(this.element);
 
 		this.pageblock = new PageBlock(this.page,this.designer_tool,this.canvas,this);

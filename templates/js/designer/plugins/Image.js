@@ -3,13 +3,13 @@ xShop_Image_Editor = function(parent){
 	this.parent = parent;
 	this.current_image_component = undefined;
 
-	this.element = $('<div id="xshop-designer-text-editor" style="display:block" class="xshop-options-editor"></div>').appendTo(this.parent);
-	this.image_button_set = $('<div class="btn-group btn-group-xs" role="group"></div>').appendTo(this.element);
-	this.image_manager = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-film"></span></div>').appendTo(this.image_button_set);	
-	this.image_crop_resize = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-">C&R</span></div>').appendTo(this.image_button_set);
-	this.image_replace = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-">Replace</span></div>').appendTo(this.image_button_set);
-	this.image_duplicate = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-">Duplicate</span></div>').appendTo(this.image_button_set);
-	// this.image_manager = $('<div class="btn btn-xs"><span class="glyphicon glyphicon-film"></span></div>').appendTo(this.image_button_set);
+	this.element = $('<div id="xshop-designer-image-editor" style="display:block" class="xshop-options-editor"></div>').appendTo(this.parent);
+	this.image_button_set = $('<div class="btn-group" role="group"></div>').appendTo(this.element);
+	this.image_manager = $('<div class="btn "><span class="glyphicon glyphicon-film"></span></div>').appendTo(this.image_button_set);	
+	this.image_crop_resize = $('<div class="btn "><span class="glyphicon glyphicon-">C&R</span></div>').appendTo(this.image_button_set);
+	this.image_replace = $('<div class="btn "><span class="glyphicon glyphicon-">Replace</span></div>').appendTo(this.image_button_set);
+	this.image_duplicate = $('<div class="btn "><span class="glyphicon glyphicon-">Duplicate</span></div>').appendTo(this.image_button_set);
+	// this.image_manager = $('<div class="btn "><span class="glyphicon glyphicon-film"></span></div>').appendTo(this.image_button_set);
 
 	this.image_manager.click(function(event){
 		options ={modal:false,
@@ -164,7 +164,7 @@ Image_Component = function (params){
 		var self=this;
 		this.parent = parent;
 		
-		tool_btn = $('<div class="btn btn-deault xshop-designer-image-toolbtn btn-xs"><i class="glyphicon glyphicon-picture"></i><br>Image</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset')).data('tool',self);
+		tool_btn = $('<div class="btn btn-deault xshop-designer-image-toolbtn "><i class="glyphicon glyphicon-picture"></i><br>Image</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset')).data('tool',self);
 		this.editor = new xShop_Image_Editor(parent.find('.xshop-designer-tool-topbar-options'));
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS

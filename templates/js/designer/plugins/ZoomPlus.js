@@ -20,7 +20,7 @@ ZoomPlus_Component = function (params){
 	this.renderTool = function(parent){
 		var self=this;
 		this.parent = parent;
-		this.tool_btn = $('<div class="btn btn-deault btn-xs"><i class="glyphicon glyphicon-zoom-in"></i><br>Zoom +</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
+		this.tool_btn = $('<div class="btn"><i class="glyphicon glyphicon-zoom-in"></i><br>Zoom +</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset'));
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		this.tool_btn.click(function(event){
