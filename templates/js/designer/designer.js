@@ -115,13 +115,13 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	setupToolBar: function(){
 		var self=this;
-		var top_bar = $('<div class="xshop-designer-tool-topbar"></div>');
+		var top_bar = $('<div class="xshop-designer-tool-topbar row"></div>');
 		top_bar.prependTo(this.element);
 
 		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
 		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none;"></div>').appendTo(top_bar);
-		
-		this.remove_btn = $('<div>X</div>').appendTo(this.option_panel);
+
+		this.remove_btn = $('<div class="xshop-designer-remove-toolbtn"><i class="glyphicon glyphicon-remove"></i><br>Remove</div>').appendTo(this.option_panel);
 
 		this.remove_btn.click(function(event){
 			$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index,cmp){
@@ -131,7 +131,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 					self.pages_and_layouts[self.current_page][self.current_layout].components.splice(index,1);
 					self.current_selected_component = null;
 					self.option_panel.hide();
-					console.log(self.pages_and_layouts);
+					// console.log(self.pages_and_layouts);
 					// self.render();
 				}
 			});
