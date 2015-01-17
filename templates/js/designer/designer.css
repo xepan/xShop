@@ -179,3 +179,13 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
   border:1px solid #cccccc;
 
 }
+
+
+.ui-resizable-handle, .ui-resizable-se, .ui-icon, .ui-icon-gripsmall-diagonal-se {
+  background-image: none !important;
+  cursor: se-resize !important;
+  width: 9px !important;
+  height: 9px !important;
+  bottom: 0px !important;
+  right: 0px !important;
+}

@@ -21,10 +21,12 @@ xShop_Image_Editor = function(parent){
 	this.image_crop_resize.click(function(event){
 		// var self =this;
 		// console.log(self.current_image_component);
+		event.preventDefault();
+		event.stopPropagation();
 		url = self.current_image_component.options.url;		
 		o = self.current_image_component.options;
 		
-		xx= $('<div class="xshop-designer-image-crop"></div>');
+		xx= $('<div class="xshop-designer-image-crop"></div>').appendTo(self.element);
 		crop_image = $('<img class="xshop-img" src='+url+'></img>').appendTo(xx);
 		x = $('<div></div>').appendTo(crop_image);
 		y = $('<div></div>').appendTo(crop_image);
@@ -36,12 +38,13 @@ xShop_Image_Editor = function(parent){
 			modal:true,
 			open: function( event, ui ) {
 				$(crop_image).cropper({
+					aspectRatio: o.width / o.height,
 				    multiple: true,
 				    data: {
-					    x: o.crop == 'true'? o.crop_x: 0,
-					    y: o.crop == 'true'? o.crop_y: 0,
-					    width: o.crop == 'true'? o.crop_width: $(crop_image).width(),
-					    height: o.crop == 'true'? o.crop_height: $(crop_image).height()
+					    x: o.crop == true? o.crop_x: 0,
+					    y: o.crop == true? o.crop_y: 0,
+					    width: o.crop == true? o.crop_width: $(crop_image).width(),
+					    height: o.crop == true? o.crop_height: $(crop_image).height()
 					  },  
 					done: function(data) {
 						$(x).val(Math.round(data.x));
@@ -169,7 +172,9 @@ Image_Component = function (params){
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
-			self.designer_tool.current_selected_component = undefined;
+			if(self.designer_tool.current_selected_component != undefined && self.designer_tool.current_selected_component.options.type != 'Image')
+				self.designer_tool.current_selected_component = undefined;
+
 			options ={modal:false,
 					width:800	
 				};
@@ -262,11 +267,13 @@ Image_Component = function (params){
 		.done(function(ret) {
 			self.element.find('img').attr('src','data:image/jpg;base64, '+ ret);
 			if(is_new_image===true){
-				self.options.width = self.designer_tool.screen2option(self.element.find('img').width());
-				self.options.height = self.designer_tool.screen2option(self.element.find('img').height());
+				window.setTimeout(function(){
+					self.options.width = self.designer_tool.screen2option(self.element.find('img').width());
+					self.options.height = self.designer_tool.screen2option(self.element.find('img').height());
+					console.log(self.element.find('img').width());
+				},200);
 			}
 			self.xhr=undefined;
-			console.log(self.element.find('img').width());
 		})
 		.fail(function(ret) {
 			// evel(ret);

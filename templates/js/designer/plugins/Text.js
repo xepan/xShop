@@ -309,14 +309,14 @@ Text_Component = function (params){
 			    tolerance:5,
 				stop:function(e,ui){
 					var position = ui.position;
-					self.options.x = position.left / self.designer_tool.zoom;
-					self.options.y = position.top / self.designer_tool.zoom;
+					self.options.x = self.designer_tool.screen2option(position.left);
+					self.options.y = self.designer_tool.screen2option(position.top);
 				}
 			}).resizable({
 				containment: self.designer_tool.safe_zone,
 				handles: 'e, w',
 				stop: function(e,ui){
-					self.options.width = ui.size.width;
+					self.options.width = self.designer_tool.screen2option(ui.size.width);
 					self.render();
 				}
 			});
