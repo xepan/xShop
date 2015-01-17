@@ -21,9 +21,12 @@ xShop_Image_Editor = function(parent){
 	this.image_crop_resize.click(function(event){
 		// var self =this;
 		// console.log(self.current_image_component);
+		event.preventDefault();
+		event.stopPropagation();
 		url = self.current_image_component.options.url;		
+		o = self.current_image_component.options;
 		
-		xx= $('<div class="xshop-designer-image-crop"></div>');
+		xx= $('<div class="xshop-designer-image-crop"></div>').appendTo(self.element);
 		crop_image = $('<img class="xshop-img" src='+url+'></img>').appendTo(xx);
 		x = $('<div></div>').appendTo(crop_image);
 		y = $('<div></div>').appendTo(crop_image);
@@ -35,12 +38,13 @@ xShop_Image_Editor = function(parent){
 			modal:true,
 			open: function( event, ui ) {
 				$(crop_image).cropper({
+					aspectRatio: o.width / o.height,
 				    multiple: true,
 				    data: {
-					    x: 480,
-					    y: 60,
-					    width: 640,
-					    height: 360
+					    x: o.crop == true? o.crop_x: 0,
+					    y: o.crop == true? o.crop_y: 0,
+					    width: o.crop == true? o.crop_width: $(crop_image).width(),
+					    height: o.crop == true? o.crop_height: $(crop_image).height()
 					  },  
 					done: function(data) {
 						$(x).val(Math.round(data.x));
@@ -51,20 +55,22 @@ xShop_Image_Editor = function(parent){
 					  }
 				});
 				var $titlebar = $.find('.ui-dialog-titlebar');
-				continue_btn = $('<button class="btn  pull-right">Continue</button>').appendTo($titlebar);
-				continue_btn.click(function(){
-					self.current_image_component.options.crop_x = $(x).val();
-					self.current_image_component.options.crop_y = $(y).val();
-					self.current_image_component.options.crop_width = $(width).val();
-					self.current_image_component.options.crop_height = $(height).val();
-					self.current_image_component.options.crop = true;
-					self.current_image_component.render();
-					$('.xshop-designer-image-crop').dialog('close');
-				});
 			},
 
 			close: function( event, ui ) {
 				console.log(self.current_image_component.canvas);
+			},
+
+			buttons: {
+				Continue: function(){
+					self.current_image_component.options.crop = true;
+					self.current_image_component.options.crop_x = $(x).val();
+					self.current_image_component.options.crop_y = $(y).val();
+					self.current_image_component.options.crop_width = $(width).val();
+					self.current_image_component.options.crop_height = $(height).val();
+					self.current_image_component.render();
+					$(this).dialog('close');
+				}
 			}
 		});
 		// console.log(self.current_image_component);
@@ -166,7 +172,9 @@ Image_Component = function (params){
 
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
-			self.designer_tool.current_selected_component = undefined;
+			if(self.designer_tool.current_selected_component != undefined && self.designer_tool.current_selected_component.options.type != 'Image')
+				self.designer_tool.current_selected_component = undefined;
+
 			options ={modal:false,
 					width:800	
 				};
@@ -259,8 +267,11 @@ Image_Component = function (params){
 		.done(function(ret) {
 			self.element.find('img').attr('src','data:image/jpg;base64, '+ ret);
 			if(is_new_image===true){
-				self.options.width = self.designer_tool.screen2option(self.element.find('img').width());
-				self.options.height = self.designer_tool.screen2option(self.element.find('img').height());
+				window.setTimeout(function(){
+					self.options.width = self.designer_tool.screen2option(self.element.find('img').width());
+					self.options.height = self.designer_tool.screen2option(self.element.find('img').height());
+					console.log(self.element.find('img').width());
+				},200);
 			}
 			self.xhr=undefined;
 		})

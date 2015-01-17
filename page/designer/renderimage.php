@@ -31,6 +31,15 @@ class page_xShop_page_designer_renderimage extends Page {
 		$max_width = $_GET['max_width'];
 		$max_height = $_GET['max_height'];
 
+		$crop = $_GET['crop'] =='true';
+		$crop_x = $_GET['crop_x'];
+		$crop_y = $_GET['crop_y'];
+
+		$crop_width = $_GET["crop_width"];
+		$crop_height = $_GET["crop_height"];
+
+		$rotation_angle = $_GET['rotation_angle'];
+
 		$p= new PHPImage($image_path);
 		
 		if($width==0 and $height==0){
@@ -41,9 +50,17 @@ class page_xShop_page_designer_renderimage extends Page {
 				$height = $max_height;
 				$width = $height * ($p->getWidth() / $p->getHeight());
 			}
+		}elseif($crop){
+			$p->crop($crop_x,$crop_y,$crop_width,$crop_height);
 		}
 
+
 		$p->resize($width,$height,false,false,false);
+		if($rotation_angle){
+			$p->rotate($rotation_angle);
+		}
+
+
 		$p->setOutput('png',3);
 		$p->show(true);
 		return;
