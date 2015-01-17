@@ -184,7 +184,7 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
 .xshop-designer-tool-workplace .ui-resizable-ne,
 .xshop-designer-tool-workplace .ui-resizable-nw,
 .xshop-designer-tool-workplace .ui-resizable-se{
-  background: #1abc9c !important;
+  background: #69f !important;
   text-overflow: clip;
   -o-text-overflow: clip;
   text-overflow: clip;
@@ -192,6 +192,7 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
   width: 9px !important;
   height: 9px !important;
   transform-origin: 0 100% 0deg;
+  opacity: 1;
 }
 
 .ui-resizable-handle, .ui-resizable-se, .ui-icon, .ui-icon-gripsmall-diagonal-se {
@@ -236,4 +237,43 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
 
 .ui-resizable-w{
   left: 0px !important;
+}
+
+.xshop-designer-tool-workplace .ui-resizable-e,
+.xshop-designer-tool-workplace .ui-resizable-w,
+.xshop-designer-tool-workplace .ui-resizable-n,
+.xshop-designer-tool-workplace .ui-resizable-s{
+  background-color: #69f;
+  height: 9px !important;
+  width: 9px !important;
+  opacity: 1;
+  /*background-color: red;*/
+}
+
+.xshop-designer-tool-workplace .ui-resizable-e{
+  margin-top: -3px;
+  right: -3px;
+  top: 50%;
+  cursor: e-resize !important;
+}
+
+.xshop-designer-tool-workplace .ui-resizable-w{
+  margin-top: -3px;
+  right: -3px;
+  top: 50%;
+  cursor: w-resize !important;
+}
+
+.xshop-designer-tool-workplace .ui-resizable-n{
+  cursor: n-resize !important; 
+  left: 50%;
+  margin-left: -3px;
+  top: -3px;
+}
+
+.xshop-designer-tool-workplace .ui-resizable-s{
+  cursor: s-resize !important;
+  left: 50%;
+  bottom: -3px;
+  margin-left: -3px;
 }
