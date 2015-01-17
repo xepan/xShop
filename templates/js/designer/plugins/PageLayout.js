@@ -24,8 +24,14 @@ Layout_Tool = function(parent){
 					self.designer_tool.current_page = page_name;
 					self.designer_tool.current_layout = $(this).data('layout');
 					self.designer_tool.render();
-					console.log(self.designer_tool);
+					$('.xshop-designer-layoutbtn').removeClass('ui-selected');
+					$(this).addClass('ui-selected');
 				});
+			if(index == self.designer_tool.current_layout) {
+				$(layout_btn).addClass('ui-selected');
+			}else{
+				$(layout_btn).removeClass('ui-selected');
+			}
 		});
 		// console.log(self.designer_tool);
 	}	
@@ -58,12 +64,24 @@ PageLayout_Component = function (params){
 		page_layout_toolbar = $('<div class="xshop-designer-pagelayout clearfix"></div>').appendTo($.find(".xshop-designer-tool-bottombar"));
 		
 		$.each(self.designer_tool.pages_and_layouts,function(index,page){
-			page_btn = $('<div class="xshop-designer-pagebtn"><h3>'+index+'</h3></div>').appendTo(page_layout_toolbar);
+			page_btn = $('<div class="xshop-designer-pagebtn"><h3>'+index+'</h3></div>').appendTo(page_layout_toolbar).data('page',index);
 			page_btn.click(function(event){
 				layout = new Layout_Tool();
 				layout.init(self.designer_tool,self.canvas);
 				layout.renderTool(index);
+				self.designer_tool.current_page = index;
+				self.designer_tool.current_layout = 'Main Layout';
+				self.designer_tool.render();
+				$('.xshop-designer-pagebtn').removeClass('ui-selected');
+				$(this).addClass('ui-selected');
 			});
+
+			if(index == self.designer_tool.current_page) {
+				$(page_btn).addClass('ui-selected');
+			}else{
+				$(page_btn).removeClass('ui-selected');
+			}
+
 		});
 
 	}
