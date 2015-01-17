@@ -19,14 +19,15 @@ xShop_Image_Editor = function(parent){
 	// 	$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
 	// });
 	this.image_remove.click(function(){
-		console.log(self);
-		$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index,cmp){
-			if(cmp === self.current_selected_component){
+		dt  = self.current_image_component.designer_tool;
+
+		$.each(dt.pages_and_layouts[dt.current_page][dt.current_layout].components, function(index,cmp){
+			if(cmp === dt.current_selected_component){
 				// console.log(self.pages_and_layouts);
-				$(self.current_selected_component.element).remove();
-				self.pages_and_layouts[self.current_page][self.current_layout].components.splice(index,1);
-				self.current_selected_component = null;
-				self.option_panel.hide();
+				$(dt.current_selected_component.element).remove();
+				dt.pages_and_layouts[dt.current_page][dt.current_layout].components.splice(index,1);
+				dt.current_selected_component = null;
+				dt.option_panel.hide();
 			}
 		});
 	});
