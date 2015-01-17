@@ -44,7 +44,8 @@ Save_Component = function (params){
 					data: {xshop_item_design:JSON.stringify(self.layout_array),//json object
 							item_id:self.designer_tool.options.item_id,//designed item id
 							designer_mode:self.designer_tool.options.designer_mode,
-							item_member_design_id:self.designer_tool.options.item_member_design_id
+							item_member_design_id:self.designer_tool.options.item_member_design_id,
+							px_width : self.designer_tool.px_width
 						},
 				})
 				.done(function(ret) {
@@ -55,9 +56,13 @@ Save_Component = function (params){
 					else if(ret.indexOf('false')===0){
 						$.univ().errorMessage('Not Saved, some thing wrong');
 					}else{
-						// self.designer_tool.options.item_member_design_id = ret;
-						eval(ret);
-						$.univ().successMessage('Saved Successfully');
+						if(!isNaN(+ret)){
+							self.designer_tool.options.item_member_design_id = ret;
+							// window.history.pushState('page', 'saved_page', 'replace url');
+							$.univ().successMessage('Saved Successfully');
+						}else{
+							eval(ret);
+						}
 					}
 				})
 				.fail(function() {

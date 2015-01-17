@@ -61,6 +61,8 @@ BackgroundImage_Component = function (params){
 		var self = this;
 		if(this.element == undefined){
 			this.element = $('<div style="position:absolute;z-index:-10;" class="xshop-designer-component"><span><img></img></span></div>').appendTo(this.canvas);
+			self.options.width = self.designer_tool.screen2option(self.designer_tool.canvas.width());
+			self.options.height = self.designer_tool.screen2option(self.designer_tool.canvas.height());
 		}else{
 			this.element.show();
 		}
