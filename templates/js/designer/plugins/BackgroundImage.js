@@ -20,7 +20,6 @@ BackgroundImage_Component = function (params){
 		replace_image: false,
 		rotation_angle:0,
 		locked: false,
-
 		
 		editable: true,
 		default_url:'templates/images/logo.png',
@@ -30,13 +29,15 @@ BackgroundImage_Component = function (params){
 		type: 'BackgroundImage'
 	};
 
-	this.init = function(designer,canvas, editor){
+	this.init = function(designer,canvas, editor,load_from_saved_design=false){
 		var self=this;
 		this.designer_tool = designer;
 		this.canvas = canvas;
 		if(editor !== undefined)
 			this.editor = editor;
-		self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].background = self;
+		if(!load_from_saved_design){
+			self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].background = self;
+		}
 	}
 
 	this.renderTool = function(parent){
@@ -49,7 +50,7 @@ BackgroundImage_Component = function (params){
 			options ={modal:false,
 					width:800,
 					// close:function(){
-					// 	self.designer_tool.current_selected_component = undefined;
+						// self.designer_tool.current_selected_component = undefined;
 					// }
 				};
 			$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
@@ -91,23 +92,9 @@ BackgroundImage_Component = function (params){
 					},
 		})
 		.done(function(ret) {
-			//create new BGImageComponent type object
-			// var new_bgimage = new BackgroundImage_Component();
-			// new_bgimage.init(self.designer_tool,self.canvas, self.editor);
-			// new_bgimage.url = self.options.url;
-			// new_bgimage.options.url = self.options.url;
-			// //Fisrt delete all previous background image
-			// $.each(self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components,function(index,value){
-			// 	if(value.options.type == "BackgroundImage"){
-			// 		delete self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components[index];
-			// 	}
-			// });
-			// //add new background images 
-			// self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].components.push(new_bgimage);
-
-			// console.log(self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout]);
 			self.element.find('img').attr('src','data:image/jpg;base64, '+ ret);
 			self.xhr=undefined;
+			// console.log(self);
 		})
 		.fail(function(ret) {
 			// evel(ret);

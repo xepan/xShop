@@ -94,9 +94,11 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 				
 				if(layout_object.background != undefined ){
 					var temp = new BackgroundImage_Component();
-					temp.init(self, self.canvas);
+					temp.init(self, self.canvas,null,true);
 					temp.options = JSON.parse(layout_object.background);
 					self.pages_and_layouts[page_name][layout_name]['background'] = temp;
+					// console.log(self.pages_and_layouts[page_name][layout_name]['background']);
+					// console.log(layout_object.background);
 				}
 			});
 
