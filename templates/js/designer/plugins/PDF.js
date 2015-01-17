@@ -25,7 +25,7 @@ PDF_Component = function (params){
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
 			// create new TextComponent type object
-			
+			alert('Hello baby');
 		});
 
 	}
