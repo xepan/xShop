@@ -19,7 +19,6 @@ xShop_Image_Editor = function(parent){
 	// 	$.univ().frameURL('Add Images From...','index.php?page=xShop_page_designer_itemimages',options);
 	// });
 	this.image_remove.click(function(){
-		console.log(self);
 		$.each(self.pages_and_layouts[self.current_page][self.current_layout].components, function(index,cmp){
 			if(cmp === self.current_selected_component){
 				// console.log(self.pages_and_layouts);
