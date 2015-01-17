@@ -105,12 +105,15 @@ class View_Tools_Designer extends \componentBase\View_Component{
 			$this->api->jquery->addStylesheet('designer/cropper');
 			$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/cropper.js"></script>'."\n");
 			
+			$design = json_decode($this->item['designs'],true);
+			$design = $design['design']; // trimming other array values like px_width etc
+			$design = json_encode($design);
 			$this->js(true)->xepan_xshopdesigner(array('width'=>$this->specification['width'],
 														'height'=>$this->specification['height'],
 														'trim'=>$this->specification['trim'],
 														'unit'=>'mm',
 														'designer_mode'=> $this->designer_mode,
-														'design'=>$this->item['designs'],
+														'design'=>$design,
 														'item_id'=>$_GET['xsnb_design_item_id'],
 														'item_member_design_id' => $_GET['item_member_design_id']
 												));

@@ -38,6 +38,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 	_create: function(){
 		this.setupLayout();
+		console.log(this);
 	},
 		
 	setupLayout: function(){

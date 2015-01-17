@@ -22,47 +22,29 @@ class page_xShop_page_designer_renderimage extends Page {
 	
 	function init(){
 		parent::init();
-		$image_path = dirname(getcwd()).$_GET['url'];
-		if(!file_exists($image_path)) return;
+		$options=array();
 
-		$zoom = $_GET['zoom'];
-		$width = $_GET['width'] * $zoom ;
-		$height = $_GET['height'] * $zoom;
-		$max_width = $_GET['max_width'];
-		$max_height = $_GET['max_height'];
+		$options['url'] = dirname(getcwd()).$_GET['url'];
+		if(!file_exists($options['url'])) return;
 
-		$crop = $_GET['crop'] =='true';
-		$crop_x = $_GET['crop_x'];
-		$crop_y = $_GET['crop_y'];
+		$zoom = $options['zoom'] = $_GET['zoom'];
+		$options['width'] = $_GET['width'] * $zoom ;
+		$options['height'] = $_GET['height'] * $zoom;
+		$options['max_width'] = $_GET['max_width'];
+		$options['max_height'] = $_GET['max_height'];
 
-		$crop_width = $_GET["crop_width"];
-		$crop_height = $_GET["crop_height"];
+		$options['crop'] = $_GET['crop'] =='true';
+		$options['crop_x'] = $_GET['crop_x'];
+		$options['crop_y'] = $_GET['crop_y'];
 
-		$rotation_angle = $_GET['rotation_angle'];
+		$options['crop_width'] = $_GET["crop_width"];
+		$options['crop_height'] = $_GET["crop_height"];
 
-		$p= new PHPImage($image_path);
+		$options['rotation_angle'] = $_GET['rotation_angle'];
+
+		$cont = $this->add('xShop/Controller_RenderImage',array('options'=>$options));
+		$cont->show('png',3,true,false);
 		
-		if($width==0 and $height==0){
-			if($p->getWidth() > $p->getHeight()){
-				$width = $max_width;
-				$height = $width * ($p->getHeight() / $p->getWidth());
-			}else{
-				$height = $max_height;
-				$width = $height * ($p->getWidth() / $p->getHeight());
-			}
-		}elseif($crop){
-			$p->crop($crop_x,$crop_y,$crop_width,$crop_height);
-		}
-
-
-		$p->resize($width,$height,false,false,false);
-		if($rotation_angle){
-			$p->rotate($rotation_angle);
-		}
-
-
-		$p->setOutput('png',3);
-		$p->show(true);
 		return;
 			$image = file_get_contents(dirname(getcwd()).$_GET['url']);
 	   		$name = tempnam("/tmp", "image");

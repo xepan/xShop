@@ -32,13 +32,19 @@ class page_xShop_page_designer_save extends Page {
 
 		}
 
+		$design = json_decode($_POST['xshop_item_design'],true);
+		$save_data =array();
+		$save_data['px_width']=$_POST['px_width'];
+		$save_data['design']=$design;
+		$save_data = json_encode($save_data);
+
 		if(isset($target) and $_POST['designer_mode']=='true' and $target['designer_id']== $designer->id){
 			// am I the designer of item ?? .. checked in if condition above
 
 			// check for required specifications like width / height
 
 			// set designer_mode=true to desginer js
-			$target['designs'] = $_POST['xshop_item_design'];
+			$target['designs'] = $save_data;
 			$target->save();
 			echo "true";
 			exit;
@@ -47,12 +53,12 @@ class page_xShop_page_designer_save extends Page {
 			// set target model to member_item_assos
 			// set designer_mode=false to desginer js
 			if($target->loaded()){
-				$target['designs'] = $_POST['xshop_item_design'];
+				$target['designs'] = $save_data;
 				$target->save();
 			}else{
 				$target['item_id'] = $_POST['item_id'];
 				$target['member_id'] = $desginer['id'];
-				$target['designs']	= $_POST['xshop_item_design'];
+				$target['designs']	= $save_data;
 				$target->save();
 			}		
 			echo $target['id'];
