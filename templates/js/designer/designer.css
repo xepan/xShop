@@ -1,53 +1,53 @@
 .xshop-designer-tool {
-	outline: 1px solid black !important;
-	width: 90%;
-	margin: 0 auto;
-	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  outline: 1px solid black !important;
+  width: 90%;
+  margin: 0 auto;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 .xshop-designer-tool-topbar{
-	height:auto;
-	min-height:70px;
-	/*width: 100%;*/
-	margin:0px 0 20px 0;
-	background:linear-gradient(to bottom, #fefefe, #f0f2f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
-	border:1px solid #b5babf;
+  height:auto;
+  min-height:70px;
+  /*width: 100%;*/
+  margin:0px 0 20px 0;
+  background:linear-gradient(to bottom, #fefefe, #f0f2f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
+  border:1px solid #b5babf;
 
 }
 
 .xshop-designer-tool-topbar-button{
-	width: 4em;
-	float: left;
-	border: 1px solid blue;
-	height: 4em;
-	margin: 0.25em;
+  width: 4em;
+  float: left;
+  border: 1px solid blue;
+  height: 4em;
+  margin: 0.25em;
 }
 
 #xshop-designer-component-panel:before{
-	clear: both;
+  clear: both;
 }
 
 #xshop-designer-component-panel{
-	/*float: left;*/
-	outline: 5px solid gray;
-	/*min-width: 300px;*/
-	/*min-height: 500px;*/
+  /*float: left;*/
+  outline: 5px solid gray;
+  /*min-width: 300px;*/
+  /*min-height: 500px;*/
 }
 
 .xshop-desiner-tool-canvas{
-	outline: 0px solid green !important;
-	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
+  outline: 0px solid green !important;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
 
 .xshop-desiner-tool-safe-zone{
-	outline: 1px dashed gray !important;
+  outline: 1px dashed gray !important;
 }
 
 .ui-selected {
   outline: 2px dashed blue !important;
 }
 .input-group{
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .guidex{
@@ -72,20 +72,20 @@
 }
 
 .page_row,.layout_row{
-	margin:2px;
+  margin:2px;
 }
 
 .xshop-designer-freelancer-tool{
-	/*blue:#2e6da4;warning:#f0ad4e;success:#4cae4c;*/
-	background-color:#f0ad4e;
-	color: white;
+  /*blue:#2e6da4;warning:#f0ad4e;success:#4cae4c;*/
+  background-color:#f0ad4e;
+  color: white;
 }
 .xshop-designer-item-member-images{
-	/*Images Outer Div*/
-	/*width: 40px;*/
+  /*Images Outer Div*/
+  /*width: 40px;*/
 }
 .xshop-designer-add-replace{
-	position: absolute;
+  position: absolute;
     top: 0;
     height: 93%;
     width: 90%;
@@ -100,17 +100,17 @@
 }
 
 .xshop-desiner-tool-canvas .ui-resizable-ne,.xshop-desiner-tool-canvas .ui-resizable-se,.xshop-desiner-tool-canvas .ui-resizable-sw,.xshop-desiner-tool-canvas .ui-resizable-nw{
-	background-color: gray;
+  background-color: gray;
 }
 
 .xshop-designer-pagelayout{
-	margin:10px 0px 0px 0px;
-	position: relative;
-	width: 100%;
+  margin:10px 0px 0px 0px;
+  position: relative;
+  width: 100%;
 }
 
 div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
-  	min-height: 50px;
+    min-height: 50px;
     width: 100px;
     float: left;
     opacity: 0.5; 
@@ -119,12 +119,12 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
     transition: all 0.5s ease;
     margin:0 1% 0 1% ;
     background:linear-gradient(to bottom, #fefefe, #f0f2f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
-	border:1px solid #b5babf;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  border:1px solid #b5babf;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .xshop-designer-pagebtn h3,.xshop-designer-layoutbtn h3{
-	margin-top:20px;
+  margin-top:20px;
 }
 
 .xshop-designer-tool-topbar-buttonset > .btn{
@@ -134,31 +134,31 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
 }
 
 .xshop-designer-tool-workplace{
-	margin-top:30px; 
+  margin-top:30px; 
 }
 
 /*TextBox Tool Tip Designer*/
 #xshop-designer-text-editor{
-	position: relative;
-	z-index:200;
-	/*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);*/
-	/*padding:0 1% 1% 0;*/
+  position: relative;
+  z-index:200;
+  /*box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);*/
+  /*padding:0 1% 1% 0;*/
 }
 
 .xshop-options-editor{
-  	box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
 }
 
 .xshop-designer-text-input{
-	width: 100%;
-	font-size: 12px;
-	line-height: 1.4;
-	overflow-y:scroll;
-	border-radius: 2;
+  width: 100%;
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-y:scroll;
+  border-radius: 2;
   max-height: 35px;
   min-height: 35px;
   padding: 0;
-	display: inline-block;
+  display: inline-block;
   -webkit-box-sizing: content-box;
   -moz-box-sizing: content-box;
   box-sizing: content-box;
@@ -180,12 +180,60 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
 
 }
 
+.xshop-designer-tool-workplace .ui-resizable-sw,
+.xshop-designer-tool-workplace .ui-resizable-ne,
+.xshop-designer-tool-workplace .ui-resizable-nw,
+.xshop-designer-tool-workplace .ui-resizable-se{
+  background: #1abc9c !important;
+  text-overflow: clip;
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  -webkit-transform-origin: 0 100% 0deg;
+  width: 9px !important;
+  height: 9px !important;
+  transform-origin: 0 100% 0deg;
+}
 
 .ui-resizable-handle, .ui-resizable-se, .ui-icon, .ui-icon-gripsmall-diagonal-se {
   background-image: none !important;
   cursor: se-resize !important;
-  width: 9px !important;
-  height: 9px !important;
   bottom: 0px !important;
   right: 0px !important;
+}
+
+.ui-resizable-sw{
+  background-image: none !important;
+  cursor: sw-resize !important;
+  bottom: 0px !important;
+  left:0px !important;
+}
+
+.ui-resizable-ne{
+  background-image: none !important;
+  cursor: ne-resize !important;
+  top: 0px !important;
+  right:0px !important;
+}
+
+.ui-resizable-nw{
+  background-image: none !important;
+  cursor: nw-resize !important;
+  left:0px !important;
+  top:0px !important;
+}
+
+.ui-resizable-n{
+  top:0px !important;
+}
+
+.ui-resizable-e{
+  right:0px !important;
+}
+
+.ui-resizable-s{
+  bottom: 0px !important;
+}
+
+.ui-resizable-w{
+  left: 0px !important;
 }
