@@ -179,3 +179,14 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
   border:1px solid #cccccc;
 
 }
+
+.ui-resizable-sw,.ui-resizable-ne,.ui-resizable-nw,.ui-resizable-se{
+  background: #1abc9c !important;
+  text-overflow: clip;
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  -webkit-transform-origin: 0 100% 0deg;
+  transform-origin: 0 100% 0deg;
+}
+
+
