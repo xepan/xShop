@@ -108,6 +108,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 			$design = json_decode($this->item['designs'],true);
 			$design = $design['design']; // trimming other array values like px_width etc
 			$design = json_encode($design);
+			
 			$this->js(true)->xepan_xshopdesigner(array('width'=>$this->specification['width'],
 														'height'=>$this->specification['height'],
 														'trim'=>$this->specification['trim'],

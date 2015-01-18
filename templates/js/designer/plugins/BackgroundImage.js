@@ -29,24 +29,21 @@ BackgroundImage_Component = function (params){
 		type: 'BackgroundImage'
 	};
 
-	this.init = function(designer,canvas, editor,load_from_saved_design=false){
+	this.init = function(designer,canvas, editor){
 		var self=this;
 		this.designer_tool = designer;
 		this.canvas = canvas;
 		if(editor !== undefined)
 			this.editor = editor;
-		if(!load_from_saved_design){
-			self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].background = self;
-		}
 	}
 
 	this.renderTool = function(parent){
 		var self=this;
 		this.parent = parent;
 		tool_btn = $('<div class="btn xshop-designer-backgroundimage-toolbtn"><i class="glyphicon glyphicon-picture"></i><br>BGI</div>').appendTo(parent.find('.xshop-designer-tool-topbar-buttonset')).data('tool',self);
-		// CREATE NEW TEXT COMPONENT ON CANVAS
+
 		tool_btn.click(function(event){
-			self.designer_tool.current_selected_component = self;
+			self.designer_tool.current_selected_component = self.designer_tool.pages_and_layouts[self.designer_tool.current_page][self.designer_tool.current_layout].background;
 			options ={modal:false,
 					width:800,
 					// close:function(){
@@ -60,6 +57,7 @@ BackgroundImage_Component = function (params){
 
 	this.render = function(){
 		var self = this;
+		if(this.options.url == undefined) return;
 		if(this.element == undefined){
 			this.element = $('<div style="position:absolute;z-index:-10;" class="xshop-designer-component"><span><img></img></span></div>').appendTo(this.canvas);
 			self.options.width = self.designer_tool.screen2option(self.designer_tool.canvas.width());
@@ -67,8 +65,10 @@ BackgroundImage_Component = function (params){
 		}else{
 			this.element.show();
 		}
-		this.element.css('top',self.designer_tool.screen2option(self.options.y));
-		this.element.css('left',self.designer_tool.screen2option(self.options.x));
+		this.element.css('top',self.designer_tool.option2screen(self.options.y));
+		this.element.css('left',self.designer_tool.option2screen(self.options.x));
+		this.element.css('width',self.designer_tool.option2screen(self.options.width));
+		this.element.css('height',self.designer_tool.option2screen(self.options.height));
 		// this.element.find('img').width((this.element.find('img').width() * self.designer_tool.delta_zoom /100));
 		// this.element.find('img').height((this.element.find('img').height() * self.designer_tool.delta_zoom/100));
 
@@ -89,12 +89,12 @@ BackgroundImage_Component = function (params){
 					rotation_angle:self.options.rotation_angle,
 					url:self.options.url,
 					zoom: self.designer_tool.zoom,
-					width: self.designer_tool.screen2option(self.designer_tool.canvas.width()),
-					height: self.designer_tool.screen2option(self.designer_tool.canvas.height())
+					width: self.options.width,
+					height: self.options.height
 					},
 		})
 		.done(function(ret) {
-			self.element.find('img').attr('src','data:image/jpg;base64, '+ ret);
+			self.element.find('img').attr('src','data:image/jpg;base64, '+ ret).width(self.designer_tool.option2screen(self.options.width));
 			self.xhr=undefined;
 			// console.log(self);
 		})

@@ -55,7 +55,8 @@ PageBlock = function(parent,designer,canvas, manager){
 			this.designer_tool.pages_and_layouts[page_name] =  new Object();
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'] =  new Object();
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].components = [];
-			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].background = undefined;
+			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].background = new BackgroundImage_Component();
+			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].background.init(self, self.canvas,null);
 			console.log('adding ' + page_name);
 			// add default layout to this page as well
 			this.addPageView(page_name);
@@ -199,7 +200,8 @@ LayoutBlock = function(parent,designer,canvas, manager){
 			if(is_new_layout){
 				var new_layout= new Object();
 				new_layout.components=[];
-				new_layout.background=undefined;
+				new_layout.background = new BackgroundImage_Component();
+				new_layout.background.init(self, self.canvas,null);
 				this.designer_tool.pages_and_layouts[this.current_page][layout_name] =  new_layout;
 			}
 

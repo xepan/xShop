@@ -8,11 +8,6 @@ class Controller_RenderImage extends \AbstractController {
 	function init(){
 		parent::init();
 		$this->phpimage = $p = new \PHPImage($this->options['url']);
-	}
-
-	function show($type='png',$quality=3, $base64_encode=true, $return_data=false){
-		$p = $this->phpimage;
-
 		if($this->options['width']==0 and $this->options['height']==0){
 			if($p->getWidth() > $p->getHeight()){
 				$this->options['width'] = $this->options['max_width'];
@@ -25,14 +20,14 @@ class Controller_RenderImage extends \AbstractController {
 			$p->crop($this->options['crop_x'],$this->options['crop_y'],$this->options['crop_width'],$this->options['crop_height']);
 		}
 
-
 		$p->resize($this->options['width'],$this->options['height'],false,false,false);
-		if($this->options['rotation_angle']){
-			$p->rotate($this->options['rotation_angle']);
-		}
+		// if($this->options['rotation_angle']){
+		// 	$p->rotate($this->options['rotation_angle']);
+		// }
+	}
 
-
-		$p->setOutput('png',3);
-		return $p->show($base64_encode,$return_data);
+	function show($type='png',$quality=3, $base64_encode=true, $return_data=false){
+		$this->phpimage->setOutput('png',3);
+		return $this->phpimage->show($base64_encode,$return_data);
 	}
 }
