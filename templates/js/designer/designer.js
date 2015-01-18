@@ -4,7 +4,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		"Front Page": {
 			"Main Layout": {
 				components: [],
-				background:undefined
+				background: undefined
 			}
 		}
 	},
@@ -74,8 +74,11 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	loadDesign: function(){
 		var self = this;
-		if(self.options.design == "" || !self.options.design) return;
+		if(self.options.design == "" || !self.options.design || self.options.design=='null') return;
 		saved_design = JSON.parse(self.options.design);
+		console.log('inLoadDesigns');
+		console.log(saved_design);
+		
 		$.each(saved_design,function(page_name,page_object){
 			self.pages_and_layouts[page_name]={};
 
@@ -93,14 +96,15 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 					});
 				}
 				
+
+				var temp = new BackgroundImage_Component();
+				temp.init(self, self.canvas,null);
+				
 				if(layout_object.background != undefined ){
-					var temp = new BackgroundImage_Component();
-					temp.init(self, self.canvas,null,true);
 					temp.options = JSON.parse(layout_object.background);
-					self.pages_and_layouts[page_name][layout_name]['background'] = temp;
-					// console.log(self.pages_and_layouts[page_name][layout_name]['background']);
-					// console.log(layout_object.background);
 				}
+				self.pages_and_layouts[page_name][layout_name]['background'] = temp;
+
 			});
 
 		});

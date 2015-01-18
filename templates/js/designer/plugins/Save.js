@@ -31,8 +31,8 @@ Save_Component = function (params){
 					$.each(layout.components,function(index,component){
 						self.layout_array[self.page][self.layout]['components'].push(JSON.stringify(component.options));
 					});
-					if(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'] != undefined)
-						self.layout_array[self.page][self.layout]['background'] = JSON.stringify(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'].options);
+					// if(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'] != undefined)
+					self.layout_array[self.page][self.layout]['background'] = JSON.stringify(self.designer_tool.pages_and_layouts[self.page][self.layout]['background'].options);
 				});	
 			});
 			
