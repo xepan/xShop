@@ -9,7 +9,6 @@ PageBlock = function(parent,designer,canvas, manager){
 	this.add_div=undefined;
 	this.input_box=undefined;
 	this.add_btn=undefined;
-
 	this.page_list_div = undefined;
 
 	this.init = function(pages_data_array){
@@ -57,9 +56,10 @@ PageBlock = function(parent,designer,canvas, manager){
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].components = [];
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].background = new BackgroundImage_Component();
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].background.init(self, self.canvas,null);
-			console.log('adding ' + page_name);
+			// console.log('adding ' + page_name);
 			// add default layout to this page as well
 			this.addPageView(page_name);
+			this.input_box.val("");
 			// page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
 			// div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
 			// page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
@@ -76,7 +76,6 @@ PageBlock = function(parent,designer,canvas, manager){
 			// 		$(this).closest(".page_row").remove();
 			// });
 
-			// this.input_box.val("");
 		}
 		// add page to pagelistdiv and add to designertool pagesnadlayout object
 
@@ -92,7 +91,7 @@ PageBlock = function(parent,designer,canvas, manager){
 	}
 
 	this.addPageView = function(page_name){
-		var self = this; 
+		var self = this;
 		page_row = $('<div class="page_row"></div>').appendTo(this.page_list_div);
 		div = $('<a href="#" class="list-group-item"></a>').appendTo(page_row);
 		page_name = $('<span class="xshop-designer-ft-page-name"></span>').appendTo(div).html(page_name);
@@ -116,8 +115,8 @@ PageBlock = function(parent,designer,canvas, manager){
  			$.univ().errorMessage('cannot Delete');
  			return false;
  		}else{
-			this.designer_tool.pages_and_layouts[page_name] = null;	
-			delete this.designer_tool.pages_and_layouts[page_name];
+			this.designer_tool.pages_and_layouts[page_name[0].firstChild.data] = null;
+			delete this.designer_tool.pages_and_layouts[page_name[0].firstChild.data];
  			return true;
  		}
 	}
@@ -225,7 +224,7 @@ LayoutBlock = function(parent,designer,canvas, manager){
 			return false;
 		}else{
 			this.designer_tool.pages_and_layouts[this.current_page][layout_name] = null;
-			delete this.designer_tool.pages_and_layouts[this.current_page][layout_name];	
+			delete this.designer_tool.pages_and_layouts[this.current_page][layout_name];
 			return true;
 		}
 	}
@@ -263,8 +262,7 @@ FreeLancerPageLayoutManager = function(parent,designer, canvas){
 		this.page = $('<div></div>').appendTo(this.element);
 
 		this.pageblock = new PageBlock(this.page,this.designer_tool,this.canvas,this);
-		console.log('PageLayoutMG');
-		console.log(this.pageblock.allPage());
+		// console.log(this.pageblock.allPage());
 		this.pageblock.init(this.pageblock.allPage());
 
 		this.layoutblock = new LayoutBlock(this.page,this.designer_tool,this.canvas,this);
