@@ -38,7 +38,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 	_create: function(){
 		this.setupLayout();
-		console.log(this);
+		// console.log(this);
 	},
 		
 	setupLayout: function(){
@@ -60,10 +60,10 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			self.setupWorkplace();
 			window.setTimeout(function(){
 				self.setupCanvas();
+				self.loadDesign();
 				if(self.options.showTopBar){
 					self.setupToolBar();
 				}
-				self.loadDesign();
 				self.setupPageLayoutBar();
 				self.render();
 			},200);
@@ -100,7 +100,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 				var temp = new BackgroundImage_Component();
 				temp.init(self, self.canvas,null);
 				
-				if(layout_object.background != undefined ){
+				if(layout_object.background != undefined){
 					temp.options = JSON.parse(layout_object.background);
 				}
 				self.pages_and_layouts[page_name][layout_name]['background'] = temp;
@@ -145,10 +145,6 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		// 	});
 		// });
 
-		if(this.options.designer_mode){
-			this.freelancer_panel = new FreeLancerPanel(top_bar,self, self.canvas);
-			this.freelancer_panel.init();
-		}
 
 		$.each(this.options.ComponentsIncluded, function(index, component) {
 			var temp = new window[component+"_Component"]();
@@ -156,6 +152,12 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			tool_btn = temp.renderTool(top_bar) ;
 			self.editors[component] = temp.editor;
 		});
+		
+		if(this.options.designer_mode){
+			// console.log(this);
+			this.freelancer_panel = new FreeLancerPanel(top_bar,self, self.canvas);
+			this.freelancer_panel.init();
+		}
 		
 		// Hide options if not clicked on any component
 		$(this.canvas).click(function(event){
@@ -194,7 +196,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		if(this.canvas.width() < (this.workplace.width()/2)){
 			this.canvas.width((this.workplace.width()/2));
 		}
-		console.log(this.canvas.width());
+		// console.log(this.canvas.width());
 		
 		this.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(this.canvas);
 		this.guidex= $('<div class="guidex"></div>').appendTo($('body'));
