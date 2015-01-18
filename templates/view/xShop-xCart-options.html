@@ -20,87 +20,127 @@
 									<div id="xshop-cart-editcss" class="btn btn-default btn-xs">Edit CSS</div>
 								</td>
 							</tr>
+
 							<tr>
-								<td width="40%">Cart Layout</td>
+								<td colspan="3" class="panel panel-heading panel-primary">
+									<b>Hide/Show</b>
+								</td>
+							</tr>
+							<tr>
+								<td>Item Count</td>
 								<td>
-									<select id='xshop_cart_layout'>
-										<option value='0'>Please Select</option>
-										<option value='1'>Simple</option>
-										<option value='2'>Sort</option>
-										<option value='3'>Cart Detail</option>;
+									<select id='xshop-show-item-count' data-attr="show-item-count" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
 									</select>
 								</td>
+								<!-- <td><input type='number' id='xshop-order-empty' data-attr="order-empty" class="xshop-general-bind"/></td> -->
 							</tr>
-							<tr class="ipb-options">
+
+							<tr>
+								<td>Price Count</td>
 								<td>
-									<label for="xshop_ipb_cart_empty_btn">Show Empty Button</label>
+									<select id='xshop-show-price-count' data-attr="show-price-count" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
 								</td>
-								<td>
-									<input id="xshop_ipb_cart_empty_btn" type="checkbox"/>
-								</td>
+								<!-- <td><input type='number' id='xshop-order-empty' data-attr="order-empty" class="xshop-general-bind"/></td> -->
 							</tr>
-							<tr class="ipb-options">
+
+							<tr>
+								<td>Cart Item Detail</td>
 								<td>
-									<label for="xshop_ipb_cart_checkout_btn">Show Checkout Button</label>
+									<select id='xshop-show-cart-items' data-attr="show-cart-items" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
 								</td>
-								<td>
-									<input id="xshop_ipb_cart_checkout_btn" type="checkbox"/>
-								</td>
+								<!-- <td><input type='number' id='xshop-order-empty' data-attr="order-empty" class="xshop-general-bind"/></td> -->
 							</tr>
-							<tr class="ipb-options">
+
+							<tr>
+								<td>Total Estimate Amount Bar</td>
 								<td>
-									<label for="xshop_ipb_cart_viewcart_btn">Show View Cart Button</label>
+									<select id='xshop-show-cart-total-estimate-bar' data-attr="show-cart-total-estimate-bar" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
 								</td>
-								<td>
-									<input id="xshop_ipb_cart_viewcart_btn" type="checkbox"/>
-								</td>
+								<!-- <td><input type='number' id='xshop-order-empty' data-attr="order-empty" class="xshop-general-bind"/></td> -->
 							</tr>
-							<tr class="ipb-options">
-								<td>
-									<label for="xshop_ipb_cart_items">Show Item(s) Count</label>
-								</td>
-								<td>
-									<input id="xshop_ipb_cart_items" type="checkbox"/>
-								</td>
-							</tr>
-							<tr class="ipb-options">
-								<td>
-									<label for="xshop_ipb_cart_price">Show Total Price</label>
-								</td>
-								<td>
-									<input id="xshop_ipb_cart_price" type="checkbox"/>	
-								</td>
-							</tr>
-							<tr class="ipb-options">
-								<td>
-									Cart Detail Page
-								</td>
-								<td>
-									<input id="xshop_ipb_cart_detail_page" type="text"/>
+
+							<tr>
+								<td colspan="3" class="panel panel-heading panel-primary">
+									<b>Button Hide/Show</b>
 								</td>
 							</tr>
-							<tr class="ipb-options">
+							<tr>
+								<td>Empty</td>
 								<td>
-								Cart Checkout Page
+									<select id='xshop-show-empty' data-attr="show-empty" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
 								</td>
+								<!-- <td><input type='number' id='xshop-order-empty' data-attr="order-empty" class="xshop-general-bind"/></td> -->
+							</tr>
+							<tr>
+								<td>CheckOut</td>
 								<td>
-									<input id="xshop_ipb_checkout_page" type="text"/>
+									<select id='xshop-show-checkout' data-attr="show-checkout" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+								<!-- <td><input type='number' id='xshop-order-empty' data-attr="order-empty" class="xshop-general-bind"/></td> -->
+							</tr>
+
+							<tr>
+								<td>View Cart</td>
+								<td>
+									<select id='xshop-show-cartdetail' data-attr="show-cartdetail" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+								<!-- <td><input type='number' id='xshop-order-empty' data-attr="order-empty" class="xshop-general-bind"/></td> -->
+							</tr>
+
+							<tr>
+								<td>Proceed</td>
+								<td>
+									<select id='xshop-show-proceed' data-attr="show-proceed" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+								<!-- <td><input type='number' id='xshop-order-empty' data-attr="order-empty" class="xshop-general-bind"/></td> -->
+							</tr>
+
+							<tr>
+								<td colspan="3" class="panel panel-heading panel-primary">
+									<b>Page links</b>
 								</td>
 							</tr>
-							<tr class="ic-options">
-								<td >
-								Cart Detail Page
-								</td>
+							<tr>
+								<td>Cart Detail Page</td>
 								<td>
-									<input id="xshop_ic_cartdetail_page" type="text" Placeholder="subpage name"/>	
+									<input id='xshop-cart-detail-page' data-attr="cart-detail-page" Placeholder="Cart Detail Page" class="xshop-general-bind"/>
 								</td>	
 							</tr>
-							<tr class="cartdetail-options">
-								<td >
-								Checkout Subpage				
-								</td>
+							<tr>
+								<td>proceed page</td>
 								<td>
-									<input id="xshop_cartdetail_checkout_subpage" type="text" Placeholder="Checkout subpage name"/>	
+									<input id='xshop-cart-proceed-page' data-attr="cart-proceed-page" Placeholder="Proceed Page" class="xshop-general-bind"/>
 								</td>	
 							</tr>
 						</table>
@@ -125,88 +165,11 @@ $('#xShopxCartServerSide').click(function(event){
 	$.univ.frameURL('xShop Cart','index.php?page=xShop_page_owner_main')
 });
 
-$('#xshop_cart_layout').change(function(event) {
-	$(current_selected_component).attr('xshop_cart_layout',$(this).val());
-	if($(this).val()==2){
-		$('.ipb-options').show();
-		$(current_selected_component).attr('xshop_ipb_cart_empty_btn','true');
-		$(current_selected_component).attr('xshop_ipb_cart_checkout_btn','true');
-		$(current_selected_component).attr('xshop_ipb_cart_viewcart_btn','true');
-		$(current_selected_component).attr('xshop_ipb_cart_items','true');
-		$(current_selected_component).attr('xshop_ipb_cart_price','true');
-	}
-	else{
-		$('.ipb-options').hide();
-		$(current_selected_component).attr('xshop_ipb_cart_empty_btn','false');
-		$(current_selected_component).attr('xshop_ipb_cart_checkout_btn','false');
-		$(current_selected_component).attr('xshop_ipb_cart_viewcart_btn','false');
-		$(current_selected_component).attr('xshop_ipb_cart_items','false');
-		$(current_selected_component).attr('xshop_ipb_cart_price','false');
-		$(current_selected_component).attr('xshop_ipb_cart_detail_page','#');
-	}
-
-	if($(this).val()==1){
-		$('.ic-options').show();
-	}else
-		$('.ic-options').hide();
-
-	
-	if($(this).val()==3){
-		$('.cartdetail-options').show();
-	}else
-		$('.cartdetail-options').hide();
-
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
+$('.xshop-general-bind').change(function(event){
+	$(current_selected_component).attr($(this).attr('data-attr'),$(this).val());
+	$(current_selected_component).children('div:first').trigger('reload');
 });
 
-$('#xshop-cart-editcss').click(function(){
-	$(this).univ().frameURL('Edit CSS ( xShop Cart Display Layout )','index.php?page=xShop_page_cartlayoutcss&cut_page=1');
-});
-
-$('#xshop_ipb_cart_empty_btn').change(function(event) {	
-	if($('#xshop_ipb_cart_empty_btn').is(':checked')?$(current_selected_component).attr('xshop_ipb_cart_empty_btn','true'):$(current_selected_component).attr('xshop_ipb_cart_empty_btn','false'));
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-
-$('#xshop_ipb_cart_checkout_btn').change(function(event) {	
-	if($('#xshop_ipb_cart_checkout_btn').is(':checked')?$(current_selected_component).attr('xshop_ipb_cart_checkout_btn','true'):$(current_selected_component).attr('xshop_ipb_cart_checkout_btn','false'));
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-
-$('#xshop_ipb_cart_viewcart_btn').change(function(event) {	
-	if($('#xshop_ipb_cart_viewcart_btn').is(':checked')?$(current_selected_component).attr('xshop_ipb_cart_viewcart_btn','true'):$(current_selected_component).attr('xshop_ipb_cart_viewcart_btn','false'));
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-
-$('#xshop_ipb_cart_items').change(function(event) {	
-	if($('#xshop_ipb_cart_items').is(':checked')?$(current_selected_component).attr('xshop_ipb_cart_items','true'):$(current_selected_component).attr('xshop_ipb_cart_items','false'));
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-
-$('#xshop_ipb_cart_price').change(function(event) {	
-	if($('#xshop_ipb_cart_price').is(':checked')?$(current_selected_component).attr('xshop_ipb_cart_price','true'):$(current_selected_component).attr('xshop_ipb_cart_price','false'));
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-
-$('#xshop_ipb_cart_detail_page').change(function(event) {	
-	$(current_selected_component).attr('xshop_ipb_cart_detail_page',$(this).val());
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-
-$('#xshop_ipb_checkout_page').change(function(event) {	
-	$(current_selected_component).attr('xshop_ipb_checkout_page',$(this).val());
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-
-$('#xshop_ic_cartdetail_page').change(function(event){
-	$(current_selected_component).attr('xshop_ic_cartdetail_page',$(this).val());
-	$(current_selected_component).univ().errorMessage('Save and Reloadm Page to see changes');		
-});	
-
-$('#xshop_cartdetail_checkout_subpage').change(function(event){
-	$(current_selected_component).attr('xshop_cartdetail_checkout_subpage',$(this).val());
-	$(current_selected_component).univ().errorMessage('Save and Reloadm Page to see changes');
-});
 
 var {$component_type}_options = {
 	show: function (){
@@ -215,32 +178,9 @@ var {$component_type}_options = {
 		// 
 		// $(your_option_html_element).text($(current_selected_component).css('border'));
 		//TODO FOR CART LAYOUT SELECTION OPTION IF 2 THEN SHOW ITES OPTIONS 
-		$('#xshop_cart_layout').val($(current_selected_component).attr('xshop_cart_layout'));
-		if($('#xshop_cart_layout').val()==2){ 
-			$('.ipb-options').show();
-		}else	
-			$('.ipb-options').hide();
-
-		$('#xshop_ipb_cart_empty_btn').attr('checked',$(current_selected_component).attr("xshop_ipb_cart_empty_btn")=='true'?true:false);
-
-		$('#xshop_ipb_cart_checkout_btn').attr('checked',$(current_selected_component).attr("xshop_ipb_cart_checkout_btn")=='true'?true:false);		
-		
-		$('#xshop_ipb_cart_viewcart_btn').attr('checked',$(current_selected_component).attr("xshop_ipb_cart_viewcart_btn")=='true'?true:false);		
-   		
-   		$('#xshop_ipb_cart_items').attr('checked',$(current_selected_component).attr("xshop_ipb_cart_items")=='true'?true:false);
-   		
-   		$('#xshop_ipb_cart_price').attr('checked',$(current_selected_component).attr("xshop_ipb_cart_price")=='true'?true:false);
-
-   		$('#xshop_ipb_checkout_page').val($(current_selected_component).attr('xshop_ipb_checkout_page'));
-
-   		$('#xshop_ipb_cart_detail_page').val($(current_selected_component).attr('xshop_ipb_cart_detail_page'));
-
-   		$('#xshop_ic_cartdetail_page').val($(current_selected_component).attr('xshop_ic_cartdetail_page'));
-		
-		if($(current_selected_component).attr('xshop_cart_layout')==1){
-			$('.ic-options').show();
-		}else
-			$('.ic-options').hide();
+		$('.xshop-general-bind').each(function(index,value){
+			$(this).val($(current_selected_component).attr($(this).attr('data-attr')));
+		});
 
 	}
 }

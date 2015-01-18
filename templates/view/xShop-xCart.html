@@ -18,24 +18,28 @@
 			</div>
 		</div>
 
-		<div class="xshop-sort-cart-button-div">
+		<div class="xshop-cart-button-div">
 			<!-- xShop Cart Empty Button -->
 			{xshop_cart_empty_btn}{/xshop_cart_empty_btn}
 
 			<!-- xShop Cart Checkout Button -->
-			{xshop_cart_checkout_btn}{/xshop_ipb_cart_checkout_btn}
+			{xshop_cart_checkout_btn}{/xshop_cart_checkout_btn}
 			
 			<!-- xShop Cart View Cart Button -->
 			{xshop_cart_viewcart_btn}{/xshop_cart_viewcart_btn}
 		</div>
 	{/xshop_cart_with_item_price_btn}
 	
-	{xshop_cart_detail}		
-	{/xshop_cart_detail}
+	<div class="xshop-cart-detail-container">
+	{xshop_cart_detail}{/xshop_cart_detail}
+	</div>
+	
 
-	<div class="xshop-cartdetail-proceed">
-	{xshop_cart_proceed}
-	{/xshop_cart_proceed}
+	{xshop_cart_estimate}{/xshop_cart_estimate}
+
+	<!--xShop cart Proceed Btn -->
+	<div class="xshop-cart-proceed">
+	{xshop_cart_proceed}{/xshop_cart_proceed}
 	</div>
 	{$Content}
 </div>

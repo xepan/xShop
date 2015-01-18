@@ -2,7 +2,7 @@
 	{$choices}
 
 <div class="table-responsive">
-	<table class="table">
+	<table class="table table-hover">
 <!-- 		<thead>
 			<tr><th>#</th>
 				<th>Image</th>
@@ -15,15 +15,14 @@
 			</tr>
 		</thead> -->
 		<tbody>
-			<tr>
-				<td>1</td>
-				<td class="col-md-1"><img width="100%" src="{xshop_item_image}{/xshop_item_image}" class="thumbnail"/></td>
-				<td class="col-md-3"><!-- id={$id} --><!-- <h4>{$item_id}</h4> -->{$item_code}{$item_name}</td>
-				<td class="col-md-1">{$qty}</td>
-				<td class="col-md-2">Rate</td>
-				<td class="col-md-2">SubTotal</td>
-				<td class="col-md-2">Delivery Detail</td>
-				<td class="col-md-1"><button class="btn btn-info btn-sm"  style="margin-top:25px;margin-left:-99px" onclick='javascript:$(this).univ().ajaxec("index.php?page=xShop_page_ajaxhandler_removecartitem&cartitem_id={$id}&task=page_removecartitem")'>Remove</button></td>
+			<tr class="xshop-cart-item-row">
+				<td class="xshop-cart-item-sn">1</td>
+				<td class="xshop-cart-item-image col-md-1"><img width="100%" src="{xshop_item_image}{/xshop_item_image}" class="xcart-image"/></td>
+				<td class="xshop-cart-item-name col-md-3"><!-- id={$id} --><!-- <h4>{$item_id}</h4> -->{$item_code}{$item_name}</td>
+				<td class="xshop-cart-item-qty col-md-2">{$qty}</td>
+				<td class="xshop-cart-item-delivery col-md-3">{$delivery_detail} Delivery Detail</td>
+				<td class="xshop-cart-item-subtotal col-md-2">{$subtotal} SubTotal</td>
+				<td class="xshop-cart-item-remove col-md-1"><button class="xshop-cart-item-remove-btn" onclick='javascript:$(this).univ().ajaxec("index.php?page=xShop_page_ajaxhandler_removecartitem&cartitem_id={$id}&task=page_removecartitem")'>X</button></td>
 			</tr>
 		</tbody>	
 	</table>

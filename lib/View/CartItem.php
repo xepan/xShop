@@ -23,11 +23,11 @@ class View_CartItem extends \View{
 		$this->template->Set('xshop_item_image',$img_model['image_url']?:'logo.svg');
 		$this->template->Set('id',$model['id']);
 
-		$form=$this->add('Form',null,'qty',array('form_horizontal'));
+		//Form
+		$form=$this->add('Form',null,'qty',array('form/empty'));
 		$q_f=$form->addField('Number','qty')->set($model['qty'])->addClass('cart-spinner');
-		$q_f->setAttr('size',1);
-		$q_f->js(true)->spinner(array('min'=>1));
-		
+		// $q_f->setAttr('size',1);
+		// $q_f->js(true)->spinner(array('min'=>1));
 		$r_f=$form->addField('line','rate')->set($model['rate']);
 		$r_f->setAttr( 'disabled', 'true' )->addClass('disabled_input');
 		
@@ -36,7 +36,7 @@ class View_CartItem extends \View{
 		$this->api->js()->_load( 'xShop-js' );
 		$q_f->js( 'change' )->univ()->calculateRate($q_f,$r_f_hidden,$r_f);
 
-		$btn_submit=$form->add('View')->addClass('btn btn-warning btn-sm')->addStyle(array('margin-top'=>'25px','margin-left'=>'5px'))->set('Update');
+		$btn_submit=$form->add('View')->addClass('xshop-cart-qty-update-btn')->set('Update');
 		$btn_submit->js('click')->submit();
 		
 		if($form->isSubmitted()){
@@ -44,7 +44,7 @@ class View_CartItem extends \View{
 			foreach ($all_cart_item_model as $item) {
 				$all_cart_item_model->load($model['id']);
 				$all_cart_item_model->updateCart($model['id'],$form['qty']);
-				// $item['qty']=$form['qty'];		
+				// $item['qty']=$form['qty'];
 				$form->js()->univ()->successMessage('Cart Update Successfully')->execute();					
 			}
 		}	

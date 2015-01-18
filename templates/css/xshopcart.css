@@ -1,3 +1,70 @@
+/*xCart Detail CSS*/
+.xshop-cart-item-sn{
+
+}
+
+.xshop-cart-item-image{
+
+
+}
+
+.xshop-cart-item-name{
+	background: none repeat scroll 0 0 #fcfcfc;
+    border-left: 1px solid #f5f5f5;
+    border-right: 1px solid #f7f7f7;
+}
+
+.xshop-cart-item-qty{
+	background: none repeat scroll 0 0 #f9f9f9;
+    border-left: 1px solid #f6f6f6;
+    border-right: 1px solid #f6f6f6;
+    padding-left: 5px;
+    padding-right: 5px;
+    color:black;
+    font-weight: 700 !important;
+
+}
+
+.xshop-cart-item-delivery{
+	background: none repeat scroll 0 0 #fcfcfc;
+    border-left: 1px solid #f7f7f7;
+    border-right: 1px solid #f5f5f5;
+    color:black;
+    text-align: right;
+}
+
+.xshop-cart-item-subtotal{
+	background: none repeat scroll 0 0 #f9f9f9;
+    border-left: 1px solid #f6f6f6;
+    border-right: 1px solid #f6f6f6;
+    padding-left: 5px;
+    padding-right: 5px;
+    color:black;
+    font-weight: 700 !important;
+    text-align: right;
+
+}
+
+.xshop-cart-item-remove{
+    text-align: right;
+
+}
+
+.xshop-cart-item-remove-btn{
+
+
+}
+
+.xshop-cart-item-row{
+	height: auto;
+}
+.xshop-cart-item-row:hover{
+
+}
+
+
+
+/*/For DElete/*/
 /*Edit CSS Style for Cart Layout*/
 /*FOR SIMPLE CART lAYOUT*/
 .xshop-simple-cart-container{
