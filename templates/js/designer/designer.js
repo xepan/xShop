@@ -79,7 +79,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		if(self.options.design == "" || !self.options.design || self.options.design=='null'){
 			var temp = new BackgroundImage_Component();
 				temp.init(self, self.canvas,null);				
-				self.pages_and_layouts[page_name][layout_name]['background'] = temp;	
+				self.pages_and_layouts[self.current_page][self.current_layout]['background'] = temp;	
 				return;
 		} 
 		saved_design = JSON.parse(self.options.design);
