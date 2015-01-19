@@ -18,10 +18,11 @@
 			<tr class="xshop-cart-item-row">
 				<td class="xshop-cart-item-sn">1</td>
 				<td class="xshop-cart-item-image col-md-1"><img width="100%" src="{xshop_item_image}{/xshop_item_image}" class="xcart-image"/></td>
-				<td class="xshop-cart-item-name col-md-3"><!-- id={$id} --><!-- <h4>{$item_id}</h4> -->{$item_code}{$item_name}</td>
+				<td class="xshop-cart-item-code col-md-1"><!-- id={$id} --><!-- <h4>{$item_id}</h4> -->{$item_code}</td>
+				<td class="xshop-cart-item-name col-md-2">{$item_name}</td>
 				<td class="xshop-cart-item-qty col-md-2">{$qty}</td>
-				<td class="xshop-cart-item-delivery col-md-3">{$delivery_detail} Delivery Detail</td>
-				<td class="xshop-cart-item-subtotal col-md-2">{$subtotal} SubTotal</td>
+				<td class="xshop-cart-item-delivery col-md-3">{$delivery_detail} DELIVERY INFO</td>
+				<td class="xshop-cart-item-subtotal col-md-2">{$subtotal} SUB Total</td>
 				<td class="xshop-cart-item-remove col-md-1"><button class="xshop-cart-item-remove-btn" onclick='javascript:$(this).univ().ajaxec("index.php?page=xShop_page_ajaxhandler_removecartitem&cartitem_id={$id}&task=page_removecartitem")'>X</button></td>
 			</tr>
 		</tbody>	

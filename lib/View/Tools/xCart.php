@@ -86,7 +86,7 @@ class View_Tools_xCart extends \componentBase\View_Component{
 
 			$view_btn=$this->add('Button',null,'xshop_cart_viewcart_btn')->set('View Cart')->addClass('btn xshop-cart-viewcart-btn');
 			if($view_btn->isClicked()){
-				$this->api->js()->univ()->frameURL('Cart Detail',$this->api->url($xshop_cart->getURL()))->execute();
+				$this->api->js()->univ()->frameURL('MY CART',$this->api->url($xshop_cart->getURL()))->execute();
 				// $this->api->js()->univ()->redirect(null,array('subpage'=>$this->html_attributes['xshop_ipb_cart_detail_page']))->execute();
 			}
 		}else{
