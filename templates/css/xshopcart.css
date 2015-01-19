@@ -1,4 +1,9 @@
 /*xCart Detail CSS*/
+
+.xshop-cart-detail-container{
+
+}
+
 .xshop-cart-item-sn{
 
 }
@@ -9,13 +14,13 @@
 }
 
 .xshop-cart-item-name{
-	background: none repeat scroll 0 0 #fcfcfc;
+    background: none repeat scroll 0 0 #fcfcfc;
     border-left: 1px solid #f5f5f5;
     border-right: 1px solid #f7f7f7;
 }
 
 .xshop-cart-item-qty{
-	background: none repeat scroll 0 0 #f9f9f9;
+    background: none repeat scroll 0 0 #f9f9f9;
     border-left: 1px solid #f6f6f6;
     border-right: 1px solid #f6f6f6;
     padding-left: 5px;
@@ -26,7 +31,7 @@
 }
 
 .xshop-cart-item-delivery{
-	background: none repeat scroll 0 0 #fcfcfc;
+    background: none repeat scroll 0 0 #fcfcfc;
     border-left: 1px solid #f7f7f7;
     border-right: 1px solid #f5f5f5;
     color:black;
@@ -34,7 +39,7 @@
 }
 
 .xshop-cart-item-subtotal{
-	background: none repeat scroll 0 0 #f9f9f9;
+    background: none repeat scroll 0 0 #f9f9f9;
     border-left: 1px solid #f6f6f6;
     border-right: 1px solid #f6f6f6;
     padding-left: 5px;
@@ -56,15 +61,114 @@
 }
 
 .xshop-cart-item-row{
-	height: auto;
-}
-.xshop-cart-item-row:hover{
-
+    height: auto;
 }
 
+.xshop-cart-detail-estimate-container{
+    clear: both;
+    background: none repeat scroll 0 0 #f9f9f9;
+    border-bottom: 1px solid #f2f2f2;
+    color: #333;
+    box-shadow: 0 -5px 8px -6px #888;
+    min-height: 50px;
+    height: auto;
+    max-height: auto;
+    margin: 20px 0 0 0;
+    border-top: 3px solid green; 
+}
 
+.xshop-cart-total-saving-amount,.xshop-cart-total-amount{
+    float: left;
+    text-align: right;
+    font-weight: bold;
+}
+.xshop-cart-total-saving-amount{
+    width:40%;
+    padding: 15px; 
+}
+.xshop-cart-total-amount{
+    width:60%;
+    padding: 10px;
+    font-size:1.3em; 
+}
 
-/*/For DElete/*/
+.xshop-cart-proceed{
+    clear:both;
+    min-height:40px; 
+}
+.xshop-cart-proceed-btn{
+    float: right;
+    position: relative;
+    display: inline-block;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    height: 30px;
+    cursor: pointer;
+    padding: 0 25.600000381469727px;
+    border: 1px solid rgba(152,0,0,1);
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    font: normal normal 300 22px/30px "Iceland", Helvetica, sans-serif;
+    color: rgba(255,255,255,1);
+    -o-text-overflow: clip;
+    text-overflow: clip;
+    background: -webkit-linear-gradient(0deg, rgba(255,0,0,0.8) 0, rgba(255,0,0,0.8) 100%), rgba(0,0,0,1);
+    background: -moz-linear-gradient(90deg, rgba(255,0,0,0.8) 0, rgba(255,0,0,0.8) 100%), rgba(0,0,0,1);
+    background: linear-gradient(90deg, rgba(255,0,0,0.8) 0, rgba(255,0,0,0.8) 100%), rgba(0,0,0,1);
+    -webkit-background-origin: padding-box;
+    background-origin: padding-box;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    -webkit-background-size: auto auto;
+    background-size: auto auto;
+    -webkit-box-shadow: 0 1px 0 0 rgba(255,255,255,0.298039) inset, 0 -1px 1px 0 rgba(255,255,255,0.14902) inset, 0 7px 0 0 rgba(137,30,30,1) , 0 8px 3px 0 rgba(0,0,0,0.2) ;
+    box-shadow: 0 1px 0 0 rgba(255,255,255,0.298039) inset, 0 -1px 1px 0 rgba(255,255,255,0.14902) inset, 0 7px 0 0 rgba(137,30,30,1) , 0 8px 3px 0 rgba(0,0,0,0.2) ;
+    -webkit-transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
+    -moz-transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
+    -o-transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
+    transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
+}
+
+.xshop-cart-proceed-btn:hover {
+  border: 1px solid rgba(114,2,2,1);
+  background: -webkit-linear-gradient(0deg, rgba(152,0,0,1) 0, rgba(152,0,0,1) 100%), rgba(0,0,0,1);
+  background: -moz-linear-gradient(90deg, rgba(152,0,0,1) 0, rgba(152,0,0,1) 100%), rgba(0,0,0,1);
+  background: linear-gradient(90deg, rgba(152,0,0,1) 0, rgba(152,0,0,1) 100%), rgba(0,0,0,1);
+  -webkit-background-origin: padding-box;
+  background-origin: padding-box;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-background-size: auto auto;
+  background-size: auto auto;
+  -webkit-box-shadow: 0 1px 0 0 rgba(255,255,255,0.298039) inset, 0 -1px 1px 0 rgba(255,255,255,0.14902) inset, 0 7px 0 0 rgba(89,8,8,1) , 0 8px 3px 0 rgba(0,0,0,0.2) ;
+  box-shadow: 0 1px 0 0 rgba(255,255,255,0.298039) inset, 0 -1px 1px 0 rgba(255,255,255,0.14902) inset, 0 7px 0 0 rgba(89,8,8,1) , 0 8px 3px 0 rgba(0,0,0,0.2) ;
+  color:#CCC;
+}
+
+.xshop-cart-proceed-btn:active {
+  top: 6px;
+  border: 1px solid rgba(152,0,0,1);
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  background: -webkit-linear-gradient(-90deg, rgba(152,0,0,0.8) 0, rgba(152,0,0,0.8) 100%), rgb(255, 255, 255);
+  background: -moz-linear-gradient(180deg, rgba(152,0,0,0.8) 0, rgba(152,0,0,0.8) 100%), rgb(255, 255, 255);
+  background: linear-gradient(180deg, rgba(152,0,0,0.8) 0, rgba(152,0,0,0.8) 100%), rgb(255, 255, 255);
+  -webkit-background-origin: padding-box;
+  background-origin: padding-box;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-background-size: auto auto;
+  background-size: auto auto;
+  -webkit-box-shadow: 0 1px 0 0 rgba(255,255,255,0.298039) inset, 0 -1px 1px 0 rgba(255,255,255,0.14902) inset;
+  box-shadow: 0 1px 0 0 rgba(255,255,255,0.298039) inset, 0 -1px 1px 0 rgba(255,255,255,0.14902) inset;
+  -webkit-transition: all 50ms cubic-bezier(0.25, 0.25, 0.75, 0.75);
+  -moz-transition: all 50ms cubic-bezier(0.25, 0.25, 0.75, 0.75);
+  -o-transition: all 50ms cubic-bezier(0.25, 0.25, 0.75, 0.75);
+  transition: all 50ms cubic-bezier(0.25, 0.25, 0.75, 0.75);
+
+}
+
 /*Edit CSS Style for Cart Layout*/
 /*FOR SIMPLE CART lAYOUT*/
 .xshop-simple-cart-container{
@@ -249,7 +353,7 @@
 }
 
 .xshop-cartdetail-netamount{
-	
+    
 }
 
 /*End of Cartdetail Layout css*/
