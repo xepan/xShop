@@ -165,6 +165,10 @@ $('#xShopxCartServerSide').click(function(event){
 	$.univ.frameURL('xShop Cart','index.php?page=xShop_page_owner_main')
 });
 
+$('#xshop-cart-editcss').click(function(){
+$(this).univ().frameURL('Edit CSS ( xShop Cart Display Layout )','index.php?page=xShop_page_cartlayoutcss&cut_page=1');
+});
+
 $('.xshop-general-bind').change(function(event){
 	$(current_selected_component).attr($(this).attr('data-attr'),$(this).val());
 	$(current_selected_component).children('div:first').trigger('reload');
