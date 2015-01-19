@@ -121,9 +121,15 @@ xShop_Text_Editor = function(parent){
 			self.current_text_component.options.alignment_left = false;
 		}
 
+		$(self.text_align_center_btn).removeClass('active');
 		self.current_text_component.options.alignment_center = false;
+
+		$(self.text_align_justify_btn).removeClass('active');
 		self.current_text_component.options.alignment_justify = false;
+		
+		$(self.text_align_right_btn).removeClass('active');
 		self.current_text_component.options.alignment_right = false;
+		
 		$('.xshop-designer-tool').xepan_xshopdesigner('check');
 		self.current_text_component.render();
 	});
@@ -138,9 +144,13 @@ xShop_Text_Editor = function(parent){
 			self.current_text_component.options.alignment_right = false;
 		}
 
+		$(self.text_align_left_btn).removeClass('active');
 		self.current_text_component.options.alignment_left = false;
+		$(self.text_align_justify_btn).removeClass('active');
 		self.current_text_component.options.alignment_justify = false;
+		$(self.text_align_center_btn).removeClass('active');
 		self.current_text_component.options.alignment_center = false;
+		
 		$('.xshop-designer-tool').xepan_xshopdesigner('check');
 		self.current_text_component.render();
 	});
@@ -155,9 +165,15 @@ xShop_Text_Editor = function(parent){
 			self.current_text_component.options.alignment_center = false;
 		}
 
+		$(self.text_align_left_btn).removeClass('active');
 		self.current_text_component.options.alignment_left = false;
+
+		$(self.text_align_justify_btn).removeClass('active');
 		self.current_text_component.options.alignment_justify = false;
+		
+		$(self.text_align_right_btn).removeClass('active');
 		self.current_text_component.options.alignment_right = false;
+
 		$('.xshop-designer-tool').xepan_xshopdesigner('check');
 		self.current_text_component.render();
 	});
