@@ -24,6 +24,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	option_panel: undefined,
 	freelancer_panel: undefined,
 	editors : [],
+	top_bar: undefined,
 
 	options:{
 		// Layout Options
@@ -60,11 +61,12 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			self.setupWorkplace();
 			window.setTimeout(function(){
 				self.setupCanvas();
-				self.loadDesign();
 				if(self.options.showTopBar){
 					self.setupToolBar();
 				}
+				self.loadDesign();
 				self.setupPageLayoutBar();
+				self.setupFreelancerPanel();
 				self.render();
 			},200);
 		});
@@ -74,7 +76,12 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	loadDesign: function(){
 		var self = this;
-		if(self.options.design == "" || !self.options.design || self.options.design=='null') return;
+		if(self.options.design == "" || !self.options.design || self.options.design=='null'){
+			var temp = new BackgroundImage_Component();
+				temp.init(self, self.canvas,null);				
+				self.pages_and_layouts[page_name][layout_name]['background'] = temp;	
+				return;
+		} 
 		saved_design = JSON.parse(self.options.design);
 		console.log('inLoadDesigns');
 		console.log(saved_design);
@@ -123,11 +130,11 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 
 	setupToolBar: function(){
 		var self=this;
-		var top_bar = $('<div class="xshop-designer-tool-topbar row"></div>');
-		top_bar.prependTo(this.element);
+		this.top_bar = $('<div class="xshop-designer-tool-topbar row"></div>');
+		this.top_bar.prependTo(this.element);
 
-		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(top_bar);
-		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none;"></div>').appendTo(top_bar);
+		var buttons_set = $('<div class="xshop-designer-tool-topbar-buttonset pull-left"></div>').appendTo(this.top_bar);
+		this.option_panel = $('<div class="xshop-designer-tool-topbar-options pull-right" style="display:none;"></div>').appendTo(this.top_bar);
 
 		// this.remove_btn = $('<div class="xshop-designer-remove-toolbtn"><i class="glyphicon glyphicon-remove"></i><br>Remove</div>').appendTo(this.option_panel);
 
@@ -149,15 +156,10 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		$.each(this.options.ComponentsIncluded, function(index, component) {
 			var temp = new window[component+"_Component"]();
 			temp.init(self, self.canvas);
-			tool_btn = temp.renderTool(top_bar) ;
+			tool_btn = temp.renderTool(self.top_bar) ;
 			self.editors[component] = temp.editor;
 		});
 		
-		if(this.options.designer_mode){
-			// console.log(this);
-			this.freelancer_panel = new FreeLancerPanel(top_bar,self, self.canvas);
-			this.freelancer_panel.init();
-		}
 		
 		// Hide options if not clicked on any component
 		$(this.canvas).click(function(event){
@@ -171,6 +173,15 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			$('div.guidey').css('display','none');
 			event.stopPropagation();
 		});
+	},
+
+	setupFreelancerPanel: function(){
+		var self=this;
+		if(this.options.designer_mode){
+			// console.log(this);
+			this.freelancer_panel = new FreeLancerPanel(this.top_bar,self, self.canvas);
+			this.freelancer_panel.init();
+		}
 	},
 
 	setupWorkplace: function(){
