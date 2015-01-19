@@ -7,12 +7,11 @@
 
 .xshop-designer-tool-topbar{
   height:auto;
-  min-height:70px;
+  min-height:73px;
   /*width: 100%;*/
   margin:0px 0 20px 0;
   background:linear-gradient(to bottom, #fefefe, #f0f2f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
   border:1px solid #b5babf;
-
 }
 
 .xshop-designer-tool-topbar-button{
@@ -21,6 +20,11 @@
   border: 1px solid blue;
   height: 4em;
   margin: 0.25em;
+}
+
+.xshop-designer-tool-bottombar{
+  margin-top: 20px;
+  padding-bottom:10px; 
 }
 
 #xshop-designer-component-panel:before{
@@ -109,18 +113,32 @@
   width: 100%;
 }
 
+.xshop-designer-pagelayout > div.ui-selected{
+  /*background-color: red;*/
+}
+
+.xshop-designer-pagelayout > div.ui-selected h3{
+  font-weight: 700;
+}
+
 div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
-    min-height: 50px;
+    min-height: 60px;
     width: 100px;
     float: left;
     opacity: 0.5; 
     text-align: center;
-    background-color: gray;
-    transition: all 0.5s ease;
+    cursor:pointer;
+    /*background-color: gray;*/
     margin:0 1% 0 1% ;
-    background:linear-gradient(to bottom, #fefefe, #f0f2f3) repeat scroll 0 0 rgba(0, 0, 0, 0);
-  border:1px solid #b5babf;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    border:1px solid #b5babf;
+    -webkit-box-shadow: 0 10px 6px -6px #777;      
+    -moz-box-shadow: 0 10px 6px -6px #777;           
+    box-shadow: 0 10px 6px -6px #777;
+    box-shadow: 0 10px 6px -6px #777;
+    transition: all 0.5s ease;
+    border:1px solid #b5babf;
+    -webkit-box-shadow: 0 10px 6px -6px #777;      
+    -moz-box-shadow: 0 10px 6px -6px #777;               
 }
 
 .xshop-designer-pagebtn h3,.xshop-designer-layoutbtn h3{
@@ -146,7 +164,10 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
 }
 
 .xshop-options-editor{
-    box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+  box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
+}
+.xshop-designer-tool-topbar-options{
+
 }
 
 .xshop-designer-text-input{
