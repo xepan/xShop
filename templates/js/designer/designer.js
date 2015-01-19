@@ -13,8 +13,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	// components:[],
 	current_page:'Front Page',
 	current_layout: 'Main Layout',
-	item_id:undefined,
-	item_member_design_id:undefined,
+	// item_id:undefined, // used from options
+	// item_member_design_id:undefined, // used from options
 	workplace:undefined,
 	canvas:undefined,
 	safe_zone: undefined,
@@ -39,7 +39,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	},
 	_create: function(){
 		this.setupLayout();
-		// console.log(this);
+		console.log(this);
 	},
 		
 	setupLayout: function(){
@@ -83,8 +83,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 				return;
 		} 
 		saved_design = JSON.parse(self.options.design);
-		console.log('inLoadDesigns');
-		console.log(saved_design);
+		// console.log('inLoadDesigns');
+		// console.log(saved_design);
 		
 		$.each(saved_design,function(page_name,page_object){
 			self.pages_and_layouts[page_name]={};

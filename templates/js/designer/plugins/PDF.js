@@ -25,7 +25,7 @@ PDF_Component = function (params){
 		// CREATE NEW TEXT COMPONENT ON CANVAS
 		tool_btn.click(function(event){
 			// create new TextComponent type object
-			if(self.designer_tool.item_member_design_id == undefined){
+			if(self.designer_tool.options.item_member_design_id == undefined || self.designer_tool.options.item_member_design_id == null){
 				$.univ().errorMessage('Please Save Your Design First');
 			}else{
 				$.univ().newWindow('index.php?page=xShop_page_designer_pdf&item_id='+self.designer_tool.options.item_id+'&item_member_design_id='+self.designer_tool.options.item_member_design_id+'&xsnb_design_template='+self.designer_tool.options.designer_mode);
