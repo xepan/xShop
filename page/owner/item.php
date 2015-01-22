@@ -18,7 +18,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$category_model->setOrder('id','desc');
 		
 		//category form
-		$form = $cat_col->add('Form');
+		$form = $cat_col->add('Form',null,null,array('form/stacked'));
 		$cat_f = $form->addField('dropdown','category');
 		$cat_f->setModel($category_model);
 		$form->addSubmit()->set('Filter');

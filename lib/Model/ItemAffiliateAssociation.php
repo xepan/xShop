@@ -5,7 +5,6 @@ namespace xShop;
 class Model_ItemAffiliateAssociation extends \SQL_Model{
 	public $table='xshop_item_affiliate_ass';
 	
-
 	function init(){
 		parent::init();
 

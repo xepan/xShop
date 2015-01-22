@@ -9,7 +9,6 @@ class Model_Item extends \Model_Table{
 	function init(){
 		parent::init();	
 		
-		$f = $this->hasOne('xShop/Affiliate','affiliate_id');
 		$this->hasOne('xShop/Application','application_id');
 		$this->hasOne('xShop/MemberDetails','designer_id');
 
