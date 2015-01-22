@@ -13,8 +13,8 @@ class Model_Category extends \Model_Table{
 		$this->hasOne('xShop/Application','application_id');
 
 		//Do for category model with self loop of parent category
-		$this->hasOne('xShop/ParentCategory','parent_id')->defaultValue('Null');
-		$f = $this->addField('name')->Caption('Category Name')->mandatory(true)->sortable(true)->group('a~6');
+		$this->hasOne('xShop/ParentCategory','parent_id')->defaultValue('Null')->group('x~6');
+		$f = $this->addField('name')->Caption('Category Name')->mandatory(true)->sortable(true)->group('a~6~<i class="fa fa-cog"></i> TITLE');
 		$f->icon = "fa fa-folder~red";
 		$f = $this->addField('order_no')->type('int')->hint('Greatest order number display first and only integer number require')->defaultValue(0)->sortable(true)->group('a~4');
 		$f->icon = "fa fa-sort-amount-desc~blue";
@@ -28,9 +28,9 @@ class Model_Category extends \Model_Table{
 		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'))->group('c~12');
 		$f->icon = "fa fa-pencil~blue";
 
-		$this->addField('meta_title');
-		$this->addField('meta_description')->type('text');
-		$this->addField('meta_keywords');
+		$this->addField('meta_title');//->group('e~12~asd');
+		$this->addField('meta_description')->type('text');//->group('e~12~bl');
+		$this->addField('meta_keywords');//->group('e~12~bl');
 
 		$this->hasMany('xShop/Category','parent_id',null,'SubCategories');
 		$this->hasMany('xShop/CategoryItem','category_id');

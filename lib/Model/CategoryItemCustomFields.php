@@ -21,6 +21,10 @@ class Model_CategoryItemCustomFields extends \Model_Table{
 
 		$this->hasMany('xShop/CustomFieldValue','itemcustomfiledasso_id');
 
+		$this->addExpression('name')->set(function($m,$q){
+			return $m->refSQL('customfield_id')->fieldQuery('name');
+		});
+
 		$this->addHook('beforeSave',$this);
 		
 		$this->add('dynamic_model/Controller_AutoCreator');

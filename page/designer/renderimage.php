@@ -24,6 +24,8 @@ class page_xShop_page_designer_renderimage extends Page {
 		parent::init();
 		$options=array();
 
+		// echo $_GET['url'];
+		// exit;
 		$options['url'] = dirname(getcwd()).$_GET['url'];
 		if(!file_exists($options['url'])) return;
 

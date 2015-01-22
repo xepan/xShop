@@ -12,7 +12,7 @@ class Model_CustomFieldValue extends \Model_Table{
 		// $this->addCondition('epan_id',$this->api->current_website->id);
 			
 		$this->hasOne('xShop/CategoryItemCustomFields','itemcustomfiledasso_id');
-		$this->hasOne('xShop/CustomFields','customefield_id');
+		// $this->hasOne('xShop/CustomFields','customefield_id');
 		
 		$this->addField('name'); // actually ... its value
 		$this->addField('rate_effect');

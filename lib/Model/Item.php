@@ -18,8 +18,8 @@ class Model_Item extends \Model_Table{
 		$this->addCondition('epan_id',$this->api->current_website->id);
 
 		// Basic Field
-		$f = $this->addField('name')->mandatory(true)->group('b~6')->sortable(true);
-		$f = $this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique Item code ')->mandatory(true)->group('b~4')->sortable(true);
+		$this->addField('name')->mandatory(true)->group('b~6')->sortable(true)->setterGetter('icon','fa fa-circle~red');
+		$this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique Item code ')->mandatory(true)->group('b~4')->sortable(true);
 		$f = $this->addField('reference')->PlaceHolder('Any Referance')->hint('Use URL for external link')->mandatory(true)->group('b~4')->sortable(true);
 		$f = $this->addField('theme_code')->hint('To club same theme code items in one')->mandatory(true)->group('b~4')->sortable(true);
 		$f = $this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
@@ -32,6 +32,7 @@ class Model_Item extends \Model_Table{
 		$f = $this->addField('minimum_order_qty')->type('int')->mandatory(true)->group('d~3');
 		$f = $this->addField('maximum_order_qty')->type('int')->mandatory(true)->group('d~3');
 		$f = $this->addField('qty_unit')->mandatory(true)->group('d~3');
+		$f = $this->addField('qty_from_set_only')->type('boolean')->group('d~3');
 		
 		$f = $this->addField('original_price')->type('int')->mandatory(true)->group('d~3');
 		$f = $this->addField('sale_price')->type('int')->mandatory(true)->group('d~3')->sortable(true);
@@ -111,12 +112,15 @@ class Model_Item extends \Model_Table{
 		$this->hasMany('xShop/ItemReview','item_id');
 		$this->hasMany('xShop/ItemMemberDesign','item_id');
 
+		$this->hasMany('xShop/QuantitySet','item_id');
+		$this->hasMany('xShop/CustomRate','item_id');
+
 		$this->addExpression('theme_code_group_expression')->set('(IF(ISNULL('.$this->table_alias.'.theme_code),'.$this->table_alias.'.id,'.$this->table_alias.'.theme_code))');
 			
 		$this->addHook('beforeSave',$this);
 		$this->addHook('afterInsert',$this);
 		$this->addHook('beforeDelete',$this);
-		// $this->add('dynamic_model/Controller_AutoCreator');
+		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 
 	function beforeSave($m){
@@ -351,6 +355,22 @@ class Model_Item extends \Model_Table{
 		}
 
 		return $specs_assos;
+	}
+
+	function getAmount($cutome_field_values_array, $qty, $rate_chart='retailer'){
+		
+		// 1. Check Custom Rate Charts
+			/*
+				Look $qty >= Qty of rate chart
+				get the most field values matched
+				having lesser selections of type any or say ...
+				when max number of custom fields are having values other than any/%
+			*/
+		// 2. Custom Field Based Rate Change
+
+		// 3. Quanitity Set
+
+		// 4. Default Price * qty
 	}
 
 }	

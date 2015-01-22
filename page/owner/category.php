@@ -23,8 +23,8 @@ class page_xShop_page_owner_category extends page_xShop_page_owner_main{
 			$parent_model->title_field='category_name';
 			$parent_model->addCondition('application_id',$application_id);
 		}
-
-		$crud->grid->js('reload', $this->js(true)->alert('hello'));
+		// $crud->grid->js('reload', $this->js(true)->alert('hello'));
 		
 	}
+
 }

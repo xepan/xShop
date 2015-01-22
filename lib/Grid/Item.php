@@ -17,12 +17,13 @@ class Grid_Item extends \Grid{
 		parent::setModel($m,$fields);
 		//$this->addColumn('expander','details');
 		$this->addColumn('expander','categories');
+		$this->addColumn('expander','quantity_sets',array("descr"=>"Qty Sets",'icon'=>'cog','icon_only'=>true));
 		$this->addColumn('expander','custom_fields',array("descr"=>"Custom Fields",'icon'=>'cog','icon_only'=>true));
 		$this->addColumn('expander','specifications',array("descr"=>"Specfications",'icon'=>'cog','icon_only'=>true));
 		$this->addColumn('expander','images',array("descr"=>"Images",'icon'=>'picture','icon_only'=>true));
 		$this->addColumn('expander','attachments',array("descr"=>"Docs",'icon'=>'folder','icon_only'=>true));
 		$this->addColumn('Button','duplicate',array("descr"=>"Duplicate",'icon'=>'folder','icon_only'=>true));
-		$this->addColumn('expander','rate_effect',array("descr"=>"Rate Effect",'icon'=>'cog','icon_only'=>true));
+		$this->addColumn('expander','rate_chart',array("descr"=>"Rate Chart",'icon'=>'cog','icon_only'=>true));
 		// $this->addColumn('pics_docs','pics_docs','Pics / Docs');
 
 		if($_GET['duplicate']){

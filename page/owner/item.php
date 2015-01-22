@@ -58,8 +58,20 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		}
 		
 		$item_crud=$item_col->add('CRUD',array('grid_class'=>'xShop/Grid_Item'));
-		$item_crud->setModel($item_model,array('name','sku','is_publish','short_description','description','default_qty','default_qty_unit','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_admin','item_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags','offer_id','offer_position','is_designable','designer_id','is_template'),array('name','sku','sale_price','is_publish'));
-			
+		$item_crud->setModel($item_model,array('name','sku','is_publish','short_description','description','qty_unit','minimum_order_qty','maximum_order_qty','original_price','sale_price','rank_weight','created_at','expiry_date','allow_attachment','allow_enquiry','allow_saleable','show_offer','show_detail','show_price','show_manufacturer_detail','show_supplier_detail','new','feature','latest','mostviewed','enquiry_send_to_admin','item_enquiry_auto_reply','allow_comments','comment_api','add_custom_button','custom_button_text','custom_button_url','meta_title','meta_description','tags','offer_id','offer_position','is_designable','designer_id','is_template'),array('name','sku','sale_price','is_publish'));
+		if($item_crud->isEditing()){
+			$item_crud->form->setLayout('form/empty');
+		}
+		// $item_crud->add('Controller_FormBeautifier');
+	}
+
+	function page_quantity_sets(){
+		$application_id=$this->api->recall('xshop_application_id');
+		$item_id = $this->api->stickyGET('xshop_items_id');
+		$item = $this->add('xShop/Model_Item')->load($_GET['xshop_items_id']);
+
+		$crud = $this->add('CRUD');
+		$crud->setModel($item->ref('xShop/QuantitySet'));
 	}
 
 	function page_categories(){
@@ -162,7 +174,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 
 		$crud = $this->add('CRUD');
 		$crud->setModel($custom_fields,array('customfield_id','rate_effect','is_active'),array('customfield','rate_effect','is_active'));
-		if($crud->form){
+		if($crud->isEditing()){
 			$crud->form->getElement('customfield_id')->getModel()->addCondition('application_id',$application_id);
 		}
 		$crud->grid->addColumn('expander','Values');
@@ -181,6 +193,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 	}	
 
 	function page_custom_fields_values(){
+		
 		$item_id=$this->api->stickyGET('xshop_items_id');
 		$custom_field_asso_id = $this->api->stickyGET('xshop_category_item_customfields_id');
 		$custom_field_id = $this->api->stickyGET('xshop_category_item_customfields_id');
@@ -191,6 +204,45 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		
 		$crud->grid->addColumn('expander','images');
 		$crud->grid->addColumn('expander','filter');
+
+		if($crud->isEditing()){
+			$rate_effect_field = $crud->form->getElement('rate_effect');
+			$bs=$rate_effect_field->afterField()->add('ButtonSet');
+			$bs->add('Button')
+				->set('???')
+				->add('VirtualPage')
+				->bindEvent('Set Value against quantity sets','click')
+				->set(function($page)use($rate_effect_field, $item_id, $crud){
+					$item_model = $this->add('xShop/Model_Item')->load($item_id);
+
+					$f= $page->add('Form');
+					$cols =$f->add('Columns');
+					$qty_col = $cols->addColumn(6);
+					$rate_effect_col = $cols->addColumn(6);
+
+					$i=1;
+					foreach ($item_model->ref('xShop/QuantitySet') as $qs) {
+						$qty_col->addField('Readonly','qty_'.$i)->set($qs['qty']);
+						$rate_effect_col->addField('line','rate_'.$i);
+						$i++;
+					}
+
+					if($f->isSubmitted()){
+						$i=1;
+						$json = array();
+						foreach ($item_model->ref('xShop/QuantitySet') as $qs) {
+							$json[] = array($f['qty_'.$i]=>$f['rate_'.$i]);
+							$i++;
+						}
+						$json= json_encode($json);
+						$js=array();
+						$js[] = $rate_effect_field->js()->val($json);
+						$f->js(null, $js)->univ()->closeDialog()->execute();
+					}
+				});
+			// $rate_effect_field->js(true)->hide();
+		}
+
 	}
 
 	function page_custom_fields_values_images(){
@@ -243,29 +295,75 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		$crud->setModel($item->ref('xShop/ItemSpecificationAssociation'));
 	}
 
-	function page_rate_effect(){
+	function page_rate_chart(){
 		$cf_value_array = array();
 		$item_id=$this->api->stickyGET('xshop_items_id');	
 		$application_id = $this->api->recall('xshop_application_id');
 		$item_model = $this->add('xShop/Model_Item')->load($item_id);
 		
-		$custom_fields = $this->add('xShop/Model_CategoryItemCustomFields');		
-		$custom_fields->addCondition('item_id',$item_id);
+		$crud = $this->add('CRUD');
+		$crud->setModel($item_model->ref('xShop/CustomRate'));
+		if(!$crud->isEditing()){
+			$crud->grid->addColumn('expander','custom_field_conditions');
+		}
+	}
+
+	function page_rate_chart_custom_field_conditions(){
+		$item_id=$this->api->stickyGET('xshop_items_id');	
+		$this->api->stickyGET('xshop_item_custom_rates_id');
+		$application_id = $this->api->recall('xshop_application_id');
+		$item_model = $this->add('xShop/Model_Item')->load($item_id);
+
+		/*
+			Get All item's custom fields and let select its value 
+			Must have extra value called '*' or Any
+			
+		*/
+
+		$custome_field_conditions_model = $this->add('xShop/Model_CustomRateCustomeValueCondition');
+		$custome_field_conditions_model->addCondition('custom_rate_id',$_GET['xshop_item_custom_rates_id']);
+
+
+		$crud = $this->add('CRUD');
+		$crud->setModel($custome_field_conditions_model);
 		
-		$custom_field_array = $custom_fields->getRows();
+		if($crud->isEditing()){
+			$custom_values_model = $crud->form->getElement('custom_field_value_id')->getModel();
+			// add  expression 'Custome_Field/Value' style and make it title field
+			$custom_values_model->addExpression('field_name_with_value')->set(function($m,$q)use($item_id){
 
-		// $m= $this->add('Model');
-	 	// 	$m->setSource('Array',$custom_field_value_array);
-		// $crud = $this->add('CRUD');
-		// $crud->setModel($m);
+				// return $m->refSQL('customefield_id')->fieldQuery('name');
 
-		// $array =['7','8','9','red','green','blue'];//all custom filed Value
-	 	// 	// initialize by adding the empty set
-	  	//  		 $results = array(array( ));
-	  	//   	foreach ($array as $element){
-	  	//       	foreach ($results as $combination)
-	  	//         	array_push($results, array_merge(array($element), $combination));
-	  	// }
+				$custome_field_m = $m->add('xShop/Model_CustomFields',array('table_alias'=>'tcf'));
+				$values_j = $custome_field_m->join('xshop_category_item_customfields.customfield_id');
+				$values_j->addField('item_id');
+				$custome_field_m->addCondition('item_id',$item_id);				
+
+				return "(concat('".$custome_field_m->_dsql()->del('fields')->field('name')."',' :: ',".$q->getField('name')."))";
+			});
+			$custom_values_model->title_field='field_name_with_value';
+			// $custom_values_model->addCondition .. only for current Item custom field values 
+			$category_item_assos_j = $custom_values_model->join('xshop_category_item_customfields','itemcustomfiledasso_id');
+			$category_item_assos_j->addField('item_id');
+			$custom_values_model->addCondition('item_id',$item_id);
+			
+		}else{
+			$custom_values_model = $crud->getModel()->getElement('custom_field_value_id')->getModel();
+			// add  expression 'Custome_Field/Value' style and make it title field
+			$custom_values_model->addExpression('field_name_with_value')->set(function($m,$q)use($item_id){
+
+				// return $m->refSQL('customefield_id')->fieldQuery('name');
+
+				$custome_field_m = $m->add('xShop/Model_CustomFields',array('table_alias'=>'tcf'));
+				$values_j = $custome_field_m->join('xshop_category_item_customfields.customfield_id');
+				$values_j->addField('item_id');
+				$custome_field_m->addCondition('item_id',$item_id);				
+
+				return "(concat('".$custome_field_m->_dsql()->del('fields')->field('name')."',' :: ',".$q->getField('name')."))";
+			});
+			$custom_values_model->title_field='field_name_with_value';
+		}
+
 
 	}
 }
