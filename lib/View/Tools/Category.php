@@ -13,7 +13,7 @@ class View_Tools_Category extends \componentBase\View_Component{
 		if($this->html_attributes['xshopcategoryshowlist']){
 			$this->template->trySet('xshopcategoryshowlist',$this->html_attributes['xshopcategoryshowlist']);
 		}
-
+		
 		if(!$application){
 			$this->add('View_Error')->set('Please Select Application or First Create Application');
 			return;
@@ -60,6 +60,7 @@ class View_Tools_Category extends \componentBase\View_Component{
 		$cat_item_j->addField('category_id');
 		$item->addCondition('category_id',$category->id);
 		$item->setOrder('sale_price','asc');
+
 		$item->tryLoadAny();
 
 		if($category->ref('SubCategories')->count()->getOne() > 0){
@@ -80,8 +81,12 @@ class View_Tools_Category extends \componentBase\View_Component{
 			// throw new \Exception($category['id'], 1);
 			if($this->html_attributes['xshop_category_layout']=='Thumbnail'){
 				$output = "<li class='text-center'><a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'><img src='$category[image_url]' /><div class='sky-menu-thumbnail-name'>".$category['name']."</div></a></li>";
-			}else
-				$output = "<li><a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'>".$category['name']."".$item['sale_price']."</a></li>";
+			}else{
+				$output = "<li><a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'>".$category['name'];
+ 				if($this->html_attributes['xshop-category-show-price'])
+					$output.= " " . $item['sale_price'];
+				$output.="</a></li>";
+			}
 
 		}
 
