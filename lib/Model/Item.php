@@ -29,76 +29,73 @@ class Model_Item extends \Model_Table{
 		$this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~4');
 		$this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'))->group('d~4');
 		$this->addField('expiry_date')->type('date')->group('d~4');
+		$this->addField('description')->type('text')->display(array('form'=>'RichText'))->group('z~12');
 		
 		// Price and Qtuanitity Management
-		$this->addField('minimum_order_qty')->type('int')->mandatory(true)->group('d~3');
-		$this->addField('maximum_order_qty')->type('int')->mandatory(true)->group('d~3');
-		$this->addField('qty_unit')->mandatory(true)->group('d~3');
-		$this->addField('qty_from_set_only')->type('boolean')->group('d~3');
-		
-		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'))->group('g~12');
-		// $f = $this->addField('theme_code')->hint('To club same theme code items in one')->group('b~4')->sortable(true);
-		// $f = $this->addField('reference')->PlaceHolder('Any Referance')->hint('Use URL for external link')->group('b~4')->sortable(true);
-		
+		$this->addField('minimum_order_qty')->type('int')->mandatory(true)->group('e~3~Basic Quantity Options');
+		$this->addField('maximum_order_qty')->type('int')->mandatory(true)->group('e~3');
+		$this->addField('qty_unit')->mandatory(true)->group('e~3');
+		$this->addField('qty_from_set_only')->type('boolean')->group('e~3');
 		
 		//Item Allow Optins
-		$f = $this->addField('is_attachment_allow')->type('boolean')->group('f~3~<i class=\'fa fa-cog\' > Item Allow Options</i>');
-		$f = $this->addField('is_saleable')->type('boolean')->group('f~3');
-		$f = $this->addField('is_downloadable')->type('boolean')->group('f~3');
-		$f = $this->addField('is_designable')->type('boolean');
-		$f = $this->addField('is_rentable')->type('boolean')->group('f~3');
-		$f = $this->addField('is_enquiry_allow')->type('boolean')->group('f~3');
-		$f = $this->addField('is_template')->type('boolean')->defaultValue(false)->group('f~3');
+		$this->addField('is_saleable')->type('boolean')->group('f~2~<i class=\'fa fa-cog\' > Item Allow Options</i>');
+		$this->addField('is_downloadable')->type('boolean')->group('f~2');
+		$this->addField('is_rentable')->type('boolean')->group('f~2');
+		$this->addField('is_designable')->type('boolean')->group('f~2');
+		$this->addField('is_template')->type('boolean')->defaultValue(false)->group('f~2');
+		$this->addField('is_enquiry_allow')->type('boolean')->group('f~2');
+		$this->addField('is_attachment_allow')->type('boolean')->group('f~2');
 		
-		$f = $this->addField('negative_qty_allowed')->type('number');
-		$f = $this->addField('is_visible_sold')->type('boolean')->hint('If Product remains visible after sold');
+		//Item Display Options
+		$this->addField('show_detail')->type('boolean')->defaultValue(true)->group('g~2~Item Display Options');
+		$this->addField('show_price')->type('boolean')->group('g~2');
+		$this->addField('is_visible_sold')->type('boolean')->hint('If Product remains visible after sold')->group('g~2');
+		$this->hasOne('xShop/ItemOffer','offer_id')->group('g~2');
+		$this->addField('offer_position')->setValueList(array('top:0;-left:0;'=>'TopLeft','top:0;-right:0;'=>'TopRight','bottom:0;-left:0;'=>'BottomLeft','bottom:0;-right:0;'=>'BottomRight'))->group('g~2');
+		
+		//Marked
+		$this->addField('new')->type('boolean')->caption('New')->defaultValue(true)->group('h~3~<i class=\'fa fa-cog\' > Marked Options</i>');
+		$this->addField('feature')->type('boolean')->caption('Featured')->group('h~3');
+		$this->addField('latest')->type('boolean')->caption('Latest')->group('h~3');
+		$this->addField('mostviewed')->type('boolean')->caption('Most Viewed')->group('h~3');
 
+		//Enquiry Send To
+		$this->addField('enquiry_send_to_admin')->type('boolean')->group('i~3~<i class=\'fa fa-cog\' > Enquiry Send To</i>');
+		$this->addField('Item_enquiry_auto_reply')->caption('Item Enquiry Auto Reply')->type('boolean')->group('i~3');
+		
+		//Item Comment Options
+		$this->addField('allow_comments')->type('boolean')->group('j~4~<i class=\'fa fa-cog\'> Item Comment Options</i>');
+		$this->addField('comment_api')->setValueList(
+														array('disqus'=>'Disqus')
+														)->group('j~4');
+
+		//Item Other Options	
+		$this->addField('add_custom_button')->type('boolean')->group('k~2~<i class=\'fa fa-cog\'> Item Other Options</i>');
+		$this->addField('custom_button_label')->group('k~4');
+		$this->addField('custom_button_url')->placeHolder('subpage name like registration etc.')->group('k~6');
+		$this->addField('theme_code')->hint('To club same theme code items in one')->group('k~6')->sortable(true);
+		$this->addField('reference')->PlaceHolder('Any Referance')->hint('Use URL for external link')->group('k~6')->sortable(true);
+		
+		//Item Stock Options	
+		$this->addField('negative_qty_allowed')->type('number');
+
+		// Item WaterMark
+		$this->add('filestore/Field_Image','watermark_image_id');
+		$this->addField('watermark_text')->type('text')->group('o~5~bl');
+		$this->addField('watermark_position')->enum(array('TopLeft','TopRight','BottomLeft','BottomRight','Center','Left Diagonal','Right Diagonal'));
+		$this->addField('watermark_opacity');
+		
+		//Item Designs
+		$this->addField('designs')->type('text')->group('o~5~bl');
+	
 		//Search String
 		$this->addField('search_string')->type('text')->system(true);
 
-		//Item Display Options
-		$f = $this->hasOne('xShop/ItemOffer','offer_id');
-		$f = $this->addField('offer_position')->setValueList(array('top:0;-left:0;'=>'TopLeft','top:0;-right:0;'=>'TopRight','bottom:0;-left:0;'=>'BottomLeft','bottom:0;-right:0;'=>'BottomRight'));
+		//Item SEO
+		$this->addField('meta_title')->group('j~3~bl');
+		$this->addField('meta_description')->type('text')->group('j~4~bl');
+		$this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value')->group('j~5~bl');
 		
-		$f = $this->addField('show_detail')->type('boolean')->defaultValue(true)->group('i~2~Item');
-		$f = $this->addField('show_price')->type('boolean')->group('i~2');
-
-		//Marked
-		$f = $this->addField('new')->type('boolean')->caption('New')->defaultValue(true)->group('m~3~<i class=\'fa fa-cog\' > Marked Options</i>');
-		$f = $this->addField('feature')->type('boolean')->caption('Featured')->group('m~3');
-		$f = $this->addField('latest')->type('boolean')->caption('Latest')->group('m~3');
-		$f = $this->addField('mostviewed')->type('boolean')->caption('Most Viewed')->group('m~3');
-		
-
-		//Enquiry Send To		
-		$f = $this->addField('enquiry_send_to_admin')->type('boolean')->group('e~3~<i class=\'fa fa-cog\' > Enquiry Send To</i>');
-		// $f = $this->addField('enquiry_send_to_supplier')->caption('Supplier')->type('boolean')->group('e~3');
-		// $f= $this->addField('enquiry_send_to_manufacturer')->caption('Manufacturer')->type('boolean')->group('e~3');
-		$f = $this->addField('Item_enquiry_auto_reply')->caption('Item Enquiry Auto Reply')->type('boolean')->group('e~3');
-
-		//Item Comment Options
-		$f = $this->addField('allow_comments')->type('boolean')->group('com~4~<i class=\'fa fa-cog\'> Item Comment Options</i>');
-		$f = $this->addField('comment_api')->setValueList(
-														array('disqus'=>'Disqus')
-														)->group('com~8');
-
-		//Item Other Options	
-		$f = $this->addField('add_custom_button')->type('boolean')->group('o~3~<i class=\'fa fa-cog\'> Item Other Options</i>');
-		$f = $this->addField('meta_title')->group('o~3~bl');
-		$f = $this->addField('custom_button_text')->group('o~4');
-		$f = $this->addField('meta_description')->type('text')->group('o~4~bl');
-		$f = $this->addField('custom_button_url')->placeHolder('subpage name like registration etc.')->group('o~5');
-		$f = $this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value')->group('o~5~bl');
-		
-		// Item WaterMark
-		$f = $this->add('filestore/Field_Image','watermark_image_id');
-		$f = $this->addField('watermark_text')->type('text')->group('o~5~bl');
-		$f = $this->addField('watermark_position')->enum(array('TopLeft','TopRight','BottomLeft','BottomRight','Center','Left Diagonal','Right Diagonal'));
-		$f = $this->addField('watermark_opacity');
-		
-		//Item Designs
-		$f = $this->addField('designs')->type('text')->group('o~5~bl');
-
 		$this->hasMany('xShop/CategoryItem','item_id');
 		$this->hasMany('xShop/ItemAffiliateAssociation','item_id');
 		$this->hasMany('xShop/ItemImages','item_id');

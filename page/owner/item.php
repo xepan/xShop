@@ -81,6 +81,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 			$tab->addTabURL('xShop/page/owner/item_affliate','Affliate',array('item_id'));
 			$tab->addTabURL('xShop/page/owner/item_preview','Preview',array('item_id'));
 			$tab->addTabURL('xShop/page/owner/item_seo','SEO',array('item_id'));
+			$tab->addTabURL('xShop/page/owner/item_stock','Stock',array('item_id'));
 		}else{
 			$item_col->add('View_Warning')->set('Select any one Item');
 		}
