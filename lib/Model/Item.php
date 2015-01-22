@@ -7,7 +7,7 @@ class Model_Item extends \Model_Table{
 	public $table_alias='Item';
 
 	function init(){
-		parent::init();	
+		parent::init();
 		
 		$this->hasOne('xShop/Application','application_id');
 		$this->hasOne('xShop/MemberDetails','designer_id');
@@ -15,30 +15,31 @@ class Model_Item extends \Model_Table{
 		//for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
+
 		// Basic Field
-		$f = $this->addField('name')->mandatory(true)->group('b~6')->sortable(true);
-		$f = $this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique Item code ')->mandatory(true)->group('b~4')->sortable(true);
-		$f = $this->addField('reference')->PlaceHolder('Any Referance')->hint('Use URL for external link')->group('b~4')->sortable(true);
-		$f = $this->addField('theme_code')->hint('To club same theme code items in one')->group('b~4')->sortable(true);
-		$f = $this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
-		$f = $this->addField('is_party_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
+		$this->addField('name')->mandatory(true)->group('b~6')->sortable(true);
+		$this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique Item code ')->mandatory(true)->group('b~3')->sortable(true);
+		$this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~1')->sortable(true);
+		$this->addField('is_party_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 
-		$f = $this->addField('short_description')->type('text')->group('d~6');//->display(array('form'=>'RichText'));
+		$this->addField('original_price')->type('int')->mandatory(true)->group('c~6');
+		$this->addField('sale_price')->type('int')->mandatory(true)->group('c~6~bl')->sortable(true);
+		$this->addField('short_description')->type('text')->group('c~6');
 		
-
+		$this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~4');
+		$this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'))->group('d~4');
+		$this->addField('expiry_date')->type('date')->group('d~4');
+		
 		// Price and Qtuanitity Management
-		$f = $this->addField('minimum_order_qty')->type('int')->mandatory(true)->group('d~3');
-		$f = $this->addField('maximum_order_qty')->type('int')->mandatory(true)->group('d~3');
-		$f = $this->addField('qty_unit')->mandatory(true)->group('d~3');
-		$f = $this->addField('qty_from_set_only')->type('boolean')->group('d~3');
+		$this->addField('minimum_order_qty')->type('int')->mandatory(true)->group('d~3');
+		$this->addField('maximum_order_qty')->type('int')->mandatory(true)->group('d~3');
+		$this->addField('qty_unit')->mandatory(true)->group('d~3');
+		$this->addField('qty_from_set_only')->type('boolean')->group('d~3');
 		
-		$f = $this->addField('original_price')->type('int')->mandatory(true)->group('d~3');
-		$f = $this->addField('sale_price')->type('int')->mandatory(true)->group('d~3')->sortable(true);
-
-		$f = $this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~6~dl');
-		$f = $this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'))->group('d~3~dl');				
-		$f = $this->addField('expiry_date')->type('date')->group('d~3~dl');
 		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'))->group('g~12');
+		// $f = $this->addField('theme_code')->hint('To club same theme code items in one')->group('b~4')->sortable(true);
+		// $f = $this->addField('reference')->PlaceHolder('Any Referance')->hint('Use URL for external link')->group('b~4')->sortable(true);
+		
 		
 		//Item Allow Optins
 		$f = $this->addField('is_attachment_allow')->type('boolean')->group('f~3~<i class=\'fa fa-cog\' > Item Allow Options</i>');
