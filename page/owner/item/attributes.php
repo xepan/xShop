@@ -1,6 +1,6 @@
 <?php
 
-class page_xShop_page_item_attributes extends Page{
+class page_xShop_page_owner_item_attributes extends Page{
 	function page_index(){
 		if(!$_GET['item_id'])
 			return;

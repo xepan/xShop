@@ -15,7 +15,6 @@ class Model_Item extends \Model_Table{
 		//for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
-
 		// Basic Field
 		$f = $this->addField('name')->mandatory(true)->group('b~6')->sortable(true);
 		$f = $this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique Item code ')->mandatory(true)->group('b~4')->sortable(true);

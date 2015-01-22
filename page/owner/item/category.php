@@ -1,6 +1,6 @@
 <?php
 
-class page_xShop_page_item_category extends Page{
+class page_xShop_page_owner_item_category extends Page{
 	
 	function init(){
 		parent::init();

@@ -1,6 +1,6 @@
 <?php
 
-class page_xShop_page_item_qtyandprice extends Page{
+class page_xShop_page_owner_item_preview extends Page{
 	function init(){
 		parent::init();
 		
