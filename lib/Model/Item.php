@@ -20,8 +20,8 @@ class Model_Item extends \Model_Table{
 		// Basic Field
 		$f = $this->addField('name')->mandatory(true)->group('b~6')->sortable(true);
 		$f = $this->addField('sku')->PlaceHolder('Insert Unique Referance Code')->caption('Code')->hint('Place your unique Item code ')->mandatory(true)->group('b~4')->sortable(true);
-		$f = $this->addField('reference')->PlaceHolder('Any Referance')->hint('Use URL for external link')->mandatory(true)->group('b~4')->sortable(true);
-		$f = $this->addField('theme_code')->hint('To club same theme code items in one')->mandatory(true)->group('b~4')->sortable(true);
+		$f = $this->addField('reference')->PlaceHolder('Any Referance')->hint('Use URL for external link')->group('b~4')->sortable(true);
+		$f = $this->addField('theme_code')->hint('To club same theme code items in one')->group('b~4')->sortable(true);
 		$f = $this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 		$f = $this->addField('is_party_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 
@@ -91,7 +91,7 @@ class Model_Item extends \Model_Table{
 		$f = $this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value')->group('o~5~bl');
 		
 		// Item WaterMark
-		$f = $this->add('filestore/Field_Image','watermark_image_id')->mandatory(true);
+		$f = $this->add('filestore/Field_Image','watermark_image_id');
 		$f = $this->addField('watermark_text')->type('text')->group('o~5~bl');
 		$f = $this->addField('watermark_position')->enum(array('TopLeft','TopRight','BottomLeft','BottomRight','Center','Left Diagonal','Right Diagonal'));
 		$f = $this->addField('watermark_opacity');
