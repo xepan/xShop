@@ -372,5 +372,19 @@ class Model_Item extends \Model_Table{
 		// 4. Default Price * qty
 	}
 
+	function includeCustomeFieldValues($import_fields=array(),$join_type='inner'){
+		$custom_fields_j = $this->join('xshop_category_item_customfields.item_id');
+		$custom_fields_j->hasOne('xShop/CustomFields','customfield_id');
+		$custom_fields_values_j = $custom_fields_j->join('xshop_custom_fields_value.itemcustomfiledasso_id');
+
+		foreach ($import_fields as $key=>$value) {
+			if(!is_numeric($key))
+				$custom_fields_values_j->addField($key,$value);
+			else
+				$custom_fields_values_j->addField($value);
+		}
+
+	}
+
 }	
 
