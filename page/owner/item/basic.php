@@ -16,12 +16,12 @@ class page_xShop_page_owner_item_basic extends Page{
 		$form->setModel($selected_item_model,array('name','sku','is_publish','is_party_publish','original_price','sale_price','short_description','rank_weight','created_at','expiry_date','is_saleable','is_downloadable','is_designable','is_enquiry_allow','is_template','show_detail','show_price','new','feature','latest','mostviewed','is_visible_sold','offer_id','offer_position','allow_comments','comment_api','add_custom_button','custom_button_label','custom_button_url','reference','theme_code','description'));
 		$form->addSubmit()->set('Update');
 
+		$form->add('Controller_FormBeautifier');
 		if($form->isSubmitted()){	
 			$form->update();
 			$form->js()->univ()->successMessage('Item Updtaed')->execute();
 		}
 
-		$form->add('Controller_FormBeautifier');
 
 	}
 }

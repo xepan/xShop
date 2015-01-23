@@ -53,9 +53,10 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 				$g = $crud->grid;
 				//Edit Template
 				$g->addColumn('edit_template');
-				$g->addMethod('format_edit_template',function($g,$f)use($designer){
+				$page = $this->html_attributes['xsnb-desinger-page'];
+				$g->addMethod('format_edit_template',function($g,$f)use($designer,$page){
 					if($g->model->ref('item_id')->get('designer_id') == $designer->id)
-						$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>$g->model['item_id'],'xsnb_design_template'=>'true')).'>Edit Template</a>';
+						$g->current_row_html[$f]='<a target="_blank" href='.$g->api->url(null,array('subpage'=>$page,'xsnb_design_item_id'=>$g->model['item_id'],'xsnb_design_template'=>'true')).'>Edit Template</a>';
 					else
 						$g->current_row_html[$f]='';
 						
@@ -63,9 +64,10 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 				$g->addFormatter('edit_template','edit_template');
 				//Edit Design
 				$g->addColumn('design');
-				$g->addMethod('format_design',function($g,$f)use($designer){
+				$subpage = $this->html_attributes['xsnb-desinger-page'];
+				$g->addMethod('format_design',function($g,$f)use($designer,$subpage){
 					if(!$g->model['is_dummy'])
-						$g->current_row_html[$f]='<a target="_blank" href='.$this->api->url(null,array('subpage'=>$this->html_attributes['xsnb-desinger-page'],'xsnb_design_item_id'=>'not-available','xsnb_design_template'=>'false','item_member_design_id'=>$g->model->id)).'>Design</a>';
+						$g->current_row_html[$f]='<a target="_blank" href='.$g->api->url(null,array('subpage'=>$subpage,'xsnb_design_item_id'=>'not-available','xsnb_design_template'=>'false','item_member_design_id'=>$g->model->id)).'>Design</a>';
 					else
 						$g->current_row_html[$f] ='';
 				});

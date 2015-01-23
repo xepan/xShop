@@ -116,7 +116,7 @@ class Model_Item extends \Model_Table{
 		$this->addHook('beforeSave',$this);
 		$this->addHook('afterInsert',$this);
 		$this->addHook('beforeDelete',$this);
-		// $this->add('dynamic_model/Controller_AutoCreator');
+		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 
 	function beforeSave($m){
@@ -128,7 +128,7 @@ class Model_Item extends \Model_Table{
 
 		//TODO Rank Weight Auto Increment 
 		if($item_old['sku'] == $this['sku'])
-			throw $this->Exception('Item Code is Allready Exist','ValidityCheck')->setField('sku');
+			throw $this->exception('Item Code is Allready Exist','Growl')->setField('sku');
 
 
 		//do inserting search string for full text search
