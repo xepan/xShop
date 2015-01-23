@@ -9,6 +9,11 @@ class View_Tools_Category extends \componentBase\View_Component{
 
 		$this->template->trySet('no_of_cols',$this->html_attributes['xshop-category-grid-column']);
 		
+		$width = 12;
+		if($this->html_attributes['show-category-column']){	
+			$width = 12 / $this->html_attributes['show-category-column'];
+		}
+		$this->col = 'col-md-'.$width.' col-sm-'.$width.' col-xl-'.$width;
 		// Define no of sub-category show in parent category
 		if($this->html_attributes['xshopcategoryshowlist']){
 			$this->template->trySet('xshopcategoryshowlist',$this->html_attributes['xshopcategoryshowlist']);
@@ -80,7 +85,7 @@ class View_Tools_Category extends \componentBase\View_Component{
 		}else{
 			// throw new \Exception($category['id'], 1);
 			if($this->html_attributes['xshop_category_layout']=='Thumbnail'){
-				$output = "<li class='text-center'><a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'><img src='$category[image_url]' /><div class='sky-menu-thumbnail-name'>".$category['name']."</div></a></li>";
+				$output = "<li class='text-center ".$this->col."'><a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'><img src='$category[image_url]' /><div class='sky-menu-thumbnail-name'>".$category['name']."</div></a></li>";
 			}else{
 				$output = "<li><a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'>".$category['name'];
  				if($this->html_attributes['xshop-category-show-price'])
