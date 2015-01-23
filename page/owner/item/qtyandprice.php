@@ -49,22 +49,36 @@ class page_xShop_page_owner_item_qtyandprice extends Page{
            
         */    
         if($crud->isEditing()){
-            $asso_model = $crud->form->getElement('itemcustomfiledasso_id')->getModel();
+            $asso_model = $crud->form->getElement('custom_field_value_id')->getModel();
             // add  expression 'Custome_Field/Value' style and make it title field
             
             $asso_model->addExpression('field_name_with_value')->set(function($m,$q)use($item_id){
-                // return $m->refSQL('customefield_id')->fieldQuery('name');
-                $custome_field_m = $m->add('xShop/Model_CustomFields',array('table_alias'=>'tcf'));
-                $values_j = $custome_field_m->join('xshop_category_item_customfields.customfield_id');
-                $values_j->addField('item_id');
-                $values_j->addField('is_active');
-                $custome_field_m->addCondition('item_id',$item_id);               
-                $custome_field_m->addCondition('is_active',true);
+
+				// return $m->refSQL('customefield_id')->fieldQuery('name');
+
+				$custome_field_m = $m->add('xShop/Model_CustomFields',array('table_alias'=>'tcf'));
+				$values_j = $custome_field_m->join('xshop_category_item_customfields.customfield_id');
+				$values_j->addField('item_id');
+				$custome_field_m->addCondition('item_id',$item_id);				
+
+				return "(concat('".$custome_field_m->_dsql()->del('fields')->field('name')."',' :: ',".$q->getField('name')."))";
+			});
+			$asso_model->title_field='field_name_with_value';
+			$cus_field_j = $asso_model->join('xshop_category_item_customfields','itemcustomfiledasso_id');
+			$cus_field_j->addField('item_id');
+   //          $asso_model->addExpression('field_name_with_value')->set(function($m,$q)use($item_id){
+   //              // return $m->refSQL('customefield_id')->fieldQuery('name');
+   //              $custome_field_m = $m->add('xShop/Model_CustomFields',array('table_alias'=>'tcf'));
+   //              $values_j = $custome_field_m->join('xshop_category_item_customfields.customfield_id');
+   //              $values_j->addField('item_id');
+   //              $values_j->addField('is_active');
+   //              $custome_field_m->addCondition('item_id',$item_id);               
+   //              $custome_field_m->addCondition('is_active',true);
 								
-                return "(concat('".$custome_field_m->_dsql()->del('fields')->field('name')."',' :: ','value'))";
-            });
+   //              return "(concat('".$custome_field_m->_dsql()->del('fields')->field('name')."',' :: ','value'))";
+   //          });
 			
-			// $asso_model->title_field='field_name_with_value';
+			// // $asso_model->title_field='field_name_with_value';
 			$asso_model->addCondition('item_id',$item_id)
 						->addCondition('is_active',true);
            

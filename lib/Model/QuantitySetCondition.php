@@ -9,9 +9,8 @@ class Model_QuantitySetCondition extends \Model_Table{
 		parent::init();
 
 		$this->hasOne('xShop/QuantitySet','quantityset_id');
-		$this->hasOne('xShop/CategoryItemCustomFields','itemcustomfiledasso_id');
+		$this->hasOne('xShop/Model_CustomFieldValue','custom_field_value_id');
 		// $this->addField('name'); // To give special name to a quantity Set Conditions.. leave empty to have qty value here too
-		$this->addField('price')->type('money')->mandatory(true);
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
