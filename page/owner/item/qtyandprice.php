@@ -22,7 +22,7 @@ class page_xShop_page_owner_item_qtyandprice extends Page{
 		$form->add('Controller_FormBeautifier');
 
 		$crud = $this->add('CRUD');
-		$crud->setModel($item->ref('xShop/QuantitySet'));
+		$crud->setModel($item->ref('xShop/QuantitySet'),array('name','qty','price'));
 		
 		if(!$crud->isEditing()){
 			$g = $crud->grid;
@@ -42,7 +42,7 @@ class page_xShop_page_owner_item_qtyandprice extends Page{
 							->addCondition('quantityset_id',$qs_id);
 
 		$crud = $this->add('CRUD');
-		$crud->setModel($qty_set_condition_model);
+		$crud->setModel($qty_set_condition_model,array('custom_field_value_id'),array('custom_field_value'));
 
         /*
             Get All item's custom fields and let select its value

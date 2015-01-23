@@ -9,14 +9,16 @@ class Model_Affiliate extends \Model_Table {
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 		$this->hasOne('xShop/Application','application_id');
-		$f = $this->hasOne('xShop/AffiliateType','affiliatetype_id');
+		$f = $this->hasOne('xShop/AffiliateType','affiliatetype_id')->mandatory(true);
 		
 		$f->icon = "fa fa-user~blue";
 		$f = $this->addField('company_name')->caption('Company Name')->mandatory(true)->group('a~5~<i class="fa fa-info"></i> Basic Info')->sortable(true);
 		$f->icon = "fa fa-circle~red";
 		$f = $this->addField('name')->caption('Owner Name')->mandatory(true)->group('a~5~<i class="fa fa-info"></i> Basic Info')->sortable(true);
 		$f->icon = "fa fa-circle~red";
-		$f = $this->addField('logo_url')->display(array('form'=>'ElImage'))->group('a~5');
+
+		$this->add('filestore/Field_Image','logo_url_id');
+		// $f = $this->addField('logo_url')->display(array('form'=>'ElImage'))->group('a~5');
 		$f->icon = "glyphicon glyphicon-picture~blue";
 		$f = $this->addField('is_active')->type('boolean')->defaultValue('true')->group('a~2')->sortable(true);
 		$f->icon ="fa fa-exclamation~blue";

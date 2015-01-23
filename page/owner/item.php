@@ -19,7 +19,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		
 		//category form
 		$form = $cat_col->add('Form',null,null,array('form/stacked'));
-		$cat_f = $form->addField('dropdown','category');
+		$cat_f = $form->addField('dropdown','category')->setEmptyText('All');;
 		$cat_f->setModel($category_model);
 		$form->addSubmit()->set('Filter');
 
@@ -78,7 +78,7 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 			$tab->addTabURL('xShop/page/owner/item_qtyandprice','Qty & Price',array('item_id'));
 			$tab->addTabURL('xShop/page/owner/item_media','Media',array('item_id'));
 			$tab->addTabURL('xShop/page/owner/item_category','Category',array('item_id'));
-			$tab->addTabURL('xShop/page/owner/item_affliate','Affliate',array('item_id'));
+			$tab->addTabURL('xShop/page/owner/item_affliate','Affiliate',array('item_id'));
 			$tab->addTabURL('xShop/page/owner/item_preview','Preview',array('item_id'));
 			$tab->addTabURL('xShop/page/owner/item_seo','SEO',array('item_id'));
 			$tab->addTabURL('xShop/page/owner/item_stock','Stock',array('item_id'));

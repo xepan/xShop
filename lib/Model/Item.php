@@ -92,9 +92,9 @@ class Model_Item extends \Model_Table{
 		$this->addField('search_string')->type('text')->system(true);
 
 		//Item SEO
-		$this->addField('meta_title')->group('j~3~bl');
-		$this->addField('meta_description')->type('text')->group('j~4~bl');
-		$this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value')->group('j~5~bl');
+		$this->addField('meta_title');
+		$this->addField('meta_description')->type('text');
+		$this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value');
 		
 		$this->hasMany('xShop/CategoryItem','item_id');
 		$this->hasMany('xShop/ItemAffiliateAssociation','item_id');
@@ -298,6 +298,11 @@ class Model_Item extends \Model_Table{
 		// return $associate_customfields;
 	}
 
+	function getAssociatedAffiliate(){
+		$associated_affiliate = $this->ref('xShop/ItemAffiliateAssociation')->addCondition('is_active',true)->_dsql()->del('fields')->field('affiliate_id')->getAll();
+		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_affiliate)),false);
+	}
+
 	function addCustomField($customfield_id){
 		$old_model = $this->add('xshop/Model_CategoryItemCustomFields');
 		$old_model->addCondition('item_id',$this->id);
@@ -382,6 +387,27 @@ class Model_Item extends \Model_Table{
 				$custom_fields_values_j->addField($value);
 		}
 
+	}
+
+	function activeAffiliate($affiliate_id){
+		if($this->loaded() and !$affiliate_id)
+			throw new \Exception("Item Model Must be Loaded ");
+
+		$old_model = $this->add('xShop/Model_ItemAffiliateAssociation');
+		$old_model->addCondition('item_id',$this->id);
+		$old_model->addCondition('affiliate_id',$affiliate_id);
+		$old_model->addCondition('is_active',false);
+		$old_model->tryLoadAny();
+		if($old_model->loaded()){
+			$old_model['is_active'] = true;
+			$old_model->saveandUnload();
+		}else{
+			$item_aff_model = $this->add('xShop/Model_ItemAffiliateAssociation');
+			$item_aff_model['item_id'] = $this->id;
+			$item_aff_model['affiliate_id'] = $affiliate_id;
+			$item_aff_model['is_active'] = true;
+			$item_aff_model->saveandUnload();
+		}
 	}
 
 }	
