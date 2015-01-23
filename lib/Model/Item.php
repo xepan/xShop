@@ -128,7 +128,7 @@ class Model_Item extends \Model_Table{
 
 		//TODO Rank Weight Auto Increment 
 		if($item_old['sku'] == $this['sku'])
-			throw $this->Exception('Item Code is Allready Exist','ValidityCheck')->setField('sku');
+			throw $this->exception('Item Code is Allready Exist','Growl')->setField('sku');
 
 
 		//do inserting search string for full text search
