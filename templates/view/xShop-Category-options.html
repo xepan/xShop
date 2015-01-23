@@ -30,9 +30,24 @@
 							<tr>
 								<td>
 									Application
-								</td>
+								</td>								
 								<td>
 									<select id='xshop_application_{$id}'>
+									</select>
+								</td>
+								
+							</tr>
+							<tr>
+								<td> No of  Category In Row</td>
+								<td>
+									<select id="xShop-category-grid-column" type="number" data-attr="show-category-column" class="xshop-general-bind" placeholder=" category in each Row">
+										<option value="0">Category in Each Row</option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="6">6</option>
+										<option value="12">12</option>
 									</select>
 								</td>
 							</tr>
@@ -43,6 +58,7 @@
 								<td>
 									<input type='text' id='xshop_category_url_page_{$id}'/>
 								</td>
+								
 								<tr >
 									<td>
 										Show Category Price   
@@ -52,19 +68,6 @@
 									</td>
 								</tr>
 
-								<tr class="xshop-megamenulatout-option">
-								<td> Select Item in Each Row</td>
-								<td>
-									<select id="xshop-category-grid-column" type="number" class="" placeholder="Product in each Row">
-										<option value="0">Item in Each Row</option>
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="6">6</option>
-										<option value="12">12</option>
-									</select>
-								</td>
 								</tr >
 								<tr class="xshop-megamenulatout-option">
 									<td>
@@ -140,6 +143,11 @@ $('#xshop_category_url_page_{$id}').change(function(event){
 	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
 });
 
+$('.xshop-general-bind').change(function(event){
+	$(current_selected_component).attr($(this).attr('data-attr'),$(this).val());
+	$(current_selected_component).children('div:first').trigger('reload');
+});
+
 var {$component_type}_options = {
 	show: function (){
 		// ===== THIS CODE RUNS EVERY TIME YOU DOUBLE CLICK YOUR COMPONENT
@@ -173,7 +181,9 @@ var {$component_type}_options = {
 		// $('#xshop-category-show-price').val($(current_selected_component).attr('xshop-category-show-price')?$(current_selected_component).attr('xshop-category-show-price'):0);
 		$('#xshop-category-show-price').attr('checked',$(current_selected_component).attr("xshop-category-show-price")=='1'?true:false);
 
-
+		$('.xshop-general-bind').each(function(index,value){
+			$(this).val($(current_selected_component).attr($(this).attr('data-attr')));
+		});
 	}
 }
 </script>
