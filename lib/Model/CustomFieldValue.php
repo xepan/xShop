@@ -12,7 +12,7 @@ class Model_CustomFieldValue extends \Model_Table{
 		// $this->addCondition('epan_id',$this->api->current_website->id);
 			
 		$this->hasOne('xShop/CategoryItemCustomFields','itemcustomfiledasso_id');
-		// $this->hasOne('xShop/CustomFields','customefield_id');
+		$this->hasOne('xShop/CustomFields','customfield_id');
 		
 		$this->addField('name'); // actually ... its value
 		$this->addField('rate_effect');
@@ -35,6 +35,9 @@ class Model_CustomFieldValue extends \Model_Table{
 		if($old_model->loaded()){
 			throw $this->Exception('Custom Value Already Exist','ValidityCheck')->setField('name');
 		}
+
+		// $temp = $this->add('xShop/Model_CategoryItemCustomFields')->load($this['itemcustomfiledasso_id']);
+		$this['customfield_id'] = $this->ref('itemcustomfiledasso_id')->get('customfield_id');
 	}
 
 	function duplicate($asso_id,$item_id=null){
