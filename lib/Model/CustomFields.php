@@ -17,7 +17,7 @@ class Model_CustomFields extends \Model_Table{
 		$this->addField('type')->enum(array('DropDown','Radio Button','Color','CheckBox'));
 		$f->icon = 'fa fa-circle~red';
 		
-		$this->hasMany('xShop/CustomFieldValue','customefield_id');
+		$this->hasMany('xShop/CustomFieldValue','customfield_id');
 		$this->hasMany('xShop/CustomFieldValueFilterAssociation','customefield_id');
 		$this->hasMany('xShop/CategoryItemCustomFields','customfield_id');
 

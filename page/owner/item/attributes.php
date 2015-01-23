@@ -52,14 +52,12 @@ class page_xShop_page_owner_item_attributes extends Page{
 
 	function page_customfields_values(){
 		$item_id=$this->api->stickyGET('item_id');
-
 		$custom_field_asso_id = $this->api->stickyGET('xshop_category_item_customfields_id');
-		$custom_field_id = $this->api->stickyGET('xshop_category_item_customfields_id');
-		
-		$custom_feild_values_model = $this->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$custom_field_id)->tryLoadAny();
+
+		$custom_feild_values_model = $this->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$custom_field_asso_id)->tryLoadAny();
 		$crud = $this->add('CRUD');
 		$crud->setModel($custom_feild_values_model,array('name','rate_effect'));
-		
+
 		$crud->grid->addColumn('expander','images');
 		$crud->grid->addColumn('expander','filter');
 	}
