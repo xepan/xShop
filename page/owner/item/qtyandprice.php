@@ -52,16 +52,14 @@ class page_xShop_page_owner_item_qtyandprice extends Page{
             $asso_model = $crud->form->getElement('custom_field_value_id')->getModel();
             // add  expression 'Custome_Field/Value' style and make it title field
             
-            $asso_model->addExpression('field_name_with_value')->set(function($m,$q)use($item_id){
-
-				// return $m->refSQL('customefield_id')->fieldQuery('name');
-
-				$custome_field_m = $m->add('xShop/Model_CustomFields',array('table_alias'=>'tcf'));
-				$values_j = $custome_field_m->join('xshop_category_item_customfields.customfield_id');
-				$values_j->addField('item_id');
-				$custome_field_m->addCondition('item_id',$item_id);				
-
-				return "(concat('".$custome_field_m->_dsql()->del('fields')->field('name')."',' :: ',".$q->getField('name')."))";
+            $asso_model->addExpression('field_name_with_value')->set(function($m,$q)use($crud){
+            	// ME = CustomeFieldValue Model
+            	// custom_field_model
+            	// joined with values
+            	// whose values_id = my id
+            	// Limit 1 
+            	// get custom field name
+				return "(concat((".$m->refSQL('itemcustomfiledasso_id')->_dsql()->del('fields')->field('name')->render()."),' :: ',".$q->getField('name')."))";
 			});
 			$asso_model->title_field='field_name_with_value';
 			$cus_field_j = $asso_model->join('xshop_category_item_customfields','itemcustomfiledasso_id');
