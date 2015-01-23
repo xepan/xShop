@@ -16,13 +16,13 @@ class Grid_Item extends \Grid{
 	function setModel($m,$fields){
 		parent::setModel($m,$fields);
 		//$this->addColumn('expander','details');
-		$this->addColumn('expander','categories');
-		$this->addColumn('expander','custom_fields',array("descr"=>"Custom Fields",'icon'=>'cog','icon_only'=>true));
-		$this->addColumn('expander','specifications',array("descr"=>"Specfications",'icon'=>'cog','icon_only'=>true));
-		$this->addColumn('expander','images',array("descr"=>"Images",'icon'=>'picture','icon_only'=>true));
-		$this->addColumn('expander','attachments',array("descr"=>"Docs",'icon'=>'folder','icon_only'=>true));
-		$this->addColumn('Button','duplicate',array("descr"=>"Duplicate",'icon'=>'folder','icon_only'=>true));
-		$this->addColumn('expander','rate_effect',array("descr"=>"Rate Effect",'icon'=>'cog','icon_only'=>true));
+		// $this->addColumn('expander','categories');
+		// $this->addColumn('expander','custom_fields',array("descr"=>"Custom Fields",'icon'=>'cog','icon_only'=>true));
+		// $this->addColumn('expander','specifications',array("descr"=>"Specfications",'icon'=>'cog','icon_only'=>true));
+		// $this->addColumn('expander','images',array("descr"=>"Images",'icon'=>'picture','icon_only'=>true));
+		// $this->addColumn('expander','attachments',array("descr"=>"Docs",'icon'=>'folder','icon_only'=>true));
+		// $this->addColumn('Button','duplicate',array("descr"=>"Duplicate",'icon'=>'folder','icon_only'=>true));
+		// $this->addColumn('expander','rate_effect',array("descr"=>"Rate Effect",'icon'=>'cog','icon_only'=>true));
 		// $this->addColumn('pics_docs','pics_docs','Pics / Docs');
 
 		if($_GET['duplicate']){
@@ -32,10 +32,10 @@ class Grid_Item extends \Grid{
 
 	}
 	function recursiveRender(){
-		$this->addMethod('format_name',function($g,$f){
-			$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL($g->model['name']." Details",'index.php?page=xShop_page_owner_item_details&cut_page=1&xshop_items_id='.$g->model->id).'">'.$g->current_row[$f].'</a>';
-		});
-		$this->addFormatter('name','name');
+		// $this->addMethod('format_name',function($g,$f){
+		// 	$g->current_row_html[$f]='<a href="javascript:void(0)" onclick="'.$g->js()->univ()->frameURL($g->model['name']." Details",'index.php?page=xShop_page_owner_item_details&cut_page=1&xshop_items_id='.$g->model->id).'">'.$g->current_row[$f].'</a>';
+		// });
+		// $this->addFormatter('name','name');
 		parent::recursiveRender();
 	}
 

@@ -2,9 +2,11 @@ Layout_Tool = function(parent){
 	var self = this;
 	this.parent=parent;
 	// this.text = params.text != undefined?params.text:'Enter Text';
-	this.init = function(designer,canvas){
-		this.designer_tool = designer;
-		this.canvas = canvas;
+	this.init = function(designer,canvas,page_tool){
+		self.designer_tool = designer;
+		self.canvas = canvas;
+		self.page_tool = page_tool;
+
 		if(this.parent == undefined)
 			this.parent = $('<div class="xshop-designer-layout clearfix"></div>').appendTo($.find(".xshop-designer-tool-bottombar"));
 	}
@@ -25,6 +27,7 @@ Layout_Tool = function(parent){
 					self.designer_tool.current_layout = $(this).data('layout');
 					self.designer_tool.render();
 					$('.xshop-designer-layoutbtn').removeClass('ui-selected');
+					self.page_tool.updateBreadcrumb(self.page_tool.parent);
 					$(this).addClass('ui-selected');
 				});
 			if(index == self.designer_tool.current_layout) {
@@ -45,16 +48,25 @@ PageLayout_Component = function (params){
 		this.designer_tool = designer;
 		this.canvas = canvas;
 		this.parent = parent;
-		this.show_page_btn = $('<div class="xshop-designer-show-page glyphicon glyphicon-thumbs-up" style="display:none;">Show Page</div>').appendTo(parent);
-		this.show_page_btn.click(function(){
-			$('.xshop-designer-pagelayout').show();
-			$('.xshop-designer-layout').hide();	
-			$(this).hide();
-		});
+		this.updateBreadcrumb(this.parent);
 	}
 
 	this.initExisting = function(params){
 
+	}
+	
+	this.updateBreadcrumb = function(parent){
+		$('.xshop-designer-show-page').remove();
+		this.breadcrumb = $('<ol class="xshop-designer-show-page breadcrumb"></ol>').prependTo(parent);
+		this.home_breadcrumb = $('<li><a href="#">Home</a></li>').appendTo(this.breadcrumb);
+		this.home_breadcrumb.click(function(){
+			$('.xshop-designer-pagelayout').show();
+			$('.xshop-designer-layout').hide();
+		});
+
+		this.page_breadcrumb = $('<li>'+self.designer_tool.current_page+'</li>').appendTo(this.breadcrumb);
+		this.layout_breadcrumb = $('<li>'+self.designer_tool.current_layout+'</li>').appendTo(this.breadcrumb);
+		// $(str).appendTo(this.show_page_btn);
 	}
 
 	this.renderTool = function(){
@@ -67,11 +79,12 @@ PageLayout_Component = function (params){
 			page_btn = $('<div class="xshop-designer-pagebtn"><h3>'+index+'</h3></div>').appendTo(page_layout_toolbar).data('page',index);
 			page_btn.click(function(event){
 				layout = new Layout_Tool();
-				layout.init(self.designer_tool,self.canvas);
+				layout.init(self.designer_tool,self.canvas,self);
 				layout.renderTool(index);
 				self.designer_tool.current_page = index;
 				self.designer_tool.current_layout = 'Main Layout';
 				self.designer_tool.render();
+				self.updateBreadcrumb(self.parent);
 				$('.xshop-designer-pagebtn').removeClass('ui-selected');
 				$(this).addClass('ui-selected');
 			});

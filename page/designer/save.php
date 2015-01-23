@@ -67,7 +67,7 @@ class page_xShop_page_designer_save extends Page {
 			$target = $this->add('xShop/Model_ItemMemberDesign');
 			$target['item_id']= $_POST['item_id'];
 			$target['member_id'] = $designer->id;
-			$target['designs']	= $_POST['xshop_item_design'];
+			$target['designs']	= $save_data;
 			$target->save();
 			echo $target['id'];
 			exit;

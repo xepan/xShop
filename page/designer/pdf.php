@@ -54,6 +54,10 @@ class page_xShop_page_designer_pdf extends Page {
 			exit;
 		}
 
+		// $design = json_decode($this->item['designs'],true);
+		// $design = $design['design']; // trimming other array values like px_width etc
+		// $design = json_encode($design);
+
 		$design = $target['designs'];
 		$design = json_decode($design,true);
 		

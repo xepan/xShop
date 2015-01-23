@@ -11,14 +11,14 @@ class Controller_RenderText extends \AbstractController {
 		$options = $this->options;
 		// print_r($options);
 		// exit;
-		if($options['bold']){
+		if($options['bold'] and !$options['italic']){
 			if(file_exists(getcwd().'/epan-components/xShop/templates/fonts/'.$options['font'].'-Bold.ttf'))
 				$options['font'] = $options['font'].'-Bold';
 			// else
 				// $draw->setFontWeight(700);
 		}
 
-		if($options['italic']){
+		if($options['italic'] and !$options['bold']){
 			if(file_exists(getcwd().'/epan-components/xShop/templates/fonts/'.$options['font'].'-Italic.ttf'))
 				$options['font'] = $options['font'].'-Italic';
 			else
