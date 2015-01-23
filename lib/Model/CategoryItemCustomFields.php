@@ -20,9 +20,10 @@ class Model_CategoryItemCustomFields extends \Model_Table{
 		$this->addField('is_active')->type('boolean')->defaultValue(true)->sortable(true);
 
 		$this->hasMany('xShop/CustomFieldValue','itemcustomfiledasso_id');
+		$this->hasMany('xShop/QuantitySetCondition','itemcustomfiledasso_id');
 
 		$this->addExpression('name')->set(function($m,$q){
-			return $m->refSQL('customfield_id')->fieldQuery('name');
+			return $m->refSQL('customfield_id')->fieldQuery('name');			
 		});
 
 		$this->addHook('beforeSave',$this);

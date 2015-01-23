@@ -32,10 +32,10 @@ class Model_Item extends \Model_Table{
 		$this->addField('description')->type('text')->display(array('form'=>'RichText'))->group('z~12');
 		
 		// Price and Qtuanitity Management
-		$this->addField('minimum_order_qty')->type('int')->mandatory(true)->group('e~3~Basic Quantity Options');
-		$this->addField('maximum_order_qty')->type('int')->mandatory(true)->group('e~3');
-		$this->addField('qty_unit')->mandatory(true)->group('e~3');
-		$this->addField('qty_from_set_only')->type('boolean')->group('e~3');
+		$this->addField('minimum_order_qty')->type('int')->group('e~3~Basic Quantity Options')->defaultValue(1);
+		$this->addField('maximum_order_qty')->type('int')->group('e~3');
+		$this->addField('qty_unit')->group('e~3')->defaultValue('pcs');
+		$this->addField('qty_from_set_only')->type('boolean')->group('e~3')->defaultValue(false);
 		
 		//Item Allow Optins
 		$this->addField('is_saleable')->type('boolean')->group('f~2~<i class=\'fa fa-cog\' > Item Allow Options</i>');
@@ -293,8 +293,9 @@ class Model_Item extends \Model_Table{
 	}
 
 	function getAssociatedCustomFields(){
-		$associate_customfields= $this->ref('xShop/CategoryItemCustomFields')->addCondition('is_allowed',true)->_dsql()->del('fields')->field('customfield_id')->getAll();
+		$associate_customfields= $this->ref('xShop/CategoryItemCustomFields')->addCondition('is_active',true)->_dsql()->del('fields')->field('customfield_id')->getAll();
 		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associate_customfields)),false);
+		// return $associate_customfields;
 	}
 
 	function addCustomField($customfield_id){

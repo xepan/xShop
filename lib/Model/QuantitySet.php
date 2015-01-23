@@ -14,11 +14,20 @@ class Model_QuantitySet extends \Model_Table{
 		$this->addField('price')->type('money')->mandatory(true);
 
 		$this->addHook('beforeSave',$this);
+		$this->addHook('afterInsert',$this);
 
+		$this->hasMany('xShop/QuantitySetCondition','quantityset_id');
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 
 	function beforeSave(){
 		if(trim($this['name'])=='') $this['name']=$this['qty'];
+	}
+
+	function afterInsert(){
+		$item = $this->add('xShop/Model_Item')->load($this['item_id']);
+		$cf_array = $item->getAssociatedCustomFields();
+		// foreach ($cf_array as $junk) {			
+		// }
 	}
 }

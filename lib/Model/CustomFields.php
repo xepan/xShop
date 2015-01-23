@@ -24,9 +24,5 @@ class Model_CustomFields extends \Model_Table{
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 
-	function createNew($category_id=false,$name,$value,$item_id=flase){
-		
-	}
-
 }
 
