@@ -13,6 +13,10 @@ class Model_QuantitySet extends \Model_Table{
 		$this->addField('qty')->type('number')->mandatory(true);
 		$this->addField('price')->type('money')->mandatory(true);
 
+		$this->addExpression('conditions_count')->set(function($m,$q){
+			return $m->refSQL('xShop/QuantitySetCondition')->count();
+		});
+
 		$this->addHook('beforeSave',$this);
 		$this->addHook('afterInsert',$this);
 
