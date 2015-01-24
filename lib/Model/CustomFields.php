@@ -24,5 +24,48 @@ class Model_CustomFields extends \Model_Table{
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 
+	function getCustomValue(){
+		if(!$this->loaded())
+			throw new \Exception("custom model must be loaded");
+		$cf_value_array = array();
+		/*
+		values:[
+					{value:9},
+					{value:10},
+					{
+						value: 11,
+						filters:{
+							color: 'red' // This is filter
+						}
+					},
+				]
+		*/
+		//Load Custom Field Value Model
+		$cf_value_model = $this->ref('xShop/CustomFieldValue')->addCondition('is_active',true);
+			//for each of value model and get its name
+			foreach ($cf_value_model as $junk){
+				$one_value_array = array();
+				$one_value_array['value'] = $cf_value_model['id'];
+				//load filter association model
+				$filter_model = $this->add('xShop/Model_CustomFieldValueFilterAssociation');
+				$filter_model->addCondition('customefieldvalue_id',$cf_value_model['id']);
+				$count = $filter_model->tryLoadAny()->count()->getOne();
+				$one_value_array['customfield_id'] = $this['id'];
+				$one_value_array['customefieldvalue_id'] = $cf_value_model['id'];
+				$one_value_array['filter_count'] = $count;
+				if($count){
+					//foreach filter and get filter value
+					$filter_value_array = array();
+					foreach ($filter_model as $filter){
+						$filter_value_array[$filter_model['name']] = $filter_model['customfield_id'];
+					}
+					$one_value_array['filters'] = $filter_value_array;
+				}	
+				array_push($cf_value_array, $one_value_array);
+			}
+
+		return $cf_value_array;
+	}
+
 }
 

@@ -425,5 +425,47 @@ class Model_Item extends \Model_Table{
 		}
 	}
 
+	function getQtySet(){
+		if(!$this->loaded())
+			throw new \Exception("Item Model Must be Loaded");
+		/*
+		qty_set: {
+				Values:{
+				value:{
+					name:'Default',
+					qty:1,
+					old_price:100,
+					price:90,
+					conditions:{
+							custom_fields_condition_id:'custom_field_value_id'
+						}
+				}
+			}
+		},
+		*/
+		$qty_set_array = array();
+		//load Associated Quantity Set
+			$qty_set_model = $this->ref('xShop/QuantitySet');
+			//foreach qtySet get all Condition
+				foreach ($qty_set_model as $junk){
+					$qty_set_array[$qty_set_model['id']]['name'] = $qty_set_model['name'];
+					$qty_set_array[$qty_set_model['id']]['qty'] = $qty_set_model['qty'];
+					$qty_set_array[$qty_set_model['id']]['old_price'] = $qty_set_model['old_price'];
+					$qty_set_array[$qty_set_model['id']]['price'] = $qty_set_model['price'];
+					$qty_set_array[$qty_set_model['id']]['conditions'] = array();
+					
+					//Load QtySet Condition Model
+					$condition_model =$this->add('xShop/Model_QuantitySetCondition')->addCondition('quantityset_id',$qty_set_model['id']);
+						//foreach condition 
+						foreach ($condition_model as $junk) {
+							$single_condition_array = array();
+							$single_condition_array[$condition_model['id']] = $condition_model['custom_field_value_id'];
+							array_push($qty_set_array[$qty_set_model['id']]['conditions'], $single_condition_array);
+						}
+				}
+
+		return $qty_set_array;		
+	}
+
 }	
 

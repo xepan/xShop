@@ -6,7 +6,19 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 
 		show_qty: false,
 		qty_from_set_only: false,
-		qty_set: {},
+		qty_set: {
+			Values:{
+				value:{
+					name:'Default',
+					qty:1,
+					old_price:100,
+					price:90,
+					conditions:{
+							custom_fields_condition_id:'custom_field_value_id'
+						}
+				}
+			}
+		},
 
 		show_custom_fields: false,
 		custom_fields:{
