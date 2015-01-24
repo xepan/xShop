@@ -123,11 +123,11 @@ class View_Lister_Item extends \CompleteLister{
 		$this->addSectionIF(
 			$this->html_attributes['show-add-to-cart'] and !$this->model['is_designable'],
 			$html_objects,
-			'ItemAddToCartButton',
-			'Add To Cart',
-			'xshop-item-add-to-cart btn btn-default',
+			'ItemAddToCartView',
+			$this->add('xShop/View_Item_AddToCart',array('name'=>'cust_'.$this->model->id,'item_model'=>$this->model,'show_custom_fields'=>$this->html_attributes['show-custom-fields']))->getHTML(),
+			'xshop-item-add-to-cart',
 			'#',
-			'button',
+			'li',
 			$this->html_attributes['order-add-to-cart']
 			);
 		$this->addSectionIF(
@@ -152,16 +152,18 @@ class View_Lister_Item extends \CompleteLister{
 			$this->html_attributes['order-enquiry-form']
 			);
 
-		$this->addSectionIF(
-			$this->html_attributes['show-custom-fields'],
-			$html_objects,
-			'CustomFields',
-			$this->add('xShop/View_Item_CustomeField',array('name'=>'cust_'.$this->model->id,'item_model'=>$this->model))->getHTML(),
-			'xshop-item-custom-fields',
-			'#',
-			'li/div',
-			$this->html_attributes['order-custom-fields']
-			);
+		// $this->addSectionIF(
+		// 	$this->html_attributes['show-custom-fields'],
+		// 	$html_objects,
+		// 	'CustomFields',
+		// 	$this->add('xShop/View_Item_CustomeField',array('name'=>'cust_'.$this->model->id,'item_model'=>$this->model))->getHTML(),
+		// 	'xshop-item-custom-fields',
+		// 	'#',
+		// 	'li/div',
+		// 	$this->html_attributes['order-custom-fields']
+		// 	);
+
+
 		// short description, add to cart, 
 		// <more btn>, <enquiry>, custom fields, reviews stars, Offer (hot new ..) and discounts, specifications, add to compare, add to wishlist, personalized, open in frame url
 
@@ -226,8 +228,8 @@ class View_Lister_Item extends \CompleteLister{
 		$empty_array=array();
 		if($if_test_result = $if_test){
 			if($if_test_result == 2){
-				$class_ext .= " xshop-item-show-on-hover";
-				$style_ext .= " visibility:hidden";
+				// $class_ext .= " xshop-item-show-on-hover";
+				// $style_ext .= " visibility:hidden";
 			}
 
 			$this->order_count ++;
@@ -339,7 +341,7 @@ class View_Lister_Item extends \CompleteLister{
 	}
 
 	function render(){
-		$this->js(true)->_load('item/item')->_load('item/customfield')->_selector('.xshop-item')->xepan_xshop_item();
+		// $this->js(true)->_load('item/item')->_load('item/customfield')->_selector('.xshop-item')->xepan_xshop_item();
 		
 		$this->api->jquery->addStylesheet('fancybox/jquery.fancybox');
 		$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/fancybox/jquery.fancybox.js"></script>'."\n");

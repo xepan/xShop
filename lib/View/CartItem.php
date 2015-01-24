@@ -23,9 +23,14 @@ class View_CartItem extends \View{
 		$this->template->Set('xshop_item_image',$img_model['image_url']?:'logo.svg');
 		$this->template->Set('id',$model['id']);
 
+		// IF designable_item from designer then add Preview btn as well ????????????????
+
 		//Form
 		$form=$this->add('Form',null,'qty',array('form/empty'));
-		$q_f=$form->addField('Number','qty')->set($model['qty'])->addClass('cart-spinner');
+		// if qty_from_set_only ???????????????????
+			// add dropdown type filed with values
+		// else
+			$q_f=$form->addField('Number','qty')->set($model['qty'])->addClass('cart-spinner');
 		// $q_f->setAttr('size',1);
 		// $q_f->js(true)->spinner(array('min'=>1));
 		$r_f=$form->addField('line','rate')->set($model['rate']);
