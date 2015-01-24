@@ -22,9 +22,9 @@ class Model_Item extends \Model_Table{
 		$this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~1')->sortable(true);
 		$this->addField('is_party_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 
-		$this->addField('original_price')->type('int')->mandatory(true)->group('c~6');
-		$this->addField('sale_price')->type('int')->mandatory(true)->group('c~6~bl')->sortable(true);
-		$this->addField('short_description')->type('text')->group('c~6');
+		$this->addField('original_price')->type('int')->mandatory(true)->group('c~6~Basic Price');
+		$this->addField('sale_price')->type('int')->mandatory(true)->group('c~6')->sortable(true);
+		$this->addField('short_description')->type('text')->group('c~12');
 		
 		$this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~4');
 		$this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'))->group('d~4');
@@ -92,9 +92,9 @@ class Model_Item extends \Model_Table{
 		$this->addField('search_string')->type('text')->system(true);
 
 		//Item SEO
-		$this->addField('meta_title')->group('j~3~bl');
-		$this->addField('meta_description')->type('text')->group('j~4~bl');
-		$this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value')->group('j~5~bl');
+		$this->addField('meta_title');
+		$this->addField('meta_description')->type('text');
+		$this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value');
 		
 		$this->hasMany('xShop/CategoryItem','item_id');
 		$this->hasMany('xShop/ItemAffiliateAssociation','item_id');
@@ -126,10 +126,8 @@ class Model_Item extends \Model_Table{
 			$item_old->addCondition('id','<>',$this->id);
 		$item_old->tryLoadAny();
 
-		//TODO Rank Weight Auto Increment 
 		if($item_old['sku'] == $this['sku'])
 			throw $this->exception('Item Code is Allready Exist','Growl')->setField('sku');
-
 
 		//do inserting search string for full text search
 		// $p_model=$this->add('xShop/Model_Item');
@@ -142,6 +140,17 @@ class Model_Item extends \Model_Table{
 								$this["meta_description"]. " ".
 								$this['sale_price']
 							;
+
+		//Default Qty Set
+		if($this->dirty['original_price'] or $this->dirty['sale_price']){
+			$qty_set_model = $this->ref('xShop/QuantitySet')->addCondition('is_default',true)->tryLoadAny();
+			$qty_set_model['old_price'] = $this['original_price'];
+			$qty_set_model['price'] = $this['sale_price'];
+			$qty_set_model['qty'] = 1;
+			$qty_set_model['name'] = "Default";
+			$qty_set_model['is_default'] = true;
+			$qty_set_model->save();
+		}	
 	}
 
 	function afterInsert($obj,$new_item_id){
@@ -298,6 +307,11 @@ class Model_Item extends \Model_Table{
 		// return $associate_customfields;
 	}
 
+	function getAssociatedAffiliate(){
+		$associated_affiliate = $this->ref('xShop/ItemAffiliateAssociation')->addCondition('is_active',true)->_dsql()->del('fields')->field('affiliate_id')->getAll();
+		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_affiliate)),false);
+	}
+
 	function addCustomField($customfield_id){
 		$old_model = $this->add('xshop/Model_CategoryItemCustomFields');
 		$old_model->addCondition('item_id',$this->id);
@@ -382,6 +396,27 @@ class Model_Item extends \Model_Table{
 				$custom_fields_values_j->addField($value);
 		}
 
+	}
+
+	function activeAffiliate($affiliate_id){
+		if($this->loaded() and !$affiliate_id)
+			throw new \Exception("Item Model Must be Loaded ");
+
+		$old_model = $this->add('xShop/Model_ItemAffiliateAssociation');
+		$old_model->addCondition('item_id',$this->id);
+		$old_model->addCondition('affiliate_id',$affiliate_id);
+		$old_model->addCondition('is_active',false);
+		$old_model->tryLoadAny();
+		if($old_model->loaded()){
+			$old_model['is_active'] = true;
+			$old_model->saveandUnload();
+		}else{
+			$item_aff_model = $this->add('xShop/Model_ItemAffiliateAssociation');
+			$item_aff_model['item_id'] = $this->id;
+			$item_aff_model['affiliate_id'] = $affiliate_id;
+			$item_aff_model['is_active'] = true;
+			$item_aff_model->saveandUnload();
+		}
 	}
 
 }	
