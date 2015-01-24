@@ -15,8 +15,10 @@ class Model_QuantitySet extends \Model_Table{
 		$this->addField('price')->type('money')->mandatory(true);
 		$this->addField('is_default')->type('boolean')->defaultValue(false);
 
-		$this->addExpression('conditions_count')->set(function($m,$q){
-			return $m->refSQL('xShop/QuantitySetCondition')->count();
+		$this->addExpression('custom_fields_conditioned')->set(function($m,$q){
+			$temp =$m->refSQL('xShop/QuantitySetCondition');
+			$temp->join('xshop_custom_fields_value','custom_field_value_id')->addField('customfield_id');
+			return $temp->_dsql()->group('customfield_id')->count();
 		});
 
 		$this->addHook('beforeSave',$this);

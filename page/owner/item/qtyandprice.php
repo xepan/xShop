@@ -22,7 +22,7 @@ class page_xShop_page_owner_item_qtyandprice extends Page{
 		$form->add('Controller_FormBeautifier');
 
 		$crud = $this->add('CRUD');
-		$crud->setModel($item->ref('xShop/QuantitySet'),array('name','qty','price'),array('name','qty','old_price','price','is_default'));
+		$crud->setModel($item->ref('xShop/QuantitySet'),array('name','qty','price'),array('name','qty','old_price','price','is_default','custom_fields_conditioned'));
 		
 		if(!$crud->isEditing()){
 			$g = $crud->grid;
@@ -47,7 +47,7 @@ class page_xShop_page_owner_item_qtyandprice extends Page{
 							->addCondition('quantityset_id',$qs_id);
 
 		$crud = $this->add('CRUD');
-		$crud->setModel($qty_set_condition_model,array('custom_field_value_id'),array('custom_field_value'));
+		$crud->setModel($qty_set_condition_model);//,array('custom_field_value_id'),array('custom_field_value'));
 
         /*
             Get All item's custom fields and let select its value
@@ -58,25 +58,25 @@ class page_xShop_page_owner_item_qtyandprice extends Page{
             $custom_values_model = $crud->form->getElement('custom_field_value_id')->getModel();
             // add  expression 'Custome_Field/Value' style and make it title field
             
-            $custom_values_model->addExpression('field_name_with_value')->set(function($m,$q){
-				$custome_field_m = $m->refSQL('customfield_id');
-				return "(concat((".$custome_field_m->_dsql()->del('fields')->field('name')->render()."),' :: ',".$q->getField('name')."))";
-			});
+   //          $custom_values_model->addExpression('field_name_with_value')->set(function($m,$q){
+			// 	$custome_field_m = $m->refSQL('customfield_id');
+			// 	return "(concat((".$custome_field_m->_dsql()->del('fields')->field('name')->render()."),' :: ',".$q->getField('name')."))";
+			// });
 
-			$custom_values_model->title_field='field_name_with_value';
-			$cus_field_j = $custom_values_model->join('xshop_category_item_customfields','itemcustomfiledasso_id');
+			// $custom_values_model->title_field='field_name_with_value';
+			$cus_field_j = $custom_values_model->join('xshop_category_item_customfields','itemcustomfiledasso_id',null,'xyzzz');
 			$cus_field_j->addField('item_id');
 			$custom_values_model->addCondition('item_id',$item_id)
 						->addCondition('is_active',true);           
         }else{
             
-            $custom_values_model = $crud->getModel()->getElement('custom_field_value_id')->getModel();
-            // add  expression 'Custome_Field/Value' style and make it title field
-            $custom_values_model->addExpression('field_name_with_value')->set(function($m,$q){
-				$custome_field_m = $m->refSQL('customfield_id');
-				return "(concat((".$custome_field_m->_dsql()->del('fields')->field('name')->render()."),' :: ',".$q->getField('name')."))";
-			});
-            $custom_values_model->title_field='field_name_with_value';
+   //          $custom_values_model = $crud->getModel()->getElement('custom_field_value_id')->getModel();
+   //          // add  expression 'Custome_Field/Value' style and make it title field
+   //          $custom_values_model->addExpression('field_name_with_value')->set(function($m,$q){
+			// 	$custome_field_m = $m->refSQL('customfield_id');
+			// 	return "(concat((".$custome_field_m->_dsql()->del('fields')->field('name')->render()."),' :: ',".$q->getField('name')."))";
+			// });
+   //          $custom_values_model->title_field='field_name_with_value';
 
         }		
 	}

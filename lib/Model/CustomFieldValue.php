@@ -4,6 +4,7 @@ namespace xShop;
 
 class Model_CustomFieldValue extends \Model_Table{
 	public $table='xshop_custom_fields_value';
+	public $title_field ='field_name_with_value';
 
 	function init(){
 		parent::init();
@@ -19,8 +20,16 @@ class Model_CustomFieldValue extends \Model_Table{
 		$this->addField('created_at')->type('datetime')->defaultValue(date('Y-m-d H:i:s'));
 		$this->addField('is_active')->type('boolean')->defaultValue(true)->sortable(true);
 
+		$this->addExpression('field_name_with_value')->set(function($m,$q){
+			$custome_field_m = $m->add('xShop/Model_CustomFields',array('table_alias'=>'x'));
+			$custome_field_m->addCondition('id',$q->getField('customfield_id'));
+
+			return "(concat((".$custome_field_m->_dsql()->fieldQuery('name')->render()."),' :: ',".$q->getField('name')."))";
+		});
+
 		$this->hasMany('xShop/ItemImages','customefieldvalue_id');
 		$this->hasMany('xShop/CustomFieldValueFilterAssociation','customefieldvalue_id');
+
 		$this->addHook('beforeSave',$this);
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}

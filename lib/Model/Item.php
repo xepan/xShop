@@ -368,8 +368,14 @@ class Model_Item extends \Model_Table{
 		return $specs_assos;
 	}
 
+	/*
+		$custom_field_values=array(
+			'Color'=>'Red',
+			'Size'=>'9'
+		)	
+	*/
 	function getAmount($cutome_field_values_array, $qty, $rate_chart='retailer'){
-		return rand(1000,9999);
+
 		// 1. Check Custom Rate Charts
 			/*
 				Look $qty >= Qty of rate chart
