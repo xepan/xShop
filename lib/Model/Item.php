@@ -22,9 +22,9 @@ class Model_Item extends \Model_Table{
 		$this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~1')->sortable(true);
 		$this->addField('is_party_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 
-		$this->addField('original_price')->type('int')->mandatory(true)->group('c~6');
-		$this->addField('sale_price')->type('int')->mandatory(true)->group('c~6~bl')->sortable(true);
-		$this->addField('short_description')->type('text')->group('c~6');
+		$this->addField('original_price')->type('int')->mandatory(true)->group('c~6~Basic Price');
+		$this->addField('sale_price')->type('int')->mandatory(true)->group('c~6')->sortable(true);
+		$this->addField('short_description')->type('text')->group('c~12');
 		
 		$this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~4');
 		$this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'))->group('d~4');
@@ -126,10 +126,8 @@ class Model_Item extends \Model_Table{
 			$item_old->addCondition('id','<>',$this->id);
 		$item_old->tryLoadAny();
 
-		//TODO Rank Weight Auto Increment 
 		if($item_old['sku'] == $this['sku'])
 			throw $this->exception('Item Code is Allready Exist','Growl')->setField('sku');
-
 
 		//do inserting search string for full text search
 		// $p_model=$this->add('xShop/Model_Item');
@@ -142,6 +140,17 @@ class Model_Item extends \Model_Table{
 								$this["meta_description"]. " ".
 								$this['sale_price']
 							;
+
+		//Default Qty Set
+		if($this->dirty['original_price'] or $this->dirty['sale_price']){
+			$qty_set_model = $this->ref('xShop/QuantitySet')->addCondition('is_default',true)->tryLoadAny();
+			$qty_set_model['old_price'] = $this['original_price'];
+			$qty_set_model['price'] = $this['sale_price'];
+			$qty_set_model['qty'] = 1;
+			$qty_set_model['name'] = "Default";
+			$qty_set_model['is_default'] = true;
+			$qty_set_model->save();
+		}	
 	}
 
 	function afterInsert($obj,$new_item_id){

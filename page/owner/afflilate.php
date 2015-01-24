@@ -47,8 +47,6 @@ class page_xShop_page_owner_afflilate extends page_xShop_page_owner_main{
 		$aff_crud->setModel($afflilate_model);//,array('name'));
 
 	}
-    
-
 }
 
 		

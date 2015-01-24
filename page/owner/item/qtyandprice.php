@@ -12,23 +12,28 @@ class page_xShop_page_owner_item_qtyandprice extends Page{
 		// $this->add('View_Info')->set('Display Basic Price For Item Here Again As Form .. updatable');
 		
 		$form = $this->add('Form_Stacked');
-		$form->setModel($item,array('minimum_order_qty','maximum_order_qty','qty_unit','qty_from_set_only'));
+		$form->setModel($item,array('original_price','sale_price','minimum_order_qty','maximum_order_qty','qty_unit','qty_from_set_only'));
 		$form->addSubmit()->set('Update');
 
 		if($form->isSubmitted()){
 			$form->update();
-			$form->js()->univ()->successMessage('Item Updtaed')->execute();
+			$form->js(null,$this->js()->reload())->univ()->successMessage('Item Updtaed')->execute();
 		}
 		$form->add('Controller_FormBeautifier');
 
 		$crud = $this->add('CRUD');
-		$crud->setModel($item->ref('xShop/QuantitySet'),array('name','qty','price'));
+		$crud->setModel($item->ref('xShop/QuantitySet'),array('name','qty','price'),array('name','qty','old_price','price','is_default'));
 		
 		if(!$crud->isEditing()){
 			$g = $crud->grid;
 			$g->addColumn('expander','conditions');
-		}
 
+			$g->addMethod('format_image_thumbnail',function($g,$f){
+				if($g->model['is_default'])
+					$g->current_row_html[$f] = "";
+			});
+			$g->addFormatter('conditions','image_thumbnail');
+		}
 	}
 
 	function page_conditions(){

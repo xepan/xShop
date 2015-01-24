@@ -11,7 +11,9 @@ class Model_QuantitySet extends \Model_Table{
 		$this->hasOne('xShop/Item','item_id');
 		$this->addField('name'); // To give special name to a quantity Set .. leave empty to have qty value here too
 		$this->addField('qty')->type('number')->mandatory(true);
+		$this->addField('old_price')->type('money')->mandatory(true);
 		$this->addField('price')->type('money')->mandatory(true);
+		$this->addField('is_default')->type('boolean')->defaultValue(false);
 
 		$this->addHook('beforeSave',$this);
 		$this->addHook('afterInsert',$this);
