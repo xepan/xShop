@@ -24,7 +24,7 @@ class Model_CustomFields extends \Model_Table{
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 
-	function getCustomValue(){
+	function getCustomValue($for_item_id){
 		if(!$this->loaded())
 			throw new \Exception("custom model must be loaded");
 		$cf_value_array = array();
@@ -41,7 +41,7 @@ class Model_CustomFields extends \Model_Table{
 				]
 		*/
 		//Load Custom Field Value Model
-		$cf_value_model = $this->ref('xShop/CustomFieldValue')->addCondition('is_active',true);
+		$cf_value_model = $this->ref('xShop/CustomFieldValue')->addCondition('item_id',$for_item_id)->addCondition('is_active',true);
 			//for each of value model and get its name
 			foreach ($cf_value_model as $junk){
 				$one_value_array = array();

@@ -27,6 +27,10 @@ class Model_CustomFieldValue extends \Model_Table{
 			return "(concat((".$custome_field_m->_dsql()->fieldQuery('name')->render()."),' :: ',".$q->getField('name')."))";
 		});
 
+		$this->addExpression('item_id')->set(function($m,$q){
+			return $m->refSQL('itemcustomfiledasso_id')->fieldQuery('item_id');
+		});
+
 		$this->hasMany('xShop/ItemImages','customefieldvalue_id');
 		$this->hasMany('xShop/CustomFieldValueFilterAssociation','customefieldvalue_id');
 

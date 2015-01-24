@@ -19,7 +19,7 @@ class View_Item_AddToCart extends \View{
 		$custom_fields = $this->item_model->getAssociatedCustomFields();
 		foreach ($custom_fields as $custom_field_id){
 			$cf_model = $this->add('xShop/Model_CustomFields')->load($custom_field_id);
-			$cf_value_array = $cf_model->getCustomValue();
+			$cf_value_array = $cf_model->getCustomValue($this->item_model->id);
 			$custom_filed_array[$cf_model['name']] = array(
 													'type'=>$cf_model['type'],
 													'values' => $cf_value_array
