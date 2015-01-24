@@ -45,7 +45,7 @@ class Model_ItemTemplate extends Model_Item{
 		$new_asso = $old_specification->duplicate($duplicate_template['id']);
 
 		//Custom and value Field Duplicate
-		$old_asso = $this->add('xShop/Model_CategoryItemCustomFields')->addCondition('item_id',$this->id);
+		$old_asso = $this->add('xShop/Model_ItemCustomFieldAssos')->addCondition('item_id',$this->id);
 		foreach ($old_asso as $junk){
 			$new_asso = $old_asso->duplicate($duplicate_template['id']);
 			//New Custom Field Association with old Vlaues

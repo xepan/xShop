@@ -31,17 +31,17 @@ class View_Item_AddToCart extends \View{
 		$qty_set_array = $this->item_model->getQtySet();
 
 		$this->options['item_id'] = $this->item_model->id;
-		$this->options['item_member_design_id'] = $this->item_member_design_model['id'];
+		$this->options['item_member_design_id'] = $this->item_member_design_model['id']?:'0';
 		$this->options['show_custom_fields'] = $this->show_custom_fields;
-		$this->options['show_qty'] = $this->item_member_design_model['id'];
-		$this->options['qty_from_set_only'] = $this->show_qty_selection;
+		$this->options['show_qty'] = $this->show_qty_selection ?'1':'0';
+		$this->options['qty_from_set_only'] = $this->item_model['qty_from_set_only'];
 		$this->options['qty_set'] = $qty_set_array;
 		$this->options['custom_fields'] = $custom_filed_array;
 
 		// echo"<pre>";
 		// print_r($this->options);
 		// // print_r($qty_set_array);
-		// echo"<\pre>";
+		// echo"</pre>";
 		// exit;
 	}
 

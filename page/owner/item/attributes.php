@@ -26,7 +26,7 @@ class page_xShop_page_owner_item_attributes extends Page{
 		
 		$item_model = $this->add('xShop/Model_Item')->load($item_id);
 		
-		$custom_fields = $this->add('xShop/Model_CategoryItemCustomFields');
+		$custom_fields = $this->add('xShop/Model_ItemCustomFieldAssos');
 		$custom_fields->addCondition('item_id',$item_id);
 		$custom_fields->tryLoadAny();
 
@@ -52,13 +52,13 @@ class page_xShop_page_owner_item_attributes extends Page{
 
 	function page_customfields_values(){
 		$item_id=$this->api->stickyGET('item_id');
-		$custom_field_asso_id = $this->api->stickyGET('xshop_category_item_customfields_id');
+		$custom_field_asso_id = $this->api->stickyGET('xshop_item_customfields_assos_id');
 
 		$custom_feild_values_model = $this->add('xShop/Model_CustomFieldValue')->addCondition('itemcustomfiledasso_id',$custom_field_asso_id)->tryLoadAny();
 		$crud = $this->add('CRUD');
 		$crud->setModel($custom_feild_values_model,array('name','rate_effect'));
 
-		$crud->grid->addColumn('expander','images');
+		// $crud->grid->addColumn('expander','images');
 		$crud->grid->addColumn('expander','filter');
 	}
 
@@ -87,7 +87,7 @@ class page_xShop_page_owner_item_attributes extends Page{
 	function page_customfields_values_filter(){
 		$item_id=$this->api->stickyGET('item_id');
 		
-		$custom_field_asso_id=$this->api->stickyGET('xshop_category_item_customfields_id');
+		$custom_field_asso_id=$this->api->stickyGET('xshop_item_customfields_assos_id');
 		$application_id = $this->api->recall('xshop_application_id');
 
 		$custom_filed_value_id = $this->api->stickyGET('xshop_custom_fields_value_id');
@@ -96,7 +96,7 @@ class page_xShop_page_owner_item_attributes extends Page{
 
 		$crud = $this->add('CRUD');
 		//for Custom Field Id
-		$temp = $this->add('xShop/Model_CategoryItemCustomFields');
+		$temp = $this->add('xShop/Model_ItemCustomFieldAssos');
 		$associated_customfiled = $temp->addCondition('item_id',$item_id)->addCondition('id','<>',$custom_field_asso_id)->_dsql()->del('fields')->field('customfield_id')->getAll();
 		$associated_customfiled = iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_customfiled)),false);
 		// ----------------------

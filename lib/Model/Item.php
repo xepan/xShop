@@ -104,7 +104,7 @@ class Model_Item extends \Model_Table{
 		$this->hasMany('xShop/OrderDetails','item_id');
 		$this->hasMany('xShop/ItemSpecificationAssociation','item_id');
 		$this->hasMany('xShop/CustomFieldValueFilterAssociation','item_id');
-		$this->hasMany('xShop/CategoryItemCustomFields','item_id');
+		$this->hasMany('xShop/ItemCustomFieldAssos','item_id');
 		$this->hasMany('xShop/ItemReview','item_id');
 		$this->hasMany('xShop/ItemMemberDesign','item_id');
 
@@ -193,7 +193,7 @@ class Model_Item extends \Model_Table{
 		$m->ref('xShop/CategoryItem')->deleteAll();
 		$m->ref('xShop/ItemImages')->deleteAll();
 		$m->ref('xShop/Attachments')->deleteAll();	 
-		$m->ref('xShop/CategoryItemCustomFields')->deleteAll();	
+		$m->ref('xShop/ItemCustomFieldAssos')->deleteAll();	
 	}
 
 	function updateSearchString($item_id=null){
@@ -302,7 +302,7 @@ class Model_Item extends \Model_Table{
 	}
 
 	function getAssociatedCustomFields(){
-		$associate_customfields= $this->ref('xShop/CategoryItemCustomFields')->addCondition('is_active',true)->_dsql()->del('fields')->field('customfield_id')->getAll();
+		$associate_customfields= $this->ref('xShop/ItemCustomFieldAssos')->addCondition('is_active',true)->_dsql()->del('fields')->field('customfield_id')->getAll();
 		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associate_customfields)),false);
 		// return $associate_customfields;
 	}
@@ -313,7 +313,7 @@ class Model_Item extends \Model_Table{
 	}
 
 	function addCustomField($customfield_id){
-		$old_model = $this->add('xshop/Model_CategoryItemCustomFields');
+		$old_model = $this->add('xshop/Model_ItemCustomFieldAssos');
 		$old_model->addCondition('item_id',$this->id);
 		$old_model->addCondition('customfield_id',$customfield_id);
 		$old_model->addCondition('is_allowed',false);
@@ -322,7 +322,7 @@ class Model_Item extends \Model_Table{
 			$old_model['is_allowed'] = true;
 			$old_model->saveandUnload();
 		}else{
-			$cat_item_cf_model = $this->add('xshop/Model_CategoryItemCustomFields');
+			$cat_item_cf_model = $this->add('xshop/Model_ItemCustomFieldAssos');
 			$cat_item_cf_model['customfield_id'] = $customfield_id;
 			$cat_item_cf_model['item_id'] = $this->id;
 			$cat_item_cf_model['is_allowed'] = true;
@@ -337,11 +337,11 @@ class Model_Item extends \Model_Table{
 		$category_item_model = $this->add('xShop/Model_CategoryItem');
 		$category_item_model->addCondition('item_id',$item_id);
 		foreach ($category_item_model as $junk) {
-			$category_customfield_model = $this->add('xShop/Model_CategoryItemCustomFields');
+			$category_customfield_model = $this->add('xShop/Model_ItemCustomFieldAssos');
 			$category_customfield_model->addCondition('category_id',$junk['category_id']);
 			
 			foreach ($category_customfield_model as $junk) {
-				$model = $this->add('xshop/Model_CategoryItemCustomFields');
+				$model = $this->add('xshop/Model_ItemCustomFieldAssos');
 				$model->addCondition('item_id',$item_id);
 				$model->addCondition('customfield_id',$junk['customfield_id']);
 				$model->tryLoadAny();
@@ -459,8 +459,8 @@ class Model_Item extends \Model_Table{
 						//foreach condition 
 						foreach ($condition_model as $junk) {
 							$single_condition_array = array();
-							$single_condition_array[$condition_model['id']] = $condition_model['custom_field_value_id'];
-							array_push($qty_set_array[$qty_set_model['id']]['conditions'], $single_condition_array);
+							$single_condition_array[$condition_model['customfield']] = $condition_model->ref('custom_field_value_id')->get('name');
+							$qty_set_array[$qty_set_model['id']]['conditions']= array_merge($qty_set_array[$qty_set_model['id']]['conditions'], $single_condition_array);
 						}
 				}
 

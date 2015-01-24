@@ -17,8 +17,7 @@ class Model_QuantitySet extends \Model_Table{
 
 		$this->addExpression('custom_fields_conditioned')->set(function($m,$q){
 			$temp =$m->refSQL('xShop/QuantitySetCondition');
-			$temp->join('xshop_custom_fields_value','custom_field_value_id')->addField('customfield_id');
-			return $temp->_dsql()->group('customfield_id')->count();
+			return $temp->_dsql()->group('quantityset_id')->del('fields')->field('count(*)');
 		});
 
 		$this->addHook('beforeSave',$this);

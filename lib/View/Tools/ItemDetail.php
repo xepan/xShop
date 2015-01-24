@@ -80,7 +80,7 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		$this->template->Set('xshop_item_tags',str_replace(',', " ", $item['tags']));	
 		
 		$details = $this->add('xShop/View_Lister_CustomFields',null,'item_custom_fields');
-		$custom_field_model=$this->add('xShop/Model_CategoryItemCustomFields');
+		$custom_field_model=$this->add('xShop/Model_ItemCustomFieldAssos');
 		$custom_field_model->addCondition('item_id',$_GET['xsnb_item_id']);
 		$details->setModel($custom_field_model);
 							

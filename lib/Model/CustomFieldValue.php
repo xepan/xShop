@@ -12,8 +12,9 @@ class Model_CustomFieldValue extends \Model_Table{
 		//TODO for Mutiple Epan website
 		// $this->addCondition('epan_id',$this->api->current_website->id);
 			
-		$this->hasOne('xShop/CategoryItemCustomFields','itemcustomfiledasso_id');
+		$this->hasOne('xShop/ItemCustomFieldAssos','itemcustomfiledasso_id');
 		$this->hasOne('xShop/CustomFields','customfield_id');
+		$this->hasOne('xShop/Item','item_id');
 		
 		$this->addField('name'); // actually ... its value
 		// $this->addField('rate_effect');
@@ -25,10 +26,6 @@ class Model_CustomFieldValue extends \Model_Table{
 			$custome_field_m->addCondition('id',$q->getField('customfield_id'));
 
 			return "(concat((".$custome_field_m->_dsql()->fieldQuery('name')->render()."),' :: ',".$q->getField('name')."))";
-		});
-
-		$this->addExpression('item_id')->set(function($m,$q){
-			return $m->refSQL('itemcustomfiledasso_id')->fieldQuery('item_id');
 		});
 
 		$this->hasMany('xShop/ItemImages','customefieldvalue_id');
@@ -49,8 +46,9 @@ class Model_CustomFieldValue extends \Model_Table{
 			throw $this->Exception('Custom Value Already Exist','ValidityCheck')->setField('name');
 		}
 
-		// $temp = $this->add('xShop/Model_CategoryItemCustomFields')->load($this['itemcustomfiledasso_id']);
+		// $temp = $this->add('xShop/Model_ItemCustomFieldAssos')->load($this['itemcustomfiledasso_id']);
 		$this['customfield_id'] = $this->ref('itemcustomfiledasso_id')->get('customfield_id');
+		$this['item_id'] = $this->ref('itemcustomfiledasso_id')->get('item_id');
 	}
 
 	function duplicate($asso_id,$item_id=null){

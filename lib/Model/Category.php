@@ -38,7 +38,7 @@ class Model_Category extends \Model_Table{
 		$parent_join = $this->leftJoin('xshop_categories','parent_id');
 		$this->addExpression('category_name')->set('concat('.$this->table_alias.'.name,"- (",IF('.$parent_join->table_alias.'.name is null,"",'.$parent_join->table_alias.'.name),")")');		
 		
-		// $this->hasMany('xShop/CategoryItemCustomFields','category_id');		
+		// $this->hasMany('xShop/ItemCustomFieldAssos','category_id');		
 				
 		$this->addHook('beforeDelete',$this);
 		$this->addHook('beforeSave',$this);

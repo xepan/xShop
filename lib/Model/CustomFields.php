@@ -9,7 +9,7 @@ class Model_CustomFields extends \Model_Table{
 		parent::init();
 		
 		$this->hasOne('Epan','epan_id');
-		// $this->addCondition('epan_id',$this->api->current_website->id);
+		$this->addCondition('epan_id',$this->api->current_website->id);
 		$this->hasOne('xShop/Application','application_id');
 
 		$f = $this->addField('name')->mandatory(true)->group('a~6~<i class=\'fa fa-cog\'> Item Custom Fields</i>')->mandatory(true);
@@ -19,7 +19,7 @@ class Model_CustomFields extends \Model_Table{
 		
 		$this->hasMany('xShop/CustomFieldValue','customfield_id');
 		$this->hasMany('xShop/CustomFieldValueFilterAssociation','customefield_id');
-		$this->hasMany('xShop/CategoryItemCustomFields','customfield_id');
+		$this->hasMany('xShop/ItemCustomFieldAssos','customfield_id');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
@@ -45,23 +45,21 @@ class Model_CustomFields extends \Model_Table{
 			//for each of value model and get its name
 			foreach ($cf_value_model as $junk){
 				$one_value_array = array();
-				$one_value_array['value'] = $cf_value_model['id'];
+				// $one_value_array['value'] = $cf_value_model['name'];
 				//load filter association model
 				$filter_model = $this->add('xShop/Model_CustomFieldValueFilterAssociation');
 				$filter_model->addCondition('customefieldvalue_id',$cf_value_model['id']);
 				$count = $filter_model->tryLoadAny()->count()->getOne();
-				$one_value_array['customfield_id'] = $this['id'];
-				$one_value_array['customefieldvalue_id'] = $cf_value_model['id'];
+				// $one_value_array['customfield'] = $this['name'];
+				// $one_value_array['customefieldvalue_id'] = $cf_value_model['id'];
 				$one_value_array['filter_count'] = $count;
-				if($count){
-					//foreach filter and get filter value
-					$filter_value_array = array();
-					foreach ($filter_model as $filter){
-						$filter_value_array[$filter_model['name']] = $filter_model['customfield_id'];
-					}
-					$one_value_array['filters'] = $filter_value_array;
-				}	
-				array_push($cf_value_array, $one_value_array);
+				//foreach filter and get filter value
+				$filter_value_array = array();
+				foreach ($filter_model as $filter){
+					$filter_value_array[]=array($filter_model['customfield'] => $filter_model['name']);
+				}
+				$one_value_array['filters'] = $filter_value_array;
+				$cf_value_array = array_replace($cf_value_array, array($cf_value_model['name']=>$one_value_array));
 			}
 
 		return $cf_value_array;
