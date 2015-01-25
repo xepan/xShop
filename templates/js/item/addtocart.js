@@ -4,7 +4,8 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 		selected_custom_field_values: {},
 		fields_and_their_types:{},
 		item_id: undefined,
-		item_member_design_id: undefined,
+		item_member_design_id: '0',
+		is_designable: false,
 
 		show_price: false,
 		show_qty: false,
@@ -18,7 +19,6 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 	_create: function(){
 		var self = this;
 
-		console.log(self.options);
 
 		if(this.options.show_custom_fields){
 			this.populateCustomFields();
@@ -29,16 +29,7 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 		}
 
 		this.populateAddToCartButton();
-	},
-
-	populateAddToCartButton: function(){
-		var self= this;
-		add_to_cart_btn = $('<button class="btn btn-default btn-xs">Add To Cart</button>').appendTo(self.element);
-		$(add_to_cart_btn).bind('click',self.add_to_cart_handler);
-	},
-
-	add_to_cart_handler: function(event){
-		alert('Button Clicked');
+		console.log(self.options);
 	},
 
 	populateCustomFields: function(){
@@ -94,16 +85,14 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 		// 1. set as current selected value in widget level scope
 		self.options.selected_custom_field_values[custom_field] = value_selected;
 		
-		// 2. rate changer function
-		self.getRate();
-
-		// 3. look for any filter to activate
+		
+		// 2. look for any filter to activate
 			//enable all fields first
 			$(self.element).find('.xshop-item-custom-field-value').attr('disabled',false).removeClass('disabled');
 			$(self.element).find('option.xshop-item-custom-field-value').parent().selectmenu('refresh');
 			// filter out all selected customfields values
 			$.each(self.options.custom_fields, function(custom_field, custom_field_details){
-				if(self.options.selected_custom_field_values[custom_field] !=undefined){
+				if(self.options.selected_custom_field_values[custom_field] !=undefined && self.options.selected_custom_field_values[custom_field] !='xshop-undefined'){
 					if(custom_field_details['values'][self.options.selected_custom_field_values[custom_field]]['filter_count'] != '0'){
 						filters =  custom_field_details['values'][self.options.selected_custom_field_values[custom_field]]['filters'];
 						$.each(filters, function(index,a_filter){
@@ -122,12 +111,17 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 
 									break;
 								}
+								if(self.options.selected_custom_field_values[filed_to_filter] == value_to_filter)
+									self.options.selected_custom_field_values[filed_to_filter] = undefined;
 								// console.log('filterting '+ filed_to_filter + ' = ' + value_to_filter);
 							});
 						});
 					}
 				}
 			});
+	
+		// 3. rate changer function
+		self.getRate();
 
 		// alert('TODOs here');
 	},
@@ -167,12 +161,24 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 
 	getRate: function(){
 		var self=this;
+		var all_custom_fields_selected = true;
 
 		if(self.options.show_price){
-			var qty_to_add = 1;
 
+			// check for all custom field value selected or not
+			$.each(self.options.custom_fields, function(custom_field, custom_field_details){
+				console.log('selected ' + custom_field + ' is '+ self.options.selected_custom_field_values[custom_field]);
+				if(self.options.selected_custom_field_values[custom_field] == undefined || self.options.selected_custom_field_values[custom_field] == 'xshop-undefined') all_custom_fields_selected = false;
+			});
+
+			// if(!all_custom_fields_selected) return; // ??????????????
+
+			var qty_to_add = 1;
 			// if show_qty is on ?????????????
+			if(self.options.show_qty == '1'){
+				qty_to_add = $(self.element).find('.xshop-add-to-cart-qty').val();
 				// set qty_to_add = val of qty field value
+			}
 
 			$.ajax({
 				url: 'index.php?page=xShop_page_getrate',
@@ -197,8 +203,65 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 				console.log("complete");
 			});
 		}
+	},
+
+	populateAddToCartButton: function(){
+		var self= this;
+		add_to_cart_btn = $('<button class="btn btn-default btn-xs">Add To Cart</button>').appendTo(self.element);
+		$(add_to_cart_btn).click(function(event){
+			var all_custom_fields_selected = true;
+			var missed_custom_fields = [];
+			$.each(self.options.custom_fields, function(custom_field, custom_field_details){
+				if(self.options.selected_custom_field_values[custom_field] == undefined || self.options.selected_custom_field_values[custom_field] == 'xshop-undefined'){
+					all_custom_fields_selected = false;
+					missed_custom_fields.push(custom_field);
+				}
+			});
+
+			if(!all_custom_fields_selected){
+				alert(missed_custom_fields.join(',') + ' Must be selected');
+				return;
+			}
+
+			var qty_to_add = 1;
+			// if show_qty is on ?????????????
+			if(self.options.show_qty == '1'){
+				qty_to_add = $(self.element).find('.xshop-add-to-cart-qty').val();
+				// set qty_to_add = val of qty field value
+			}
+
+
+			// if I am designable and there is no item_member_design_id
+			if(self.options.is_designable =='1' && (self.options.item_member_design_id == undefined || self.options.item_member_design_id) == '0'){
+				// This design needs to be saved first
+				$.univ().errorMessage('check for design dirty !!!');
+				$.univ().alert('PLease Save your Design First');
+				return;
+			}
+
+			$.ajax({
+				url: 'index.php?page=xShop_page_addtocart',
+				type: 'POST',
+				datatype: "json",
+				data: { 
+					item_id: self.options.item_id,
+					qty: qty_to_add,
+					custome_fields: JSON.stringify(self.options.selected_custom_field_values),
+					item_member_design_id: self.options.item_member_design_id
+				},
+			})
+			.done(function(ret) {
+				$.univ().successMessage('Item Added To Cart');
+				$('.xshop-cart').trigger('reload');
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+
+		});
 	}
-
-
 	
 });

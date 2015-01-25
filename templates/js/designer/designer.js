@@ -18,6 +18,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	workplace:undefined,
 	canvas:undefined,
 	safe_zone: undefined,
+	cart: undefined,
 	zoom: 1,
 	delta_zoom: 0,
 	px_width:undefined,
@@ -33,6 +34,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		IncludeJS: ['FreeLancerPanel'], // Plugins
 		ComponentsIncluded: ['BackgroundImage','Text','Image','PDF','ZoomPlus','ZoomMinus','Save'], // Plugins
 		design: [],
+		show_cart: false,
+		cart_options: [],
 		designer_mode: false,
 		width: undefined,
 		height: undefined
@@ -67,6 +70,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 				self.loadDesign();
 				self.setupPageLayoutBar();
 				self.setupFreelancerPanel();
+				self.setupCart();
 				self.render();
 			},200);
 		});
@@ -212,6 +216,15 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		this.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(this.canvas);
 		this.guidex= $('<div class="guidex"></div>').appendTo($('body'));
 		this.guidey= $('<div class="guidey"></div>').appendTo($('body'));
+	},
+
+	setupCart: function(){
+		var self=this;
+		if(!self.options.show_cart) return;
+		original_rate = $('<div class="xshop-item-old-price"></div>').appendTo(self.element);
+		price_rate = $('<div class="xshop-item-price"></div>').appendTo(self.element);
+		this.cart = $('<div></div>').appendTo(self.element);
+		this.cart.xepan_xshop_addtocart(self.options.cart_options);
 	},
 
 	render: function(param){

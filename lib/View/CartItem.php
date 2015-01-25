@@ -14,7 +14,7 @@ class View_CartItem extends \View{
 	function setModel($model){
 
 		$this->template->Set('item_code',$model['item_code']);
-		$this->template->Set('item_name',$model['item_name']);		
+		$this->template->Set('item_name',$model['item_name'] . ($model['item_member_design_id']?" DESIGN":""));		
 		$this->template->Set('item_id',$model['item_id']);
 
 		$img_model=$this->add('xShop/Model_ItemImages');

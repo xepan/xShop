@@ -14,31 +14,14 @@ class View_Item_AddToCart extends \View{
 
 	function init(){
 		parent::init();
-		$custom_filed_array = array();
+		
 
-		//Get All Item Associated Custom Field
-		$custom_fields = $this->item_model->getAssociatedCustomFields();
-		foreach ($custom_fields as $custom_field_id){
-			$cf_model = $this->add('xShop/Model_CustomFields')->load($custom_field_id);
-			$cf_value_array = $cf_model->getCustomValue($this->item_model->id);
-			$custom_filed_array[$cf_model['name']] = array(
-													'type'=>$cf_model['type'],
-													'values' => $cf_value_array
-												);
-		}
-
-		//Get All Item Qnatity Set 
-		$qty_set_array = array();
-		$qty_set_array = $this->item_model->getQtySet();
-
-		$this->options['item_id'] = $this->item_model->id;
+		$this->options = $this->item_model->getBasicCartOptions();
 		$this->options['item_member_design_id'] = $this->item_member_design_model['id']?:'0';
+		$this->options['show_qty'] = $this->show_qty_selection ?'1':'0';
 		$this->options['show_price'] = $this->show_price;
 		$this->options['show_custom_fields'] = $this->show_custom_fields;
-		$this->options['show_qty'] = $this->show_qty_selection ?'1':'0';
-		$this->options['qty_from_set_only'] = $this->item_model['qty_from_set_only'];
-		$this->options['qty_set'] = $qty_set_array;
-		$this->options['custom_fields'] = $custom_filed_array;
+		$this->options['is_designable'] = $this->item_model['is_designable'];
 
 		// echo"<pre>";
 		// print_r($this->options);

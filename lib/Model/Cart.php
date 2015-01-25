@@ -11,22 +11,33 @@ class Model_Cart extends \Model{
 		$this->addField('item_id');
 		$this->addField('item_code');
 		$this->addField('item_name');
-		$this->addField('qty');
-		$this->addField('rate');
 		$this->addField('rateperitem');
+		$this->addField('qty');
+		$this->addField('original_amount');
+		$this->addField('sales_amount');
+		$this->addField('shipping_charge');
+		$this->addField('tax');
+		$this->addField('total_amount');
+
 		$this->addField('custom_fields');
 		
 	}
 
-	function addToCart($id,$code,$name,$qty,$rate,$custom_fields=null,$otherfield=null){
+	function addToCart($item_id,$qty,$item_member_design_id, $custom_fields=null,$otherfield=null){
 		
-		$this['item_id'] = $id;
-		$this['item_code'] = $code;
-		$this['item_name'] = $name;
+		$item = $this->add('xShop/Model_Item')->load($item_id);
+		$prices = $item->getPrice($custom_fields,$qty,'retailer');
+		$amount = $item->getAmount($custom_fields,$qty,'retailer');
+
+		$this['item_id'] = $item->id;
+		$this['item_code'] = $item['sku'];
+		$this['item_name'] = $item['name'];
+		$this['rateperitem'] = $prices['sales_price'];
 		$this['qty'] = $qty;
-		$this['rateperitem'] = $rate;
-		$this['rate'] = $rate;
+		$this['original_amount'] = $amount['original_amount'];
+		$this['sales_amount'] = $amount['sales_amount'];
 		$this['custom_fields'] = $custom_fields;
+		$this['item_member_design_id'] = $item_member_design_id;
 		$this->save();			
 	}
 

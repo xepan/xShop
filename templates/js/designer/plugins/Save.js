@@ -58,6 +58,10 @@ Save_Component = function (params){
 					}else{
 						if(!isNaN(+ret)){
 							self.designer_tool.options.item_member_design_id = ret;
+							if(self.designer_tool.cart != undefined || self.designer_tool.cart != '0'){
+								self.designer_tool.cart.xepan_xshop_addtocart('option','item_member_design_id',ret);
+								// console.log(self.designer_tool.cart.options);
+							}
 							// window.history.pushState('page', 'saved_page', 'replace url');
 							$.univ().successMessage('Saved Successfully');
 						}else{

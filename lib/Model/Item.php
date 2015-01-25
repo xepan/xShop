@@ -374,8 +374,16 @@ class Model_Item extends \Model_Table{
 			'Size'=>'9'
 		)	
 	*/
+
+	function  getPrice($cutome_field_values_array, $qty, $rate_chart='retailer'){
+		return array('original_price'=>rand(1000,9999),'sale_price'=>rand(100,999));
+		
+	}
+
 	function getAmount($cutome_field_values_array, $qty, $rate_chart='retailer'){
 		return array('original_amount'=>rand(1000,9999),'sale_amount'=>rand(100,999));
+
+		// call getPrice($cutome_field_values_array, $qty, $rate_chart);
 		// 1. Check Custom Rate Charts
 			/*
 				Look $qty >= Qty of rate chart
@@ -465,6 +473,32 @@ class Model_Item extends \Model_Table{
 				}
 
 		return $qty_set_array;		
+	}
+
+	function getBasicCartOptions(){
+				//Get All Item Associated Custom Field
+		$custom_filed_array = array();
+		$custom_fields = $this->getAssociatedCustomFields();
+		foreach ($custom_fields as $custom_field_id){
+			$cf_model = $this->add('xShop/Model_CustomFields')->load($custom_field_id);
+			$cf_value_array = $cf_model->getCustomValue($this->id);
+			$custom_filed_array[$cf_model['name']] = array(
+													'type'=>$cf_model['type'],
+													'values' => $cf_value_array
+												);
+		}
+
+		//Get All Item Qnatity Set 
+		$qty_set_array = array();
+		$qty_set_array = $this->getQtySet();
+
+		$options = array();
+
+		$options['item_id'] = $this->id;
+		$options['qty_from_set_only'] = $this['qty_from_set_only'];
+		$options['qty_set'] = $qty_set_array;
+		$options['custom_fields'] = $custom_filed_array;
+		return $options;
 	}
 
 }	
