@@ -1,3 +1,10 @@
 .xshop-item-custom-field-value.selected{
 		border: 2px solid red !important;
 }
+
+.xshop-item-custom-field, 
+.xshop-add-to-cart-qty, 
+.xshop-item-add-to-cart-btn{
+	clear: both;
+	display: block;
+}

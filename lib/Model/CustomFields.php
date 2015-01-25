@@ -14,7 +14,7 @@ class Model_CustomFields extends \Model_Table{
 
 		$f = $this->addField('name')->mandatory(true)->group('a~6~<i class=\'fa fa-cog\'> Item Custom Fields</i>')->mandatory(true);
 		$f->icon = 'fa fa-circle~blue';
-		$this->addField('type')->enum(array('DropDown','Radio Button','Color','CheckBox'));
+		$this->addField('type')->enum(array('DropDown','Color'));//todo add radio box and checkbox ????????????
 		$f->icon = 'fa fa-circle~red';
 		
 		$this->hasMany('xShop/CustomFieldValue','customfield_id');

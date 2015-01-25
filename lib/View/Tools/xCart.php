@@ -19,7 +19,7 @@ class View_Tools_xCart extends \componentBase\View_Component{
 		if($_GET['item_id'] AND $_GET['item_id'] != 'undefined'){														
 			// from simple add to cart button on Item lister
 			$item_model->load($_GET['item_id']);			
-			$cart_model->addToCart($_GET['item_id'],$item_model['sku'],$item_model['name'],1,$item_model['sale_price'], null,null);						
+			$cart_model->addToCart($_GET['item_id'],$item_model['sku'],$item_model['name'],1,$item_model['sale_price'], null,null);
 		}
 
 		//Get Total amount and Total Item
@@ -77,7 +77,7 @@ class View_Tools_xCart extends \componentBase\View_Component{
 				}else{
 					//Cart All Item added
 					foreach ($cart_model as $junk){
-						$ci_view=$p->add('xShop/View_CartItem',array('new'=>$cart_model['id']));
+						$ci_view=$p->add('xShop/View_CartItem',array('new'=>$cart_model['id'],'html_attributes'=>$this->html_attributes));
 						$ci_view->setModel($cart_model);
 					}
 				}
@@ -99,7 +99,7 @@ class View_Tools_xCart extends \componentBase\View_Component{
 				$this->add('View_Error')->set('Cart is Empty');
 			}else{
 				foreach ($cart_model as $junk) {
-					$ci_view=$this->add('xShop/View_CartItem',array('new'=>$cart_model['id']),'xshop_cart_detail');
+					$ci_view=$this->add('xShop/View_CartItem',array('new'=>$cart_model['id'],'html_attributes'=>$this->html_attributes),'xshop_cart_detail');
 					$ci_view->setModel($cart_model);
 				}
 			}

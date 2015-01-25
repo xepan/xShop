@@ -39,7 +39,7 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 			self.options.fields_and_their_types[custom_field] = custom_field_details.type;
 			switch(custom_field_details.type){
 				case 'Color':
-					color_box = $('<div class="xshop-item-custom-color-box '+custom_field+'"></div>').appendTo(self.element);
+					color_box = $('<div class="xshop-item-custom-field xshop-item-custom-color-box '+custom_field+'"><div class="xshop-item-custom-field-name">'+custom_field+'</div></div>').appendTo(self.element);
 					$.each(custom_field_details.values, function (color_code, filter_info_object){
 					box = $('<div class="xshop-item-custom-field-value '+ color_code.replace('#','') +'"></div>').appendTo(color_box);
 					box.css('width','20px');
@@ -58,7 +58,7 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 				});
 				break;
 				case 'DropDown':
-					title =$('<div>'+custom_field+'</div>').appendTo(self.element);
+					title =$('<div class="xshop-item-custom-field xshop-item-custom-dropdown-box"><div class="xshop-item-custom-field-name">'+custom_field+'</div></div>').appendTo(self.element);
 					select = $('<select class="xshop-item-custom-field-select '+custom_field+'"></select>').appendTo(title);
 					opt = $('<option value="xshop-undefined" class="xshop-item-custom-field-value">Select</options>').appendTo(select);
 					$.each(custom_field_details.values, function (custom_field_value, filter_info_object){
@@ -207,7 +207,7 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 
 	populateAddToCartButton: function(){
 		var self= this;
-		add_to_cart_btn = $('<button class="btn btn-default btn-xs">Add To Cart</button>').appendTo(self.element);
+		add_to_cart_btn = $('<button class="xshop-item-add-to-cart-btn btn btn-default btn-xs">Add To Cart</button>').appendTo(self.element);
 		$(add_to_cart_btn).click(function(event){
 			var all_custom_fields_selected = true;
 			var missed_custom_fields = [];
