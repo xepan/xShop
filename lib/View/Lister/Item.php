@@ -124,7 +124,7 @@ class View_Lister_Item extends \CompleteLister{
 			$this->html_attributes['show-add-to-cart'] and !$this->model['is_designable'],
 			$html_objects,
 			'ItemAddToCartView',
-			$this->add('xShop/View_Item_AddToCart',array('name'=>'cust_'.$this->model->id,'item_model'=>$this->model,'show_custom_fields'=>$this->html_attributes['show-custom-fields']))->getHTML(),
+			$this->add('xShop/View_Item_AddToCart',array('name'=>'cust_'.$this->model->id,'item_model'=>$this->model,'show_custom_fields'=>$this->html_attributes['show-custom-fields'],'show_price'=>($this->html_attributes['show-price'] AND $this->model['show_price']) ))->getHTML(),
 			'xshop-item-add-to-cart',
 			'#',
 			'li',

@@ -8,6 +8,7 @@ class View_Item_AddToCart extends \View{
 	public $name;
 	public $show_custom_fields=false;
 	public $show_qty_selection=false;
+	public $show_price=false;
 	public $options = array();
 	public $qty_set = array();
 
@@ -32,6 +33,7 @@ class View_Item_AddToCart extends \View{
 
 		$this->options['item_id'] = $this->item_model->id;
 		$this->options['item_member_design_id'] = $this->item_member_design_model['id']?:'0';
+		$this->options['show_price'] = $this->show_price;
 		$this->options['show_custom_fields'] = $this->show_custom_fields;
 		$this->options['show_qty'] = $this->show_qty_selection ?'1':'0';
 		$this->options['qty_from_set_only'] = $this->item_model['qty_from_set_only'];

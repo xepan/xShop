@@ -6,6 +6,7 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 		item_id: undefined,
 		item_member_design_id: undefined,
 
+		show_price: false,
 		show_qty: false,
 		qty_from_set_only: false,
 		qty_set: {},
@@ -24,7 +25,7 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 		}
 
 		if(this.options.show_qty){
-			// this.populateQtyFields();
+			this.populateQtyFields();
 		}
 
 		this.populateAddToCartButton();
@@ -90,10 +91,13 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 		var self = this;
 
 		// console.log(custom_field + ' :: ' + value_selected);
-		// set as current selected value in widget level scope
+		// 1. set as current selected value in widget level scope
 		self.options.selected_custom_field_values[custom_field] = value_selected;
-		// call rate changer function
-		// look for any filter to activate
+		
+		// 2. rate changer function
+		self.getRate();
+
+		// 3. look for any filter to activate
 			//enable all fields first
 			$(self.element).find('.xshop-item-custom-field-value').attr('disabled',false).removeClass('disabled');
 			$(self.element).find('option.xshop-item-custom-field-value').parent().selectmenu('refresh');
@@ -126,6 +130,73 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 			});
 
 		// alert('TODOs here');
+	},
+
+	populateQtyFields: function(){
+		var self=this;
+		// if qty_from_set_only is true
+		if(self.options.qty_from_set_only !='0'){
+			// add dropdown and add options from qty_sets
+			qty_field = $('<select class="xshop-add-to-cart-qty"></select>').appendTo(self.element);
+			$.each(self.options.qty_set,function(index,qty){
+				var display_name=qty.qty;
+
+				if(qty.name != qty.qty) display_name = qty.name + ' :: '+ qty.qty;
+
+				$('<option value="'+qty.qty+'">'+display_name+'</option>').appendTo(qty_field);
+			});
+			qty_field.selectmenu({
+				change: function(event,ui){
+					self.getRate();
+				}
+			});
+		}else{
+			// add input box with spinner may be ...
+			qty_field = $('<input class="xshop-add-to-cart-qty" type="number"/>').appendTo(self.element);
+			qty_field.univ().numericField();
+		}
+		// add unique class under the self.element to read qty
+
+		$(qty_field).bind('change',function(){
+			self.getRate();
+		});
+		// $(qty_field).bind('blur',function(){
+		// 	self.getRate();
+		// });
+	},
+
+	getRate: function(){
+		var self=this;
+
+		if(self.options.show_price){
+			var qty_to_add = 1;
+
+			// if show_qty is on ?????????????
+				// set qty_to_add = val of qty field value
+
+			$.ajax({
+				url: 'index.php?page=xShop_page_getrate',
+				type: 'GET',
+				datatype: "json",
+				data: { 
+					item_id: self.options.item_id,
+					qty: qty_to_add,
+					custome_fields: JSON.stringify(self.options.selected_custom_field_values)
+				},
+			})
+			.done(function(ret) {
+				rates = ret.split(',');
+				console.log($(self.element).closest('.xshop-item').find('.xshop-item-old-price'));
+				$(self.element).closest('.xshop-item').find('.xshop-item-old-price').text(rates[0]);
+				$(self.element).closest('.xshop-item').find('.xshop-item-price').text(rates[1]);
+			})
+			.fail(function() {
+				console.log("error");
+			})
+			.always(function() {
+				console.log("complete");
+			});
+		}
 	}
 
 

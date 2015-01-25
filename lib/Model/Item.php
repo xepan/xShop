@@ -375,7 +375,7 @@ class Model_Item extends \Model_Table{
 		)	
 	*/
 	function getAmount($cutome_field_values_array, $qty, $rate_chart='retailer'){
-
+		return array('original_amount'=>rand(1000,9999),'sale_amount'=>rand(100,999));
 		// 1. Check Custom Rate Charts
 			/*
 				Look $qty >= Qty of rate chart
