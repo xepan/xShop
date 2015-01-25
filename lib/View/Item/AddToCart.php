@@ -46,6 +46,7 @@ class View_Item_AddToCart extends \View{
 	}
 
 	function render(){
+		$this->api->jui->addStaticStyleSheet('addtocart');
 		$this->js(true)->_load('item/addtocart')->xepan_xshop_addtocart($this->options);
 		parent::render();
 	}
