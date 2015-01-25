@@ -11,7 +11,7 @@
 		 	<div id="collapse-xshop-item-detail" class="panel-			collapse collapse">
 		      	<div class="panel-body">
 		      		<div class='xepan-collasp-header'>
-						<table class="table table-condensed table-	hover">
+						<table class="table table-condensed table-hover">
 							<tr>
 								<td colspan="3">
 									Show/Hide
@@ -77,6 +77,12 @@
 									<input id="xshop_pd_manufacturer_caption"/>
 								</td>
 							</tr>
+							<tr>
+								<td>Personalization Page</td>
+								<td colspan="2">
+									<input type='text' id='xshop-item-personalization_page' data-attr="personalization-page" class="xshop-general-bind" >
+								</td>
+							</tr>
 						</table>
 					</div>
 				</div>
@@ -96,6 +102,11 @@
 $('#xShopProductDetailServerSide').click(function(event){
 	$('#epan-quick-component-options').toggle('slideup');
 	$.univ.frameURL('xShop Products Details','index.php?page=xShop_page_owner_main')
+});
+	
+$('.xshop-general-bind').change(function(event){
+	$(current_selected_component).attr($(this).attr('data-attr'),$(this).val());
+	$(current_selected_component).children('div:first').trigger('reload');
 });
 
 $('#show_xshop_product_detail_images').change(function(event) {

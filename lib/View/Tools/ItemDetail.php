@@ -14,31 +14,6 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		$this->api->stickyGET('xsnb_item_id');
 		$config_model=$this->add('xShop/Model_Configuration');
 		$item=$this->add('xShop/Model_Item');
-		// $manu_join = $item->leftJoin('xshop_affiliate','affiliate_id');	
-		// $manu_join->addField('manufacturer_name','name');
-		// $manu_join->addField('manufacturer_office_address','office_address');
-		// $manu_join->addField('manufacturer_email_id','email_id');
-		// $manu_join->addField('manufacturer_mobile_no','mobile_no');
-		// $manu_join->addField('manufacturer_logo_url','logo_url');
-		// $manu_join->addField('manufacturer_city','city');
-		// $manu_join->addField('manufacturer_state','state');
-		// $manu_join->addField('manufacturer_country','country');
-		// $manu_join->addField('manufacturer_zip_code','zip_code');
-		// $manu_join->addField('manufacturer_phone_no','phone_no');
-		// $manu_join->addField('manufacturer_description','description');
-
-		// $supp_join = $item->leftJoin('xshop_affiliate','affiliate_id');		
-		// $s_name=$supp_join->addField('supplier_name','name');
-		// $supp_join->addField('supplier_email_id','email_id');
-		// $supp_join->addField('supplier_office_address','office_address');
-		// $supp_join->addField('supplier_phone_no','phone_no');
-		// $supp_join->addField('supplier_mobile_no','mobile_no');
-		// $supp_join->addField('supplier_address','address');
-		// $supp_join->addField('supplier_zip_code','zip_code');
-		// $supp_join->addField('supplier_city','city');
-		// $supp_join->addField('supplier_state','state');
-		// $supp_join->addField('supplier_country','country');
-		// $supp_join->addField('supplier_description','description')->allowHtml(true);
 
 		if($item['show_attachment']){
 			$attachment_model=$this->add('xShop/Model_Attachments');
@@ -48,9 +23,6 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 			$this->template->set('attachment_name',$attachment_model['name']);
 		}else
 			$this->template->tryDel('xshop_item_attachment');	
-		// throw new \Exception("Error Processing Request".$attachment_model['attachment_url']);
-		
-		// $this->setModel($item_attachment_model);
 		
 		//Live Edit of item Detail (server site live edit )
 		if( $this->api->edit_mode == true ){		
