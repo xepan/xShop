@@ -1,9 +1,8 @@
-<div id="{$_name}" class="item-detail">
+<div id="{$_name}" class="{$class} item-detail">
 <script src="epan-components/xShop/templates/js/jquery-elevatezoom.js">
 </script>
 <link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/xShop.css"/>
 
-	{$Content}
 	<div class="text-center">
 		<h1 class="page page-header"><span>{$name}</span></h1>
 	</div>
@@ -26,7 +25,10 @@
 			<div class="row">
 				{xshop_itemdetail_price}
 				<div class="col-md-6">
-					<span class="text-success"><span class="old-price">&#8377. {$original_price}</span>&nbsp;&nbsp;&#8377. {$sale_price}</span>				
+					<span class="text-success">
+					<span class="xshop-item-old-price old-price">&#8377. {$original_price}</span>
+					<span class="xshop-item-price">&nbsp;&nbsp;&#8377. {$sale_price}</span>
+					</span>				
 				</div>
 				{/xshop_itemdetail_price}
 				<div class="col-md-6">
@@ -97,9 +99,9 @@
 
         		<li>
         			{xshop_item_cart_btn}
-					<div class="btn-group xshop-grid-btn-addtocart">
+					<!-- <div class="btn-group xshop-grid-btn-addtocart">
 						<a href="#item_add{$id}" class="btn btn-default" role="button" onclick="{$aj}">Add To Cart</a>
-			  		</div>
+			  		</div> -->
         			{/xshop_item_cart_btn}
         		</li>
     		</ul>
@@ -320,7 +322,7 @@
 	    </div>
 	  </div>
 	</div>
-	
+	{$Content}
 	<!-- // code for discus  -->
 		{$xshop_item_discus}       
 	<!-- //end of code for discus		 -->

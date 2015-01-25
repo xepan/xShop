@@ -9,7 +9,7 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		// $_GET['xsnb_item_id'];
 		// echo $_GET['xsnb_item_id'];
 		// exit;
-
+		$this->addClass('xshop-item');
 		$this->js(true)->_load('jquery-elevatezoom');
 		$this->api->stickyGET('xsnb_item_id');
 		$config_model=$this->add('xShop/Model_Configuration');
@@ -122,12 +122,12 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 			} 
 		}
 
-		if($item['allow_saleable']){
-			$this->template->trySetHTML('aj',str_replace('"', "'", $this->js(null, $this->js()->_selector('body')->attr('xshop_add_item_id',$this->model->id))->_selector(' .xshop-cart ')->trigger('reload')->_render()));			
-		}else{
-			$this->current_row_html['aj']='';
-			$this->template->tryDel('xshop_item_cart_btn');	
-		}	
+		// if($item['allow_saleable']){
+		// 	$this->template->trySetHTML('aj',str_replace('"', "'", $this->js(null, $this->js()->_selector('body')->attr('xshop_add_item_id',$this->model->id))->_selector(' .xshop-cart ')->trigger('reload')->_render()));			
+		// }else{
+		// 	$this->current_row_html['aj']='';
+		// 	$this->template->tryDel('xshop_item_cart_btn');	
+		// }	
 		
 		$this->template->trySetHTML('supplier_description_copy',$this->model['supplier_description']);
 		$this->template->trySetHTML('manufacturer_description_copy',$this->model['manufacturer_description']);
@@ -146,6 +146,16 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 			}		
 		}
 		//end of custom btn in item detail		
+
+		//AddToCart
+		//if Item Designable 
+			if($this->model['is_designable']){
+				// add Personalioze View
+				$this->add('Button',null,'xshop_item_cart_btn')->set('Personalize')->js('click',$this->js()->univ()->location("index.php?subpage=".$this->html_attributes['personalization-page']."&xsnb_design_item_id=".$this->model->id));
+			}else{
+				//add AddToCart View
+				$this->add('xShop/View_Item_AddToCart',array('name'=>'cust_'.$this->model->id,'item_model'=>$this->model,'show_custom_fields'=>1,'show_price'=>$this->model['show_price']),'xshop_item_cart_btn');
+			}
 
 		$enquiry_form=$this->add('Form',null,'xshop_item_enquiry_form');
 		$enquiry_form->addField('line','name');
