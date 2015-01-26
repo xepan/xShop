@@ -47,6 +47,7 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 			$designer->loadLoggedIn();
 
 			$my_designs_model = $this->add('xShop/Model_ItemMemberDesign');
+			$my_designs_model->addCondition('member_id',$designer->id);
 			$crud->setModel($my_designs_model);
 
 			if(!$crud->isEditing()){

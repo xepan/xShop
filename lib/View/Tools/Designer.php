@@ -5,6 +5,7 @@ namespace xShop;
 class View_Tools_Designer extends \componentBase\View_Component{
 	public $html_attributes=array(); // ONLY Available in server side components
 	public $item=null;
+	public $target=null;
 	public $render_designer=true;
 	public $designer_mode=false;
 	public $specifications=array('width'=>false,'height'=>false,'trim'=>false,'unit'=>false);
@@ -27,7 +28,12 @@ class View_Tools_Designer extends \componentBase\View_Component{
 		if($_GET['item_member_design_id'] and $designer_loaded){
 			$target = $this->add('xShop/Model_ItemMemberDesign')->tryLoad($_GET['item_member_design_id']);
 			if(!$target->loaded()) return;
-			$this->item = $item = $target->ref('item_id');
+			if($target['member_id'] != $designer->id){
+				$target->unload();
+				unset($target);	
+			}else{
+				$this->item = $item = $target->ref('item_id');
+			}
 		}
 
 		
@@ -64,7 +70,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 			return;
 		}
 
-
+		$this->target = $target;
 		// check for required specifications like width / height
 		if(!($this->specification['width'] = $item->specification('width')) OR !($this->specification['height'] = $item->specification('height')) OR !($this->specification['trim'] = $item->specification('trim'))){
 			$this->add('View_Error')->set('Item Does not have \'width\' and/or \'height\' and/or \'trim\' specification(s) set');
@@ -105,7 +111,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 			$this->api->jquery->addStylesheet('designer/cropper');
 			$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/cropper.js"></script>'."\n");
 			
-			$design = json_decode($this->item['designs'],true);
+			$design = json_decode($this->target['designs'],true);
 			$design = $design['design']; // trimming other array values like px_width etc
 			$design = json_encode($design);
 
