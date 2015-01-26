@@ -207,7 +207,7 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 
 	populateAddToCartButton: function(){
 		var self= this;
-		add_to_cart_btn = $('<button class="xshop-item-add-to-cart-btn btn btn-default btn-xs">Add To Cart</button>').appendTo(self.element);
+		add_to_cart_btn = $('<button class="xshop-item-add-to-cart-btn btn btn-default">Add To Cart</button>').appendTo(self.element);
 		$(add_to_cart_btn).click(function(event){
 			var all_custom_fields_selected = true;
 			var missed_custom_fields = [];

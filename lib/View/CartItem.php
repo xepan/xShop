@@ -8,14 +8,15 @@ class View_CartItem extends \View{
 	function init(){
 		parent::init();
 		
-		$this->addClass('xshop-cartdetail');		
+		$this->addClass('xshop-cartdetail');
 	}
 	
 	function setModel($model){
+		$this->template->trySet('id',$model['id']);
 		//Sno
 		if($this->html_attributes['show-cart-items-sno']){
-			$str = '<td class="xshop-cart-item-sn">'.$model['id'].'</td>';
-			$this->template->setHtml('sno',$model['item_id']);
+			$str = '<td class="xshop-cart-item-sno">1</td>';
+			$this->template->setHtml('sno',$str);
 		}
 
 		//Image 
@@ -30,18 +31,30 @@ class View_CartItem extends \View{
 
 		//name
 		if($this->html_attributes['show-cart-items-name']){
-			$name = '<td class="xshop-cart-item-name col-md-2"><div>'.$model['item_name'].'</div>';
+			$name = '<td class="xshop-cart-item-name col-md-3">';
+			$name.= '<div class="xshop-cart-item-code"><span class="xshop-cart-item-code-label">code</span>'.$model['item_code'].'</div>';
+			$name.= '<div>'.$model['item_name'].'</div>';			
 			// IF designable_item from designer then add Preview btn as well ????????????????
 			if($model['item_member_design_id']){
-				$name .= '<a target="_blank" href='.
+				$name.= '<a target="_blank" href='.
 							$this->api->url(null,array('subpage'=>$this->html_attributes['item-designer-page'],
 														'xsnb_design_item_id'=>'not-available',
 														'xsnb_design_template'=>'false',
 														'item_member_design_id'=>$model['item_member_design_id']
 														)).'> Edit </a>';
-				$name .= '<a href="#"> Preview </a>';
+				$name.= '<a href="#"> Preview </a>';
 			}
-			$name .="</td>";
+
+			//Add Custom Fields 
+			$cfs = "";
+			$a = $model['custom_fields']?:array();
+			foreach ($a as $key => $value) {
+				$cfs = "".$key." : ".$value."<\br>";
+			}
+
+			$name.= '<div class="xshop-cart-item-custom-fields">'.$cfs.'</div>';
+			
+			$name.="</td>";
 			$this->template->setHtml('name', $name);
 		}
 
