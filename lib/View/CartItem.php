@@ -49,7 +49,7 @@ class View_CartItem extends \View{
 			$cfs = "";
 			$a = $model['custom_fields']?:array();
 			foreach ($a as $key => $value) {
-				$cfs = "".$key." : ".$value."<\br>";
+				$cfs = "".$key." : ".$value."</br>";
 			}
 
 			$name.= '<div class="xshop-cart-item-custom-fields">'.$cfs.'</div>';
