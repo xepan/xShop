@@ -23,8 +23,7 @@ class Model_Cart extends \Model{
 		
 	}
 
-	function addToCart($item_id,$qty,$item_member_design_id, $custom_fields=null,$otherfield=null){
-		
+	function addToCart($item_id,$qty,$item_member_design_id, $custom_fields=null,$other_fields=null){
 		$item = $this->add('xShop/Model_Item')->load($item_id);
 		$prices = $item->getPrice($custom_fields,$qty,'retailer');
 		$amount = $item->getAmount($custom_fields,$qty,'retailer');
@@ -38,7 +37,7 @@ class Model_Cart extends \Model{
 		$this['sales_amount'] = $amount['sales_amount'];
 		$this['custom_fields'] = $custom_fields;
 		$this['item_member_design_id'] = $item_member_design_id;
-		$this->save();			
+		$this->save();	
 	}
 
 	function getItemCount(){
@@ -69,7 +68,7 @@ class Model_Cart extends \Model{
 
 	function updateCart($id,$qty){
 		if(!$this->loaded())
-			throw new \Exception("Cart Model Not Loaded at update cart".$this['item_name']);		
+			throw new \Exception("Cart Model Not Loaded at update cart".$this['item_name']);
 		
 		$this['qty']=$qty;
 		$this['rate'] = $this['rateperitem'] * $qty;
