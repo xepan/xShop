@@ -12,6 +12,7 @@ class Model_PaymentGateway extends \SQL_Model {
 		$this->addCondition('epan_id',$this->api->current_website->id);
 
 		$this->addField('name');
+		$this->addField('default_parameters')->type('text');
 		$this->addField('parameters')->type('text');
 
 		$this->addField('processing')->enum(array('OnSite','OffSite'));

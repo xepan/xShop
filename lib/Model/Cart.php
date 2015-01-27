@@ -15,9 +15,9 @@ class Model_Cart extends \Model{
 		$this->addField('qty');
 		$this->addField('original_amount');
 		$this->addField('sales_amount');
-		$this->addField('shipping_charge');
-		$this->addField('tax');
-		$this->addField('total_amount');
+		$this->addField('shipping_charge')->defaultValue(0);
+		$this->addField('tax')->defaultValue(0);
+		$this->addField('total_amount')->defaultValue(0);
 
 		$this->addField('custom_fields');
 		
@@ -26,6 +26,7 @@ class Model_Cart extends \Model{
 	function addToCart($item_id,$qty,$item_member_design_id, $custom_fields=null,$other_fields=null){
 		$item = $this->add('xShop/Model_Item')->load($item_id);
 		$prices = $item->getPrice($custom_fields,$qty,'retailer');
+		
 		$amount = $item->getAmount($custom_fields,$qty,'retailer');
 
 		$this['item_id'] = $item->id;
@@ -34,10 +35,11 @@ class Model_Cart extends \Model{
 		$this['rateperitem'] = $prices['sales_price'];
 		$this['qty'] = $qty;
 		$this['original_amount'] = $amount['original_amount'];
-		$this['sales_amount'] = $amount['sales_amount'];
+		$this['sales_amount'] = $amount['sale_amount'];
 		$this['custom_fields'] = $custom_fields;
 		$this['item_member_design_id'] = $item_member_design_id;
-		$this->save();	
+		$this['total_amount'] = $amount['sale_amount'] + $this['shipping_charge'] + $this['tax'];
+		$this->save();
 	}
 
 	function getItemCount(){
@@ -54,7 +56,7 @@ class Model_Cart extends \Model{
 		$total_amount=0;
 		$cart=$this->add('xShop/Model_Cart');
 		foreach ($cart as $junk) {
-			$total_amount += $junk['rate'];
+			$total_amount += $junk['total_amount'];
 		}
 
 		return $total_amount;
@@ -66,7 +68,7 @@ class Model_Cart extends \Model{
 		 }
 	}
 
-	function updateCart($id,$qty){
+	function updateCart($id, $qty){
 		if(!$this->loaded())
 			throw new \Exception("Cart Model Not Loaded at update cart".$this['item_name']);
 		

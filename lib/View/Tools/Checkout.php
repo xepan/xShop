@@ -33,29 +33,29 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 
 		$i=1;
 		$amount_fields_array=array();
-		foreach ($cart_items as $ci) {
-			$item->load($ci['item_id']);
-			$item_id=$form->addField('hidden','itemid_'.$i,'')->set($ci['item_id']);
-			$item_rate=$form->addField('hidden','itemrate_'.$i,'')->set($ci['rate']);			
-			$form->addSeparator( 'atk-row noborder' );
+		// foreach ($cart_items as $ci) {
+		// 	$item->load($ci['item_id']);
+		// 	$item_id=$form->addField('hidden','itemid_'.$i,'')->set($ci['item_id']);
+		// 	$item_rate=$form->addField('hidden','itemrate_'.$i,'')->set($ci['rate']);			
+		// 	$form->addSeparator( 'atk-row noborder' );
 			
-			$item_field=$form->addField('Readonly','item_'.$i,'item')->set($ci['item_name']);
+		// 	$item_field=$form->addField('Readonly','item_'.$i,'item')->set($ci['item_name']);
 			
-			$item_field->template->set('row_class','span6');
-			$qty_field=$form->addField('line','qty_'.$i,'Qty')->set($ci['qty']);
-			$qty_field->template->set('row_class','span2');
-			$qty_field->addClass('numberOnly');
-			$rate_field=$form->addField('Readonly','rate_'.$i,'Rate')->set($ci['rateperitem']);
+		// 	$item_field->template->set('row_class','span6');
+		// 	$qty_field=$form->addField('line','qty_'.$i,'Qty')->set($ci['qty']);
+		// 	$qty_field->template->set('row_class','span2');
+		// 	$qty_field->addClass('numberOnly');
+		// 	$rate_field=$form->addField('Readonly','rate_'.$i,'Rate')->set($ci['rateperitem']);
 			
-			$rate_field->template->set('row_class','span2');
+		// 	$rate_field->template->set('row_class','span2');
 			
-			$amount_field=$form->addField('line','amount_'.$i,'Amount')->set($ci['qty'] * $ci['rate']);
-			$amount_field->template->set('row_class','span2');
-			$amount_field->setAttr( 'disabled', 'true' )->addClass('disabled_input');	
+		// 	$amount_field=$form->addField('line','amount_'.$i,'Amount')->set($ci['qty'] * $ci['rate']);
+		// 	$amount_field->template->set('row_class','span2');
+		// 	$amount_field->setAttr( 'disabled', 'true' )->addClass('disabled_input');	
 		
-			$amount_fields_array[] =$amount_field;
-			$i++;
-		}
+		// 	$amount_fields_array[] =$amount_field;
+		// 	$i++;
+		// }
 
 		$total_field = $form->addField('line','total');
 		$total_field->setAttr('disabled',true);
@@ -76,20 +76,20 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 					
 		$i=1;
 		$initial_total = 0;
-		foreach ($cart_items as $ci) {
-			$qty_field = $form->getElement('qty_'.$i);
-			$amount_field = $form->getElement('amount_'.$i);
-			$item_rate = $form->getElement('itemrate_'.$i);
+		// foreach ($cart_items as $ci) {
+		// 	$qty_field = $form->getElement('qty_'.$i);
+		// 	$amount_field = $form->getElement('amount_'.$i);
+		// 	$item_rate = $form->getElement('itemrate_'.$i);
 			
-			$qty_field->js('change')->univ()
-				->calculateRow($qty_field,$item_rate,$amount_field)
-				->calculateTotal($amount_fields_array,$total_field)
-				->calculateNet($total_field,$net_amount_field)
-				->validateVoucher($discount_field,$form,$discount_amount_field,$total_field,$net_amount_field)				
-				;		
-			$initial_total += ($ci['qty'] * $ci['rateperitem']);
-			$i++;
-		}
+		// 	$qty_field->js('change')->univ()
+		// 		->calculateRow($qty_field,$item_rate,$amount_field)
+		// 		->calculateTotal($amount_fields_array,$total_field)
+		// 		->calculateNet($total_field,$net_amount_field)
+		// 		->validateVoucher($discount_field,$form,$discount_amount_field,$total_field,$net_amount_field)				
+		// 		;		
+		// 	$initial_total += ($ci['qty'] * $ci['rateperitem']);
+		// 	$i++;
+		// }
 
 		$total_field->set($initial_total);
 		$net_amount_field->set($initial_total);	
@@ -134,6 +134,10 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 		$shipping->js(true)->appendTo($colright);
 		
 		$shipping->js('click')->univ()->copyBillingAddress($b_a,$b_l,$b_c,$b_s,$b_country,$b_p,$s_a,$s_l,$s_c,$s_s,$s_country,$s_p);
+
+		// add all active payment gateways
+		$pay_gate_field = $form->addField('DropDown','payment_gateway_selected')->setEmptyText('Please Select Your Payment Method')->validateNotNull(true);
+		$pay_gate_field->setModel($this->add('xShop/Model_PaymentGateway')->addCondition('is_active',true));
 
 		$form->addSubmit('PlaceOrder');
 		

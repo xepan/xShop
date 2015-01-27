@@ -126,7 +126,7 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 				$this->add('Button',null,'xshop_item_cart_btn')->set('Personalize')->js('click',$this->js()->univ()->location("index.php?subpage=".$this->html_attributes['personalization-page']."&xsnb_design_item_id=".$this->model->id));
 			}else{
 				//add AddToCart View
-				$this->add('xShop/View_Item_AddToCart',array('name'=>'cust_'.$this->model->id,'item_model'=>$this->model,'show_custom_fields'=>1,'show_price'=>$this->model['show_price']),'xshop_item_cart_btn');
+				$this->add('xShop/View_Item_AddToCart',array('name'=>'cust_'.$this->model->id,'item_model'=>$this->model,'show_custom_fields'=>1,'show_price'=>$this->model['show_price'], 'show_qty_selection'=>1),'xshop_item_cart_btn');
 			}
 
 		$enquiry_form=$this->add('Form',null,'xshop_item_enquiry_form');

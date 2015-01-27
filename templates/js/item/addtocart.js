@@ -18,13 +18,13 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 
 	_create: function(){
 		var self = this;
-
+		console.log(self.options);
 
 		if(this.options.show_custom_fields){
 			this.populateCustomFields();
 		}
 
-		if(this.options.show_qty){
+		if(this.options.show_qty=='1'){
 			this.populateQtyFields();
 		}
 

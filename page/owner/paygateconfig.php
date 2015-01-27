@@ -11,8 +11,12 @@ class page_xShop_page_owner_paygateconfig extends page_xShop_page_owner_main {
 
 
 		$crud =$this->app->layout->add('CRUD');
-		$crud->setModel('xShop/PaymentGateway');
-		
+		$crud->setModel('xShop/PaymentGateway',array('is_active','name','processing'));
+			
+		if(!$crud->isEditing()){
+			$crud->grid->addColumn('expander','config');
+		}
+
 		if($btn->isClicked()){
 			$gateway = new GatewayFactory();
 			$payment_gateway = $gateway->getSupportedGateways();
@@ -44,8 +48,8 @@ class page_xShop_page_owner_paygateconfig extends page_xShop_page_owner_main {
 				try {
 					//create OmniPay Object
 					$gateway_factory = GatewayFactory::create($gateway);
-					$pg_model['parameters'] = $gateway_factory->getDefaultParameters();//getDefault Params
-					$pg_model['processing'] = "OffSite";
+					$pg_model['default_parameters'] = $gateway_factory->getDefaultParameters();//getDefault Params
+					$pg_model['processing'] = $pg_model['processing']?: "OffSite";
 					$pg_model->saveAndUnload();
  				} catch (Exception $e) {
 
@@ -57,6 +61,36 @@ class page_xShop_page_owner_paygateconfig extends page_xShop_page_owner_main {
 	}
 
 	function page_config(){
+		$payment_gateway = $this->add('xShop/Model_PaymentGateway')->load($this->api->stickyGET('xshop_payment_gateways_id'));
+
+		$form = $this->add('Form');
+
+		$fields = json_decode($payment_gateway['default_parameters'],true);
+		$values = json_decode($payment_gateway['parameters'],true);
+		// echo "<pre>";
+		// print_r($fields);
+		// echo "</pre>";
+		foreach ($fields as $field => $value) {
+			if(is_array($value)){
+				$form->addField('DropDown',$field)->setValueList($value)->set($values[$field]);
+			}else
+				$form->addField('line',$field)->set($values[$field]);
+		}
+
+		$form->addSubmit('Update');
+
+		if($form->isSubmitted()){
+			$fields = json_decode($payment_gateway['default_parameters'],true);
+			foreach ($fields as $field => $value) {
+				$fields[$field] = $form[$field];
+			}
+			$payment_gateway['parameters'] = json_encode($fields);
+
+			$payment_gateway->save();
+			$form->js()->univ()->successMessage('Updated')->execute();
+
+		}
+
 
 	}
 }

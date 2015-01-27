@@ -66,6 +66,7 @@ class View_CartItem extends \View{
 			// if qty_from_set_only ???????????????????
 				// add dropdown type filed with values
 			// else
+				$q_f=$form->addField('line','cart_item_id')->set($model['id']);
 				$q_f=$form->addField('Number','qty')->set($model['qty'])->addClass('cart-spinner');
 			// $q_f->setAttr('size',1);
 			// $q_f->js(true)->spinner(array('min'=>1));
@@ -75,19 +76,17 @@ class View_CartItem extends \View{
 			$r_f_hidden=$form->addField('hidden','rateperitem')->set($model['rateperitem']);
 
 			$this->api->js()->_load( 'xShop-js' );
-			$q_f->js( 'change' )->univ()->calculateRate($q_f,$r_f_hidden,$r_f);
+			$q_f->js( 'change', $form->js()->submit() )->univ()->calculateRate($q_f,$r_f_hidden,$r_f);
 
 			$btn_submit=$form->add('View')->addClass('xshop-cart-qty-update-btn')->set('Update');
 			$btn_submit->js('click')->submit();
 			
 			if($form->isSubmitted()){
 				$all_cart_item_model = $this->add('xShop/Model_Cart');
-				foreach ($all_cart_item_model as $item) {
-					$all_cart_item_model->load($model['id']);
-					$all_cart_item_model->updateCart($model['id'],$form['qty']);
-					// $item['qty']=$form['qty'];
-					$form->js()->univ()->successMessage('Cart Update Successfully')->execute();					
-				}
+				$all_cart_item_model->load($form['cart_item_id']);
+				$all_cart_item_model->updateCart($form['cart_item_id'],$form['qty']);
+				// $item['qty']=$form['qty'];
+				$form->js()->univ()->successMessage('Cart Update Successfully')->execute();					
 			}
 		}else{
 			$this->template->tryDel('qty_rate');
