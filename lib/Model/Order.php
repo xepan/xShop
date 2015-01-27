@@ -15,8 +15,7 @@ class Model_Order extends \Model_Table{
 		$f->icon = "fa fa-user~red";
 		$f = $this->addField('name')->caption('Order ID')->mandatory(true)->group('a~3');
 		$f = $this->addField('order_status')->setValueList(array('10' =>'order palced','20'=>'order placed with payament','30'=>'order placed with COD','40'=>'Order Shipping','50'=>'Order Shipped'))->group('a~2');
-		//$f = $this->addField('payment_status')->enum(array('Pending','Cleared','Denied'))->group('a~2')
-		$f = $this->addField('order_date')->type('date')->defaultValue(date('Y-m-d'))->group('a~2');
+		$f = $this->addField('on_date')->type('date')->defaultValue(date('Y-m-d'))->group('a~2');
 		$f->icon ="fa fa-calendar~blue";
 
 		$f = $this->addField('amount')->mandatory(true)->group('b~3~<i class="fa fa-money"></i> Order Amount');
@@ -27,6 +26,7 @@ class Model_Order extends \Model_Table{
 		$f = $this->addField('billing_address')->mandatory(true)->group('x~6~<i class="fa fa-map-marker"> Address</i>');
 		$f = $this->addField('shipping_address')->mandatory(true)->group('x~6');	
 		$f = $this->addField('order_summary')->type('text')->group('y~12');
+
 		$this->hasMany('xShop/OrderDetails','order_id');
 		$this->addHook('beforeDelete',$this);
 		$this->add('dynamic_model/Controller_AutoCreator');
@@ -50,12 +50,11 @@ class Model_Order extends \Model_Table{
 	function placeOrder($order_info){
 
 		$billing_address=$order_info['address'].", ".$order_info['landmark'].", ".$order_info['city'].", ".$order_info['state'].", ".$order_info['country'].", ".$order_info['pincode'];
-		$shipping_address=$order_info['shipping_address'].", ".$order_info['s_landmark'].", ".$order_info['s_city'].", ".$order_info['s_state'].", ".$order_info['s_country'].", ".$order_info['s_pincode'];		
+		$shipping_address=$order_info['shipping_address'].", ".$order_info['s_landmark'].", ".$order_info['s_city'].", ".$order_info['s_state'].", ".$order_info['s_country'].", ".$order_info['s_pincode'];
 
 		$cart_items=$this->add('xShop/Model_Cart');
-		$this['member_id'] = $this->api->auth->model->id;		
-		$this['payment_status'] = "Pending";
-		$this['order_status'] = "OrderPlaced";
+		$this['member_id'] = $this->api->auth->model->id;
+		$this['order_status'] = "10";
 		$this['billing_address'] = $billing_address;
 		$this['shipping_address'] = $shipping_address;		
 		$this->save();
@@ -68,7 +67,7 @@ class Model_Order extends \Model_Table{
 				$order_details['order_id']=$this->id;
 				$order_details['item_id']=$order_info['itemid_'.$i];
 				$order_details['qty']=$order_info['qty_'.$i];
-				$order_details['rate']=$order_info['itemrate_'.$i];
+				$order_details['rate']=$order_info['itemrate_'.$i];//get Item Rate????????????????
 				$order_details['amount']=$order_info['qty_'.$i]*$order_info['itemrate_'.$i];
 				$total_amount+=$order_details['amount'];
 
@@ -89,7 +88,7 @@ class Model_Order extends \Model_Table{
 			$this->save();
 
 			$discountvoucher->processDiscountVoucherUsed($this['discount_voucher']);
-			return $this['id'];
+			return $this;
 	}
 
 	function processPayment(){
@@ -107,8 +106,8 @@ class Model_Order extends \Model_Table{
 		// throw new \Exception($member['']);
 	}
 
-	function sendOrderDetail($email_id=null, $order_id=null){	
-	
+	function sendOrderDetail($email_id=null, $order_id=null){
+
 		if(!$this->loaded()) throw $this->exception('Model Must Be Loaded Before Email Send');
 		
 		$subject ="Thanku for Order";
@@ -143,7 +142,8 @@ class Model_Order extends \Model_Table{
 		//END OF REPLACING VALUE INTO ORDER DETAIL EMAIL BODY
 		
 		try{
-			$tm->send($this->api->auth->model['email'], $epan['email_username'], $subject, $email_body ,false,null);			
+			//Send Message to All Associate Affiliates
+			$tm->send($this->api->auth->model['email'], $epan['email_username'], $subject, $email_body ,false,null);
 		}catch( phpmailerException $e ) {
 			$this->api->js(null,'$("#form-'.$_REQUEST['form_id'].'")[0].reset()')->univ()->errorMessage( $e->errorMessage() . " " . $epan['email_username'] )->execute();
 		}catch( Exception $e ) {

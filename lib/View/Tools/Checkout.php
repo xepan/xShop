@@ -4,106 +4,68 @@ namespace xShop;
 
 class View_Tools_Checkout extends \componentBase\View_Component{
 	public $html_attributes=array(); // ONLY Available in server side components
+	
 	function init(){
 		parent::init();
 
 		$this->js()->_load('xShop-js');
-		// if($this->html_attributes['xshop_checkout_noauth_view']=='on'){
-		// }
-		// throw new \Exception("Error Processing Request".$this->html_attributes['xshop_checkout_noauth_subpage_url']);
+		//Memorize checkout page if not logged in
+		$this->api->memorize('xshop_checkout_page',$this->api->url());
 		
-		if($this->html_attributes['xshop_checkout_noauth_subpage_url']=='on'){						
-			if($this->html_attributes['xshop_checkout_noauth_subpage']){
-			 	if(!$this->add('xShop/Controller_Auth',array('redirect_subpage'=>$this->html_attributes['xshop_checkout_noauth_subpage']))){
-		 			return;			
-			 	} 		 		
-			}else
-				$this->add('View_Error')->set('Subpage Name Cannot be Empty');			
-		}else{
-			if(!$this->add('xShop/Controller_Auth',array('substitute_view'=>"baseElements/View_Tools_UserPanel"))){	
-				return;	
-			}																
+		//Check for the authtentication
+		//Redirect to Login Page
+		if($this->html_attributes['xshop_checkout_noauth_subpage_url']=='on'){
+			if(!$this->html_attributes['xshop_checkout_noauth_subpage'] or $this->html_attributes['xshop_checkout_noauth_subpage'] ==""){
+				$this->add('View_Error')->set('Subpage Name Cannot be Empty');
+				return;
+			}
+			
+			$auth = $this->add('xShop/Controller_Auth',array('redirect_subpage'=>$this->html_attributes['xshop_checkout_noauth_subpage']));
+			$auth->checkCredential();
 		}
 
-		$cart_items=$this->add('xShop/Model_Cart');
+		// add Login View if not loggedIn
+		if($this->html_attributes['xshop_checkout_noauth_view'] == "on"){
+			$auth = $this->add('xShop/Controller_Auth',array('substitute_view'=>"baseElements/View_Tools_UserPanel"));
+			if(!$auth->checkCredential())
+				return;
+		}
+
+		//Cart model
+		$cart=$this->add('xShop/Model_Cart');
 		$item=$this->add('xShop/Model_Item');
 
-		$form=$this->add('Form');
-		$form->addClass( 'stacked' );
+		$form=$this->add('Form_Stacked');
+		$c = $form->add('Columns');
 
-		$i=1;
-		$amount_fields_array=array();
-		// foreach ($cart_items as $ci) {
-		// 	$item->load($ci['item_id']);
-		// 	$item_id=$form->addField('hidden','itemid_'.$i,'')->set($ci['item_id']);
-		// 	$item_rate=$form->addField('hidden','itemrate_'.$i,'')->set($ci['rate']);			
-		// 	$form->addSeparator( 'atk-row noborder' );
-			
-		// 	$item_field=$form->addField('Readonly','item_'.$i,'item')->set($ci['item_name']);
-			
-		// 	$item_field->template->set('row_class','span6');
-		// 	$qty_field=$form->addField('line','qty_'.$i,'Qty')->set($ci['qty']);
-		// 	$qty_field->template->set('row_class','span2');
-		// 	$qty_field->addClass('numberOnly');
-		// 	$rate_field=$form->addField('Readonly','rate_'.$i,'Rate')->set($ci['rateperitem']);
-			
-		// 	$rate_field->template->set('row_class','span2');
-			
-		// 	$amount_field=$form->addField('line','amount_'.$i,'Amount')->set($ci['qty'] * $ci['rate']);
-		// 	$amount_field->template->set('row_class','span2');
-		// 	$amount_field->setAttr( 'disabled', 'true' )->addClass('disabled_input');	
+		$total_field = $c->addColumn(3)->addField('line','total');
+		$total_field->setAttr('disabled',true)->addClass('atk-span-2');
+
+		$discount_field = $c->addColumn(3)->addField('line','discount_voucher');
 		
-		// 	$amount_fields_array[] =$amount_field;
-		// 	$i++;
-		// }
-
-		$total_field = $form->addField('line','total');
-		$total_field->setAttr('disabled',true);
-		$total_field->template->set('row_class','span2');
-
-		$discount_field = $form->addField('line','discount_voucher');
-		$discount_field->template->set('row_class','span2');
-		
-		$discount_amount_field = $form->addField('line','discount_amount');
+		$discount_amount_field = $c->addColumn(3)->addField('line','discount_amount');
 		$discount_amount_field->setAttr('disabled',true);
-		$discount_amount_field->template->set('row_class','span2');
 
-		$net_amount_field = $form->addField('line','net_amount');
-		$net_amount_field->template->set('row_class','span2');		
+		$net_amount_field = $c->addColumn(3)->addField('line','net_amount');
 		$net_amount_field->setAttr('disabled',true);		
 							
 		$discount_field->js('change')->univ()->validateVoucher($discount_field,$form,$discount_amount_field,$total_field,$net_amount_field);
-					
-		$i=1;
-		$initial_total = 0;
-		// foreach ($cart_items as $ci) {
-		// 	$qty_field = $form->getElement('qty_'.$i);
-		// 	$amount_field = $form->getElement('amount_'.$i);
-		// 	$item_rate = $form->getElement('itemrate_'.$i);
-			
-		// 	$qty_field->js('change')->univ()
-		// 		->calculateRow($qty_field,$item_rate,$amount_field)
-		// 		->calculateTotal($amount_fields_array,$total_field)
-		// 		->calculateNet($total_field,$net_amount_field)
-		// 		->validateVoucher($discount_field,$form,$discount_amount_field,$total_field,$net_amount_field)				
-		// 		;		
-		// 	$initial_total += ($ci['qty'] * $ci['rateperitem']);
-		// 	$i++;
-		// }
 
-		$total_field->set($initial_total);
-		$net_amount_field->set($initial_total);	
+		$total_field->set($cart->getTotalAmount());
+		$net_amount_field->set($cart->getTotalAmount());	
 		
 		$col=$form->add('Columns');
 		$colleft=$col->addColumn(6);
 		$colright=$col->addColumn(6);
 
 		$member=$this->add('xShop/Model_MemberDetails');
-		if($this->api->auth->model->id){	
+		if($this->api->auth->model->id){
 			$member->addCondition('users_id',$this->api->auth->model->id);
 			$member->tryLoadAny();
 		}
+
 		$form->setModel($member,array('address','landmark','city','state','country','pincode'));
+
 		$b_a=$form->getElement('address');
 		$b_a->setCaption('Billing Address')->js(true)->closest('div.atk-form-row')->appendTo($colleft);
 		$b_l=$form->getElement('landmark');
@@ -133,6 +95,7 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 		$shipping=$form->addButton('Copy Address');
 		$shipping->js(true)->appendTo($colright);
 		
+		// Copy billing Address to shipping address		
 		$shipping->js('click')->univ()->copyBillingAddress($b_a,$b_l,$b_c,$b_s,$b_country,$b_p,$s_a,$s_l,$s_c,$s_s,$s_country,$s_p);
 
 		// add all active payment gateways
@@ -142,17 +105,22 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 		$form->addSubmit('PlaceOrder');
 		
 		if($form->isSubmitted()){
-			$cart=$this->add('xShop/Model_Cart');		
+			$cart=$this->add('xShop/Model_Cart');
 			if(!$form['i_read'])
 				$form->displayError('i_read','It is Must');
 
 			$order=$this->add('xShop/Model_Order');
-			$latest_order_id = $order->placeOrder($form->getAllFields());																													
+			$new_order = $order->placeOrder($form->getAllFields());																													
 			//Sending OrderDetail
 			$cart_items->emptyCart();
-			$order->sendOrderDetail($this->api->auth->model['email'],$latest_order_id);
-			$form->js()->univ()->successMessage('Order Send SuccessFully');			  
-			$order->processPayment();
+			
+			try{
+				$new_order->sendOrderDetail();
+			} catch (Exception $e) {
+			}
+
+			$form->js()->univ()->successMessage('Order Placed SuccessFully');
+			$new_order->processPayment();
 			$this->js(null,$this->js()->univ()->successMessage('Order Placed Successfully'))->univ()->redirect($this->api->url(null,array('subpage'=>'home')))->execute();
 		}
 	}
