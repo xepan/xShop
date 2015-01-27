@@ -10,6 +10,7 @@ class View_Tools_xCart extends \componentBase\View_Component{
 		$proceed_page  = $this->html_attributes['cart-proceed-page'];
 		$cart_detail_page  = $this->html_attributes['cart-detail-page'];
 
+		$this->template->Set('xshop_cart_detail_page',$cart_detail_page?:'#');
 		// value passing game via body using attr from add to cart button 
 		$this->js('reload')->reload();
 		//add Cart model work as a session
@@ -120,7 +121,7 @@ class View_Tools_xCart extends \componentBase\View_Component{
 
 		//Show Proceed Btn or not
 		if($this->html_attributes['show-proceed']){
-			$this->add('View',null,'xshop_cart_proceed')->set('Proceed')->setElement('a')->setAttr('href','index.php?subpage='.$this->html_attributes['xshop_cartdetail_checkout_subpage'])->addClass('xshop-cart-proceed-btn');
+			$this->add('View',null,'xshop_cart_proceed')->set('Proceed')->setElement('a')->setAttr('href','index.php?subpage='.$proceed_page)->addClass('xshop-cart-proceed-btn');
 		}else{
 			$this->template->tryDel('xshop_cart_proceed');
 		}
