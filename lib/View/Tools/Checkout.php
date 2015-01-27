@@ -14,34 +14,34 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 		
 		if($this->html_attributes['xshop_checkout_noauth_subpage_url']=='on'){						
 			if($this->html_attributes['xshop_checkout_noauth_subpage']){
-			 	if(!$this->add('xShop/Controller_Auth',array('redirect_subpage'=>$this->html_attributes['xshop_checkout_noauth_subpage']))){		 			
+			 	if(!$this->add('xShop/Controller_Auth',array('redirect_subpage'=>$this->html_attributes['xshop_checkout_noauth_subpage']))){
 		 			return;			
 			 	} 		 		
 			}else
 				$this->add('View_Error')->set('Subpage Name Cannot be Empty');			
 		}else{
-			if(!$this->add('xShop/Controller_Auth',array('substitute_view'=>"baseElements/View_Tools_UserPanel"))){			
+			if(!$this->add('xShop/Controller_Auth',array('substitute_view'=>"baseElements/View_Tools_UserPanel"))){	
 				return;	
 			}																
 		}
 
 		$cart_items=$this->add('xShop/Model_Cart');
-		$product=$this->add('xShop/Model_Product');
+		$item=$this->add('xShop/Model_Item');
 
 		$form=$this->add('Form');
 		$form->addClass( 'stacked' );
 
 		$i=1;
 		$amount_fields_array=array();
-		foreach ($cart_items as $ci) {		
-			$product->load($ci['item_id']);
-			$product_id=$form->addField('hidden','productid_'.$i,'')->set($ci['item_id']);
-			$product_rate=$form->addField('hidden','productrate_'.$i,'')->set($ci['rate']);			
+		foreach ($cart_items as $ci) {
+			$item->load($ci['item_id']);
+			$item_id=$form->addField('hidden','itemid_'.$i,'')->set($ci['item_id']);
+			$item_rate=$form->addField('hidden','itemrate_'.$i,'')->set($ci['rate']);			
 			$form->addSeparator( 'atk-row noborder' );
 			
-			$product_field=$form->addField('Readonly','product_'.$i,'Product')->set($ci['item_name']);
+			$item_field=$form->addField('Readonly','item_'.$i,'item')->set($ci['item_name']);
 			
-			$product_field->template->set('row_class','span6');
+			$item_field->template->set('row_class','span6');
 			$qty_field=$form->addField('line','qty_'.$i,'Qty')->set($ci['qty']);
 			$qty_field->template->set('row_class','span2');
 			$qty_field->addClass('numberOnly');
@@ -79,10 +79,10 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 		foreach ($cart_items as $ci) {
 			$qty_field = $form->getElement('qty_'.$i);
 			$amount_field = $form->getElement('amount_'.$i);
-			$product_rate = $form->getElement('productrate_'.$i);
+			$item_rate = $form->getElement('itemrate_'.$i);
 			
 			$qty_field->js('change')->univ()
-				->calculateRow($qty_field,$product_rate,$amount_field)
+				->calculateRow($qty_field,$item_rate,$amount_field)
 				->calculateTotal($amount_fields_array,$total_field)
 				->calculateNet($total_field,$net_amount_field)
 				->validateVoucher($discount_field,$form,$discount_amount_field,$total_field,$net_amount_field)				
