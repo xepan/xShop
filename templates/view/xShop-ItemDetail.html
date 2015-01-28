@@ -1,83 +1,51 @@
-<div id="{$_name}" class="{$class} item-detail">
-<script src="epan-components/xShop/templates/js/jquery-elevatezoom.js">
-</script>
-<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/xShop.css"/>
+<div id="{$_name}" class="{$class} xshop-item-detail">
+<link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/xshop-item-detail.css"/>
 
 	<div class="text-center">
 		<h1 class="page page-header"><span>{$name}</span></h1>
 	</div>
-   
+   	
 	<div class="row">
-<!-- 			{xshop_item_detail_images}
-		<div class="col-md-4" >
-			{$item_images}
+		{item_images}{/item_images}
+		<div class="col-md-12 col-sm-12">	
+			<h2>{$name}</h2>
+			<div class="row section">
+				<div class="col-md-6 col-sm-6 xshop-item-detail-code">
+					{$sku}
+				</div>
+				<div class="col-md-6 col-sm-6 xshop-item-detail-review">
+					{$review}
+				</div>
+			</div>
+			<div class="xshop-item-detail-cart section">
+    			{xshop_item_cart_btn}
+    			{/xshop_item_cart_btn}
+			</div>
+			<div class="row section">
+				<div class="col-md-4 col-sm-4 xshop-item-detail-price">
+					&#8377. {$original_price}	
+					{$sale_price}
+				</div>
+				<div class="col-md-8 col-sm-8 xshop-item-offer-supplier-shipping">
+					{$item_offer_supplier_shipping_info}
+				</div>
+			</div>
 		</div>
-			{/xshop_item_detail_images} -->
-		<div class="col-md-12 well well-sm col-sm-12">
-			<div class="row">
-				<div class="col-md-4 col-sm-4 text-left text-success">
-					<b>Code: {$sku}</b>
-				</div>
-				<div class="col-md-8 col-sm-8 text-left">
-					<h2>{$name}</h2>
-				</div>
-			</div>
-			<div class="row">
-				{xshop_itemdetail_price}
-				<div class="col-md-6">
-					<span class="text-success">
-					<span class="xshop-item-old-price old-price">&#8377. {$original_price}</span>
-					<span class="xshop-item-price">&nbsp;&nbsp;&#8377. {$sale_price}</span>
-					</span>				
-				</div>
-				{/xshop_itemdetail_price}
-				<div class="col-md-6">
-					<!-- reviews comes here -->
-				</div>
-			</div>
-			{xshop_item_detail_panel_start}
-			<div class="panel-group mypanel" id="xshop_detail_accordion_">
-				<div class="panel panel-success">
-				    <div class="panel-heading">
-				    	<h4 class="panel-title">
-				        <a data-toggle="collapse" data-parent="#xshop_detail_accordion" href="#xShop-collapseOne1">
-				          {$xshop_item_detail_panel_label}
-				        </a>
-				      	</h4>
-				    </div>
-				    <div id="xShop-collapseOne1" class="panel-collapse collapse in">
-				    <div class="panel-body">
-			{/xshop_item_detail_panel_start}
-				    <div class="xshop-item-detail">
-				    {xshop_item_detail_live_edit_start}	
-				    		<div class="epan-container epan-sortable-component epan-component  ui-sortable component-outline epan-sortable-extra-padding ui-selected xshop-item-detail-content-live-edit" component_type="Container" id="xshop_item_detail_content_live_edit_{id}{/id}">
-				    {/xshop_item_detail_live_edit_start}	
-				    			{$description123}				    
-				    {xshop_item_detail_live_edit_end}
-				    		</div>
-				    		<div id="xshop_item_detail_live_edit_update" class="btn btn-danger pull-right btn-block" onclick='javascript:$(this).univ().producDetailUpdate("xshop_item_detail_content_live_edit_{id}{/id}","{id}{/id}","{$sku}")' style="margin-top:10px;">
-				    			Update
-				    		</div>	
-				    {/xshop_item_detail_live_edit_end}	
-				    		<!-- {$description} -->
-				  {xshop_item_detail_panel_end}  	
-				    	</div>
-				    </div>
-				</div>
-			</div>
-			{/xshop_item_detail_panel_end}
-			<div class="custom-field">
-				{$item_custom_fields}
-			</div>
-			<ul class="xshop-popover-examples list-inline">
-				{xshop_item_supplier} 
-        		<li><a href="#" class="btn btn-default" data-toggle="modal" data-target="#xShop_supplier_modal_{$id}" >{supplier_caption}Supplier{/supplier_caption}</a>
-        		</li>
-				{/xshop_item_supplier} 
-        		{xshop_item_manufacturer}
-        		<li><a href="#" class="btn btn-default" data-toggle="modal" data-target="#xShop_manufacturer_modal_{$id}" >{manufacturer_caption}Manufacturer{/manufacturer_caption}</a>
-        		</li>
-        		{/xshop_item_manufacturer}
+	</div>
+		{$xshop_ittem_affiliates}
+		{xshop_item_detail_information}{/xshop_item_detail_information}
+		
+		{xshop_item_supplier}
+        	<li><a href="#" class="btn btn-default" data-toggle="modal" data-target="#xShop_supplier_modal_{$id}" >{supplier_caption}Supplier{/supplier_caption}</a></li>
+		{/xshop_item_supplier}
+
+		{$Content}
+		{$xshop_item_discus}
+</div>
+
+
+			<ul class="xshop-popover-examples list-inline"> 
+ 
         		{xshop_item_enquiry}
         		<li><a href="#" data-toggle="modal" data-target="#xShop_enquiry_modal_{$id}" >
         		{send_button}{/send_button}
@@ -95,14 +63,6 @@
         			{xshop_item_custom_btn}
         			{/xshop_item_custom_btn}
         			</a>
-        		</li>
-
-        		<li>
-        			{xshop_item_cart_btn}
-					<!-- <div class="btn-group xshop-grid-btn-addtocart">
-						<a href="#item_add{$id}" class="btn btn-default" role="button" onclick="{$aj}">Add To Cart</a>
-			  		</div> -->
-        			{/xshop_item_cart_btn}
         		</li>
     		</ul>
 
@@ -327,14 +287,3 @@
 		{$xshop_item_discus}       
 	<!-- //end of code for discus		 -->
 </div>	
-	
-
-
-<!--
-<script type="text/javascript">
-$(document).ready(function(){
-    $(".xshop-popover-examples a").popover({
-        placement : 'bottom'
-    });
-});
-</script>-->
