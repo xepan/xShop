@@ -375,15 +375,30 @@ class Model_Item extends \Model_Table{
 		)	
 	*/
 
-	function  getPrice($cutome_field_values_array, $qty, $rate_chart='retailer'){
-		return array('original_price'=>rand(1000,9999),'sale_price'=>rand(100,999));
-		
-	}
+	function  getPrice($custom_field_values_array, $qty, $rate_chart='retailer'){
+		$quantitysets = $this->ref('xShop/QuantitySet')->setOrder(array('custom_fields_conditioned desc','qty desc','is_default asc'));
 
-	function getAmount($cutome_field_values_array, $qty, $rate_chart='retailer'){
-		return array('original_amount'=>rand(1000,9999),'sale_amount'=>rand(100,999));
+		foreach ($quantitysets as $junk) {
+			// check if all conditioned match AS WELL AS qty
+			$cond = $quantitysets->ref('xShop/QuantitySetCondition');
+			$cond->title_field = 'name';
+			foreach ($cond as $junk) {
+				$value = explode("::",$cond['custom_field_value']);
+				$value = $value[1];
+				$value = trim($value);
+				// echo $custom_field_values_array[$cond['customfield']] ." != ". $value;
+				if($custom_field_values_array[$cond['customfield']] != $value)
+					continue 2;
+			}
 
-		// call getPrice($cutome_field_values_array, $qty, $rate_chart);
+			if($qty < $quantitysets['qty']) continue;
+			break;
+		}
+
+		return array('original_price'=>$quantitysets['old_price']?:$quantitysets['price'],'sale_price'=>$quantitysets['price']);
+		// return array('original_price'=>rand(1000,9999),'sale_price'=>rand(100,999));
+
+			// return array default_price
 		// 1. Check Custom Rate Charts
 			/*
 				Look $qty >= Qty of rate chart
@@ -396,6 +411,12 @@ class Model_Item extends \Model_Table{
 		// 3. Quanitity Set
 
 		// 4. Default Price * qty
+	}
+
+	function getAmount($custom_field_values_array, $qty, $rate_chart='retailer'){
+		$price = $this->getPrice($custom_field_values_array, $qty, $rate_chart);
+		return array('original_amount'=>$price['original_price'] * $qty,'sale_amount'=>$price['sale_price'] * $qty);
+
 	}
 
 	function includeCustomeFieldValues($import_fields=array(),$join_type='inner'){

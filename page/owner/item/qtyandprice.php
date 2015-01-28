@@ -22,7 +22,7 @@ class page_xShop_page_owner_item_qtyandprice extends Page{
 		$form->add('Controller_FormBeautifier');
 
 		$crud = $this->add('CRUD');
-		$crud->setModel($item->ref('xShop/QuantitySet'),array('name','qty','price'),array('name','qty','old_price','price','is_default','custom_fields_conditioned'));
+		$crud->setModel($item->ref('xShop/QuantitySet')->setOrder(array('custom_fields_conditioned desc','qty desc','is_default asc')),array('name','qty','price'),array('name','qty','old_price','price','is_default','custom_fields_conditioned'));
 		
 		if(!$crud->isEditing()){
 			$g = $crud->grid;

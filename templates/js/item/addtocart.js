@@ -146,7 +146,7 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 			});
 		}else{
 			// add input box with spinner may be ...
-			qty_field = $('<input class="xshop-add-to-cart-qty" type="number"/>').appendTo(self.element);
+			qty_field = $('<input class="xshop-add-to-cart-qty" value="1" type="number"/>').appendTo(self.element);
 			qty_field.univ().numericField();
 		}
 		// add unique class under the self.element to read qty
@@ -193,7 +193,11 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 			.done(function(ret) {
 				rates = ret.split(',');
 				console.log($(self.element).closest('.xshop-item').find('.xshop-item-old-price'));
-				$(self.element).closest('.xshop-item').find('.xshop-item-old-price').text(rates[0]);
+				if(rates[0] != rates[1]){
+					$(self.element).closest('.xshop-item').find('.xshop-item-old-price').text(rates[0]);
+				}else{
+					$(self.element).closest('.xshop-item').find('.xshop-item-old-price').text('');
+				}
 				$(self.element).closest('.xshop-item').find('.xshop-item-price').text(rates[1]);
 			})
 			.fail(function() {
@@ -228,6 +232,10 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 			if(self.options.show_qty == '1'){
 				qty_to_add = $(self.element).find('.xshop-add-to-cart-qty').val();
 				// set qty_to_add = val of qty field value
+				if(isNaN(qty_to_add) || qty_to_add == '') {
+					alert('Qty is not proper');
+					return;
+				}
 			}
 
 
@@ -235,7 +243,7 @@ jQuery.widget("ui.xepan_xshop_addtocart",{
 			if(self.options.is_designable =='1' && (self.options.item_member_design_id == undefined || self.options.item_member_design_id) == '0'){
 				// This design needs to be saved first
 				$.univ().errorMessage('check for design dirty !!!');
-				$.univ().alert('PLease Save your Design First');
+				$.univ().alert('Please Save your Design First');
 				return;
 			}
 
