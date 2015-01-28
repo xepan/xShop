@@ -32,7 +32,6 @@ class Controller_Auth extends \AbstractController {
 				exit;
 			}
 		}
-
 		return true;
 	}
 }

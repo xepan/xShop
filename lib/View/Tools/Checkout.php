@@ -1,7 +1,7 @@
 <?php
  
 namespace xShop;
-
+use Omnipay\Common\GatewayFactory;
 class View_Tools_Checkout extends \componentBase\View_Component{
 	public $html_attributes=array(); // ONLY Available in server side components
 	
@@ -33,8 +33,7 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 
 		// Check if order is owned by current member ??????
 
-		$order = $this->api->memorize('checkout_order',$this->api->recall('checkout_order',$this->add('xShop/Model_Order')->tryLoad($_GET['order_id'])));
-
+		$order = $this->api->memorize('checkout_order',$this->api->recall('checkout_order',$this->add('xShop/Model_Order')->tryLoad($_GET['order_id']?:0)));
 		if(!$order->loaded()){
 			$this->api->forget('checkout_order');
 			$this->add('View_Error')->set('Order not found');
@@ -45,9 +44,85 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 		$member->loadLoggedIn();
 
 		if($order['member_id'] != $member->id){
-			$this->add('View_Error')->set('Order does not belongs to your account.');			
+			$this->add('View_Error')->set('Order does not belongs to your account. ' . $order->id);
 			return;
 		}
+
+		// ================================= PAYMENT MANAGEMENT =======================
+		if($_GET['pay_now']=='true'){
+
+			// create gateway 
+			$gateway = GatewayFactory::create($order['paymentgateway']);
+			
+			$gateway_parameters = $order->ref('paymentgateway_id')->get('parameters');
+			$gateway_parameters = json_decode($gateway_parameters,true);
+
+			// fill default values from database
+			foreach ($gateway_parameters as $param => $value) {
+				$param =ucfirst($param);
+				$fn ="set".$param;
+				$gateway->$fn($value);
+			}
+			// create params for purchase ... no card prepare now (may be for next version of xepan)
+
+			// ---- No Cards for now 
+			// $formInputData = array(
+			//     'firstName' => 'Bobby',
+			//     'lastName' => 'Tables',
+			//     'number' => '4111111111111111',
+			//     'expiryMonth' => '06',
+			//     'expiryYear' => '16',
+			// );
+			// $card = new \Omnipay\Common\CreditCard($formInputData);
+
+			$params = array(
+			    'amount' => round($order['net_amount'],2),
+			    'currency' => 'USD',
+			    'description' => 'Invoice Against Order Payment',
+			    'transactionId' => $order->id, // invoice no 
+			    // 'card'=>$card, // If creadit card information sending
+			    'headerImageUrl' => 'http://xavoc.com/logo.png',
+			    // 'transactionReference' => '1236Ref',
+			    'returnUrl' => 'http://'.$_SERVER['HTTP_HOST'].$this->api->url(null,array('paid'=>'true','pay_now'=>'true'))->getURL(),
+			    'cancelUrl' => 'http://'.$_SERVER['HTTP_HOST'].$this->api->url(null,array('canceled'=>'true','pay_now'=>'true'))->getURL()
+		 	);
+
+			// Step 2. if got returned from gateway ... manage ..
+
+			if($_GET['paid']){
+				$response = $gateway->completePurchase($params)->send();
+
+			    if ( ! $response->isSuccessful())
+			    {
+			        throw new \Exception($response->getMessage());
+			    }
+			    $order->payNow($response->getTransactionReference(),$response->getData());
+			    $this->api->forget('checkout_order');
+			    $this->api->redirect($this->api->url(null,array('subpage'=>'home')));
+			    exit;
+			}
+
+			// Step 1. initiate purchase ..
+			try {
+			    $response = $gateway->purchase($params)->send();
+			    if ($response->isSuccessful() /* OR COD */) {
+			        // mark order as complete if not COD
+			        // Not doing onsite transactions now ...
+					$responsereturn=$response->getData();
+			    } elseif ($response->isRedirect()) {
+			        $response->redirect();
+			    } else {
+			        // display error to customer
+			        exit($response->getMessage());
+			    }
+			} catch (\Exception $e) {
+			    // internal error, log exception and display a generic message to the customer
+			    exit('Sorry, there was an error processing your payment. Please try again later.'. $e->getMessage(). " ". get_class($e));
+			}
+
+
+		}
+		// ================================= PAYMENT MANAGEMENT END ===================
 
 		//Cart model
 		$cart=$this->add('xShop/Model_Cart');
@@ -69,8 +144,8 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 							
 		$discount_field->js('change')->univ()->validateVoucher($discount_field,$form,$discount_amount_field,$total_field,$net_amount_field);
 
-		$total_field->set($cart->getTotalAmount());
-		$net_amount_field->set($cart->getTotalAmount());	
+		$total_field->set($order['amount']);
+		$net_amount_field->set($order['net_amount']);	
 		
 		$col=$form->add('Columns');
 		$colleft=$col->addColumn(6);
@@ -127,13 +202,18 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 			if(!$form['i_read'])
 				$form->displayError('i_read','It is Must');
 
-			$order=$this->add('xShop/Model_Order');
-			$new_order = $order->placeOrder($form->getAllFields());	
-			$this->api->memorize('order_done',$new_order);																												
-			$cart_items->emptyCart();
-			
+			// validate address ...
+			// do discount coup validation or application
+			// Update order with shipping and billing details
+			// Update order with Payment Gateway selected
+			$order['paymentgateway_id'] = $form['payment_gateway_selected'];
+			// save order :)
+			$order->save();
+			// Update order in session :: checkout_order																
+			$this->api->memorize('checkout_order',$order);
+
 			$this->js(null, $this->js()->univ()->successMessage('Order Placed Successfully'))
-				->reload(array('order_done'=>'true'))->execute();
+				->redirect($this->api->url(null,array('pay_now'=>'true')))->execute();
 		}
 	}
 
