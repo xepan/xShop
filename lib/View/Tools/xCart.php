@@ -11,9 +11,26 @@ class View_Tools_xCart extends \componentBase\View_Component{
 		$proceed_page  = $this->html_attributes['cart-proceed-page'];
 		$cart_detail_page  = "?subpage=".$this->html_attributes['cart-detail-page']?:'home';
 
+		
+		if($_GET['order_place']=="true"){
+			$this->api->stickyGET('order_place');
+			$this->api->memorize('next_url',$this->api->url());
+			//Check for user logged in
+			$auth = $this->add('xShop/Controller_Auth',array('redirect_subpage'=>$this->html_attributes['show-cart-noauth-subpage-url']));
+			$auth->checkCredential();
+			//Place Order
+			// $order = $this->add('xShop/Model_Order');
+			// $new_order = $order->placeOrder();
+			// //Redirect to Proceed/checkout Page with New Order Id
+			// $this->js(true)->univ()->redirect($this->api->url(null,array('subpage'=>$proceed_page,'order_id'=>$new_order['id'])));
+		}
+
+
 		$this->template->Set('xshop_cart_detail_page',$cart_detail_page);
 		// value passing game via body using attr from add to cart button 
 		$this->js('reload')->reload();
+
+
 		//add Cart model work as a session
 		$cart_model=$this->add('xShop/Model_Cart');
 		$item_model=$this->add('xShop/Model_Item');
@@ -119,8 +136,10 @@ class View_Tools_xCart extends \componentBase\View_Component{
 		}
 
 		//Show Proceed Btn or not
-		if($this->html_attributes['show-proceed']){
-			$this->add('View',null,'xshop_cart_proceed')->set('Place order')->setElement('a')->setAttr('href','index.php?subpage='.$proceed_page)->addClass('xshop-cart-proceed-btn');
+		if($this->html_attributes['show-proceed']){			
+			$place_order_btn = $this->add('View',null,'xshop_cart_proceed')->set('Place order')->addClass('xshop-cart-proceed-btn');
+			$place_order_btn->js('click')->reload(array('order_place'=>'true'));
+			// ->setElement('a')->setAttr('href','index.php?subpage='.$proceed_page);
 		}else{
 			$this->template->tryDel('xshop_cart_proceed');
 		}

@@ -30,7 +30,6 @@ class Model_Order extends \Model_Table{
 
 		// Payment GateWay related Info
 
-
 		$this->hasMany('xShop/OrderDetails','order_id');
 		$this->addHook('beforeDelete',$this);
 		$this->add('dynamic_model/Controller_AutoCreator');
@@ -51,47 +50,45 @@ class Model_Order extends \Model_Table{
 		$m->ref('xShop/OrderDetails')->deleteAll();
 	}
 
-	function placeOrder($order_info){
-
-		$billing_address=$order_info['address'].", ".$order_info['landmark'].", ".$order_info['city'].", ".$order_info['state'].", ".$order_info['country'].", ".$order_info['pincode'];
-		$shipping_address=$order_info['shipping_address'].", ".$order_info['s_landmark'].", ".$order_info['s_city'].", ".$order_info['s_state'].", ".$order_info['s_country'].", ".$order_info['s_pincode'];
+	function placeOrder($order_info=null){
+		
+		// $billing_address=$order_info['address'].", ".$order_info['landmark'].", ".$order_info['city'].", ".$order_info['state'].", ".$order_info['country'].", ".$order_info['pincode'];
+		// $shipping_address=$order_info['shipping_address'].", ".$order_info['s_landmark'].", ".$order_info['s_city'].", ".$order_info['s_state'].", ".$order_info['s_country'].", ".$order_info['s_pincode'];
 
 		$cart_items=$this->add('xShop/Model_Cart');
 		$this['member_id'] = $this->api->auth->model->id;
 		$this['order_status'] = "10";
-		$this['billing_address'] = $billing_address;
-		$this['shipping_address'] = $shipping_address;		
+		// $this['billing_address'] = $billing_address;
+		// $this['shipping_address'] = $shipping_address;		
 		$this->save();
 
 		$order_details=$this->add('xShop/Model_OrderDetails');
-			$i=1;
 			$total_amount=0;
-			foreach ($cart_items as $order_detail) {
+			foreach ($cart_items as $junk) {
 
 				$order_details['order_id']=$this->id;
-				$order_details['item_id']=$order_info['itemid_'.$i];
-				$order_details['qty']=$order_info['qty_'.$i];
-				$order_details['rate']=$order_info['itemrate_'.$i];//get Item Rate????????????????
-				$order_details['amount']=$order_info['qty_'.$i]*$order_info['itemrate_'.$i];
+				$order_details['item_id']=$cart_items['item_id'];
+				$order_details['qty']=$cart_items['qty'];
+				$order_details['rate']=$cart_items['rateperitem'];//get Item Rate????????????????
+				$order_details['amount']=$cart_items['qty']*$cart_items['rateperitem'];
 				$total_amount+=$order_details['amount'];
-
 				$order_details->saveAndUnload();
-				$i++;
 			}
 
 			$this['amount']=$total_amount;
-			$discount_voucher_amount = 0; 
+			
+			//$discount_voucher_amount = 0; 
 			//TODO NET AMOUNT, TAXES, DISCOUNT VOUCHER AMOUNT etc.. CALCULATING AGAIN FOR SECURITY REGION 
-			$discountvoucher=$this->add('xShop/Model_DiscountVoucher');
-			if($discountvoucher->isUsable($order_info['discount_voucher'])){
-				$discount_voucher_amount=$total_amount * $discountvoucher->isUsable($order_info['discount_voucher']) /100;	
-			}
-			$this['discount_voucher']=$order_info['discount_voucher'];
-			$this['discount_voucher_amount']=$discount_voucher_amount;
-			$this['net_amount'] = $total_amount - $discount_voucher_amount ;										
+			// $discountvoucher=$this->add('xShop/Model_DiscountVoucher');
+			// if($discountvoucher->isUsable($order_info['discount_voucher'])){
+			// 	$discount_voucher_amount=$total_amount * $discountvoucher->isUsable($order_info['discount_voucher']) /100;	
+			// }
+			// $this['discount_voucher']=$order_info['discount_voucher'];
+			// $this['discount_voucher_amount']=$discount_voucher_amount;
+			$this['net_amount'] = $total_amount;
 			$this->save();
 
-			$discountvoucher->processDiscountVoucherUsed($this['discount_voucher']);
+			// $discountvoucher->processDiscountVoucherUsed($this['discount_voucher']);
 			return $this;
 	}
 
