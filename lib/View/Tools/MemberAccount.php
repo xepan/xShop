@@ -23,7 +23,6 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 				$form->update();
 				$this->js(null,$form->js()->univ()->successMessage('Update Information Successfully'))->reload()->execute();			
 			}
-
 			//MEMBER ORDER tab
 			$order_tab = $tab->addTab('Order','order');
 			$order_tab->add('xShop/View_MemberOrder');

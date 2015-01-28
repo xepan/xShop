@@ -120,7 +120,7 @@ class View_Tools_xCart extends \componentBase\View_Component{
 
 		//Show Proceed Btn or not
 		if($this->html_attributes['show-proceed']){
-			$this->add('View',null,'xshop_cart_proceed')->set('Proceed')->setElement('a')->setAttr('href','index.php?subpage='.$proceed_page)->addClass('xshop-cart-proceed-btn');
+			$this->add('View',null,'xshop_cart_proceed')->set('Place order')->setElement('a')->setAttr('href','index.php?subpage='.$proceed_page)->addClass('xshop-cart-proceed-btn');
 		}else{
 			$this->template->tryDel('xshop_cart_proceed');
 		}

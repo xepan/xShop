@@ -10,7 +10,9 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 
 		$this->js()->_load('xShop-js');
 		//Memorize checkout page if not logged in
-		$this->api->memorize('xshop_checkout_page',$this->api->url());
+		$this->api->memorize('next_url',$this->api->url());
+
+		$this->postOrderProcess();
 		
 		//Check for the authtentication
 		//Redirect to Login Page
@@ -110,20 +112,21 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 				$form->displayError('i_read','It is Must');
 
 			$order=$this->add('xShop/Model_Order');
-			$new_order = $order->placeOrder($form->getAllFields());																													
-			//Sending OrderDetail
+			$new_order = $order->placeOrder($form->getAllFields());	
+			$this->api->memorize('order_done',$new_order);																												
 			$cart_items->emptyCart();
 			
-			try{
-				$new_order->sendOrderDetail();
-			} catch (Exception $e) {
-			}
-
-			$form->js()->univ()->successMessage('Order Placed SuccessFully');
-			$new_order->processPayment();
-			$this->js(null,$this->js()->univ()->successMessage('Order Placed Successfully'))->univ()->redirect($this->api->url(null,array('subpage'=>'home')))->execute();
+			$this->js(null, $this->js()->univ()->successMessage('Order Placed Successfully'))
+				->reload(array('order_done'=>'true'))->execute();
 		}
 	}
+
+	function postOrderProcess(){
+		if($_GET['order_done'] =='true'){
+			
+		}
+	}
+
 	// defined in parent class
 	// Template of this tool is view/namespace-ToolName.html
 }
