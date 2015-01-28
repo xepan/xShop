@@ -19,7 +19,7 @@ class View_Tools_xCart extends \componentBase\View_Component{
 			$auth->checkCredential();
 			//Place Order
 			$order = $this->add('xShop/Model_Order');
-			$new_order = $order->placeOrder();
+			$new_order = $order->placeOrderFromCart();
 			//Redirect to Proceed/checkout Page with New Order Id
 			$this->api->redirect($this->api->url(null,array('subpage'=>$proceed_page,'order_id'=>$new_order['id'])));
 		}

@@ -50,13 +50,15 @@ class Model_Order extends \Model_Table{
 		$m->ref('xShop/OrderDetails')->deleteAll();
 	}
 
-	function placeOrder($order_info=null){
+	function placeOrderFromCart(){
 		
 		// $billing_address=$order_info['address'].", ".$order_info['landmark'].", ".$order_info['city'].", ".$order_info['state'].", ".$order_info['country'].", ".$order_info['pincode'];
 		// $shipping_address=$order_info['shipping_address'].", ".$order_info['s_landmark'].", ".$order_info['s_city'].", ".$order_info['s_state'].", ".$order_info['s_country'].", ".$order_info['s_pincode'];
+		$member = $this->add('xShop/Model_MemberDetails');
+		$member->loadLoggedIn();
 
 		$cart_items=$this->add('xShop/Model_Cart');
-		$this['member_id'] = $this->api->auth->model->id;
+		$this['member_id'] = $member->id;
 		$this['order_status'] = "10";
 		// $this['billing_address'] = $billing_address;
 		// $this['shipping_address'] = $shipping_address;		
@@ -69,8 +71,8 @@ class Model_Order extends \Model_Table{
 				$order_details['order_id']=$this->id;
 				$order_details['item_id']=$cart_items['item_id'];
 				$order_details['qty']=$cart_items['qty'];
-				$order_details['rate']=$cart_items['rateperitem'];//get Item Rate????????????????
-				$order_details['amount']=$cart_items['qty']*$cart_items['rateperitem'];
+				$order_details['rate']=$cart_items['sales_amount'];//get Item Rate????????????????
+				$order_details['amount']=$cart_items['total_amount'];
 				$total_amount+=$order_details['amount'];
 				$order_details->saveAndUnload();
 			}
