@@ -32,7 +32,7 @@ class Model_Cart extends \Model{
 		$this['item_id'] = $item->id;
 		$this['item_code'] = $item['sku'];
 		$this['item_name'] = $item['name'];
-		$this['rateperitem'] = $prices['sales_price'];
+		$this['rateperitem'] = $prices['sale_price'];
 		$this['qty'] = $qty;
 		$this['original_amount'] = $amount['original_amount'];
 		$this['sales_amount'] = $amount['sale_amount'];

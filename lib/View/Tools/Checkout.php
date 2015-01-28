@@ -10,10 +10,8 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 
 		$this->js()->_load('xShop-js');
 		//Memorize checkout page if not logged in
-		$this->api->memorize('next_url',$this->api->url());
+		$this->api->memorize('next_url',array('subpage'=>$_GET['subpage'],'order_id'=>$_GET['order_id']));
 
-		$this->postOrderProcess();
-		
 		//Check for the authtentication
 		//Redirect to Login Page
 		if($this->html_attributes['xshop_checkout_noauth_subpage_url']=='on'){
@@ -31,6 +29,24 @@ class View_Tools_Checkout extends \componentBase\View_Component{
 			$auth = $this->add('xShop/Controller_Auth',array('substitute_view'=>"baseElements/View_Tools_UserPanel"));
 			if(!$auth->checkCredential())
 				return;
+		}
+
+		// Check if order is owned by current member ??????
+
+		$order = $this->api->memorize('checkout_order',$this->api->recall('checkout_order',$this->add('xShop/Model_Order')->tryLoad($_GET['order_id'])));
+
+		if(!$order->loaded()){
+			$this->api->forget('checkout_order');
+			$this->add('View_Error')->set('Order not found');
+			return;
+		}
+
+		$member = $this->add('xShop/Model_MemberDetails');
+		$member->loadLoggedIn();
+
+		if($order['member_id'] != $member->id){
+			$this->add('View_Error')->set('Order does not belongs to your account.');			
+			return;
 		}
 
 		//Cart model
