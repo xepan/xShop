@@ -51,6 +51,16 @@
 								</td>
 							</tr> -->
 							<tr>
+								<td colspan="2">Show Image</td>
+									<td>
+										<select id='xshop-show-image' data-attr="show-image" class="xshop-general-bind" >
+											<option value="0">Hide</option>
+											<option value="1">Show</option>
+										</select>
+									</td>
+									<!-- <td><input type='number' id='xshop-order-add-to-cart' data-attr="order-add-to-cart" class="xshop-general-bind"/></td> -->
+							</tr>
+							<tr>
 								<td colspan="3">
 									Caption
 								</td>
@@ -165,6 +175,12 @@ var {$component_type}_options = {
 		
 		$('#xshop_pd_supplier_caption').val($(current_selected_component).attr('xshop_pd_supplier_caption')?$(current_selected_component).attr('xshop_pd_supplier_caption'):'Supplier');
 		$('#xshop_pd_manufacturer_caption').val($(current_selected_component).attr('xshop_pd_manufacturer_caption')?$(current_selected_component).attr('xshop_pd_manufacturer_caption'):'Manufacturer');
+
+		//General Binding
+		$('.xshop-general-bind').each(function(index,value){
+			$(this).val($(current_selected_component).attr($(this).attr('data-attr')));
+		});
+		
 	}
 }
 </script>
