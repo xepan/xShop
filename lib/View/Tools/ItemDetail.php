@@ -29,46 +29,28 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 			$this->template->tryDel('item_images');
 		}
 		
+		$this->api->template->trySet('page_title',$item['name']);
+		
 		//Item Offer Supplier Shipping Info
-		$this->add('LoremIpsum',null,'item_offer_supplier_shipping_info')->setLength(1,100);
+		$this->template->trySet('item_offer_supplier_shipping_info',$item['short_description']);
 
-		if($item['show_attachment']){
-			$attachment_model=$this->add('xShop/Model_Attachments');
-			$attachment_model->addCondition('item_id',$_GET['xsnb_item_id']);
-			$attachment_model->tryLoadAny();
-			$this->template->set('attachment_url',$attachment_model['attachment_url']);
-			$this->template->set('attachment_name',$attachment_model['name']);
-		}else
-			$this->template->tryDel('xshop_item_attachment');
-		
-		
-
-		// $this->add('View',null,'description123')->setHtml($item['description']);
 		//adding tag to item detail options
 		$this->template->Set('xshop_item_tags',str_replace(',', " ", $item['tags']));
-
-
-		$this->api->template->trySet('page_title',$item['name']);
 
 		if(!$item['show_price']){
 			$this->template->tryDel('xshop_itemdetail_price');
 		}
 		
-		if($this->html_attributes['xshop_item_detail_images']==1){
-			$this->template->tryDel('xshop_item_detail_images');	
-		}
-
-		if($item['allow_comments']){	
+		//Comments Api
+		if($item['allow_comments']){
 			$config_model->tryLoadAny();
 			if($item['comment_api']){
 				if($config_model['disqus_code'])
 					$this->template->trySetHTML('xshop_item_discus',$config_model['disqus_code']);
 				else
-					$this->template->trySetHTML('xshop_item_discus',"<div class='alert alert-info'>Place Your Discus Code...in Configuration</div>");			
+					$this->template->trySetHTML('xshop_item_discus',"<div class='alert alert-info'>Place Your Discus Code...in Configuration</div>");
 			} 
-		}
-		
-		$this->add('View',null,'send_button')->set('Send Enquiry')->addClass('btn btn-default');
+		}		
 		
 		//add custom btn in item detail
 		$config_model->tryLoadAny();
@@ -84,7 +66,7 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		//end of custom btn in item detail		
 
 		//AddToCart
-		//if Item Designable 
+		//if Item Designable
 			if($this->model['is_designable']){
 				// add Personalioze View
 				$this->add('Button',null,'xshop_item_cart_btn')->set('Personalize')->js('click',$this->js()->univ()->location("index.php?subpage=".$this->html_attributes['personalization-page']."&xsnb_design_item_id=".$this->model->id));
@@ -93,11 +75,34 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 				$this->add('xShop/View_Item_AddToCart',array('name'=>'cust_'.$this->model->id,'item_model'=>$this->model,'show_custom_fields'=>1,'show_price'=>$this->model['show_price'], 'show_qty_selection'=>1),'xshop_item_cart_btn');
 			}
 
-		// Item Detail and Comments specification
+		//Item Affiliates
+		$item_aff_ass = $this->add('xShop/Model_ItemAffiliateAssociation')->addCondition('item_id',$item->id);
+		$str ='<div class="xshop-item-affiliate-block">';
+		foreach ($item_aff_ass as $junk) {
+			$aff = $this->add('xShop/Model_Affiliate')->tryload($item_aff_ass['affiliate_id']);
+			$str .= '<div class="xshop-item-affiliate">'.$aff['affiliatetype']." :: ".$aff['company_name']."</div>";
+			$aff->unLoad();
+		}
+		$str .="</div>";
+		$this->template->SetHTML('xshop_item_affiliates',$str);
+
+		// =================Item Detail and specification and Attachments===================
 		$tabs = $this->add('Tabs',null,'xshop_item_detail_information');
 		$detail_tab = $tabs->addTab('Detail');
 		$specification_tab = $tabs->addTab('Specification');
-		$enquiry_tab = $tabs->addTab('Enquiry');
+
+		//Attachments
+		if($item['is_attachment_allow']){
+			$attachment_tab = $tabs->addTab('Attachments');
+			$attachment_model=$this->add('xShop/Model_Attachments');
+			$attachment_model->addCondition('item_id',$item->id);
+			$html = "";
+			foreach ($attachment_model as $junk) {
+				$html .= '<div class="xshop-item-attachment-link"> <a target="_blank" href="'.$attachment_model['attachment_url'];
+				$html.= '"</a>'.$attachment_model['name'].'</div>';
+			}
+			$attachment_tab->add('View')->setHtml($html)->addClass('xshop-item-attachment');
+		}
 
 		$item_description = $item['description'];
 		//Live Edit of item Detail (server site live edit )
@@ -115,11 +120,14 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		}
 		//Detail tabs	
 		$detail_tab->add('View')->setHtml($item_description);
-		$detail_tab->add('View')->setHtml($item_description);
-		
-		//
+			
+		//Specification
+		$specification = $this->add('xShop/Model_ItemSpecificationAssociation')->addCondition('item_id',$item->id);
+		$specification_tab->add('Grid')->setModel($specification,array('specification','value'));
 
-		$enquiry_form=$this->add('Form',null,'xshop_item_enquiry_form');
+		//==================Enquiry Form================================
+
+		$enquiry_form=$this->add('Form',null,'xshop_item_enquiry');
 		$enquiry_form->addField('line','name');
 		$enquiry_form->addField('line','contact_no');
 		$enquiry_form->addField('line','email_id');

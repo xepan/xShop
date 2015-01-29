@@ -39,6 +39,7 @@ class Model_Affiliate extends \Model_Table {
 		$f = $this->addField('description')->type('text')->display(array('form'=>'RichText'));
 		$f->icon = "fa fa-pencil~blue";
 		
+		// $this->addHook('beforeSave',$this);
 		$this->hasMany('xShop/ItemAffiliateAssociation','affiliate_id');
 
 		$this->add('dynamic_model/Controller_AutoCreator');

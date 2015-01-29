@@ -437,10 +437,12 @@ class Model_Item extends \Model_Table{
 		if($this->loaded() and !$affiliate_id)
 			throw new \Exception("Item Model Must be Loaded ");
 
+		$aff = $this->add('xShop/Model_Affiliate')->tryLoad($affiliate_id);
+
 		$old_model = $this->add('xShop/Model_ItemAffiliateAssociation');
 		$old_model->addCondition('item_id',$this->id);
-		$old_model->addCondition('affiliate_id',$affiliate_id);
-		$old_model->addCondition('is_active',false);
+		$old_model->addCondition('affiliate_id',$aff['id']);
+		$old_model->addCondition('is_active',false);		
 		$old_model->tryLoadAny();
 		if($old_model->loaded()){
 			$old_model['is_active'] = true;
@@ -449,9 +451,11 @@ class Model_Item extends \Model_Table{
 			$item_aff_model = $this->add('xShop/Model_ItemAffiliateAssociation');
 			$item_aff_model['item_id'] = $this->id;
 			$item_aff_model['affiliate_id'] = $affiliate_id;
+			$item_aff_model['affiliatetype_id'] = $aff['affiliatetype_id'];
 			$item_aff_model['is_active'] = true;
 			$item_aff_model->saveandUnload();
 		}
+		
 	}
 
 	function getQtySet(){
