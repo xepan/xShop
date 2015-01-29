@@ -1,0 +1,20 @@
+.zoomWrapper{
+}
+.zoomwrapper-img,.zoom3-small-image{
+	width:100%;
+	position:relative;
+	height: auto;
+}
+
+.zoom3-small-image-container{
+
+}
+
+.xshop-item-image-list{
+	width: 100%;
+}
+.xshop-item-image-block{
+	width:20%;
+	position: relative;
+	float: left;
+}
