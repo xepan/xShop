@@ -1,15 +1,13 @@
 <div id="{$_name}" class="{$class} xshop-item-detail">
 <link rel="stylesheet" type="text/css" href="epan-components/xShop/templates/css/xshop-item-detail.css"/>
 
-	<span class="pull-right xshop-item-detail-date">{$created_at}</span>
-	<div class="text-center">
-		<h1 class="page page-header"><span>{$name}</span></h1>
-	</div>
-   	
+	{$date}
+	{$item_detail_heading}
+
 	<div class="row">
 		{item_images}{/item_images}
 		<div class="col-md-12 col-sm-12">
-					<h1 class="xshop-item-detail-name">{$name}</h1>
+			<h1 class="xshop-item-detail-name">{$name}</h1>
 
 			<div class="row section">
 				<div class="col-md-6 col-sm-6 xshop-item-detail-code">
@@ -25,8 +23,7 @@
 			</div>
 			<div class="row section">
 				<div class="col-md-4 col-sm-4 xshop-item-detail-price">
-					&#8377. {$original_price}	
-					{$sale_price}
+					{$xshop_item_detail_price}
 				</div>
 				<div class="col-md-8 col-sm-8 xshop-item-offer-supplier-shipping">
 					{$item_offer_supplier_shipping_info}
@@ -37,16 +34,15 @@
 		{xshop_item_custom_btn}{/xshop_item_custom_btn}
 		{$xshop_item_affiliates}
 		{xshop_item_detail_information}{/xshop_item_detail_information}
+		{$Content}
 		
 		{xshop_item_enquiry}{/xshop_item_enquiry}
 		<!-- {xshop_item_supplier}
         	<li><a href="#" class="btn btn-default" data-toggle="modal" data-target="#xShop_supplier_modal_{$id}" >{supplier_caption}Supplier{/supplier_caption}</a></li>
 		{/xshop_item_supplier} -->
 		{xshop_item_attachment}{/xshop_item_attachment}
-
-		{$xshop_item_tags}
-		{$Content}
 		{$xshop_item_discus}
+		{$xshop_item_tags}
 </div>
 
 	<!-- Modal -->
