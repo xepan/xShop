@@ -14,7 +14,8 @@ class Model_AffiliateType extends \Model_Table {
 
 		$this->addField('name');
 		$this->hasMany('xShop/Affiliate','affiliatetype_id');
-		
+		$this->hasMany('xShop/ItemAffiliateAssociation','affiliatetype_id');
+
 		$this->add('dynamic_model/Controller_AutoCreator');
 	
 	}
