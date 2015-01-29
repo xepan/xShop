@@ -82,7 +82,10 @@ class page_xShop_page_owner_paygateconfig extends page_xShop_page_owner_main {
 		if($form->isSubmitted()){
 			$fields = json_decode($payment_gateway['default_parameters'],true);
 			foreach ($fields as $field => $value) {
-				$fields[$field] = $form[$field];
+				if(is_array($value))
+					$fields[$field] = $value[$form[$field]];
+				else
+					$fields[$field] = $form[$field];
 			}
 			$payment_gateway['parameters'] = json_encode($fields);
 

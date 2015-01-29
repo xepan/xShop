@@ -29,6 +29,8 @@ class Model_Order extends \Model_Table{
 		$f = $this->addField('order_summary')->type('text')->group('y~12');
 
 		// Payment GateWay related Info
+		$this->addField('transaction_reference');
+		$this->addField('transaction_response_data')->type('text');
 
 		$this->hasMany('xShop/OrderDetails','order_id');
 		$this->addHook('beforeDelete',$this);
@@ -94,8 +96,10 @@ class Model_Order extends \Model_Table{
 			return $this;
 	}
 
-	function processPayment(){
-			
+	function payNow($transaction_reference,$transaction_reference_data){
+		$this['transaction_reference'] =  $transaction_reference;
+	    $this['transaction_response_data'] = json_encode($transaction_reference_data);
+	    $this->save();
 	}
 	function checkStatus(){
 		

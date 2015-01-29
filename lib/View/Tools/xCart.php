@@ -17,11 +17,17 @@ class View_Tools_xCart extends \componentBase\View_Component{
 			//Check for user logged in
 			$auth = $this->add('xShop/Controller_Auth',array('redirect_subpage'=>$this->html_attributes['show-cart-noauth-subpage-url']));
 			$auth->checkCredential();
+			
 			//Place Order
 			$order = $this->add('xShop/Model_Order');
 			$new_order = $order->placeOrderFromCart();
+
+			// Empty Cart
+			$this->add('xShop/Model_Cart')->emptyCart();
+
+			$this->api->memorize('checkout_order',$new_order);
 			//Redirect to Proceed/checkout Page with New Order Id
-			$this->api->redirect($this->api->url(null,array('subpage'=>$proceed_page,'order_id'=>$new_order['id'])));
+			$this->api->redirect($this->api->url(null,array('subpage'=>$proceed_page)));
 		}
 
 
