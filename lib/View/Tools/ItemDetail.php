@@ -20,6 +20,7 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		$item->load($_GET['xsnb_item_id']);		
 		$this->setModel($item);
 		
+		$this->js('reload')->reload(array('xsnb_item_id'=>$_GET['xsnb_item_id']));
 	//======================Date======================
 		if($this->html_attributes['show-item-date']){
 			$str = '<span class="pull-right xshop-item-detail-date">'.$item['created_at'].'</span>';
