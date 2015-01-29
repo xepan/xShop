@@ -70,13 +70,14 @@ class View_CartItem extends \View{
 				$q_f=$form->addField('Number','qty')->set($model['qty'])->addClass('cart-spinner');
 			// $q_f->setAttr('size',1);
 			// $q_f->js(true)->spinner(array('min'=>1));
-			$r_f=$form->addField('line','rate')->set($model['rate']);
+			$r_f=$form->addField('line','rate')->set($model['rateperitem']);
 			$r_f->setAttr( 'disabled', 'true' )->addClass('disabled_input');
 			
 			$r_f_hidden=$form->addField('hidden','rateperitem')->set($model['rateperitem']);
 
 			$this->api->js()->_load( 'xShop-js' );
-			$q_f->js( 'change', $form->js()->submit() )->univ()->calculateRate($q_f,$r_f_hidden,$r_f);
+			$q_f->js(true)->univ()->numericField();
+			$q_f->js( 'change', $form->js()->submit() );//->univ()->calculateRate($q_f,$r_f_hidden,$r_f);
 
 			$btn_submit=$form->add('View')->addClass('xshop-cart-qty-update-btn')->set('Update');
 			$btn_submit->js('click')->submit();
@@ -86,7 +87,21 @@ class View_CartItem extends \View{
 				$all_cart_item_model->load($form['cart_item_id']);
 				$all_cart_item_model->updateCart($form['cart_item_id'],$form['qty']);
 				// $item['qty']=$form['qty'];
-				$form->js()->univ()->successMessage('Cart Update Successfully')->execute();					
+				$cart_model=$this->add('xShop/Model_Cart');
+				$total_amount=$cart_model->getTotalAmount();
+				$total_saving=$cart_model->getTotalDiscount();
+				$total_item=$cart_model->getItemCount();
+
+				$js=array();
+				// set rate and amount in row
+				$js[] = $r_f->js()->val($all_cart_item_model['rateperitem']);
+				$js[] = $this->js()->find('.xshop-cart-item-subtotal')->text($all_cart_item_model['total_amount']);
+				$js[] = $q_f->js()->val($all_cart_item_model['qty']);
+				// set total amount
+				$js[] = $form->js()->_selector('.xshop-cart-price-count')->text($total_amount);
+				$js[] = $form->js()->_selector('.xshop-cart-total-amount-figure')->text($total_amount);
+				$js[] = $form->js()->_selector('.xshop-cart-total-saving-amount-figure')->text($total_saving);
+				$form->js(null,$js)->univ()->successMessage('Cart Update Successfully')->execute();
 			}
 		}else{
 			$this->template->tryDel('qty_rate');

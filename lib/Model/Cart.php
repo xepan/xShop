@@ -24,6 +24,10 @@ class Model_Cart extends \Model{
 	}
 
 	function addToCart($item_id,$qty,$item_member_design_id, $custom_fields=null,$other_fields=null){
+		$this->unload();
+
+		if(!is_numeric($qty)) $qty=1;
+
 		$item = $this->add('xShop/Model_Item')->load($item_id);
 		$prices = $item->getPrice($custom_fields,$qty,'retailer');
 		
@@ -62,6 +66,23 @@ class Model_Cart extends \Model{
 		return $total_amount;
 	}
 
+	function getTotalDiscount($percentage=false){
+		$discount = 0;
+		$total_amount=0;
+		$original_total_amount = 0;
+		$cart=$this->add('xShop/Model_Cart');
+		// $carts = "";
+		foreach ($cart as $junk) {
+			if($junk['original_amount']){
+				$total_amount += $junk['total_amount'];
+				$original_total_amount += ($junk['original_amount'] + $this['shipping_charge'] + $this['tax']);
+			}
+		}
+
+		return $total_amount - $original_total_amount;
+
+	}
+
 	function emptyCart(){
 		 foreach ($this as $junk) {
 			$this->delete();
@@ -72,9 +93,31 @@ class Model_Cart extends \Model{
 		if(!$this->loaded())
 			throw new \Exception("Cart Model Not Loaded at update cart".$this['item_name']);
 		
-		$this['qty']=$qty;
-		$this['rate'] = $this['rateperitem'] * $qty;
+		if(!is_numeric($qty)) $qty=1;
+
+		$item = $this->add('xShop/Model_Item')->load($this['item_id']);
+		$prices = $item->getPrice($this['custom_fields'],$qty,'retailer');
+		$amount = $item->getAmount($this['custom_fields'],$qty,'retailer');
+		
+		// throw new \Exception(print_r($prices,true). print_r($this['custom_fields'],true). " qty $qty", 1);
+		
+
+
+		// $this['item_id'] = $item->id;
+		// $this['item_code'] = $item['sku'];
+		// $this['item_name'] = $item['name'];
+		$this['rateperitem'] = $prices['sale_price'];
+		$this['qty'] = $qty;
+		$this['original_amount'] = $amount['original_amount'];
+		$this['sales_amount'] = $amount['sale_amount'];
+		// $this['custom_fields'] = $custom_fields;
+		// $this['item_member_design_id'] = $item_member_design_id;
+		$this['total_amount'] = $amount['sale_amount'] + $this['shipping_charge'] + $this['tax'];
+
+		// $text = "before ". $this['item_name'];
+
 		$this->save();
+		// $text .= " after ". $this['item_name'];
 		// $this->unLoad();
 		// throw new \Exception("Cart Model Loaded at update cart");
 	}
