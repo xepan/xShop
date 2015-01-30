@@ -30,11 +30,37 @@ class page_xShop_page_owner_item_media extends Page{
 	}
 
 	function page_images(){
-
+		
 		$item_id = $this->api->stickyGET('item_id');
-		$crud = $this->add('CRUD');
+
 		$item_images_model = $this->add('xShop/Model_ItemImages')->addCondition('item_id',$item_id)->addCondition('customefieldvalue_id',null);
 		$item_images_model->setOrder('id','desc');
+		$crud = $this->add('CRUD');
+		
+		// if($item_images_model->ref('item_id')->get('is_designable')){
+		// 	$btn = $this->add('Button')->set('Remove Images and Generate From Design');
+		// 	if($btn->isClicked()){
+		// 		foreach ($item_images_model as $junk) {
+		// 			$item_images_model->delete();
+		// 		}
+		// 		$item = $item_images_model->ref('item_id');
+		// 		$cont = $this->add('xShop/Controller_DesignTemplate',array('item'=>$item,'design'=>$item['designs'],'page_name'=>$_GET['page_name']?:'Front Page','layout'=>$_GET['layout_name']?:'Main Layout'));
+		// 		// $image_data = $cont->show($type='png',$quality=3, $base64_encode=false, $return_data=true);
+
+		// 		$cont->phpimage->save('/tmp/sfdsd.png');
+
+		// 		$image = $this->add('filestore/Model_Image');
+		// 		$image->import('/tmp/sfdsd.png',$mode='move');
+		// 		$image->performImport();
+		// 		$image->save();
+
+		// 		// $item_images_model->save();
+		// 		// $item_images_model->ref('item_image_id')->import($image,'string')->save();
+
+		// 		$crud->grid->js()->reload()->execute();
+		// 	}
+		// }
+
 		$crud->setModel($item_images_model,array('item_image_id','alt_text','title'),array('item_image','alt_text','title'));
 		if(!$crud->isEditing()){
 			$g = $crud->grid;
