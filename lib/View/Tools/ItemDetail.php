@@ -22,7 +22,6 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 	
 	//======================Name===================
 		
-<<<<<<< HEAD
 		if($this->html_attributes['show-item-name']){
 			$str = '<h1 class="xshop-item-detail-name">'.$item['name'].'</h1>';
 			$this->template->trySetHtml('item_name' ,$str);
@@ -40,9 +39,6 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 			$this->template->trySetHtml('review' ,$str);
 		}else
 			$this->template->tryDel('review');
-=======
-		$this->js('reload')->reload(array('xsnb_item_id'=>$_GET['xsnb_item_id']));
->>>>>>> 13f3bcf1a6b6c0ded0f77e57d111753113d6e800
 	//======================Date======================
 		if($this->html_attributes['show-item-date']){
 			$str = '<span class="pull-right xshop-item-detail-date">'.$item['created_at'].'</span>';
@@ -54,7 +50,8 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		if($this->html_attributes['show-image']){
 			$col_width = "4";			
 			// $this->add('View_Error',null,'item_images')->set('test');
-			$images = $this->add('xShop/View_Tools_ItemImages',null,'item_images');
+			$images = $this->add('xShop/View_Tools_ItemImages')->getHTML();
+			$this->template->trySetHTML('item_images',$images);
 			// $images->setModel($this->add('xShop/Model_ItemImages')->addCondition('item_id',$_GET['xsnb_item_id']));
 		}else{
 			$this->template->tryDel('item_images');
