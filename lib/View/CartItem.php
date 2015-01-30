@@ -24,6 +24,12 @@ class View_CartItem extends \View{
 			$img_model=$this->add('xShop/Model_ItemImages');
 			$img_model->getImageUrl($model['item_id']);
 			$img_url = $img_model['image_url']?:"logo.svg";
+
+			// get preview image of editable items
+			if($model['item_member_design_id']){
+				$img_url='index.php?page=xShop_page_designer_thumbnail&item_member_design_id='.$model['item_member_design_id'];
+			}
+
 			$str ='<td class="xshop-cart-item-image col-md-1">
 					<img width="100%" src="'.$img_url.'"class="xcart-image"/></td>';
 			$this->template->setHtml('image',$str);	

@@ -22,6 +22,7 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 	
 	//======================Name===================
 		
+<<<<<<< HEAD
 		if($this->html_attributes['show-item-name']){
 			$str = '<h1 class="xshop-item-detail-name">'.$item['name'].'</h1>';
 			$this->template->trySetHtml('item_name' ,$str);
@@ -39,6 +40,9 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 			$this->template->trySetHtml('review' ,$str);
 		}else
 			$this->template->tryDel('review');
+=======
+		$this->js('reload')->reload(array('xsnb_item_id'=>$_GET['xsnb_item_id']));
+>>>>>>> 13f3bcf1a6b6c0ded0f77e57d111753113d6e800
 	//======================Date======================
 		if($this->html_attributes['show-item-date']){
 			$str = '<span class="pull-right xshop-item-detail-date">'.$item['created_at'].'</span>';
