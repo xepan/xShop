@@ -3,12 +3,12 @@
 		<div class="xepan-collasp-header component-header">
 		 	<div class="panel-heading">
 		      	<h3 class="panel-title">
-		        	<a data-toggle="collapse" data-parent="#accordion"	 href="#collapse-xshop-item-detail">
+		        	<a data-toggle="collapse" data-parent="#accordion"	href="#collapse-xshop-item-detail">
 						{$component_type_name}
 		        	</a> 
 		      	</h3>
 		   	</div>
-		 	<div id="collapse-xshop-item-detail" class="panel-			collapse collapse">
+		 	<div id="collapse-xshop-item-detail" class="panel-collapse collapse">
 		      	<div class="panel-body">
 		      		<div class='xepan-collasp-header'>
 						<table class="table table-condensed table-hover">
@@ -112,12 +112,18 @@
 							<tr>
 								<td colspan="2">Item Affiliate</td>
 									<td>
-										<select id='xshop-show-item-affiliate' data-attr="show-item-affiliate" class="xshop-general-bind" >
+										<select id='xshop-show-item-affiliate' data-attr="show-item-affiliate" class="xshop-general-bind" hide-class="xshop-item-affiliate-label">
 											<option value="0">Hide</option>
 											<option value="1">Show</option>
 										</select>
 									</td>
 									<!-- <td><input type='number' id='xshop-order-add-to-cart' data-attr="order-add-to-cart" class="xshop-general-bind"/></td> -->
+							</tr>
+							<tr class="xshop-item-affiliate-label">
+								<td colspan="2">Affiliate Label</td>
+									<td>
+										<input type='text' id='xshop-item-affiliate-label' data-attr="item-affiliate-label" class="xshop-general-bind"/>
+									</td>
 							</tr>
 
 							<tr>
@@ -130,27 +136,45 @@
 									</td>
 									<!-- <td><input type='number' id='xshop-order-add-to-cart' data-attr="order-add-to-cart" class="xshop-general-bind"/></td> -->
 							</tr>
+							<tr class="xshop-item-detail-label">
+								<td colspan="2">Detail Label</td>
+									<td>
+										<input type='text' id='xshop-item-detail-label' data-attr="item-detail-label" class="xshop-general-bind"/>
+									</td>
+							</tr>
 							<tr>
 								<td colspan="2">Specification</td>
 									<td>
-										<select id='xshop-show-item-specification' data-attr="show-item-specification" class="xshop-general-bind" >
-											<option value="0">Hide</option>
-											<option value="1">Show</option>
-										</select>
-									</td>
-									<!-- <td><input type='number' id='xshop-order-add-to-cart' data-attr="order-add-to-cart" class="xshop-general-bind"/></td> -->
-							</tr>							
-							<tr>
-								<td colspan="2">Enquiry Form</td>
-									<td>
-										<select id='xshop-show-item-enquiry-form' data-attr="show-item-enquiry-form" class="xshop-general-bind" >
+										<select id='xshop-show-item-specification' data-attr="show-item-specification" class="xshop-general-bind" hide-class="xshop-item-specification-label">
 											<option value="0">Hide</option>
 											<option value="1">Show</option>
 										</select>
 									</td>
 									<!-- <td><input type='number' id='xshop-order-add-to-cart' data-attr="order-add-to-cart" class="xshop-general-bind"/></td> -->
 							</tr>
+							<tr class="xshop-item-specification-label">
+								<td colspan="2">Specification Label</td>
+									<td>
+										<input type='text' id='xshop-item-specification-label' data-attr="item-specification-label" class="xshop-general-bind"/>
+									</td>
+							</tr>
 
+							<tr>
+								<td colspan="2">Enquiry Form</td>
+									<td>
+										<select id='xshop-show-item-enquiry-form' data-attr="show-item-enquiry-form" class="xshop-general-bind" hide-class="xshop-item-enquiry-form-label">
+											<option value="0">Hide</option>
+											<option value="1">Show</option>
+										</select>
+									</td>
+									<!-- <td><input type='number' id='xshop-order-add-to-cart' data-attr="order-add-to-cart" class="xshop-general-bind"/></td> -->
+							</tr>
+							<tr class="xshop-item-enquiry-form-label">
+								<td colspan="2">Enquiry Form Label</td>
+									<td>
+										<input type='text' id='xshop-item-enquiry-form-label' data-attr="item-enquiry-form-label" class="xshop-general-bind"/>
+									</td>
+							</tr>
 							<tr>
 								<td colspan="2">Comment Section</td>
 									<td>
@@ -164,22 +188,34 @@
 							<tr>
 								<td colspan="2">Tags</td>
 									<td>
-										<select id='xshop-show-item-tags' data-attr="show-item-tags" class="xshop-general-bind" >
+										<select id='xshop-show-item-tags' data-attr="show-item-tags" class="xshop-general-bind" hide-class="xshop-item-tag-label">
 											<option value="0">Hide</option>
 											<option value="1">Show</option>
 										</select>
 									</td>
 									<!-- <td><input type='number' id='xshop-order-add-to-cart' data-attr="order-add-to-cart" class="xshop-general-bind"/></td> -->
 							</tr>
+							<tr class="xshop-item-tag-label">
+								<td colspan="2">Tag Label</td>
+									<td>
+										<input type='text' id='xshop-item-tag-label' data-attr="item-tag-label" class="xshop-general-bind"/>
+									</td>
+							</tr>
 							<tr>
 								<td colspan="2">Item Attachment</td>
 									<td>
-										<select id='xshop-show-item-attachment' data-attr="show-item-attachment" class="xshop-general-bind" >
+										<select id='xshop-show-item-attachment' data-attr="show-item-attachment" class="xshop-general-bind" hide-class="xshop-item-attachment-label" >
 											<option value="0">Hide</option>
 											<option value="1">Show</option>
 										</select>
 									</td>
 									<!-- <td><input type='number' id='xshop-order-add-to-cart' data-attr="order-add-to-cart" class="xshop-general-bind"/></td> -->
+							</tr>
+							<tr class="xshop-item-attachment-label">
+								<td colspan="2">Attachment Label</td>
+									<td>
+										<input type='text' id='xshop-item-attachment-label' data-attr="item-attachment-label" class="xshop-general-bind"/>
+									</td>
 							</tr>
 							<tr>
 								<td colspan="3">
@@ -215,43 +251,16 @@ $('#xShopProductDetailServerSide').click(function(event){
 	
 $('.xshop-general-bind').change(function(event){
 	$(current_selected_component).attr($(this).attr('data-attr'),$(this).val());
+	//calling hide other option
+	if($(this).attr('hide-class') != undefined){
+		$('.'+$(this).attr('hide-class')).hide();
+		if($(this).val() > 0)
+			$('.'+$(this).attr('hide-class')).show();
+	}
+
 	$(current_selected_component).children('div:first').trigger('reload');
 });
 
-$('#show_xshop_product_detail_images').change(function(event) {
-	if($('#show_xshop_product_detail_images').is(':checked')?$(current_selected_component).attr('xshop_product_detail_images',1):$(current_selected_component).attr('xshop_product_detail_images',0));	
-		
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-
-$('#xshop_product_detail_panel').change(function(event){
-	if($('#xshop_product_detail_panel').is(':checked')?$(current_selected_component).attr('xshop_product_detail_panel',1):$(current_selected_component).attr('xshop_product_detail_panel',0));
-	if($('#xshop_product_detail_panel').is(':checked')){
-		$('#panel-label').show();
-		$(current_selected_component).attr('xshop_product_detail_panel_label','Detail');
-	}
-	else
-		$('#panel-label').hide();	
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-$('#xshop_product_detail_panel_label').change(function(event){
-	$(current_selected_component).attr('xshop_product_detail_panel_label',$(this).val());
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-
-$('#xshop_product_detail_live_edit').change(function(event) {
-	if($('#xshop_product_detail_live_edit').is(':checked')?$(current_selected_component).attr('xshop_product_detail_live_edit',1):$(current_selected_component).attr('xshop_product_detail_live_edit',0));		
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-$('#xshop_pd_manufacturer_caption').change(function(event){
-	$(current_selected_component).attr('xshop_pd_manufacturer_caption',$('#xshop_pd_manufacturer_caption').val());
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');
-});
-
-$('#xshop_pd_supplier_caption').change(function(event){
-	$(current_selected_component).attr('xshop_pd_supplier_caption',$('#xshop_pd_supplier_caption').val());
-	$(current_selected_component).univ().errorMessage('Save and reload Page to see changes');	
-});
 
 var {$component_type}_options = {
 	show: function (){
@@ -259,22 +268,7 @@ var {$component_type}_options = {
 		// TO TAKE VALUES FROM COMPONENT AND FILL OPTIONS
 		// 
 		// $(your_option_html_element).text($(current_selected_component).css('border'));
-		$('#show_xshop_product_detail_images').attr('checked',$(current_selected_component).attr("xshop_product_detail_images")==1?true:false);
-
-		$('#xshop_product_detail_live_edit').attr('checked',$(current_selected_component).attr("xshop_product_detail_live_edit")==1?true:false);
-
-		// panel
-		$('#xshop_product_detail_panel_label').val($(current_selected_component).attr('xshop_product_detail_panel_label'));
-		$('#xshop_product_detail_panel').attr('checked',$(current_selected_component).attr("xshop_product_detail_panel")==1?true:false);
 		
-		if($(current_selected_component).attr("xshop_product_detail_panel") == '0'){
-			$("#panel-label").hide();			
-		}
-			// $(current_selected_component).attr('xshop_pd_supplier_caption','Supplier');		
-		
-		$('#xshop_pd_supplier_caption').val($(current_selected_component).attr('xshop_pd_supplier_caption')?$(current_selected_component).attr('xshop_pd_supplier_caption'):'Supplier');
-		$('#xshop_pd_manufacturer_caption').val($(current_selected_component).attr('xshop_pd_manufacturer_caption')?$(current_selected_component).attr('xshop_pd_manufacturer_caption'):'Manufacturer');
-
 		//General Binding
 		$('.xshop-general-bind').each(function(index,value){
 			$(this).val($(current_selected_component).attr($(this).attr('data-attr')));
