@@ -11,6 +11,7 @@ class Model_Cart extends \Model{
 		$this->addField('item_id');
 		$this->addField('item_code');
 		$this->addField('item_name');
+		$this->addField('item_member_design_id');
 		$this->addField('rateperitem');
 		$this->addField('qty');
 		$this->addField('original_amount');

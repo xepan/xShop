@@ -112,7 +112,12 @@ class View_Tools_Designer extends \componentBase\View_Component{
 			$this->api->template->appendHTML('js_include','<script src="epan-components/xShop/templates/js/designer/cropper.js"></script>'."\n");
 			
 			$design = json_decode($this->target['designs'],true);
+			$selected_layouts_for_print = $design['selected_layouts_for_print']; // trimming other array values like px_width etc
 			$design = $design['design']; // trimming other array values like px_width etc
+			// echo "<pre>";
+			// print_r ($design);
+			// echo "</pre>";
+			// exit;
 			$design = json_encode($design);
 
 			$cart_options = $this->item->getBasicCartOptions();
@@ -133,6 +138,7 @@ class View_Tools_Designer extends \componentBase\View_Component{
 														'design'=>$design,
 														'show_cart'=>'1',
 														'cart_options' => $cart_options,
+														'selected_layouts_for_print' => $selected_layouts_for_print,
 														'item_id'=>$_GET['xsnb_design_item_id'],
 														'item_member_design_id' => $_GET['item_member_design_id']
 												));
