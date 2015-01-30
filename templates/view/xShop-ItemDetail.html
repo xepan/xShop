@@ -5,18 +5,13 @@
 	{$item_detail_heading}
 
 	<div class="row">
-		{item_images}{/item_images}
-		<div class="col-md-12 col-sm-12">
-			<h1 class="xshop-item-detail-name">{$name}</h1>
-
-			<div class="row section">
-				<div class="col-md-6 col-sm-6 xshop-item-detail-code">
-					{$sku}
-				</div>
-				<div class="col-md-6 col-sm-6 xshop-item-detail-review">
-					{$review}
-				</div>
-			</div>
+		<div class="col-md-4">
+			{item_images}{/item_images}	
+		</div>
+		<div class="col-md-8 col-sm-8">
+			{$item_name}			
+				{$item_sku}
+				{$review}
 			<div class="xshop-item-detail-cart section">
     			{xshop_item_cart_btn}
     			{/xshop_item_cart_btn}

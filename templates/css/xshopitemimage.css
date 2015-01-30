@@ -1,7 +1,7 @@
 .zoomWrapper{
 }
-.zoomwrapper-img,.zoom3-small-image{
-	width:100%;
+.zoomwrapper-img{
+	width:100% !important;
 	position:relative;
 	height: auto;
 }
@@ -17,4 +17,9 @@
 	width:20%;
 	position: relative;
 	float: left;
+}
+
+.zoom3-small-image{
+	width:100%;
+	position: relative;
 }

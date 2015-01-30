@@ -19,7 +19,26 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 
 		$item->load($_GET['xsnb_item_id']);		
 		$this->setModel($item);
+	
+	//======================Name===================
 		
+		if($this->html_attributes['show-item-name']){
+			$str = '<h1 class="xshop-item-detail-name">'.$item['name'].'</h1>';
+			$this->template->trySetHtml('item_name' ,$str);
+		}
+
+	//======================Sku==================
+		if($this->html_attributes['show-item-code']){
+			$str = '<div class="col-md-6 col-sm-6 xshop-item-detail-code">'.$item['sku'].'</div>';
+			$this->template->trySetHtml('item_sku' ,$str);
+		}else
+			$this->template->tryDel('item_sku');
+	//======================Reviews==============================		
+		if($this->html_attributes['show-item-review']){
+			$str = '<div class="col-md-6 col-sm-6 xshop-item-detail-review"></div>';
+			$this->template->trySetHtml('review' ,$str);
+		}else
+			$this->template->tryDel('review');
 	//======================Date======================
 		if($this->html_attributes['show-item-date']){
 			$str = '<span class="pull-right xshop-item-detail-date">'.$item['created_at'].'</span>';
@@ -29,9 +48,10 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 	//======================Images=====================
 		$col_width = "12";
 		if($this->html_attributes['show-image']){
-			$col_width = "4";
-			//$images = $this->add('xShop/View_Lister_itemImages',null,'item_images');
-			//$images->setModel($this->add('xShop/Model_ItemImages')->addCondition('item_id',$_GET['xsnb_item_id']));
+			$col_width = "4";			
+			// $this->add('View_Error',null,'item_images')->set('test');
+			$images = $this->add('xShop/View_Tools_ItemImages',null,'item_images');
+			// $images->setModel($this->add('xShop/Model_ItemImages')->addCondition('item_id',$_GET['xsnb_item_id']));
 		}else{
 			$this->template->tryDel('item_images');
 		}
@@ -64,8 +84,8 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 				$this->template->trySetHTML('xshop_item_discus',$config_model['disqus_code']);
 			else 
 				$this->template->trySetHTML('xshop_item_discus',"<div class='alert alert-warning'>Place Your Discus Code and Select Comment Api in Item or Configuration</div>");
-		}		
-		
+		}	
+
 	//======================== CUSTOM BUTTON ==========================
 		if($config_model['add_custom_button']){
 			if($this->model['add_custom_button']){
@@ -140,7 +160,7 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		}
 
 		//Attachments
-		if($item['is_attachment_allow']){
+		if($item['is_attachment_allow'] and $this->html_attributes['show-item-attachment']){
 			$attachment_tab = $this;
 			if($this->html_attributes['show-item-detail-in-tabs'])
 				$attachment_tab = $tabs->addTab('Attachments');

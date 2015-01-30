@@ -10,17 +10,15 @@
 
 	{$Content}
 	{zoom3_image}
-	<div class="zoomWrapper">
 		<img id="zoom_03" src="{zoom3_image_url}{/zoom3_image_url}" data-zoom-image="{$zoom3_large_image_url}" class="zoomwrapper-img">
-	</div>
 	{/zoom3_image}
 
-	<div id="gal1" class="row xshop-item-image-list"> 
+	<div id="gal1" class="xshop-item-image-list">
 	{rows}
 	{row}
 		<div class="xshop-item-image-block">
 			<a href="#{$id}" data-image="{$thumb_image_url}" data-zoom-image="{$image_url}" class="xshop-item-image-link">
-				<img id="img_{$id}" src="{$thumb_image_url}" class="img" style="width:100%;" />
+				<img id="img_{$id}" src="{$thumb_image_url}" class="img" style="width:100%" />
 			</a>
 		</div>	
 	{/row}
