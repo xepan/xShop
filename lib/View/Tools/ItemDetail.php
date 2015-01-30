@@ -46,18 +46,20 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		}
 
 	//======================Images=====================
-		$col_width = "12";
+		$col_width = "col-md-12 col-sm-12 col-lg-12";
 		if($this->html_attributes['show-image']){
-			$col_width = "4";			
-			// $this->add('View_Error',null,'item_images')->set('test');
+			$col_width = "col-md-8 col-sm-8 col-lg-8";
+			$str = '<div class="col-md-4 xshop-item-detail-images">';
 			$images = $this->add('xShop/View_Tools_ItemImages')->getHTML();
+			$images = $str.$images.'</div>';
 			$this->template->trySetHTML('item_images',$images);
-			// $images->setModel($this->add('xShop/Model_ItemImages')->addCondition('item_id',$_GET['xsnb_item_id']));
 		}else{
 			$this->template->tryDel('item_images');
 		}
 
-	//=======================PANEL HEADING=================================	
+		$this->template->trySetHtml('item-detail-width',$col_width);
+
+	//=======================Detail HEADING=================================	
 		if($this->html_attributes['show-heading']){
 			$str = '<div class="text-center"> <h1 class="page page-header">'.$item['name'].'</h1></div>';
 			$this->template->trySetHtml('item_detail_heading',$str);
@@ -75,7 +77,11 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		}
 	//===========================Tags ===========================================
 		if( $this->html_attributes['show-item-tags'] and $item['tags']){
-			$str = '<div class="xshop-item-detail-tags">'.str_replace(',', " ", $item['tags']).'</div>';
+			$label = "Tags";
+			if(trim($this->html_attributes['item-tag-label']) !="")
+				$label = $this->html_attributes['item-tag-label'];
+			$str = '<div class="xshop-item-detail-title xshop-item-tags-label">'.$label.'</div>';
+			$str.= '<div class="xshop-item-detail-tags">'.str_replace(',', " ", $item['tags']).'</div>';
 			$this->template->trySetHtml('xshop_item_tags',$str);
 		}
 		
@@ -115,7 +121,12 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 	//=====================ITEM AFFILIATES===============================
 		if($this->html_attributes['show-item-affiliate']){
 			$item_aff_ass = $this->add('xShop/Model_ItemAffiliateAssociation')->addCondition('item_id',$item->id);
-			$str ='<div class="xshop-item-affiliate-block">';
+			$label = "Affiliate's";
+			if(trim($this->html_attributes['item-affiliate-label']) != "")
+				$label = $this->html_attributes['item-affiliate-label'];
+			$str = '<div class="xshop-item-detail-title xshop-item-affiliate-label">'.$label.'</div>';
+
+			$str .='<div class="xshop-item-affiliate-block">';
 			foreach ($item_aff_ass as $junk) {
 				$aff = $this->add('xShop/Model_Affiliate')->tryload($item_aff_ass['affiliate_id']);
 				$str .= '<div class="xshop-item-affiliate">'.$aff['affiliatetype']." :: ".$aff['company_name']."</div>";
@@ -126,11 +137,14 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 		}
 
 	// =================Item Detail and specification and Attachments===================
+		$detail_label = trim($this->html_attributes['item-detail-label'])?:'Description';
+		$detail_header = "";
 		if($this->html_attributes['show-item-detail-in-tabs']){
 			$tabs = $this->add('Tabs',null,'xshop_item_detail_information');
-			$detail_tab = $tabs->addTab('Detail');
+			$detail_tab = $tabs->addTab($detail_label);
 		}else{
 			$detail_tab = $this;
+			$detail_header = '<div class="xshop-item-detail-title xshop-item-detail-label">'.$detail_label.'</div>';
 		}
 		
 		$item_description = $item['description'];
@@ -148,23 +162,32 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 			$item_description = $str;
 		}
 		//Detail tabs
-		$detail_tab->add('View')->setHtml($item_description);
+		$detail_tab->add('View')->setHtml($detail_header.$item_description);
 			
 		//Specification
+		$specification_label = trim($this->html_attributes['item-specification-label'])?:'Specification';
 		if($this->html_attributes['show-item-specification']){
 			$specification_tab = $this;
-			if($this->html_attributes['show-item-detail-in-tabs'])
-				$specification_tab = $tabs->addTab('Specification');
+			if($this->html_attributes['show-item-detail-in-tabs']){
+				$specification_tab = $tabs->addTab($specification_label);
+			}else{
+				$this->add('View')->setHtml('<div class="xshop-item-detail-title xshop-item-specification-label">'.$specification_label.'</div>');
+			}
 
 			$specification = $this->add('xShop/Model_ItemSpecificationAssociation')->addCondition('item_id',$item->id);
 			$specification_tab->add('Grid')->setModel($specification,array('specification','value'));	
 		}
 
 		//Attachments
+		$attachment_label = trim($this->html_attributes['item-attachment-label'])?:'Attachments';
+		$attachment_header = "";
 		if($item['is_attachment_allow'] and $this->html_attributes['show-item-attachment']){
 			$attachment_tab = $this;
-			if($this->html_attributes['show-item-detail-in-tabs'])
-				$attachment_tab = $tabs->addTab('Attachments');
+			if($this->html_attributes['show-item-detail-in-tabs']){
+				$attachment_tab = $tabs->addTab($attachment_label);
+			}else{
+				$attachment_header = '<div class="xshop-item-detail-title xshop-item-attachment-label">'.$attachment_label.'</div>';
+			}
 
 			$attachment_model=$this->add('xShop/Model_Attachments');
 			$attachment_model->addCondition('item_id',$item->id);
@@ -173,13 +196,20 @@ class View_Tools_ItemDetail extends \componentBase\View_Component{
 				$html .= '<div class="xshop-item-attachment-link"> <a target="_blank" href="'.$attachment_model['attachment_url'];
 				$html.= '"</a>'.$attachment_model['name'].'</div>';
 			}
-			$attachment_tab->add('View')->setHtml($html)->addClass('xshop-item-attachment');
+			$attachment_tab->add('View')->setHtml($attachment_header.$html)->addClass('xshop-item-attachment');
 		}
 
 
 
 	//==================Enquiry Form================================
 		if($this->html_attributes['show-item-enquiry-form']){
+			$label = "Enquiry Form";
+			if(trim($this->html_attributes['item-enquiry-form-label']) != "")
+				$label = trim($this->html_attributes['item-enquiry-form-label']);
+			
+			$str = '<div class="xshop-item-detail-title xshop-item-enqyiry-form-label">'.$label.'</div>';
+			$this->template->trySetHtml('xshop_item_enquiry_label',$str);
+
 			$enquiry_form=$this->add('Form',null,'xshop_item_enquiry');
 			$enquiry_form->addField('line','name');
 			$enquiry_form->addField('line','contact_no');

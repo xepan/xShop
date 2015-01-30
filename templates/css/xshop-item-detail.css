@@ -35,3 +35,24 @@
 	border-left:1px solid #f2f2f2;
 }
 
+.xshop-item-tags-label{
+	/*webkit-box-shadow: 0 8px 6px -6px black;
+	-moz-box-shadow: 0 8px 6px -6px black;
+	box-shadow: 0 8px 6px -6px black;*/
+
+}
+
+.xshop-item-detail-title{
+	border:1px solid #f2f2f2;
+	border-radius: 5px;
+	font-size: 1.2em;
+	padding: 0.5rem;
+}
+
+.xshop-item-detail-tags{
+	color:gray;
+	padding: 0.7rem;
+}
+.xshop-item-affiliate-block{
+	padding: 0.7rem;
+}
