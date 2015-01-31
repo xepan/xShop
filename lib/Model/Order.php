@@ -15,7 +15,18 @@ class Model_Order extends \Model_Table{
 		$f = $this->hasOne('xShop/MemberDetails','member_id')->group('a~3~<i class="fa fa-info"></i> Order Info');
 		$f->icon = "fa fa-user~red";
 		$f = $this->addField('name')->caption('Order ID')->mandatory(true)->group('a~3');
-		$f = $this->addField('order_status')->setValueList(array('10' =>'order palced','20'=>'order placed with payament','30'=>'order placed with COD','40'=>'Order Shipping','50'=>'Order Shipped'))->group('a~2');
+		// Order status
+			// placed, partial-shipped, shipped, partial-dilivered, dilivered, partial-returned, returned, canceled, complete
+		// order payment status
+			// unpaid, paid, refunded
+		$f = $this->addField('order_status')->setValueList(
+				array(
+					'10' =>'order palced',
+					'20'=>'order placed with payament',
+					'30'=>'order placed with COD',
+					'40'=>'Order Shipping',
+					'50'=>'Order Shipped')
+			)->group('a~2');
 		$f = $this->addField('on_date')->type('date')->defaultValue(date('Y-m-d'))->group('a~2');
 		$f->icon ="fa fa-calendar~blue";
 

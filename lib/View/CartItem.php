@@ -27,7 +27,7 @@ class View_CartItem extends \View{
 
 			// get preview image of editable items
 			if($model['item_member_design_id']){
-				$img_url='index.php?page=xShop_page_designer_thumbnail&item_member_design_id='.$model['item_member_design_id'];
+				$img_url='index.php?page=xShop_page_designer_thumbnail&item_member_design_id='.$model['item_member_design_id'].'&width=80';
 			}
 
 			$str ='<td class="xshop-cart-item-image col-md-1">

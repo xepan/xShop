@@ -63,6 +63,7 @@ class page_xShop_page_designer_pdf extends Page {
 		
 		$this->px_width = $design['px_width'] * $this->print_ratio;
 
+		$selected_layouts_for_print = $design['selected_layouts_for_print'];
 		$design=$design['design'];
 		// echo "<pre>";
 		// print_r($design);
@@ -83,9 +84,10 @@ class page_xShop_page_designer_pdf extends Page {
 			// $pdf->SetFont('Arial','B',16);
 			// $pdf->Cell(40,10,$page_name);
 			$i=1;
-			foreach ($layouts as $layout_name => $content) {
-				if($i++ > 1) continue; // Just mainlayout only for now
+			// foreach ($layouts as $layout_name => $content) {
+				// if($i++ > 1) continue; // Just mainlayout only for now
 				// background
+				$content = $layouts[$selected_layouts_for_print[$page_name]];
 				$background_options = json_decode($content['background'],true);
 				$this->addImage($background_options,$pdf);
 
@@ -100,7 +102,7 @@ class page_xShop_page_designer_pdf extends Page {
 					}
 				}
 				// $pdf->Cell(40,10,$layout_name);
-			}
+			// }
 			$this->putWaterMark($pdf);
 		}
 
