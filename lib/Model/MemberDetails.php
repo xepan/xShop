@@ -235,6 +235,15 @@ class Model_MemberDetails extends \Model_Table{
 		 return true;
 		 }else 
 		 	return false;
-		 }
+	}
+
+	function deactivate(){
+		if(!$this->loaded())
+			throw new \Exception("Model Must be Loaded");
+
+		$this['is_active'] = false;
+		$this->save();
+		return true;
+	}
 
 }

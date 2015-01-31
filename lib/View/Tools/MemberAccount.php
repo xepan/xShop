@@ -7,76 +7,20 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 	function init(){
 		parent::init();
 
-		if($this->api->auth->model->loaded()){
+		if(!$this->api->auth->model->loaded())
+			return;
+			
 			$this->add('View_Info')->set('Member Panel'." id = ".$this->api->auth->model->id);
-			$tab = $this->add('Tabs');
-			$account_tab = $tab->addTab('AccountInformation');
+			
+			$tab = $this->add('Tabs')->addClass('nav-stacked');
+			//Account Information
+			$tab->addTabUrl('xShop/page/member_accountinfo','Settings');
 
-			$member=$account_tab->add('xShop/Model_MemberDetails')->addCondition('users_id',$this->api->auth->model->id);
-			$member->tryLoadAny();
-			$form=$account_tab->add('Form');
-			$form->setModel($member);
-			$form->addSubmit('Update');
-
-			$users=$this->add('Model_Users')->load($this->api->auth->model->id);
-			if($form->isSubmitted()){
-				$form->update();
-				$this->js(null,$form->js()->univ()->successMessage('Update Information Successfully'))->reload()->execute();			
-			}
 			//MEMBER ORDER tab
-			$order_tab = $tab->addTab('Order','order');
-			$order_tab->add('xShop/View_MemberOrder');
+			$tab->addTabUrl('xShop/page/member_order','Order');
 
 			// MEMBER DESIGNS
-			$design_tab = $tab->addTab('My Designs','designs');
-			$form = $design_tab->add('Form');
-			$crud = $design_tab->add('CRUD',array('allow_add'=>false));
-			$template_model = $design_tab->add('xShop/Model_ItemTemplate');
-			$form->addField('dropdown','item_template')->setModel($template_model);
-
-			$form->addSubmit('Duplicate');
-			if($form->isSubmitted()){
-				$new_item = $template_model->load($form['item_template'])->duplicate($create_default_design_also=true);
-				// create default design as well for this new template that is just duplicated
-
-				$form->js(null,$crud->js()->reload())->univ()->successMessage('Design Duplicated')->execute();
-			}
-
-			$designer = $this->add('xShop/Model_MemberDetails');
-			$designer->loadLoggedIn();
-
-			$my_designs_model = $this->add('xShop/Model_ItemMemberDesign');
-			$my_designs_model->addCondition('member_id',$designer->id);
-			$crud->setModel($my_designs_model);
-
-			if(!$crud->isEditing()){
-				$g = $crud->grid;
-				//Edit Template
-				$g->addColumn('edit_template');
-				$page = $this->html_attributes['xsnb-desinger-page'];
-				$g->addMethod('format_edit_template',function($g,$f)use($designer,$page){
-					if($g->model->ref('item_id')->get('designer_id') == $designer->id)
-						$g->current_row_html[$f]='<a target="_blank" href='.$g->api->url(null,array('subpage'=>$page,'xsnb_design_item_id'=>$g->model['item_id'],'xsnb_design_template'=>'true')).'>Edit Template</a>';
-					else
-						$g->current_row_html[$f]='';
-						
-				});
-				$g->addFormatter('edit_template','edit_template');
-				//Edit Design
-				$g->addColumn('design');
-				$subpage = $this->html_attributes['xsnb-desinger-page'];
-				$g->addMethod('format_design',function($g,$f)use($designer,$subpage){
-					if(!$g->model['is_dummy'])
-						$g->current_row_html[$f]='<a target="_blank" href='.$g->api->url(null,array('subpage'=>$subpage,'xsnb_design_item_id'=>'not-available','xsnb_design_template'=>'false','item_member_design_id'=>$g->model->id)).'>Design</a>';
-					else
-						$g->current_row_html[$f] ='';
-				});
-				$g->addFormatter('design','design');
-			}
-		}
-		else{
-			$this->add('View_Warning')->set('Please Log in first');
-		}
+			$tab->addTabUrl('xShop/page/member_design','Designs',array('html_attributes'=>$this->html_attributes));
 
 	}
 	// defined in parent class
