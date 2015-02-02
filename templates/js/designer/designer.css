@@ -1,6 +1,7 @@
+
 .xshop-designer-tool {
   outline: 1px solid black !important;
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.2);
 }
@@ -145,10 +146,13 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
   margin-top:20px;
 }
 
+.xshop-designer-tool-topbar-buttonset{
+  min-width: 50%;
+}
 .xshop-designer-tool-topbar-buttonset > .btn{
  border-right:1px solid #ccc;
  border-radius: 0px;
- min-width:70px;     
+ min-width:70px;
 }
 
 .xshop-designer-tool-workplace{
@@ -167,7 +171,7 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
   box-shadow: 2px 2px 2px 0 rgba(0,0,0,0.2) inset;
 }
 .xshop-designer-tool-topbar-options{
-
+  max-width:50%;
 }
 
 .xshop-designer-text-input{
@@ -302,4 +306,65 @@ div.xshop-designer-pagebtn,.xshop-designer-layoutbtn{
 .active{
   background-color: red;
   color: white;
+}
+
+
+/*Cart CSS*/
+.xshop-item-detail{
+  background-color: white !important;
+    box-shadow: 0 0 10px #ccc;
+    padding: 2%;
+}
+.section{
+  padding: 5px;
+  border-top: 1px solid #f2f2f2;
+    margin: 0;
+}
+.xshop-item-detail-review{
+  background-image:url(rivew.png);
+  background-repeat: no-repeat;
+  background-size:20% 100%;
+  height: 20px; 
+}
+
+.xshop-item-custom-field{
+  /*clear: both;*/
+  width:50% !important;
+  float: left !important;
+}
+.xshop-item-custom-field, 
+.xshop-add-to-cart-qty, 
+.xshop-item-add-to-cart-btn {
+  clear: none;
+  display: inline-block; 
+}
+
+.xshop-add-to-cart-qty{
+  width:20% !important;
+}
+
+.xshop-item-offer-supplier-shipping{
+  border-left:1px solid #f2f2f2;
+}
+
+.xshop-item-tags-label{
+  /*webkit-box-shadow: 0 8px 6px -6px black;
+  -moz-box-shadow: 0 8px 6px -6px black;
+  box-shadow: 0 8px 6px -6px black;*/
+
+}
+
+.xshop-item-detail-title{
+  border:1px solid #f2f2f2;
+  border-radius: 5px;
+  font-size: 1.2em;
+  padding: 0.5rem;
+}
+
+.xshop-item-detail-tags{
+  color:gray;
+  padding: 0.7rem;
+}
+.xshop-item-affiliate-block{
+  padding: 0.7rem;
 }
