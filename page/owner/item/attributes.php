@@ -17,7 +17,7 @@ class page_xShop_page_owner_item_attributes extends Page{
 		$item = $this->add('xShop/Model_Item')->load($item_id);
 
 		$crud = $this->add('CRUD');
-		$crud->setModel($item->ref('xShop/ItemSpecificationAssociation'),array('specification','value','highlight_it'));
+		$crud->setModel($item->ref('xShop/ItemSpecificationAssociation'));
 	}
 
 	function page_customfields(){

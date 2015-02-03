@@ -24,7 +24,6 @@ class page_xShop_page_owner_item extends page_xShop_page_owner_main{
 		//	add 'bounce' option to default 'slide' effect
 		,	'fxSettings_open'=>		array('easing'=> "easeOutBounce" )
 
-
 			)
 			);
 		// $l->addPane('south')->add('View')->set('South');
