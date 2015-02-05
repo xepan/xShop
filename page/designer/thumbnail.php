@@ -50,7 +50,7 @@ class page_xShop_page_designer_thumbnail extends Page {
 
 		$cont = $this->add('xShop/Controller_DesignTemplate',array('item'=>$item,'design'=>$design,'page_name'=>$_GET['page_name']?:'Front Page','layout'=>$_GET['layout_name']?:'Main Layout'));
 		$cont->show($type='png',$quality=3, $base64_encode=false, $return_data=false);
-		exit;		
+		exit;
 	}
 
 	
