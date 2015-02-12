@@ -70,4 +70,20 @@ class Model_Category extends \Model_Table{
 	function nameExistInParent(){ //Check Duplicasy on Name Exist in Parent Category
 		return $this->ref('parent_id')->loaded()? $this->ref('parent_id')->ref('SubCategories')->addCondition('name',$this['name'])->addCondition('id','<>',$this->id)->tryLoadAny()->loaded(): false;
 	}
+
+	function getSubCategory(){
+		if(!$this->loaded())
+			return;
+
+		$cat_model = $this->add('xShop/Model_Category');
+		$cat_model->addCondition('parent_id',$this['id']);
+		//Return Only one Level Child Category
+		$cat_array = array();
+		$cat_array[] = $this['id'];
+		foreach ($cat_model as $id => $obj) {
+			$cat_array[] = $id;
+		}
+		return $cat_array;
+	}
+
 }

@@ -11,6 +11,7 @@ class Model_Item extends \Model_Table{
 		
 		$this->hasOne('xShop/Application','application_id');
 		$this->hasOne('xShop/MemberDetails','designer_id');
+		$this->hasOne('xShop/Quotation','quotation_id');
 
 		//for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
@@ -139,32 +140,46 @@ class Model_Item extends \Model_Table{
 								$this["meta_title"]. " ".
 								$this["meta_description"]. " ".
 								$this['sale_price']
-							;
+							;	
 
-		//Default Qty Set
-		if($this->dirty['original_price'] or $this->dirty['sale_price']){
-			$qty_set_model = $this->ref('xShop/QuantitySet')->addCondition('is_default',true)->tryLoadAny();
-			$qty_set_model['old_price'] = $this['original_price'];
-			$qty_set_model['price'] = $this['sale_price'];
-			$qty_set_model['qty'] = 1;
-			$qty_set_model['name'] = "Default";
-			$qty_set_model['is_default'] = true;
-			$qty_set_model->save();
-		}	
+		if(($this->dirty['sale_price'] or $this->dirty['original_price']) and $this['id'] > 0){
+			$this->updateDefaultQuantitySet();
+		}
+		// TOOOOOOOOOOOODOOOOOOOOOOO check for the uodate item designer if ==================
+		// if($this->loaded() and $this->dirty['designer_id']){	
+		// 	$this->updateItemDesigner();
+		// }
 	}
 
 	function afterInsert($obj,$new_item_id){
 		$new_item =  $this->add('xShop/Model_Item')->load($new_item_id);
+		$new_item->updateDefaultQuantitySet();
 
 		if(!$new_item['designer_id']) return;
+		$new_item->updateItemDesigner();
+	}
 
+	function updateDefaultQuantitySet(){
+		//Default Qty Set
+		$qty_set_model = $this->ref('xShop/QuantitySet')->addCondition('is_default',true)->tryLoadAny();
+		$qty_set_model['old_price'] = $this['original_price'];
+		$qty_set_model['price'] = $this['sale_price'];
+		$qty_set_model['qty'] = 1;
+		$qty_set_model['name'] = "Default";
+		$qty_set_model['is_default'] = true;
+		$qty_set_model->save();
+	}
+
+	function updateItemDesigner(){
+		if(!$this->loaded())
+			return;
 		// if designable add as with admin => member's design too
 		$designer = $this->add('xShop/Model_MemberDetails');
-		$designer->load($new_item['designer_id']);
-
+		$designer->addCondition('id',$this['designer_id']);
+		$designer->tryLoadAny();
 		$target = $this->item = $this->add('xShop/Model_ItemMemberDesign');
-		$target['item_id'] = $new_item_id;
-		$target['member_id'] = $designer->id;
+		$target['item_id'] = $this['id'];
+		$target['member_id'] = $designer['id'];
 		$target['designs'] = "";
 		$target['is_dummy'] = true;
 		$target->save();
@@ -330,19 +345,19 @@ class Model_Item extends \Model_Table{
 		}	
 	}
 	
-	function updateCustomField($item_id){
-
+	function updateCustomField($item_id=null){
 		
-		$this->load($item_id);
 		$category_item_model = $this->add('xShop/Model_CategoryItem');
-		$category_item_model->addCondition('item_id',$item_id);
+		$category_item_model->addCondition('item_id',$this['id']);
+		$category_item_model->tryLoadAny();
+
 		foreach ($category_item_model as $junk) {
 			$category_customfield_model = $this->add('xShop/Model_ItemCustomFieldAssos');
 			$category_customfield_model->addCondition('category_id',$junk['category_id']);
 			
 			foreach ($category_customfield_model as $junk) {
 				$model = $this->add('xshop/Model_ItemCustomFieldAssos');
-				$model->addCondition('item_id',$item_id);
+				$model->addCondition('item_id',$this['id']);
 				$model->addCondition('customfield_id',$junk['customfield_id']);
 				$model->tryLoadAny();
 								
@@ -525,6 +540,10 @@ class Model_Item extends \Model_Table{
 		$options['custom_fields'] = $custom_filed_array;
 		return $options;
 	}
+
+	// function submit(){
+	// 	return "dsfsfdsdF";
+	// }
 
 }	
 

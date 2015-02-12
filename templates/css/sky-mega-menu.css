@@ -1,6 +1,7 @@
 /**/
 /* defaults */
 /**/
+
 .sky-mega-menu,
 .sky-mega-menu * {
 	margin: 0;
@@ -879,3 +880,8 @@
 		bottom: auto;
 	}
 }
+
+/*For only hiding one level of category 
+.sky-mega-menu li.xshop-category > div  ul > li >div{
+     visibility:hidden;
+}*/

@@ -3,8 +3,15 @@
 class page_xShop_page_member_design extends Page {
 	public $html_attributes;
 	function page_index(){
+		
+		if(!$_GET['designer_page']){
+			$this->add('View_Warning')->set('Specify the designer page');
+			return ;
+		}
+		$this->api->stickyGET('designer_page');
 
 		$member = $this->add('xShop/Model_MemberDetails');
+		
 		if(!$member->loadLoggedIn()){
 			$this->add('View_Error')->set('Not Authorized');
 			return;
@@ -41,10 +48,12 @@ class page_xShop_page_member_design extends Page {
 			
 			//Edit Template
 			$g->addColumn('edit_template');
-			$page = $this->html_attributes['xsnb-desinger-page'];
+
+			$page = $_GET['designer_page'];//$this->html_attributes['xsnb-desinger-page'];
 			$g->addMethod('format_edit_template',function($g,$f)use($designer,$page){
+				// echo $this->api->url();
 				if($g->model->ref('item_id')->get('designer_id') == $designer->id)
-					$g->current_row_html[$f]='<a target="_blank" href='.$g->api->url(null,array('subpage'=>$page,'xsnb_design_item_id'=>$g->model['item_id'],'xsnb_design_template'=>'true')).'>Edit Template</a>';
+					$g->current_row_html[$f]='<a target="_blank" href='.$g->api->url('index',array('subpage'=>$page,'xsnb_design_item_id'=>$g->model['item_id'],'xsnb_design_template'=>'true')).'>Edit Template</a>';
 				else
 					$g->current_row_html[$f]='';
 					
@@ -52,10 +61,10 @@ class page_xShop_page_member_design extends Page {
 			$g->addFormatter('edit_template','edit_template');
 			//Edit Design
 			$g->addColumn('design');
-			$subpage = $this->html_attributes['xsnb-desinger-page'];
+			$subpage = $_GET['designer_page'];//$this->html_attributes['xsnb-desinger-page'];
 			$g->addMethod('format_design',function($g,$f)use($designer,$subpage){
 				if(!$g->model['is_dummy'])
-					$g->current_row_html[$f]='<a target="_blank" href='.$g->api->url(null,array('subpage'=>$subpage,'xsnb_design_item_id'=>'not-available','xsnb_design_template'=>'false','item_member_design_id'=>$g->model->id)).'>Design</a>';
+					$g->current_row_html[$f]='<a target="_blank" href='.$g->api->url('index',array('subpage'=>$subpage,'xsnb_design_item_id'=>'not-available','xsnb_design_template'=>'false','item_member_design_id'=>$g->model->id)).'>Design</a>';
 				else
 					$g->current_row_html[$f] ='';
 			});

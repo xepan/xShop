@@ -20,7 +20,7 @@ class View_Tools_MemberAccount extends \componentBase\View_Component{
 			$tab->addTabUrl('xShop/page/member_order','Order');
 
 			// MEMBER DESIGNS
-			$tab->addTabUrl('xShop/page/member_design','Designs',array('html_attributes'=>$this->html_attributes));
+			$tab->addTabUrl($this->api->url('xShop/page/member_design',array('designer_page'=>$this->html_attributes['xsnb-desinger-page'])),'Designs');
 
 	}
 	// defined in parent class

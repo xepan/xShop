@@ -7,6 +7,14 @@ class View_Tools_Category extends \componentBase\View_Component{
 		$application=$this->html_attributes['xshop_application_id'];
 		$categories = $this->add('xShop/Model_Category',array('table_alias'=>'mc'));
 
+		//Only Category Description
+		if($this->html_attributes['show-category-description-only'] and $_GET['xsnb_category_id']){
+			$cat_m = $this->add('xShop/Model_Category')->load($_GET['xsnb_category_id']);
+			$this->add('View')->setHTML($cat_m['description']);
+			return;
+		}
+
+
 		$this->template->trySet('no_of_cols',$this->html_attributes['xshop-category-grid-column']);
 		
 		$width = 12;
@@ -38,10 +46,10 @@ class View_Tools_Category extends \componentBase\View_Component{
 	            	->where('mc.parent_id', null)
 	            	->where('mc.parent_id', 0)
 	            	);
-	        // $categories->addCondition('parent_id',Null);    
+	        // $categories->addCondition('parent_id',Null);
 	        $categories->tryLoadAny();
 	        if(!$categories->loaded()){
-	        	$this->add('View_Error')->setHTML('No Category Found in Selected Category Group');
+	        	$this->add('View_Error')->setHTML('No Category Found in Selected Application');
 	        	return;
 	        }
 
@@ -71,7 +79,7 @@ class View_Tools_Category extends \componentBase\View_Component{
 		if($category->ref('SubCategories')->count()->getOne() > 0){
 			$sub_category = $category->ref('SubCategories');
 			$output = "<li aria-haspopup='true' class='xshop-category'>";
-			$output .="<a href='#'>";
+			$output .="<a href='".$this->api->url(null,array('subpage'=>$page_name,'xsnb_category_id'=>$category->id))."'>";
 			$output .= $category['name'];
 			$output .="</a>" ;
 			$output .= "<div class='grid-container3'>";

@@ -27,13 +27,12 @@ class page_xShop_page_owner_item_category extends Page{
 			$selected_categories = json_decode($form['app_cat'],true);
 			foreach ($selected_categories as $cat_id) {
 				$cat_item_model->createNew($cat_id,$_GET['item_id']);
-			}		
+			}	
 			// Update Search String
 			$item_model=$this->add('xShop/Model_Item');
 			$item_model->load($item_id);
 			$item_model->updateSearchString($_GET['item_id']);			
-			
-			$item_model->updateCustomField($item_id);
+			// $item_model->updateCustomField();
 			$form->js(null,$this->js()->univ()->successMessage('Updated'))->reload()->execute();
 		}		
 		$grid->addQuickSearch(array('category_name'));
