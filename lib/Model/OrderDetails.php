@@ -18,6 +18,7 @@ class Model_OrderDetails extends \Model_Table{
 		$this->addField('unit')->type('money');
 		$this->addField('rate')->type('money');
 		$this->addField('amount')->type('money');
+		$this->addField('custom_fields')->type('text');
 
 
 		$this->add('dynamic_model/Controller_AutoCreator');

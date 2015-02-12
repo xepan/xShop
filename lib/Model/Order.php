@@ -86,6 +86,7 @@ class Model_Order extends \Model_Table{
 				$order_details['qty']=$cart_items['qty'];
 				$order_details['rate']=$cart_items['sales_amount'];//get Item Rate????????????????
 				$order_details['amount']=$cart_items['total_amount'];
+				$order_details['custom_fields']=json_encode($cart_items['custom_fields']);
 				$total_amount+=$order_details['amount'];
 				$order_details->saveAndUnload();
 			}
