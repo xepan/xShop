@@ -14,4 +14,23 @@ class Model_ItemDepartmentAssociation extends \Sql_Model{
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
+
+
+	function duplicate($item_id){
+		if( $item_id < 0)
+			return false;
+
+		$asso_model = $this->add('xShop/Model_ItemDepartmentAssociation')->addCondition('item_id',$item_id);
+
+		foreach ($asso_model as $association) {
+			$m = $this->add('xShop/Model_ItemDepartmentAssociation');
+			$m['department_id'] = $association['department_id'];
+			$m['item_id'] = $association['item_id'];
+			$m['is_active'] = $association['is_active'];
+			$m->saveAndUnload();
+		}
+
+	}
+
+
 }

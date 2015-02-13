@@ -69,6 +69,10 @@ class Model_ItemTemplate extends Model_Item{
 		$docs = $this->add('xShop/Model_Attachments')->addCondition('item_id',$this->id);
 		$docs->duplicate($duplicate_template['id']);
 
+		//Deaprtment Association Duplicate
+		$department_ass_model = $this->add('xShop/Model_ItemDepartmentAssociation');
+		$department_ass_model->duplicate($this['id']);
+
 		return $duplicate_template;
 	}
 
