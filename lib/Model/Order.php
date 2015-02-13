@@ -19,14 +19,14 @@ class Model_Order extends \Model_Table{
 			// placed, partial-shipped, shipped, partial-dilivered, dilivered, partial-returned, returned, canceled, complete
 		// order payment status
 			// unpaid, paid, refunded
-		$f = $this->addField('order_status')->setValueList(
-				array(
-					'10' =>'order palced',
-					'20'=>'order placed with payament',
-					'30'=>'order placed with COD',
-					'40'=>'Order Shipping',
-					'50'=>'Order Shipped')
-			)->group('a~2');
+		$this->addField('order_from')->enum(array('online','offline'))->defaultValue('offline');
+		$f = $this->addField('status')
+									->enum(
+										array('draft','submitted',
+											  'approved','processing',
+											  'processed','shipping',
+											  'complete','cancel',
+											  'return'))->group('a~2');
 		$f = $this->addField('on_date')->type('date')->defaultValue(date('Y-m-d'))->group('a~2');
 		$f->icon ="fa fa-calendar~blue";
 
@@ -72,7 +72,8 @@ class Model_Order extends \Model_Table{
 
 		$cart_items=$this->add('xShop/Model_Cart');
 		$this['member_id'] = $member->id;
-		$this['order_status'] = "10";
+		$this['status'] = "submitted";
+		$this['order_from'] = "online";
 		// $this['billing_address'] = $billing_address;
 		// $this['shipping_address'] = $shipping_address;		
 		$this->save();
