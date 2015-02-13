@@ -17,6 +17,8 @@ class page_xShop_page_owner_main extends page_componentBase_page_owner_main {
 		$xshop_m->addItem(array('Order','icon'=>'gauge-1'),'xShop_page_owner_order');
 		$xshop_m->addItem(array('AddBlock','icon'=>'gauge-1'),'xShop_page_owner_addblock');
 		$xshop_m->addItem(array('Payment Gateway Config','icon'=>'gauge-1'),'xShop_page_owner_paygateconfig');
+		$xshop_m->addItem(array('Quotation','icon'=>'gauge-1'),'xShop_page_owner_quotation');
+		$xshop_m->addItem(array('Oppertunity','icon'=>'gauge-1'),'xShop_page_owner_oppertunity');
 
 		$this->api->addMethod('xshop_application_id',function($page){
 			return $page->api->memorize('xshop_application_id',$page->api->recall('xshop_application_id',$page->add('xShop/Model_Application')->tryLoadAny()->get('id')));

@@ -20,7 +20,7 @@ class Model_Cart extends \Model{
 		$this->addField('tax')->defaultValue(0);
 		$this->addField('total_amount')->defaultValue(0);
 
-		$this->addField('custom_fields');
+		$this->addField('custom_fields')->type('text');
 		
 	}
 

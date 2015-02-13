@@ -11,6 +11,7 @@ class Model_Item extends \Model_Table{
 		
 		$this->hasOne('xShop/Application','application_id');
 		$this->hasOne('xShop/MemberDetails','designer_id');
+		$this->hasOne('xShop/Quotation','quotation_id');
 
 		//for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
@@ -539,6 +540,10 @@ class Model_Item extends \Model_Table{
 		$options['custom_fields'] = $custom_filed_array;
 		return $options;
 	}
+
+	// function submit(){
+	// 	return "dsfsfdsdF";
+	// }
 
 }	
 
