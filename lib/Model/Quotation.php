@@ -13,7 +13,7 @@ class Model_Quotation extends \Model_Table{
 		$this->hasOne('xShop/TermsAndCondition','termsandcondition_id');
 
 		$this->addField('name');
-		$this->addField('status')->enum(array('approved','redesign','draft'))->defaultValue('draft');
+		$this->addField('status')->enum(array('draft','approved','redesign','submit'))->defaultValue('draft');
 
 		$this->hasMany('xShop/QuotationItem','quotation_id');
 
@@ -35,9 +35,7 @@ class Model_Quotation extends \Model_Table{
 	function approved(){
 		return "approved";
 	}
-	function submit(){
-		return "submit";
-	}
+
 	function sendMail(){
 		return "sendMail";
 	}
