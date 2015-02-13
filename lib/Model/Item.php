@@ -23,8 +23,8 @@ class Model_Item extends \Model_Table{
 		$this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~1')->sortable(true);
 		$this->addField('is_party_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 
-		$this->addField('original_price')->type('int')->mandatory(true)->group('c~6~Basic Price');
-		$this->addField('sale_price')->type('int')->mandatory(true)->group('c~6')->sortable(true);
+		$this->addField('original_price')->type('money')->mandatory(true)->group('c~6~Basic Price');
+		$this->addField('sale_price')->type('money')->mandatory(true)->group('c~6')->sortable(true);
 		$this->addField('short_description')->type('text')->group('c~12');
 		
 		$this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~4');
