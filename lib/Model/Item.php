@@ -108,6 +108,7 @@ class Model_Item extends \Model_Table{
 		$this->hasMany('xShop/ItemCustomFieldAssos','item_id');
 		$this->hasMany('xShop/ItemReview','item_id');
 		$this->hasMany('xShop/ItemMemberDesign','item_id');
+		$this->hasMany('xShop/ItemDepartmentAssociation','item_id');
 
 		$this->hasMany('xShop/QuantitySet','item_id');
 		$this->hasMany('xShop/CustomRate','item_id');
@@ -548,6 +549,15 @@ class Model_Item extends \Model_Table{
 	// function submit(){
 	// 	return "dsfsfdsdF";
 	// }
+
+	function getAssociatedDepartment(){
+		if(!$this->loaded())
+			throw new \Exception("Item Model Must be Loaded",'Department Association');
+			
+		$associated_department = $this->ref('xShop/ItemDepartmentAssociation')->addCondition('is_active',true)->_dsql()->del('fields')->field('department_id')->getAll();
+		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_department)),false);
+	}
+
 
 }	
 
