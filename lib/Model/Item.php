@@ -322,6 +322,10 @@ class Model_Item extends \Model_Table{
 		// return $associate_customfields;
 	}
 
+	function customFields(){
+		return $this->add('xShop/Model_CustomFields')->addCondition('id',$this->getAssociatedCustomFields());
+	}
+
 	function getAssociatedAffiliate(){
 		$associated_affiliate = $this->ref('xShop/ItemAffiliateAssociation')->addCondition('is_active',true)->_dsql()->del('fields')->field('affiliate_id')->getAll();
 		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_affiliate)),false);
