@@ -21,7 +21,19 @@ class Model_OrderDetails extends \Model_Table{
 
 		$this->hasMany('xShop/OrderItemDepartmentalStatus','orderitem_id');
 
+		$this->addHook('afterInsert',$this);
+
 		$this->add('dynamic_model/Controller_AutoCreator');
+	}
+
+	function afterInsert($obj,$new_id){
+		$new_order_details = $this->add('xShop/Model_OrderDetails')->load($new_id);
+		if($new_order_details->order()->isFromOnline()){
+			$item_departments = $new_order_details->item()->associatedDepartments();
+			foreach($item_departments as $dept){
+				$new_order_details->addToDepartment($dept);
+			}
+		}
 	}
 
 	function departmentStatus($department){
@@ -45,6 +57,10 @@ class Model_OrderDetails extends \Model_Table{
 
 	function item(){
 		return $this->ref('item_id');
+	}
+
+	function order(){
+		return $this->ref('order_id');
 	}
 
 }

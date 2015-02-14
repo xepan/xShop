@@ -171,4 +171,8 @@ class Model_Order extends \Model_Table{
 		}
 	}
 
+	function isFromOnline(){
+		return $this['order_from']=='online';
+	}
+
 }
