@@ -11,6 +11,6 @@ class page_xShop_page_owner_quotation_approve extends page_xShop_page_owner_main
 									));
 		$crud->setModel('xShop/Quotation_Approve');
 		$crud->addAction('creatOrder',array('toolbar'=>false));
-		$crud->addAction('approved',array('toolbar'=>false));
+		// $crud->addAction('approved',array('toolbar'=>false));
 	}
 }
