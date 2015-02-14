@@ -21,7 +21,7 @@ Layout_Tool = function(parent){
 			//hide page button view
 			$('.xshop-designer-pagelayout').hide();
 			//add new Layout of current selected page
-			layout_btn = $('<div class="xshop-designer-layoutbtn clearfix"><h3>'+index+'</h3></div>').appendTo($.find('.xshop-designer-layout')).data('layout',index);
+			layout_btn = $('<div class="xshop-designer-layoutbtn clearfix"><h3>'+index+'</h3><i class="glyphicon glyphicon-ok btn btn-small-xs" > Print</i></div>').appendTo($.find('.xshop-designer-layout')).data('layout',index);
 				layout_btn.click(function(){
 					self.designer_tool.current_page = page_name;
 					self.designer_tool.current_layout = $(this).data('layout');
@@ -30,6 +30,20 @@ Layout_Tool = function(parent){
 					self.page_tool.updateBreadcrumb(self.page_tool.parent);
 					$(this).addClass('ui-selected');
 				});
+
+				layout_btn.find('i').click(function(){
+					// mark self as selected layout in designer
+					self.designer_tool.layout_finalized[page_name] = index;
+					// make all gray
+					$('.xshop-designer-layout').find('i').removeClass('btn-success');
+					// make self green
+					$(this).addClass('btn-success');
+				});
+
+			if(index == self.designer_tool.layout_finalized[page_name]){
+				layout_btn.find('i').addClass('btn-success');
+			}
+
 			if(index == self.designer_tool.current_layout) {
 				$(layout_btn).addClass('ui-selected');
 			}else{
@@ -58,7 +72,7 @@ PageLayout_Component = function (params){
 	this.updateBreadcrumb = function(parent){
 		$('.xshop-designer-show-page').remove();
 		this.breadcrumb = $('<ol class="xshop-designer-show-page breadcrumb"></ol>').prependTo(parent);
-		this.home_breadcrumb = $('<li><a href="#">Home</a></li>').appendTo(this.breadcrumb);
+		this.home_breadcrumb = $('<li><a href="#home">Home</a></li>').appendTo(this.breadcrumb);
 		this.home_breadcrumb.click(function(){
 			$('.xshop-designer-pagelayout').show();
 			$('.xshop-designer-layout').hide();

@@ -36,16 +36,17 @@ Save_Component = function (params){
 				});	
 			});
 			
-			console.log(self.layout_array);
+			// console.log(self.layout_array);
 			$.ajax({
 					url: 'index.php?page=xShop_page_designer_save',
 					type: 'POST',
 					datatype: "json",
-					data: {xshop_item_design:JSON.stringify(self.layout_array),//json object
+					data: { xshop_item_design:JSON.stringify(self.layout_array),//json object
 							item_id:self.designer_tool.options.item_id,//designed item id
 							designer_mode:self.designer_tool.options.designer_mode,
 							item_member_design_id:self.designer_tool.options.item_member_design_id,
-							px_width : self.designer_tool.px_width
+							px_width : self.designer_tool.px_width,
+							selected_layouts_for_print : JSON.stringify(self.designer_tool.layout_finalized)
 						},
 				})
 				.done(function(ret) {
@@ -58,6 +59,10 @@ Save_Component = function (params){
 					}else{
 						if(!isNaN(+ret)){
 							self.designer_tool.options.item_member_design_id = ret;
+							if(self.designer_tool.cart != undefined || self.designer_tool.cart != '0'){
+								self.designer_tool.cart.xepan_xshop_addtocart('option','item_member_design_id',ret);
+								// console.log(self.designer_tool.cart.options);
+							}
 							// window.history.pushState('page', 'saved_page', 'replace url');
 							$.univ().successMessage('Saved Successfully');
 						}else{

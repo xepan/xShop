@@ -2,8 +2,8 @@
 
 namespace xShop;
 
-class Model_CategoryItemCustomFields extends \Model_Table{
-	public $table="xshop_category_item_customfields";
+class Model_ItemCustomFieldAssos extends \Model_Table{
+	public $table="xshop_item_customfields_assos";
 
 	function init(){
 		parent::init();
@@ -12,17 +12,15 @@ class Model_CategoryItemCustomFields extends \Model_Table{
 		$this->addCondition('epan_id',$this->api->current_website->id);
 
 		$this->hasOne('xShop/CustomFields','customfield_id');
-		$this->hasOne('xShop/Category','category_id');
 		$this->hasOne('xShop/Item','item_id');
 
-		// $this->addField('rate_effect');
 		$this->addField('created_at')->type('datetime')->defaultValue(date('Y-m-d H:i:s'));
 		$this->addField('is_active')->type('boolean')->defaultValue(true)->sortable(true);
 
 		$this->hasMany('xShop/CustomFieldValue','itemcustomfiledasso_id');
 
 		$this->addExpression('name')->set(function($m,$q){
-			return $m->refSQL('customfield_id')->fieldQuery('name');
+			return $m->refSQL('customfield_id')->fieldQuery('name');			
 		});
 
 		$this->addHook('beforeSave',$this);
@@ -31,7 +29,7 @@ class Model_CategoryItemCustomFields extends \Model_Table{
 	}
 
 	function beforeSave(){
-		$old_model = $this->add('xShop/Model_CategoryItemCustomFields');
+		$old_model = $this->add('xShop/Model_ItemCustomFieldAssos');
 		
 		$old_model->addCondition('item_id',$this['item_id'])
 				->addCondition('customfield_id',$this['customfield_id'])
@@ -43,7 +41,7 @@ class Model_CategoryItemCustomFields extends \Model_Table{
 	}
 
 	function duplicate($new_item_id){
-		$new_asso = $this->add('xShop/Model_CategoryItemCustomFields');
+		$new_asso = $this->add('xShop/Model_ItemCustomFieldAssos');
 		$new_asso['customfield_id'] = $this['customfield_id'];
 		$new_asso['item_id'] = $new_item_id;
 		$new_asso['is_active'] = $this['is_active'];

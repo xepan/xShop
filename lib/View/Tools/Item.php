@@ -34,9 +34,14 @@ class View_Tools_Item extends \componentBase\View_ServerSideComponent{
 		// item Model according to application
 		$item_join=$item_model->leftJoin('xshop_category_item.item_id','id');
 		$item_join->addField('category_id');
+		$item_join->addField('is_associate');
 		//Category Wise item Loading
 		if($_GET['xsnb_category_id']){
-			$item_model->addCondition('category_id',$_GET['xsnb_category_id']);
+			// if Category Parent ho to iske child me show karo
+			$cats = $this->add('xShop/Model_Category')->load($_GET['xsnb_category_id']);
+			$cats_arry = $cats->getSubCategory();
+			$item_model->addCondition('category_id','in',$cats_arry);
+			$item_model->addCondition('is_associate',true);
 		}
 		//-------------------------------------
 		

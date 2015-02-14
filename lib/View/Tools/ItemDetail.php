@@ -4,183 +4,248 @@ namespace xShop;
 
 class View_Tools_ItemDetail extends \componentBase\View_Component{
 	public $html_attributes=array(); // ONLY Available in server side components
+	
 	function init(){
 		parent::init();
-		// $_GET['xsnb_item_id'];
-		// echo $_GET['xsnb_item_id'];
-		// exit;
-
-		$this->js(true)->_load('jquery-elevatezoom');
+		
+		$this->addClass('xshop-item');
+		// $this->js(true)->_load('jquery-elevatezoom');
 		$this->api->stickyGET('xsnb_item_id');
 		$config_model=$this->add('xShop/Model_Configuration');
-		$item=$this->add('xShop/Model_Item');
-		// $manu_join = $item->leftJoin('xshop_affiliate','affiliate_id');	
-		// $manu_join->addField('manufacturer_name','name');
-		// $manu_join->addField('manufacturer_office_address','office_address');
-		// $manu_join->addField('manufacturer_email_id','email_id');
-		// $manu_join->addField('manufacturer_mobile_no','mobile_no');
-		// $manu_join->addField('manufacturer_logo_url','logo_url');
-		// $manu_join->addField('manufacturer_city','city');
-		// $manu_join->addField('manufacturer_state','state');
-		// $manu_join->addField('manufacturer_country','country');
-		// $manu_join->addField('manufacturer_zip_code','zip_code');
-		// $manu_join->addField('manufacturer_phone_no','phone_no');
-		// $manu_join->addField('manufacturer_description','description');
-
-		// $supp_join = $item->leftJoin('xshop_affiliate','affiliate_id');		
-		// $s_name=$supp_join->addField('supplier_name','name');
-		// $supp_join->addField('supplier_email_id','email_id');
-		// $supp_join->addField('supplier_office_address','office_address');
-		// $supp_join->addField('supplier_phone_no','phone_no');
-		// $supp_join->addField('supplier_mobile_no','mobile_no');
-		// $supp_join->addField('supplier_address','address');
-		// $supp_join->addField('supplier_zip_code','zip_code');
-		// $supp_join->addField('supplier_city','city');
-		// $supp_join->addField('supplier_state','state');
-		// $supp_join->addField('supplier_country','country');
-		// $supp_join->addField('supplier_description','description')->allowHtml(true);
-
-		if($item['show_attachment']){
-			$attachment_model=$this->add('xShop/Model_Attachments');
-			$attachment_model->addCondition('item_id',$_GET['xsnb_item_id']);
-			$attachment_model->tryLoadAny();
-			$this->template->set('attachment_url',$attachment_model['attachment_url']);
-			$this->template->set('attachment_name',$attachment_model['name']);
-		}else
-			$this->template->tryDel('xshop_item_attachment');	
-		// throw new \Exception("Error Processing Request".$attachment_model['attachment_url']);
-		
-		// $this->setModel($item_attachment_model);
-		
-		//Live Edit of item Detail (server site live edit )
-		if( $this->api->edit_mode == true ){		
-				$this->js(true)->_load('xshopContentUpdate');
-		}else{ 
-			$this->template->tryDel('xshop_item_detail_live_edit_start');
-			$this->template->tryDel('xshop_item_detail_live_edit_end');
-		}
-		 //end  
-
-		//PANEL OPTIONS
-			$this->template->trySetHTML('xshop_item_detail_panel_label',$this->html_attributes['xshop_item_detail_panel_label']);
-			if(!$this->html_attributes['xshop_item_detail_panel']){
-				$this->template->tryDel('xshop_item_detail_panel_start');
-				$this->template->tryDel('xshop_item_detail_panel_end');
-			}
-
-		//END OF PANEL OPTIONS
-		if($_GET['xsnb_item_id']){
-			$item->load($_GET['xsnb_item_id']);		
-		}else{
-			return;
-		}
-
-		$this->add('View',null,'description123')->setHtml($item['description']);
-		//adding tag to item detail options
-		$this->template->Set('xshop_item_tags',str_replace(',', " ", $item['tags']));	
-		
-		$details = $this->add('xShop/View_Lister_CustomFields',null,'item_custom_fields');
-		$custom_field_model=$this->add('xShop/Model_CategoryItemCustomFields');
-		$custom_field_model->addCondition('item_id',$_GET['xsnb_item_id']);
-		$details->setModel($custom_field_model);
-							
-		// do adding multiple images of a single item
-		// $images = $this->add('xShop/View_Lister_itemImages',null,'item_images');			
-		// $images->setModel($this->add('xShop/Model_ItemImages')->addCondition('item_id',$_GET['xsnb_item_id']));	
-		
-		$this->setModel($item);
-
-		$this->api->template->trySet('page_title',$item['name']);
-
-		// if(!$item['allow_enquiry'])
-		// 	$this->template->tryDel('xshop_item_enquiry');	
-
-		// if(!$item['show_supplier_detail'])
-		// 	$this->template->tryDel('xshop_item_supplier');
-		// $this->template->trySet('supplier_caption',$this->html_attributes['xshop_pd_supplier_caption']?:'Supplier');
-
-		if(!$item['show_price']){
-			// throw new \Exception("Error Processing Request", 1);
-			$this->template->tryDel('xshop_itemdetail_price');
-		}
-
-		// if(!$item['show_manufacturer_detail'])
-		// 	$this->template->tryDel('xshop_item_manufacturer');
-		// $this->template->trySet('manufacturer_caption',$this->html_attributes['xshop_pd_manufacturer_caption']?:'Manufacturer');
-		
-		if($this->html_attributes['xshop_item_detail_images']==1){
-			$this->template->tryDel('xshop_item_detail_images');	
-		}
-
-		if($item['allow_comments']){	
-			$config_model->tryLoadAny();
-			if($item['comment_api']){
-				if($config_model['disqus_code'])
-					$this->template->trySetHTML('xshop_item_discus',$config_model['disqus_code']);
-				else
-					$this->template->trySetHTML('xshop_item_discus',"<div class='alert alert-info'>Place Your Discus Code...in Configuration</div>");			
-			} 
-		}
-
-		if($item['allow_saleable']){
-			$this->template->trySetHTML('aj',str_replace('"', "'", $this->js(null, $this->js()->_selector('body')->attr('xshop_add_item_id',$this->model->id))->_selector(' .xshop-cart ')->trigger('reload')->_render()));			
-		}else{
-			$this->current_row_html['aj']='';
-			$this->template->tryDel('xshop_item_cart_btn');	
-		}	
-		
-		$this->template->trySetHTML('supplier_description_copy',$this->model['supplier_description']);
-		$this->template->trySetHTML('manufacturer_description_copy',$this->model['manufacturer_description']);
-
-		$this->add('View',null,'send_button')->set('Send Enquiry')->addClass('btn btn-default');
-		
-		//add custom btn in item detail
 		$config_model->tryLoadAny();
+		$item=$this->add('xShop/Model_Item');
+		if(!$_GET['xsnb_item_id'])
+			return;
+
+		$item->load($_GET['xsnb_item_id']);		
+		$this->setModel($item);
+	
+	//======================Name===================
+		
+		if($this->html_attributes['show-item-name']){
+			$str = '<h1 class="xshop-item-detail-name">'.$item['name'].'</h1>';
+			$this->template->trySetHtml('item_name' ,$str);
+		}
+
+	//======================Sku==================
+		if($this->html_attributes['show-item-code']){
+			$str = '<div class="col-md-6 col-sm-6 xshop-item-detail-code">'.$item['sku'].'</div>';
+			$this->template->trySetHtml('item_sku' ,$str);
+		}else
+			$this->template->tryDel('item_sku');
+	//======================Reviews==============================		
+		if($this->html_attributes['show-item-review']){
+			$str = '<div class="col-md-6 col-sm-6 xshop-item-detail-review"></div>';
+			$this->template->trySetHtml('review' ,$str);
+		}else
+			$this->template->tryDel('review');
+	//======================Date======================
+		if($this->html_attributes['show-item-date']){
+			$str = '<span class="pull-right xshop-item-detail-date">'.$item['created_at'].'</span>';
+			$this->template->trySetHtml('date',$str);		
+		}
+
+	//======================Images=====================
+		$col_width = "col-md-12 col-sm-12 col-lg-12";
+		if($this->html_attributes['show-image']){
+			$col_width = "col-md-8 col-sm-8 col-lg-8";
+			$str = '<div class="col-md-4 xshop-item-detail-images">';
+			$images = $this->add('xShop/View_Tools_ItemImages')->getHTML();
+			$images = $str.$images.'</div>';
+			$this->template->trySetHTML('item_images',$images);
+		}else{
+			$this->template->tryDel('item_images');
+		}
+
+		$this->template->trySetHtml('item-detail-width',$col_width);
+
+	//=======================Detail HEADING=================================	
+		if($this->html_attributes['show-heading']){
+			$str = '<div class="text-center"> <h1 class="page page-header">'.$item['name'].'</h1></div>';
+			$this->template->trySetHtml('item_detail_heading',$str);
+		}
+		
+	//======================== ITEM SHORT DESCRIPTIONS ===================
+		if($this->html_attributes['show-item-short-description'])
+			$this->template->trySet('item_offer_supplier_shipping_info',$item['short_description']);
+
+	//=======================Item Price===================================	
+		if( $item['show_price'] and $this->html_attributes['show-item-price']){
+			$str = '<div class="xshop-item-old-price" onclick="javascript:void(0)">&#8377. '.$item['original_price'].'</div>';
+			$str.= '<div class="xshop-item-price" onclick="javascript:void(0)">&#8377. '.$item['sale_price'].'</div>';
+			$this->template->trySetHtml('xshop_item_detail_price',$str);
+		}
+	//===========================Tags ===========================================
+		if( $this->html_attributes['show-item-tags'] and $item['tags']){
+			$label = "Tags";
+			if(trim($this->html_attributes['item-tag-label']) !="")
+				$label = $this->html_attributes['item-tag-label'];
+			$str = '<div class="xshop-item-detail-title xshop-item-tags-label">'.$label.'</div>';
+			$str.= '<div class="xshop-item-detail-tags">'.str_replace(',', " ", $item['tags']).'</div>';
+			$this->template->trySetHtml('xshop_item_tags',$str);
+		}
+		
+	//===========================COMMENTS API ===========================
+		if($item['allow_comments'] and $this->html_attributes['show-item-comment']){
+			if($item['comment_api'] and $config_model['disqus_code'])
+				$this->template->trySetHTML('xshop_item_discus',$config_model['disqus_code']);
+			else 
+				$this->template->trySetHTML('xshop_item_discus',"<div class='alert alert-warning'>Place Your Discus Code and Select Comment Api in Item or Configuration</div>");
+		}	
+
+	//======================== CUSTOM BUTTON ==========================
 		if($config_model['add_custom_button']){
 			if($this->model['add_custom_button']){
-				$this->add('View',null,'xshop_item_custom_btn')->set($this->model['custom_button_text'])->addClass('btn btn-default');
-				$this->template->trySetHTML('xshop_item_custom_btn_url',$this->model['custom_button_url']);
+				$btn_label = $this->model['custom_button_label']?:$config_model['custom_button_text'];
+				$btn_link  = $this->model['custom_button_url']?:$config_model['custom_button_url'];
+				$str='<a class="btn btn-default xshop-item-detail-custom-link" href="'.$btn_link.'">'.$btn_label.'</a>';
+				$this->template->trySetHTML('xshop_item_custom_btn',$str);
 			}else{
-				$this->add('View',null,'xshop_item_custom_btn')->set($config_model['custom_button_text'])->addClass('btn btn-default');
-				$this->template->trySetHTML('xshop_item_custom_btn_url',$config_model['custom_button_url']);
-			}		
+				$this->template->tryDel('xshop_item_custom_btn');
+			}
+			
 		}
 		//end of custom btn in item detail		
 
-		$enquiry_form=$this->add('Form',null,'xshop_item_enquiry_form');
-		$enquiry_form->addField('line','name');
-		$enquiry_form->addField('line','contact_no');
-		$enquiry_form->addField('line','email_id');
-		$enquiry_form->addField('text','message');
-		$enquiry_form->addSubmit('Send');
-		if($enquiry_form->Submitted()){	
-			$item_enq_model=$this->add('xShop/Model_itemEnquiry');
-			$epan=$this->add('Model_Epan');
-			$epan->tryLoadAny();
-			// throw new \Exception("Error Processing Request".$item[]);
-			$item_enq_model->createNew($enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$item['id'],$item['sku'],$item['name']);
-				
-			if($item['enquiry_send_to_self']){
-				$item->sendEnquiryMail($epan['email_id'],$enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$enquiry_form,$item['name'],$item['SKU']);
-			}
-				
-			if($item['enquiry_send_to_supplier']){
-				// $item_enq_model->createNew($enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$item['id'],$item['sku'],$item['name']);				
-				$item->sendEnquiryMail($item['supplier_email_id'],$enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$enquiry_form,$item['name'],$item['sku']);
+		//AddToCart
+		//if Item Designable
+			if($this->model['is_designable']){
+				// add Personalioze View
+				$this->add('Button',null,'xshop_item_cart_btn')->set('Personalize')->js('click',$this->js()->univ()->location("index.php?subpage=".$this->html_attributes['personalization-page']."&xsnb_design_item_id=".$this->model->id));
+			}else{
+				//add AddToCart View
+				if($this->html_attributes['show-cart-section'])
+					$this->add('xShop/View_Item_AddToCart',array('name'=>'cust_'.$this->model->id,'item_model'=>$this->model,'show_custom_fields'=>1,'show_price'=>$this->model['show_price'], 'show_qty_selection'=>1),'xshop_item_cart_btn');
 			}
 
-			if($item['enquiry_send_to_manufacturer']){
-				// $item_enq_model->createNew($enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$item['id'],$item['sku'],$item['name']);
-				$item->sendEnquiryMail($item['manufacturer_email_id'],$enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$enquiry_form,$item['name'],$item['SKU']);
-				// throw new \Exception($item['manufacturer_email_id']);
-			}	
-			
-			if($item['item_enquiry_auto_reply']){
-				$item->sendEnquiryMail($enquiry_form['email_id'],null,null,null,null,null,$item['name'],$item['sku'],'1');
-			}
+	//=====================ITEM AFFILIATES===============================
+		if($this->html_attributes['show-item-affiliate']){
+			$item_aff_ass = $this->add('xShop/Model_ItemAffiliateAssociation')->addCondition('item_id',$item->id);
+			$label = "Affiliate's";
+			if(trim($this->html_attributes['item-affiliate-label']) != "")
+				$label = $this->html_attributes['item-affiliate-label'];
+			$str = '<div class="xshop-item-detail-title xshop-item-affiliate-label">'.$label.'</div>';
 
-			$enquiry_form->js(true,$enquiry_form->js()->reload())->univ()->successMessage('Enquiry Form Send Success fully')->execute();
+			$str .='<div class="xshop-item-affiliate-block">';
+			foreach ($item_aff_ass as $junk) {
+				$aff = $this->add('xShop/Model_Affiliate')->tryload($item_aff_ass['affiliate_id']);
+				$str .= '<div class="xshop-item-affiliate">'.$aff['affiliatetype']." :: ".$aff['company_name']."</div>";
+				$aff->unLoad();
+			}
+			$str .="</div>";
+			$this->template->SetHTML('xshop_item_affiliates',$str);
 		}
+
+	// =================Item Detail and specification and Attachments===================
+		$detail_label = trim($this->html_attributes['item-detail-label'])?:'Description';
+		$detail_header = "";
+		if($this->html_attributes['show-item-detail-in-tabs']){
+			$tabs = $this->add('Tabs',null,'xshop_item_detail_information');
+			$detail_tab = $tabs->addTab($detail_label);
+		}else{
+			$detail_tab = $this;
+			$detail_header = '<div class="xshop-item-detail-title xshop-item-detail-label">'.$detail_label.'</div>';
+		}
+		
+		$item_description = $item['description'];
+		//Live Edit of item Detail (server site live edit )
+		if( $this->api->edit_mode == true ){
+			$this->js(true)->_load('xshopContentUpdate');
+			$str = '<div class="epan-container epan-sortable-component epan-component  ui-sortable component-outline epan-sortable-extra-padding ui-selected xshop-item-detail-content-live-edit" component_type="Container" id="xshop_item_detail_content_live_edit_"'.$item['id'].'>';
+			$str.= $item_description;
+			$str.="</div>";
+			
+			// $btn Todoooooooooooooooo???????????????/	
+			$btn = 'onclick="javascript:$(this).univ().producDetailUpdate(';
+			$btn.= '\'xshop_item_detail_content_live_edit_'.$item['id'].'\' , \''.$item['id'].'\' , \''.$item['sku'].'\')"';
+			$str.='<div id="xshop_item_detail_live_edit_update" class="btn btn-danger pull-right btn-block" '.$btn.'>Update</div>';
+			$item_description = $str;
+		}
+		//Detail tabs
+		$detail_tab->add('View')->setHtml($detail_header.$item_description);
+			
+		//Specification
+		$specification_label = trim($this->html_attributes['item-specification-label'])?:'Specification';
+		if($this->html_attributes['show-item-specification']){
+			$specification_tab = $this;
+			if($this->html_attributes['show-item-detail-in-tabs']){
+				$specification_tab = $tabs->addTab($specification_label);
+			}else{
+				$this->add('View')->setHtml('<div class="xshop-item-detail-title xshop-item-specification-label">'.$specification_label.'</div>');
+			}
+
+			$specification = $this->add('xShop/Model_ItemSpecificationAssociation')->addCondition('item_id',$item->id);
+			$specification_tab->add('Grid')->setModel($specification,array('specification','value'));	
+		}
+
+		//Attachments
+		$attachment_label = trim($this->html_attributes['item-attachment-label'])?:'Attachments';
+		$attachment_header = "";
+		if($item['is_attachment_allow'] and $this->html_attributes['show-item-attachment']){
+			$attachment_tab = $this;
+			if($this->html_attributes['show-item-detail-in-tabs']){
+				$attachment_tab = $tabs->addTab($attachment_label);
+			}else{
+				$attachment_header = '<div class="xshop-item-detail-title xshop-item-attachment-label">'.$attachment_label.'</div>';
+			}
+
+			$attachment_model=$this->add('xShop/Model_Attachments');
+			$attachment_model->addCondition('item_id',$item->id);
+			$html = "";
+			foreach ($attachment_model as $junk) {
+				$html .= '<div class="xshop-item-attachment-link"> <a target="_blank" href="'.$attachment_model['attachment_url'];
+				$html.= '"</a>'.$attachment_model['name'].'</div>';
+			}
+			$attachment_tab->add('View')->setHtml($attachment_header.$html)->addClass('xshop-item-attachment');
+		}
+
+
+
+	//==================Enquiry Form================================
+		if($this->html_attributes['show-item-enquiry-form']){
+			$label = "Enquiry Form";
+			if(trim($this->html_attributes['item-enquiry-form-label']) != "")
+				$label = trim($this->html_attributes['item-enquiry-form-label']);
+			
+			$str = '<div class="xshop-item-detail-title xshop-item-enqyiry-form-label">'.$label.'</div>';
+			$this->template->trySetHtml('xshop_item_enquiry_label',$str);
+
+			$enquiry_form=$this->add('Form',null,'xshop_item_enquiry');
+			$enquiry_form->addField('line','name');
+			$enquiry_form->addField('line','contact_no');
+			$enquiry_form->addField('line','email_id');
+			$enquiry_form->addField('text','message');
+			$enquiry_form->addSubmit('Send');
+			if($enquiry_form->Submitted()){	
+				$item_enq_model=$this->add('xShop/Model_itemEnquiry');
+				$epan=$this->add('Model_Epan');
+				$epan->tryLoadAny();
+				// throw new \Exception("Error Processing Request".$item[]);
+				$item_enq_model->createNew($enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$item['id'],$item['sku'],$item['name']);
+					
+				if($item['enquiry_send_to_self']){
+					$item->sendEnquiryMail($epan['email_id'],$enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$enquiry_form,$item['name'],$item['SKU']);
+				}
+					
+				if($item['enquiry_send_to_supplier']){
+					// $item_enq_model->createNew($enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$item['id'],$item['sku'],$item['name']);				
+					$item->sendEnquiryMail($item['supplier_email_id'],$enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$enquiry_form,$item['name'],$item['sku']);
+				}
+
+				if($item['enquiry_send_to_manufacturer']){
+					// $item_enq_model->createNew($enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$item['id'],$item['sku'],$item['name']);
+					$item->sendEnquiryMail($item['manufacturer_email_id'],$enquiry_form['name'],$enquiry_form['contact_no'],$enquiry_form['email_id'],$enquiry_form['message'],$enquiry_form,$item['name'],$item['SKU']);
+					// throw new \Exception($item['manufacturer_email_id']);
+				}	
+				
+				if($item['item_enquiry_auto_reply']){
+					$item->sendEnquiryMail($enquiry_form['email_id'],null,null,null,null,null,$item['name'],$item['sku'],'1');
+				}
+
+				$enquiry_form->js(true,$enquiry_form->js()->reload())->univ()->successMessage('Enquiry Form Send Success fully')->execute();
+			}
+		}
+
 	}
 
 	function defaultTemplate(){

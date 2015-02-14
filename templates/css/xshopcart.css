@@ -1,133 +1,179 @@
 /*xCart Detail CSS*/
 
 .xshop-cart-detail-container{
-
+  margin:0 auto 0 auto;
+}
+.xshop-cart-button-div{
+  margin:0 auto 0 auto;
+  padding-bottom:5px;
+  box-shadow: 1px 1px 1px #ccc;
 }
 
 .xshop-cart-item-sn{
-
+  display: none;
 }
 
 .xshop-cart-item-image{
 
+}
+.xshop-cart-detail-container{
+  /*height: 200px;
+  overflow-y: scroll;*/
+}
 
+.xshop-cart-item-code-label{
+  color:black;
+  font-weight: 700;
+  margin:0 2px 0 2px;
+  text-transform: uppercase;
+  color: green;
+}
+
+.xshop-cart-item-code{
+  
 }
 
 .xshop-cart-item-name{
-    background: none repeat scroll 0 0 #fcfcfc;
-    border-left: 1px solid #f5f5f5;
-    border-right: 1px solid #f7f7f7;
+  background: none repeat scroll 0 0 #fcfcfc;
+  border-left: 1px solid #f5f5f5;
+  border-right: 1px solid #f7f7f7;
+}
+.xshop-cart-item-custom-fields{
+  color:gray;
+  margin-top: 2px;
+  font-size: 10px; 
+}
+.xshop-cart-item-qty{
+  background: none repeat scroll 0 0 #f9f9f9;
+  border-left: 1px solid #f6f6f6;
+  border-right: 1px solid #f6f6f6;
+  padding-left: 5px;
+  padding-right: 5px;
+  color:black;
+  font-weight: 700 !important;
+
 }
 
-.xshop-cart-item-qty{
-    background: none repeat scroll 0 0 #f9f9f9;
-    border-left: 1px solid #f6f6f6;
-    border-right: 1px solid #f6f6f6;
-    padding-left: 5px;
-    padding-right: 5px;
-    color:black;
-    font-weight: 700 !important;
+.xshop-cart-item-qty .atk-form-row-number > .atk-form-field{
+  width:60px !important;
+}
+
+input{
+  width: 100% !important;
+}
+
+.xshop-cart-item-qty .atk-form-row-line  > .atk-form-field{
+  width:110px !important;
+}
+
+.xshop-cart-qty-update-btn{
 
 }
 
 .xshop-cart-item-delivery{
-    background: none repeat scroll 0 0 #fcfcfc;
-    border-left: 1px solid #f7f7f7;
-    border-right: 1px solid #f5f5f5;
-    color:black;
-    text-align: right;
+  background: none repeat scroll 0 0 #fcfcfc;
+  border-left: 1px solid #f7f7f7;
+  border-right: 1px solid #f5f5f5;
+  color:black;
+  text-align: right;
 }
 
 .xshop-cart-item-subtotal{
-    background: none repeat scroll 0 0 #f9f9f9;
-    border-left: 1px solid #f6f6f6;
-    border-right: 1px solid #f6f6f6;
-    padding-left: 5px;
-    padding-right: 5px;
-    color:black;
-    font-weight: 700 !important;
-    text-align: right;
-
+  background: none repeat scroll 0 0 #f9f9f9;
+  border-left: 1px solid #f6f6f6;
+  border-right: 1px solid #f6f6f6;
+  padding-left: 5px;
+  padding-right: 5px;
+  color:black;
+  font-weight: 700 !important;
+  text-align: right;
 }
 
 .xshop-cart-item-remove{
     text-align: right;
-
 }
 
 .xshop-cart-item-remove-btn{
 
-
+}
+.xshop-cart-item-remove-btn:hover{
+  background: red;
+  color: white;
+  font-weight: 700;
+  -webkit-transition: background 300ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
+  -moz-transition: background 300ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
+  -o-transition: background 300ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
+  transition: background 300ms cubic-bezier(0.42, 0, 0.58, 1) 10ms;
 }
 
 .xshop-cart-item-row{
-    height: auto;
+  height: auto;
 }
 
 .xshop-cart-detail-estimate-container{
-    clear: both;
-    background: none repeat scroll 0 0 #f9f9f9;
-    border-bottom: 1px solid #f2f2f2;
-    color: #333;
-    box-shadow: 0 -5px 8px -6px #888;
-    min-height: 50px;
-    height: auto;
-    max-height: auto;
-    margin: 20px 0 0 0;
-    border-top: 3px solid green; 
+  clear: both;
+  background: none repeat scroll 0 0 #f9f9f9;
+  border-bottom: 1px solid #f2f2f2;
+  color: #333;
+  box-shadow: 0 -5px 8px -6px #888;
+  min-height: 50px;
+  height: auto;
+  max-height: auto;
+  margin: 20px 0 0 0;
+  border-top: 3px solid green; 
 }
 
 .xshop-cart-total-saving-amount,.xshop-cart-total-amount{
-    float: left;
-    text-align: right;
-    font-weight: bold;
+  float: left;
+  text-align: right;
+  font-weight: bold;
 }
 .xshop-cart-total-saving-amount{
-    width:40%;
-    padding: 15px; 
+  width:40%;
+  padding: 15px; 
 }
 .xshop-cart-total-amount{
-    width:60%;
-    padding: 10px;
-    font-size:1.3em; 
+  width:60%;
+  padding: 10px;
+  font-size:1.3em; 
 }
 
 .xshop-cart-proceed{
-    clear:both;
-    min-height:40px; 
+  clear:both;
+  min-height:40px; 
 }
 .xshop-cart-proceed-btn{
-    float: right;
-    position: relative;
-    display: inline-block;
-    -webkit-box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    box-sizing: content-box;
-    height: 30px;
-    cursor: pointer;
-    padding: 0 25.600000381469727px;
-    border: 1px solid rgba(152,0,0,1);
-    -webkit-border-radius: 3px;
-    border-radius: 3px;
-    font: normal normal 300 22px/30px "Iceland", Helvetica, sans-serif;
-    color: rgba(255,255,255,1);
-    -o-text-overflow: clip;
-    text-overflow: clip;
-    background: -webkit-linear-gradient(0deg, rgba(255,0,0,0.8) 0, rgba(255,0,0,0.8) 100%), rgba(0,0,0,1);
-    background: -moz-linear-gradient(90deg, rgba(255,0,0,0.8) 0, rgba(255,0,0,0.8) 100%), rgba(0,0,0,1);
-    background: linear-gradient(90deg, rgba(255,0,0,0.8) 0, rgba(255,0,0,0.8) 100%), rgba(0,0,0,1);
-    -webkit-background-origin: padding-box;
-    background-origin: padding-box;
-    -webkit-background-clip: border-box;
-    background-clip: border-box;
-    -webkit-background-size: auto auto;
-    background-size: auto auto;
-    -webkit-box-shadow: 0 1px 0 0 rgba(255,255,255,0.298039) inset, 0 -1px 1px 0 rgba(255,255,255,0.14902) inset, 0 7px 0 0 rgba(137,30,30,1) , 0 8px 3px 0 rgba(0,0,0,0.2) ;
-    box-shadow: 0 1px 0 0 rgba(255,255,255,0.298039) inset, 0 -1px 1px 0 rgba(255,255,255,0.14902) inset, 0 7px 0 0 rgba(137,30,30,1) , 0 8px 3px 0 rgba(0,0,0,0.2) ;
-    -webkit-transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
-    -moz-transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
-    -o-transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
-    transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
+  float: right;
+  position: relative;
+  display: inline-block;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 30px;
+  cursor: pointer;
+  padding: 0 25.600000381469727px;
+  border: 1px solid rgba(152,0,0,1);
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  font: normal normal 300 22px/30px "Iceland", Helvetica, sans-serif;
+  color: rgba(255,255,255,1);
+  -o-text-overflow: clip;
+  text-overflow: clip;
+  background: -webkit-linear-gradient(0deg, rgba(255,0,0,0.8) 0, rgba(255,0,0,0.8) 100%), rgba(0,0,0,1);
+  background: -moz-linear-gradient(90deg, rgba(255,0,0,0.8) 0, rgba(255,0,0,0.8) 100%), rgba(0,0,0,1);
+  background: linear-gradient(90deg, rgba(255,0,0,0.8) 0, rgba(255,0,0,0.8) 100%), rgba(0,0,0,1);
+  -webkit-background-origin: padding-box;
+  background-origin: padding-box;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-background-size: auto auto;
+  background-size: auto auto;
+  -webkit-box-shadow: 0 1px 0 0 rgba(255,255,255,0.298039) inset, 0 -1px 1px 0 rgba(255,255,255,0.14902) inset, 0 7px 0 0 rgba(137,30,30,1) , 0 8px 3px 0 rgba(0,0,0,0.2) ;
+  box-shadow: 0 1px 0 0 rgba(255,255,255,0.298039) inset, 0 -1px 1px 0 rgba(255,255,255,0.14902) inset, 0 7px 0 0 rgba(137,30,30,1) , 0 8px 3px 0 rgba(0,0,0,0.2) ;
+  -webkit-transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
+  -moz-transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
+  -o-transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
+  transition: all 0.1s cubic-bezier(0.25, 0.25, 0.75, 0.75);
 }
 
 .xshop-cart-proceed-btn:hover {
@@ -168,192 +214,3 @@
   transition: all 50ms cubic-bezier(0.25, 0.25, 0.75, 0.75);
 
 }
-
-/*Edit CSS Style for Cart Layout*/
-/*FOR SIMPLE CART lAYOUT*/
-.xshop-simple-cart-container{
-
-
-}
-
-.xshop-simple-cart{
-
-}
-
-.xshop-simple-cart-icon{
-
-
-}
-
-.xshop-simple-cart-label{
-
-
-}
-
-.xshop-simple-cart-count{
-
-
-}
-/*End of Simple Cart Layout*/
-
-/*FOR SORT CART LAYOUT*/
-.xshop-sort-cart-container{
-
-}
-
-.xshop-sort-cart-inner-container{
-
-}
-
-.xshop-sort-cart-anchor{
-
-}
-
-.xshop-sort-cart-icon{
-
-}
-
-.xshop-sort-cart-info-div{
-
-}
-
-.xshop-sort-cart-item-outer-div{
-
-}
-
-.xshop-sort-cart-item-count{
-
-}
-
-.xshop-sort-cart-item-count-label{
-
-}
-
-.xshop-sort-cart-price-outer-div{
-
-}
-
-.xshop-sort-cart-price-count{
-
-}
-
-.xshop-sort-cart-price-count-label{
-
-}
-
-.xshop-sort-cart-rupees-sign{
-
-}
-
-.xshop-sort-cart-button-div{
-
-}
-
-.xshop-sort-cart-button-empty{
-
-}
-
-.xshop-sort-cart-empty-button-inner-div{
-
-}
-
-.xshop-sort-cart-checkout-button{
-
-}
-
-.xshop-sort-cart-viewcart-button{
-
-}
-/*End of Sort Cart Layout css*/
-
-
-/*FOR CART DEATIL CSS LAYOUT*/
-.xshop-cartdetail-container{
-
-}
-
-.xshop-cartdetail-item-header-image{
-
-}
-
-.xshop-cartdetail-item-header-price{
-
-}
-
-.xshop-cartdetail-item-header-qty{
-
-}
-
-.xshop-cartdetail-item-header-total{
-
-}
-
-.xshop-cartdetail-item-header-remove{
-
-}
-
-.xshop-cartdetail-item-image-td{
-
-}
-
-.xshop-cartdetail-item-image{
-
-}
-
-.xshop-cartdetail-item-text-td{
-
-}
-
-.xshop-cartdetail-item-text{
-
-}
-
-.xshop-cartdetail-item-price-td{
-
-}
-
-.xshop-cartdetail-item-price{
-
-}
-
-.xshop-cartdetail-item-qty-td{
-
-}
-
-.xshop-cartdetail-item-total-td{
-
-}
-
-.xshop-cartdetail-item-total{
-
-}
-
-.xshop-cartdetail-item-remove-td{
-
-}
-
-.xshop-cartdetail-footer-div{
-
-}
-
-.xshop-cartdetail-coupon{
-
-}
-
-.xshop-cartdetail-total-price{
-
-}
-
-.xshop-cartdetail-grandtotal{
-
-}
-
-.xshop-cartdetail-discountamount{
-
-}
-
-.xshop-cartdetail-netamount{
-    
-}
-
-/*End of Cartdetail Layout css*/

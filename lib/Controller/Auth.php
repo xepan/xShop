@@ -9,6 +9,10 @@ class Controller_Auth extends \AbstractController {
 	function init(){
 		parent::init();
 
+		
+	}
+
+	function checkCredential(){
 		if(!($this->owner instanceof \View)){
 			throw $this->exception('Must be added to a View');
 		}
@@ -20,7 +24,7 @@ class Controller_Auth extends \AbstractController {
 
 		if(!$this->api->auth->isLoggedIn()){
 			if($this->substitute_view){
-				$this->owner->add($this->substitute_view);				
+				$this->owner->add($this->substitute_view);
 				return false;
 			}
 			if($this->redirect_subpage){
@@ -28,7 +32,6 @@ class Controller_Auth extends \AbstractController {
 				exit;
 			}
 		}
-
 		return true;
 	}
 }

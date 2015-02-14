@@ -11,12 +11,23 @@ class Model_Order extends \Model_Table{
  		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 
+		$this->hasOne('xShop/PaymentGateway','paymentgateway_id');
 		$f = $this->hasOne('xShop/MemberDetails','member_id')->group('a~3~<i class="fa fa-info"></i> Order Info');
 		$f->icon = "fa fa-user~red";
 		$f = $this->addField('name')->caption('Order ID')->mandatory(true)->group('a~3');
-		$f = $this->addField('order_status')->setValueList(array('10' =>'order palced','20'=>'order placed with payament','30'=>'order placed with COD','40'=>'Order Shipping','50'=>'Order Shipped'))->group('a~2');
-		//$f = $this->addField('payment_status')->enum(array('Pending','Cleared','Denied'))->group('a~2')
-		$f = $this->addField('order_date')->type('date')->defaultValue(date('Y-m-d'))->group('a~2');
+		// Order status
+			// placed, partial-shipped, shipped, partial-dilivered, dilivered, partial-returned, returned, canceled, complete
+		// order payment status
+			// unpaid, paid, refunded
+		$this->addField('order_from')->enum(array('online','offline'))->defaultValue('offline');
+		$f = $this->addField('status')
+									->enum(
+										array('draft','submitted',
+											  'approved','processing',
+											  'processed','shipping',
+											  'complete','cancel',
+											  'return'))->group('a~2');
+		$f = $this->addField('on_date')->type('date')->defaultValue(date('Y-m-d'))->group('a~2');
 		$f->icon ="fa fa-calendar~blue";
 
 		$f = $this->addField('amount')->mandatory(true)->group('b~3~<i class="fa fa-money"></i> Order Amount');
@@ -27,6 +38,11 @@ class Model_Order extends \Model_Table{
 		$f = $this->addField('billing_address')->mandatory(true)->group('x~6~<i class="fa fa-map-marker"> Address</i>');
 		$f = $this->addField('shipping_address')->mandatory(true)->group('x~6');	
 		$f = $this->addField('order_summary')->type('text')->group('y~12');
+
+		// Payment GateWay related Info
+		$this->addField('transaction_reference');
+		$this->addField('transaction_response_data')->type('text');
+
 		$this->hasMany('xShop/OrderDetails','order_id');
 		$this->addHook('beforeDelete',$this);
 		$this->add('dynamic_model/Controller_AutoCreator');
@@ -47,53 +63,56 @@ class Model_Order extends \Model_Table{
 		$m->ref('xShop/OrderDetails')->deleteAll();
 	}
 
-	function placeOrder($order_info){
-
-		$billing_address=$order_info['address'].", ".$order_info['landmark'].", ".$order_info['city'].", ".$order_info['state'].", ".$order_info['country'].", ".$order_info['pincode'];
-		$shipping_address=$order_info['shipping_address'].", ".$order_info['s_landmark'].", ".$order_info['s_city'].", ".$order_info['s_state'].", ".$order_info['s_country'].", ".$order_info['s_pincode'];		
+	function placeOrderFromCart(){
+		
+		// $billing_address=$order_info['address'].", ".$order_info['landmark'].", ".$order_info['city'].", ".$order_info['state'].", ".$order_info['country'].", ".$order_info['pincode'];
+		// $shipping_address=$order_info['shipping_address'].", ".$order_info['s_landmark'].", ".$order_info['s_city'].", ".$order_info['s_state'].", ".$order_info['s_country'].", ".$order_info['s_pincode'];
+		$member = $this->add('xShop/Model_MemberDetails');
+		$member->loadLoggedIn();
 
 		$cart_items=$this->add('xShop/Model_Cart');
-		$this['member_id'] = $this->api->auth->model->id;		
-		$this['payment_status'] = "Pending";
-		$this['order_status'] = "OrderPlaced";
-		$this['billing_address'] = $billing_address;
-		$this['shipping_address'] = $shipping_address;		
+		$this['member_id'] = $member->id;
+		$this['status'] = "submitted";
+		$this['order_from'] = "online";
+		// $this['billing_address'] = $billing_address;
+		// $this['shipping_address'] = $shipping_address;		
 		$this->save();
 
 		$order_details=$this->add('xShop/Model_OrderDetails');
-			$i=1;
 			$total_amount=0;
-			foreach ($cart_items as $order_detail) {
+			foreach ($cart_items as $junk) {
 
 				$order_details['order_id']=$this->id;
-				$order_details['item_id']=$order_info['itemid_'.$i];
-				$order_details['qty']=$order_info['qty_'.$i];
-				$order_details['rate']=$order_info['itemrate_'.$i];
-				$order_details['amount']=$order_info['qty_'.$i]*$order_info['itemrate_'.$i];
+				$order_details['item_id']=$cart_items['item_id'];
+				$order_details['qty']=$cart_items['qty'];
+				$order_details['rate']=$cart_items['sales_amount'];//get Item Rate????????????????
+				$order_details['amount']=$cart_items['total_amount'];
+				$order_details['custom_fields']=json_encode($cart_items['custom_fields']);
 				$total_amount+=$order_details['amount'];
-
 				$order_details->saveAndUnload();
-				$i++;
 			}
 
 			$this['amount']=$total_amount;
-			$discount_voucher_amount = 0; 
+			
+			//$discount_voucher_amount = 0; 
 			//TODO NET AMOUNT, TAXES, DISCOUNT VOUCHER AMOUNT etc.. CALCULATING AGAIN FOR SECURITY REGION 
-			$discountvoucher=$this->add('xShop/Model_DiscountVoucher');
-			if($discountvoucher->isUsable($order_info['discount_voucher'])){
-				$discount_voucher_amount=$total_amount * $discountvoucher->isUsable($order_info['discount_voucher']) /100;	
-			}
-			$this['discount_voucher']=$order_info['discount_voucher'];
-			$this['discount_voucher_amount']=$discount_voucher_amount;
-			$this['net_amount'] = $total_amount - $discount_voucher_amount ;										
+			// $discountvoucher=$this->add('xShop/Model_DiscountVoucher');
+			// if($discountvoucher->isUsable($order_info['discount_voucher'])){
+			// 	$discount_voucher_amount=$total_amount * $discountvoucher->isUsable($order_info['discount_voucher']) /100;	
+			// }
+			// $this['discount_voucher']=$order_info['discount_voucher'];
+			// $this['discount_voucher_amount']=$discount_voucher_amount;
+			$this['net_amount'] = $total_amount;
 			$this->save();
 
-			$discountvoucher->processDiscountVoucherUsed($this['discount_voucher']);
-			return $this['id'];
+			// $discountvoucher->processDiscountVoucherUsed($this['discount_voucher']);
+			return $this;
 	}
 
-	function processPayment(){
-			
+	function payNow($transaction_reference,$transaction_reference_data){
+		$this['transaction_reference'] =  $transaction_reference;
+	    $this['transaction_response_data'] = json_encode($transaction_reference_data);
+	    $this->save();
 	}
 	function checkStatus(){
 		
@@ -107,8 +126,8 @@ class Model_Order extends \Model_Table{
 		// throw new \Exception($member['']);
 	}
 
-	function sendOrderDetail($email_id=null, $order_id=null){	
-	
+	function sendOrderDetail($email_id=null, $order_id=null){
+
 		if(!$this->loaded()) throw $this->exception('Model Must Be Loaded Before Email Send');
 		
 		$subject ="Thanku for Order";
@@ -143,7 +162,8 @@ class Model_Order extends \Model_Table{
 		//END OF REPLACING VALUE INTO ORDER DETAIL EMAIL BODY
 		
 		try{
-			$tm->send($this->api->auth->model['email'], $epan['email_username'], $subject, $email_body ,false,null);			
+			//Send Message to All Associate Affiliates
+			$tm->send($this->api->auth->model['email'], $epan['email_username'], $subject, $email_body ,false,null);
 		}catch( phpmailerException $e ) {
 			$this->api->js(null,'$("#form-'.$_REQUEST['form_id'].'")[0].reset()')->univ()->errorMessage( $e->errorMessage() . " " . $epan['email_username'] )->execute();
 		}catch( Exception $e ) {

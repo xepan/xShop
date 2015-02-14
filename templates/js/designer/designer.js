@@ -9,6 +9,8 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		}
 	},
 
+	layout_finalized : {"Front Page" : "Main Layout"},
+
 	current_selected_component : undefined,
 	// components:[],
 	current_page:'Front Page',
@@ -18,6 +20,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 	workplace:undefined,
 	canvas:undefined,
 	safe_zone: undefined,
+	cart: undefined,
 	zoom: 1,
 	delta_zoom: 0,
 	px_width:undefined,
@@ -33,13 +36,15 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		IncludeJS: ['FreeLancerPanel'], // Plugins
 		ComponentsIncluded: ['BackgroundImage','Text','Image','PDF','ZoomPlus','ZoomMinus','Save'], // Plugins
 		design: [],
+		show_cart: false,
+		cart_options: [],
 		designer_mode: false,
 		width: undefined,
-		height: undefined
+		height: undefined,
+		selected_layouts_for_print:{}
 	},
 	_create: function(){
 		this.setupLayout();
-		console.log(this);
 	},
 		
 	setupLayout: function(){
@@ -67,6 +72,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 				self.loadDesign();
 				self.setupPageLayoutBar();
 				self.setupFreelancerPanel();
+				self.setupCart();
 				self.render();
 			},200);
 		});
@@ -88,6 +94,7 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		
 		$.each(saved_design,function(page_name,page_object){
 			self.pages_and_layouts[page_name]={};
+			self.layout_finalized[page_name]='Main Layout';
 
 			$.each(page_object,function(layout_name,layout_object){
 				self.pages_and_layouts[page_name][layout_name]={};
@@ -115,6 +122,17 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 			});
 
 		});
+
+		if(self.options.selected_layouts_for_print=="" || !self.options.selected_layouts_for_print || self.options.selected_layouts_for_print ==null || self.options.selected_layouts_for_print ==undefined){
+
+		}else{
+			console.log('check me');
+			console.log(self.options.selected_layouts_for_print);
+			$.each(self.options.selected_layouts_for_print,function(page,layout){
+				self.layout_finalized[page] = layout;
+			});
+		}
+
 	},
 
 	setupPageLayoutBar : function(){
@@ -212,6 +230,15 @@ jQuery.widget("ui.xepan_xshopdesigner",{
 		this.safe_zone = $('<div class="xshop-desiner-tool-safe-zone" style="position:absolute"></div>').appendTo(this.canvas);
 		this.guidex= $('<div class="guidex"></div>').appendTo($('body'));
 		this.guidey= $('<div class="guidey"></div>').appendTo($('body'));
+	},
+
+	setupCart: function(){
+		var self=this;
+		if(!self.options.show_cart) return;
+		original_rate = $('<div class="xshop-item-old-price"></div>').appendTo(self.element);
+		price_rate = $('<div class="xshop-item-price"></div>').appendTo(self.element);
+		this.cart = $('<div></div>').appendTo(self.element);
+		this.cart.xepan_xshop_addtocart(self.options.cart_options);
 	},
 
 	render: function(param){

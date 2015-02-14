@@ -11,6 +11,7 @@ class Model_Item extends \Model_Table{
 		
 		$this->hasOne('xShop/Application','application_id');
 		$this->hasOne('xShop/MemberDetails','designer_id');
+		$this->hasOne('xShop/Quotation','quotation_id');
 
 		//for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
@@ -22,9 +23,9 @@ class Model_Item extends \Model_Table{
 		$this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~1')->sortable(true);
 		$this->addField('is_party_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 
-		$this->addField('original_price')->type('int')->mandatory(true)->group('c~6');
-		$this->addField('sale_price')->type('int')->mandatory(true)->group('c~6~bl')->sortable(true);
-		$this->addField('short_description')->type('text')->group('c~6');
+		$this->addField('original_price')->type('money')->mandatory(true)->group('c~6~Basic Price');
+		$this->addField('sale_price')->type('money')->mandatory(true)->group('c~6')->sortable(true);
+		$this->addField('short_description')->type('text')->group('c~12');
 		
 		$this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~4');
 		$this->addField('created_at')->type('date')->defaultValue(date('Y-m-d'))->group('d~4');
@@ -32,10 +33,10 @@ class Model_Item extends \Model_Table{
 		$this->addField('description')->type('text')->display(array('form'=>'RichText'))->group('z~12');
 		
 		// Price and Qtuanitity Management
-		$this->addField('minimum_order_qty')->type('int')->mandatory(true)->group('e~3~Basic Quantity Options');
-		$this->addField('maximum_order_qty')->type('int')->mandatory(true)->group('e~3');
-		$this->addField('qty_unit')->mandatory(true)->group('e~3');
-		$this->addField('qty_from_set_only')->type('boolean')->group('e~3');
+		$this->addField('minimum_order_qty')->type('int')->group('e~3~Basic Quantity Options')->defaultValue(1);
+		$this->addField('maximum_order_qty')->type('int')->group('e~3');
+		$this->addField('qty_unit')->group('e~3')->defaultValue('pcs');
+		$this->addField('qty_from_set_only')->type('boolean')->group('e~3')->defaultValue(false);
 		
 		//Item Allow Optins
 		$this->addField('is_saleable')->type('boolean')->group('f~2~<i class=\'fa fa-cog\' > Item Allow Options</i>');
@@ -92,9 +93,9 @@ class Model_Item extends \Model_Table{
 		$this->addField('search_string')->type('text')->system(true);
 
 		//Item SEO
-		$this->addField('meta_title')->group('j~3~bl');
-		$this->addField('meta_description')->type('text')->group('j~4~bl');
-		$this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value')->group('j~5~bl');
+		$this->addField('meta_title');
+		$this->addField('meta_description')->type('text');
+		$this->addField('tags')->type('text')->PlaceHolder('Comma Separated Value');
 		
 		$this->hasMany('xShop/CategoryItem','item_id');
 		$this->hasMany('xShop/ItemAffiliateAssociation','item_id');
@@ -104,9 +105,10 @@ class Model_Item extends \Model_Table{
 		$this->hasMany('xShop/OrderDetails','item_id');
 		$this->hasMany('xShop/ItemSpecificationAssociation','item_id');
 		$this->hasMany('xShop/CustomFieldValueFilterAssociation','item_id');
-		$this->hasMany('xShop/CategoryItemCustomFields','item_id');
+		$this->hasMany('xShop/ItemCustomFieldAssos','item_id');
 		$this->hasMany('xShop/ItemReview','item_id');
 		$this->hasMany('xShop/ItemMemberDesign','item_id');
+		$this->hasMany('xShop/ItemDepartmentAssociation','item_id');
 
 		$this->hasMany('xShop/QuantitySet','item_id');
 		$this->hasMany('xShop/CustomRate','item_id');
@@ -126,10 +128,8 @@ class Model_Item extends \Model_Table{
 			$item_old->addCondition('id','<>',$this->id);
 		$item_old->tryLoadAny();
 
-		//TODO Rank Weight Auto Increment 
 		if($item_old['sku'] == $this['sku'])
 			throw $this->exception('Item Code is Allready Exist','Growl')->setField('sku');
-
 
 		//do inserting search string for full text search
 		// $p_model=$this->add('xShop/Model_Item');
@@ -141,21 +141,46 @@ class Model_Item extends \Model_Table{
 								$this["meta_title"]. " ".
 								$this["meta_description"]. " ".
 								$this['sale_price']
-							;
+							;	
+
+		if(($this->dirty['sale_price'] or $this->dirty['original_price']) and $this['id'] > 0){
+			$this->updateDefaultQuantitySet();
+		}
+		// TOOOOOOOOOOOODOOOOOOOOOOO check for the uodate item designer if ==================
+		// if($this->loaded() and $this->dirty['designer_id']){	
+		// 	$this->updateItemDesigner();
+		// }
 	}
 
 	function afterInsert($obj,$new_item_id){
 		$new_item =  $this->add('xShop/Model_Item')->load($new_item_id);
+		$new_item->updateDefaultQuantitySet();
 
 		if(!$new_item['designer_id']) return;
+		$new_item->updateItemDesigner();
+	}
 
+	function updateDefaultQuantitySet(){
+		//Default Qty Set
+		$qty_set_model = $this->ref('xShop/QuantitySet')->addCondition('is_default',true)->tryLoadAny();
+		$qty_set_model['old_price'] = $this['original_price'];
+		$qty_set_model['price'] = $this['sale_price'];
+		$qty_set_model['qty'] = 1;
+		$qty_set_model['name'] = "Default";
+		$qty_set_model['is_default'] = true;
+		$qty_set_model->save();
+	}
+
+	function updateItemDesigner(){
+		if(!$this->loaded())
+			return;
 		// if designable add as with admin => member's design too
 		$designer = $this->add('xShop/Model_MemberDetails');
-		$designer->load($new_item['designer_id']);
-
+		$designer->addCondition('id',$this['designer_id']);
+		$designer->tryLoadAny();
 		$target = $this->item = $this->add('xShop/Model_ItemMemberDesign');
-		$target['item_id'] = $new_item_id;
-		$target['member_id'] = $designer->id;
+		$target['item_id'] = $this['id'];
+		$target['member_id'] = $designer['id'];
 		$target['designs'] = "";
 		$target['is_dummy'] = true;
 		$target->save();
@@ -184,7 +209,7 @@ class Model_Item extends \Model_Table{
 		$m->ref('xShop/CategoryItem')->deleteAll();
 		$m->ref('xShop/ItemImages')->deleteAll();
 		$m->ref('xShop/Attachments')->deleteAll();	 
-		$m->ref('xShop/CategoryItemCustomFields')->deleteAll();	
+		$m->ref('xShop/ItemCustomFieldAssos')->deleteAll();	
 	}
 
 	function updateSearchString($item_id=null){
@@ -293,12 +318,22 @@ class Model_Item extends \Model_Table{
 	}
 
 	function getAssociatedCustomFields(){
-		$associate_customfields= $this->ref('xShop/CategoryItemCustomFields')->addCondition('is_allowed',true)->_dsql()->del('fields')->field('customfield_id')->getAll();
+		$associate_customfields= $this->ref('xShop/ItemCustomFieldAssos')->addCondition('is_active',true)->_dsql()->del('fields')->field('customfield_id')->getAll();
 		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associate_customfields)),false);
+		// return $associate_customfields;
+	}
+
+	function customFields(){
+		return $this->add('xShop/Model_CustomFields')->addCondition('id',$this->getAssociatedCustomFields());
+	}
+
+	function getAssociatedAffiliate(){
+		$associated_affiliate = $this->ref('xShop/ItemAffiliateAssociation')->addCondition('is_active',true)->_dsql()->del('fields')->field('affiliate_id')->getAll();
+		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_affiliate)),false);
 	}
 
 	function addCustomField($customfield_id){
-		$old_model = $this->add('xshop/Model_CategoryItemCustomFields');
+		$old_model = $this->add('xshop/Model_ItemCustomFieldAssos');
 		$old_model->addCondition('item_id',$this->id);
 		$old_model->addCondition('customfield_id',$customfield_id);
 		$old_model->addCondition('is_allowed',false);
@@ -307,7 +342,7 @@ class Model_Item extends \Model_Table{
 			$old_model['is_allowed'] = true;
 			$old_model->saveandUnload();
 		}else{
-			$cat_item_cf_model = $this->add('xshop/Model_CategoryItemCustomFields');
+			$cat_item_cf_model = $this->add('xshop/Model_ItemCustomFieldAssos');
 			$cat_item_cf_model['customfield_id'] = $customfield_id;
 			$cat_item_cf_model['item_id'] = $this->id;
 			$cat_item_cf_model['is_allowed'] = true;
@@ -315,19 +350,19 @@ class Model_Item extends \Model_Table{
 		}	
 	}
 	
-	function updateCustomField($item_id){
-
+	function updateCustomField($item_id=null){
 		
-		$this->load($item_id);
 		$category_item_model = $this->add('xShop/Model_CategoryItem');
-		$category_item_model->addCondition('item_id',$item_id);
+		$category_item_model->addCondition('item_id',$this['id']);
+		$category_item_model->tryLoadAny();
+
 		foreach ($category_item_model as $junk) {
-			$category_customfield_model = $this->add('xShop/Model_CategoryItemCustomFields');
+			$category_customfield_model = $this->add('xShop/Model_ItemCustomFieldAssos');
 			$category_customfield_model->addCondition('category_id',$junk['category_id']);
 			
 			foreach ($category_customfield_model as $junk) {
-				$model = $this->add('xshop/Model_CategoryItemCustomFields');
-				$model->addCondition('item_id',$item_id);
+				$model = $this->add('xshop/Model_ItemCustomFieldAssos');
+				$model->addCondition('item_id',$this['id']);
 				$model->addCondition('customfield_id',$junk['customfield_id']);
 				$model->tryLoadAny();
 								
@@ -353,8 +388,37 @@ class Model_Item extends \Model_Table{
 		return $specs_assos;
 	}
 
-	function getAmount($cutome_field_values_array, $qty, $rate_chart='retailer'){
-		
+	/*
+		$custom_field_values=array(
+			'Color'=>'Red',
+			'Size'=>'9'
+		)	
+	*/
+
+	function  getPrice($custom_field_values_array, $qty, $rate_chart='retailer'){
+		$quantitysets = $this->ref('xShop/QuantitySet')->setOrder(array('custom_fields_conditioned desc','qty desc','is_default asc'));
+
+		foreach ($quantitysets as $junk) {
+			// check if all conditioned match AS WELL AS qty
+			$cond = $quantitysets->ref('xShop/QuantitySetCondition');
+			$cond->title_field = 'name';
+			foreach ($cond as $junk) {
+				$value = explode("::",$cond['custom_field_value']);
+				$value = $value[1];
+				$value = trim($value);
+				// echo $custom_field_values_array[$cond['customfield']] ." != ". $value;
+				if($custom_field_values_array[$cond['customfield']] != $value)
+					continue 2;
+			}
+
+			if($qty < $quantitysets['qty']) continue;
+			break;
+		}
+
+		return array('original_price'=>$quantitysets['old_price']?:$quantitysets['price'],'sale_price'=>$quantitysets['price']);
+		// return array('original_price'=>rand(1000,9999),'sale_price'=>rand(100,999));
+
+			// return array default_price
 		// 1. Check Custom Rate Charts
 			/*
 				Look $qty >= Qty of rate chart
@@ -367,6 +431,12 @@ class Model_Item extends \Model_Table{
 		// 3. Quanitity Set
 
 		// 4. Default Price * qty
+	}
+
+	function getAmount($custom_field_values_array, $qty, $rate_chart='retailer'){
+		$price = $this->getPrice($custom_field_values_array, $qty, $rate_chart);
+		return array('original_amount'=>$price['original_price'] * $qty,'sale_amount'=>$price['sale_price'] * $qty);
+
 	}
 
 	function includeCustomeFieldValues($import_fields=array(),$join_type='inner'){
@@ -382,6 +452,112 @@ class Model_Item extends \Model_Table{
 		}
 
 	}
+
+	function activeAffiliate($affiliate_id){
+		if($this->loaded() and !$affiliate_id)
+			throw new \Exception("Item Model Must be Loaded ");
+
+		$aff = $this->add('xShop/Model_Affiliate')->tryLoad($affiliate_id);
+
+		$old_model = $this->add('xShop/Model_ItemAffiliateAssociation');
+		$old_model->addCondition('item_id',$this->id);
+		$old_model->addCondition('affiliate_id',$aff['id']);
+		$old_model->addCondition('is_active',false);		
+		$old_model->tryLoadAny();
+		if($old_model->loaded()){
+			$old_model['is_active'] = true;
+			$old_model->saveandUnload();
+		}else{
+			$item_aff_model = $this->add('xShop/Model_ItemAffiliateAssociation');
+			$item_aff_model['item_id'] = $this->id;
+			$item_aff_model['affiliate_id'] = $affiliate_id;
+			$item_aff_model['affiliatetype_id'] = $aff['affiliatetype_id'];
+			$item_aff_model['is_active'] = true;
+			$item_aff_model->saveandUnload();
+		}
+		
+	}
+
+	function getQtySet(){
+		if(!$this->loaded())
+			throw new \Exception("Item Model Must be Loaded");
+		/*
+		qty_set: {
+				Values:{
+				value:{
+					name:'Default',
+					qty:1,
+					old_price:100,
+					price:90,
+					conditions:{
+							custom_fields_condition_id:'custom_field_value_id'
+						}
+				}
+			}
+		},
+		*/
+		$qty_set_array = array();
+		//load Associated Quantity Set
+			$qty_set_model = $this->ref('xShop/QuantitySet');
+			//foreach qtySet get all Condition
+				foreach ($qty_set_model as $junk){
+					$qty_set_array[$qty_set_model['id']]['name'] = $qty_set_model['name'];
+					$qty_set_array[$qty_set_model['id']]['qty'] = $qty_set_model['qty'];
+					$qty_set_array[$qty_set_model['id']]['old_price'] = $qty_set_model['old_price'];
+					$qty_set_array[$qty_set_model['id']]['price'] = $qty_set_model['price'];
+					$qty_set_array[$qty_set_model['id']]['conditions'] = array();
+					
+					//Load QtySet Condition Model
+					$condition_model =$this->add('xShop/Model_QuantitySetCondition')->addCondition('quantityset_id',$qty_set_model['id']);
+						//foreach condition 
+						foreach ($condition_model as $junk) {
+							$single_condition_array = array();
+							$single_condition_array[$condition_model['customfield']] = $condition_model->ref('custom_field_value_id')->get('name');
+							$qty_set_array[$qty_set_model['id']]['conditions']= array_merge($qty_set_array[$qty_set_model['id']]['conditions'], $single_condition_array);
+						}
+				}
+
+		return $qty_set_array;		
+	}
+
+	function getBasicCartOptions(){
+				//Get All Item Associated Custom Field
+		$custom_filed_array = array();
+		$custom_fields = $this->getAssociatedCustomFields();
+		foreach ($custom_fields as $custom_field_id){
+			$cf_model = $this->add('xShop/Model_CustomFields')->load($custom_field_id);
+			$cf_value_array = $cf_model->getCustomValue($this->id);
+			$custom_filed_array[$cf_model['name']] = array(
+													'type'=>$cf_model['type'],
+													'values' => $cf_value_array
+												);
+		}
+
+		//Get All Item Qnatity Set 
+		$qty_set_array = array();
+		$qty_set_array = $this->getQtySet();
+
+		$options = array();
+
+		$options['item_id'] = $this->id;
+		$options['qty_from_set_only'] = $this['qty_from_set_only'];
+		$options['qty_set'] = $qty_set_array;
+		$options['custom_fields'] = $custom_filed_array;
+		return $options;
+	}
+
+	// function submit(){
+	// 	return "dsfsfdsdF";
+	// }
+
+	function getAssociatedDepartment(){
+		if(!$this->loaded())
+			throw new \Exception("Item Model Must be Loaded",'Department Association');
+			
+		$associated_department = $this->ref('xShop/ItemDepartmentAssociation')->addCondition('is_active',true)->_dsql()->del('fields')->field('department_id')->getAll();
+		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_department)),false);
+	}
+
 
 }	
 

@@ -56,6 +56,9 @@ PageBlock = function(parent,designer,canvas, manager){
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].components = [];
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].background = new BackgroundImage_Component();
 			this.designer_tool.pages_and_layouts[page_name]['Main Layout'].background.init(self, self.canvas,null);
+
+			this.designer_tool.layout_finalized[page_name] = "Main Layout";
+
 			// console.log('adding ' + page_name);
 			// add default layout to this page as well
 			this.addPageView(page_name);

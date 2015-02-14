@@ -53,7 +53,7 @@
 							<tr>
 								<td>Cart Item Detail</td>
 								<td>
-									<select id='xshop-show-cart-items' data-attr="show-cart-items" class="xshop-general-bind" >
+									<select id='xshop-show-cart-items' data-attr="show-cart-items" hide-class="xshop-cart-item-options" class="xshop-general-bind" >
 										<option value="0">Hide</option>
 										<option value="1">Show</option>
 										<!-- <option value="2">Hover</option> -->
@@ -61,7 +61,81 @@
 								</td>
 								<!-- <td><input type='number' id='xshop-order-empty' data-attr="order-empty" class="xshop-general-bind"/></td> -->
 							</tr>
+		<!--start Cart Item Options -->
+							<tr class="xshop-cart-item-options">
+								<td>Sno</td>
+								<td>
+									<select id='xshop-show-cart-items-sno' data-attr="show-cart-items-sno" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+							</tr>
 
+							<tr class="xshop-cart-item-options">
+								<td>Image</td>
+								<td>
+									<select id='xshop-show-cart-items-image' data-attr="show-cart-items-image" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+							</tr>
+
+							<tr class="xshop-cart-item-options">
+								<td>Name</td>
+								<td>
+									<select id='xshop-show-cart-items-name' data-attr="show-cart-items-name" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+							</tr>
+
+							<tr class="xshop-cart-item-options">
+								<td>Qty & Rate</td>
+								<td>
+									<select id='xshop-show-cart-items-qty-rate' data-attr="show-cart-items-qty-rate" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+							</tr>
+							<tr class="xshop-cart-item-options">
+								<td>Delivery Info</td>
+								<td>
+									<select id='xshop-show-cart-items-delivery-info' data-attr="show-cart-items-delivery-info" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+							</tr>
+							<tr class="xshop-cart-item-options">
+								<td>SubTotal</td>
+								<td>
+									<select id='xshop-show-cart-items-subtotal' data-attr="show-cart-items-subtotal" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+							</tr>
+							<tr class="xshop-cart-item-options">
+								<td>Remove</td>
+								<td>
+									<select id='xshop-show-cart-items-remove-btn' data-attr="show-cart-items-remove-btn" class="xshop-general-bind" >
+										<option value="0">Hide</option>
+										<option value="1">Show</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+							</tr>								
+		<!--End Cart Item Options -->
 							<tr>
 								<td>Total Estimate Amount Bar</td>
 								<td>
@@ -143,6 +217,30 @@
 									<input id='xshop-cart-proceed-page' data-attr="cart-proceed-page" Placeholder="Proceed Page" class="xshop-general-bind"/>
 								</td>	
 							</tr>
+
+							<tr>
+								<td>Designer page</td>
+								<td>
+									<input id='xshop-item-designer-page' data-attr="item-designer-page" Placeholder="Designer tool Page" class="xshop-general-bind"/>
+								</td>	
+							</tr>
+
+							<tr>
+								<td>No-Auth Redirect</td>
+								<td>
+									<select id='xshop-cart-noauth' data-attr="show-cart-noauth-subpage" class="xshop-general-bind" >
+										<option value="0">No</option>
+										<option value="1">Yes</option>
+										<!-- <option value="2">Hover</option> -->
+									</select>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="3">
+									<input id="xshop-cart-noauth-subpage-url" data-attr="show-cart-noauth-subpage-url" type="input" PlaceHolder="Page Name" class="xshop-general-bind" />
+								</td>
+							</tr>
+							
 						</table>
 					</div>
 				</div>
@@ -171,9 +269,14 @@ $(this).univ().frameURL('Edit CSS ( xShop Cart Display Layout )','index.php?page
 
 $('.xshop-general-bind').change(function(event){
 	$(current_selected_component).attr($(this).attr('data-attr'),$(this).val());
+	//calling hide other option
+	if($(this).attr('hide-class') != undefined){
+		$('.'+$(this).attr('hide-class')).hide();
+		if($(this).val() > 0)
+			$('.'+$(this).attr('hide-class')).show();
+	}
 	$(current_selected_component).children('div:first').trigger('reload');
 });
-
 
 var {$component_type}_options = {
 	show: function (){
@@ -184,8 +287,13 @@ var {$component_type}_options = {
 		//TODO FOR CART LAYOUT SELECTION OPTION IF 2 THEN SHOW ITES OPTIONS 
 		$('.xshop-general-bind').each(function(index,value){
 			$(this).val($(current_selected_component).attr($(this).attr('data-attr')));
+			if($(this).attr('hide-class') != undefined){
+				$('.'+$(this).attr('hide-class')).hide();
+				if($(this).val() > 0){
+					$('.'+$(this).attr('hide-class')).show();
+				}
+			}
 		});
-
 	}
 }
 </script>
