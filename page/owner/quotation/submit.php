@@ -10,6 +10,7 @@ class page_xShop_page_owner_quotation_submit extends page_xShop_page_owner_main{
 									'allow_add'=>false
 									));
 		$crud->setModel('xShop/Quotation_Submit');
-
+		$crud->addAction('approve',array('toolbar'=>false));
+		$crud->addAction('redesign',array('toolbar'=>false));
 	}
 }

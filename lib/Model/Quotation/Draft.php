@@ -11,7 +11,7 @@ class Model_Quotation_Draft extends Model_Quotation{
 	}
 
 	function submit(){
-		$this['status'] = 'submit';
+		$this['status'] = 'submitted';
 		$this->saveAndUnload();
 		return "Sended For Approval";
 	}

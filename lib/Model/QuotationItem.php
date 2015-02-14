@@ -6,8 +6,9 @@ class Model_QuotationItem extends \Model_Table{
 	function init(){
 		parent::init();
 		$this->hasOne('xShop/Quotation','quotation_id');
+		$this->hasOne('xShop/Item','item_id');
 		
-		$this->addField('name');
+		// $this->addField('name');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
