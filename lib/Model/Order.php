@@ -171,6 +171,9 @@ class Model_Order extends \Model_Table{
 		}
 	}
 
+	function isFromOnline(){
+		return $this['order_from']=='online';
+	}
 	function placeOrderFromQuotation($quotation_approved_id){
 		if($quotation_approved_id < 0 or $quotation_approved_id == null)
 			return false;

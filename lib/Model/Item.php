@@ -558,6 +558,10 @@ class Model_Item extends \Model_Table{
 		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_department)),false);
 	}
 
+	function associatedDepartments(){
+		return $this->add('xProduction/Model_Department')->addCondition('id',$this->getAssociatedDepartment());
+	}
+
 
 }	
 
