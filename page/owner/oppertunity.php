@@ -8,7 +8,6 @@ class page_xShop_page_owner_oppertunity extends page_xShop_page_owner_main{
 		$crud=$this->app->layout->add('CRUD');
 		$crud->setModel($oppertunity_model);
 
-		$crud->add('xCRM/Controller_Comm',array('regarding'=>'Oppertunity','regarding_id'=>$crud->id));
 
 		if(!$crud->isEditing()){
 			$grid =  $crud->grid;
@@ -24,6 +23,7 @@ class page_xShop_page_owner_oppertunity extends page_xShop_page_owner_main{
 			$grid->removeColumn('customer');
 		}
 
+		$crud->add('xHR/Controller_Acl');
 		$p=$crud->addFrame('quotation',array('icon'=>'plus'));
 		
 		if($p){

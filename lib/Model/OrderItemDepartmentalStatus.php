@@ -22,12 +22,19 @@ class Model_OrderItemDepartmentalStatus extends \SQL_Model{
 		// 	return $m->refSQL('orderitem_id')->fieldQuery('custom_fields');
 		// });
 
-		// $this->addExpression('status')->set(function($m,$q){
-			// status of my or null
-			// return $m->
-		// });
+		$this->addExpression('status')->set(function($m,$q){
+			return $m->refSQL('xProduction/JobCard')->_dsql()->limit(1)->del('fields')->field('status');
+		});
 
 		// status of previous department jobcard .. if any or null
+		$this->addExpression('previous_status')->set(function($m,$q){
+			// my departments
+			// my previous departments : leftJOin
+			// job cards of my same orderitem_id from previous departments
+			// limit 1
+			// 
+			return $m->refSQL('xProduction/JobCard')->_dsql()->limit(1)->del('fields')->field('status');
+		});		
 
 		// hasMany JobCards
 		$this->hasMany('xProduction/JobCard','orderitem_departmental_status_id');
