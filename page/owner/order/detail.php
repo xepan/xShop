@@ -12,9 +12,9 @@ class page_xShop_page_owner_order_detail extends page_xShop_page_owner_main{
 
         $crud_actions = array('form_class'=>'xShop/Form_OrderItem');
         if($order['status']!='draft'){
-        	$crud_actions=array('form_class'=>'xShop/Form_OrderItem', 'allow_add'=>false,'allow_del'=>false,'allow_edit'=>false);
+        	$crud_actions=array('form_class'=>'xShop/Form_OrderItem');
         }
-
+            $crud_actions->add('xHR/Controller_Acl');
         $order_detail=$this->add('xShop/Model_OrderDetails');
         $order_detail->addCondition('order_id',$order_id);
 		$crud = $this->add('CRUD',$crud_actions);
