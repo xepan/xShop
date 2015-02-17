@@ -13,6 +13,7 @@ class Model_Quotation extends \Model_Table{
 		$this->hasOne('xShop/TermsAndCondition','termsandcondition_id');
 
 		$this->addField('name');
+		$this->addField('quotation_no');
 		$this->addField('status')->enum(array('draft','approved','redesign','submitted'))->defaultValue('draft');
 
 		$this->hasMany('xShop/QuotationItem','quotation_id');

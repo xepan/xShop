@@ -17,6 +17,7 @@ class Model_OrderItemDepartmentalStatus extends \SQL_Model{
 		$this->addExpression('Unit')->set(function($m,$q){
 			return $m->refSQL('orderitem_id')->fieldQuery('unit');
 		});
+
 		// $this->addExpression('Custom Fields')->set(function($m,$q){
 		// 	return $m->refSQL('orderitem_id')->fieldQuery('custom_fields');
 		// });
