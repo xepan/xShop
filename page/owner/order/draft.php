@@ -5,7 +5,7 @@ class page_xShop_page_owner_order_draft extends page_xShop_page_owner_main{
 
 		$crud=$this->add('CRUD',array('grid_class'=>'xShop/Grid_Order'));
 		$crud->setModel('xShop/Model_Order_Draft');
-		$crud->addAction('submit',array('toolbar'=>false));
+		$crud->add('xHR/Controller_Acl');
 		
 		if(!$crud->isEditing()){
 			$crud->grid->removeColumn('order_from');
