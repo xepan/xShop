@@ -30,13 +30,18 @@ class Model_Quotation extends \Model_Table{
 	}
 
 	function reject($message){
+		$this['status']='redesign';
+		$this->saveAs('xShop/Model_Quotation');
 		return "reject";
-
 	}
 	
 
 	function sendMail(){
 		return "sendMail";
+	}
+
+	function status(){
+		return $this['status'];
 	}
 
 }

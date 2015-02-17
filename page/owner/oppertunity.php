@@ -7,7 +7,8 @@ class page_xShop_page_owner_oppertunity extends page_xShop_page_owner_main{
 
 		$crud=$this->app->layout->add('CRUD');
 		$crud->setModel($oppertunity_model);
-		//$crud->addAction('quotation',array('toolbar'=>false));
+
+		$crud->add('xCRM/Controller_Comm',array('regarding'=>'Oppertunity','regarding_id'=>$crud->id));
 
 		if(!$crud->isEditing()){
 			$grid =  $crud->grid;
@@ -30,7 +31,7 @@ class page_xShop_page_owner_oppertunity extends page_xShop_page_owner_main{
 			$model_quotation=$p->add('xShop/Model_Quotation');
 			$model_quotation->addCondition('oppertunity_id',$crud->id);
 
-			$c = $p->add('CRUD');
+			$c = $p->add('CRUD',array('grid_class'=>'xShop/Grid_Quotation'));
 
 			if($c->isEditing()){
 				
