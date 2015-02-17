@@ -23,8 +23,8 @@ class Model_Item extends \Model_Table{
 		$this->addField('is_publish')->type('boolean')->defaultValue(true)->group('b~1')->sortable(true);
 		$this->addField('is_party_publish')->type('boolean')->defaultValue(true)->group('b~2')->sortable(true);
 
-		$this->addField('original_price')->type('int')->mandatory(true)->group('c~6~Basic Price');
-		$this->addField('sale_price')->type('int')->mandatory(true)->group('c~6')->sortable(true);
+		$this->addField('original_price')->type('money')->mandatory(true)->group('c~6~Basic Price');
+		$this->addField('sale_price')->type('money')->mandatory(true)->group('c~6')->sortable(true);
 		$this->addField('short_description')->type('text')->group('c~12');
 		
 		$this->addField('rank_weight')->defaultValue(0)->hint('Higher Rank Weight Item Display First')->mandatory(true)->group('d~4');
@@ -108,6 +108,7 @@ class Model_Item extends \Model_Table{
 		$this->hasMany('xShop/ItemCustomFieldAssos','item_id');
 		$this->hasMany('xShop/ItemReview','item_id');
 		$this->hasMany('xShop/ItemMemberDesign','item_id');
+		$this->hasMany('xShop/ItemDepartmentAssociation','item_id');
 
 		$this->hasMany('xShop/QuantitySet','item_id');
 		$this->hasMany('xShop/CustomRate','item_id');
@@ -320,6 +321,10 @@ class Model_Item extends \Model_Table{
 		$associate_customfields= $this->ref('xShop/ItemCustomFieldAssos')->addCondition('is_active',true)->_dsql()->del('fields')->field('customfield_id')->getAll();
 		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associate_customfields)),false);
 		// return $associate_customfields;
+	}
+
+	function customFields(){
+		return $this->add('xShop/Model_CustomFields')->addCondition('id',$this->getAssociatedCustomFields());
 	}
 
 	function getAssociatedAffiliate(){
@@ -544,6 +549,19 @@ class Model_Item extends \Model_Table{
 	// function submit(){
 	// 	return "dsfsfdsdF";
 	// }
+
+	function getAssociatedDepartment(){
+		if(!$this->loaded())
+			throw new \Exception("Item Model Must be Loaded",'Department Association');
+			
+		$associated_department = $this->ref('xShop/ItemDepartmentAssociation')->addCondition('is_active',true)->_dsql()->del('fields')->field('department_id')->getAll();
+		return iterator_to_array(new \RecursiveIteratorIterator(new \RecursiveArrayIterator($associated_department)),false);
+	}
+
+	function associatedDepartments(){
+		return $this->add('xProduction/Model_Department')->addCondition('id',$this->getAssociatedDepartment());
+	}
+
 
 }	
 

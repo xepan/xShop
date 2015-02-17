@@ -19,14 +19,14 @@ class Model_Order extends \Model_Table{
 			// placed, partial-shipped, shipped, partial-dilivered, dilivered, partial-returned, returned, canceled, complete
 		// order payment status
 			// unpaid, paid, refunded
-		$f = $this->addField('order_status')->setValueList(
-				array(
-					'10' =>'order palced',
-					'20'=>'order placed with payament',
-					'30'=>'order placed with COD',
-					'40'=>'Order Shipping',
-					'50'=>'Order Shipped')
-			)->group('a~2');
+		$this->addField('order_from')->enum(array('online','offline'))->defaultValue('offline');
+		$f = $this->addField('status')
+									->enum(
+										array('draft','submitted',
+											  'approved','processing',
+											  'processed','shipping',
+											  'complete','cancel',
+											  'return'))->group('a~2');
 		$f = $this->addField('on_date')->type('date')->defaultValue(date('Y-m-d'))->group('a~2');
 		$f->icon ="fa fa-calendar~blue";
 
@@ -72,7 +72,8 @@ class Model_Order extends \Model_Table{
 
 		$cart_items=$this->add('xShop/Model_Cart');
 		$this['member_id'] = $member->id;
-		$this['order_status'] = "10";
+		$this['status'] = "submitted";
+		$this['order_from'] = "online";
 		// $this['billing_address'] = $billing_address;
 		// $this['shipping_address'] = $shipping_address;		
 		$this->save();
@@ -169,5 +170,44 @@ class Model_Order extends \Model_Table{
 			throw $e;
 		}
 	}
+
+	function isFromOnline(){
+		return $this['order_from']=='online';
+	}
+	function placeOrderFromQuotation($quotation_approved_id){
+		if($quotation_approved_id < 0 or $quotation_approved_id == null)
+			return false;
+
+		$approved_quotation = $this->add('xShop/Model_Quotation')->load($quotation_approved_id);
+		$approved_quotation_items = $approved_quotation->ref('xShop/QuotationItem','quotation_id');
+
+		$this['member_id'] = $this->api->auth->model->id;
+		$this['status'] = "Draft";
+		$this['order_from'] = "offline";
+		$this->save();
+
+		$order_details=$this->add('xShop/Model_OrderDetails');
+		$total_amount=0;
+			foreach ($approved_quotation_items as $junk) {
+
+				$order_details['order_id']=$this->id;
+				$order_details['item_id']=$approved_quotation_items['item_id'];
+				$order_details['qty']=$approved_quotation_items['qty'];
+				$order_details['rate']=$approved_quotation_items['sales_amount'];//get Item Rate????????????????
+				$order_details['amount']=$approved_quotation_items['total_amount'];
+				$order_details['custom_fields']=json_encode($approved_quotation_items['custom_fields']);
+				$total_amount+=$order_details['amount'];
+				$order_details->saveAndUnload();
+			}
+
+			$this['amount']=$total_amount;
+			$this['net_amount'] = $total_amount;
+			$this->save();
+
+			// $discountvoucher->processDiscountVoucherUsed($this['discount_voucher']);
+			return true;
+		
+	}	
+
 
 }

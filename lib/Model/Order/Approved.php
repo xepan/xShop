@@ -1,13 +1,10 @@
 <?php
 namespace xShop;
-class Model_ApprovedQuotation extends Model_Quotation{
+
+class Model_Order_Approved extends Model_Order{
 	function init(){
 		parent::init();
 
 		$this->addCondition('status','approved');
-	}
-
-	function creatOrder(){
-		return "creatOrder";
 	}
 }
