@@ -42,6 +42,14 @@ class Model_Affiliate extends \Model_Table {
 		// $this->addHook('beforeSave',$this);
 		$this->hasMany('xShop/ItemAffiliateAssociation','affiliate_id');
 
+		$this->add('Controller_Validator');
+		$this->is(array(
+						     'email_id|as|email|unique?email must be valid',
+    						 'phone_no|to_trim',
+    						 'mobile_no|to_trim'
+
+		));
+
 		$this->add('dynamic_model/Controller_AutoCreator');
 
 	}

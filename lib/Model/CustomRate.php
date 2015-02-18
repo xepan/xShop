@@ -15,6 +15,14 @@ class Model_CustomRate extends \Model_Table {
 
 		$this->hasMany('xShop/CustomRateCustomeValueCondition','custom_rate_id');
 
+		$this->add('Controller_Validator');
+		$this->is(array(
+						     'name|to_trim|required',
+    						 'qty|to_trim|required',
+    						 'price|to_trim|required'
+
+		));
+
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 }
