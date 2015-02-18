@@ -13,6 +13,7 @@ class Model_Item extends \Model_Table{
 		$this->hasOne('xShop/MemberDetails','designer_id');
 		$this->hasOne('xShop/Quotation','quotation_id');
 
+		$this->hasOne('xHR/Employee','created_by_id')->defaultValue($this->api->current_employee->id)->system(true);
 		//for Mutiple Epan website
 		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
