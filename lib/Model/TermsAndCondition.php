@@ -12,6 +12,6 @@ class Model_TermsAndCondition extends \Model_Table{
 		$this->hasMany('xShop/Quotation','termsandcondition_id');
 
 		$this->add('dynamic_model/Controller_AutoCreator');
-
+		
 	}
 }

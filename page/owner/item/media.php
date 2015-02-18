@@ -1,6 +1,6 @@
 <?php
 
-class page_xShop_page_owner_item_media extends Page{
+class page_xShop_page_owner_item_media extends page_xShop_page_owner_main{
 	function page_index(){
 				
 		if(!$_GET['item_id'])

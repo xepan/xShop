@@ -19,6 +19,8 @@ class page_xShop_page_owner_shopsnblogs extends page_xShop_page_owner_main {
 		if(!$crud->isEditing()){
 			$crud->grid->addColumn('expander','configuration',array("descr"=>"Configuration",'icon'=>'cog'));
 		}
+        $crud->add('xHR/Controller_Acl');
+		
 	}
 
 	function page_blogs(){

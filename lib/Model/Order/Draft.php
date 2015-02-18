@@ -7,9 +7,4 @@ class Model_Order_Draft extends Model_Order{
 
 		$this->addCondition('status','draft');
 	}
-
-	function submit(){
-		$this['status']='submitted';
-		$this->saveAs('xShop/Model_Order');
-	}
 }

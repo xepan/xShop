@@ -11,6 +11,8 @@ class page_xShop_page_owner_voucher extends page_xShop_page_owner_main{
 			$g=$crud->grid;
 			$g->addPaginator(15);
 			$g->addQuickSearch(array('name'));
+        	$crud->add('xHR/Controller_Acl');
+
 
 		}
 	}
