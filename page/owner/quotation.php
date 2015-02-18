@@ -11,6 +11,7 @@ class page_xShop_page_owner_quotation extends page_xShop_page_owner_main{
 		
 		// $p=$crud->addFrame('communication_frame');
 		// if($p) $p->add('View_Error')->set($crud->id);
+		
 	}
 
 }

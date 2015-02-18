@@ -11,6 +11,8 @@ class Model_Order extends \Model_Table{
  		$this->hasOne('Epan','epan_id');
 		$this->addCondition('epan_id',$this->api->current_website->id);
 
+		$this->hasOne('xHR/Employee','created_by_id')->defaultValue($this->api->current_employee->id)->system(true);
+
 		$this->hasOne('xShop/PaymentGateway','paymentgateway_id');
 		$f = $this->hasOne('xShop/MemberDetails','member_id')->group('a~3~<i class="fa fa-info"></i> Order Info');
 		$f->icon = "fa fa-user~red";
