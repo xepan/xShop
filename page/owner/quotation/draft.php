@@ -21,8 +21,10 @@ class page_xShop_page_owner_quotation_draft extends page_xShop_page_owner_main{
 			$grid->addColumn('to','to');
 			$grid->removeColumn('lead');
 			$grid->removeColumn('customer');
+		}
+			
 
 		}
 
 	}
-}
+
