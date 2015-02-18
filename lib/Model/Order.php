@@ -176,6 +176,11 @@ class Model_Order extends \Model_Table{
 	function isFromOnline(){
 		return $this['order_from']=='online';
 	}
+
+	function orderItems(){
+		return $this->ref('xShop/OrderDetails');
+	}
+
 	function placeOrderFromQuotation($quotation_approved_id){
 		if($quotation_approved_id < 0 or $quotation_approved_id == null)
 			return false;
@@ -210,6 +215,25 @@ class Model_Order extends \Model_Table{
 			return true;
 		
 	}	
+
+	function submit(){
+		$this['status']='submitted';
+		$this->saveAs('xShop/Model_Order');
+		return $this;
+	}
+
+	function approve(){
+		// check conditions
+		foreach ($ois=$this->orderItems() as $oi) {
+			$department_association = $oi->nextDept();
+			$department_association->createJobCard();
+		}
+
+		$this['status']='approved';
+		$this->saveAs('xShop/Model_Order');
+		// pick first '-' status department and forward the (all) orders
+		return $this;
+	}
 
 
 }

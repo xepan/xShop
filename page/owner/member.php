@@ -5,6 +5,8 @@ class page_xShop_page_owner_member extends page_xShop_page_owner_main{
 	function page_index(){
 
 		$crud=$this->app->layout->add('CRUD');
+        $crud->add('xHR/Controller_Acl');
+		
 
 		$members=$this->add('xShop/Model_MemberDetails');
 		

@@ -1,6 +1,6 @@
 <?php
 
-class page_xShop_page_owner_item_department extends Page{
+class page_xShop_page_owner_item_department extends page_xShop_page_owner_main{
 	function init(){
 		parent::init();
 
@@ -12,6 +12,7 @@ class page_xShop_page_owner_item_department extends Page{
 		$grid=$this->add('Grid');
 		$department = $this->add('xHR/Model_Department',array('table_alias'=>'mc'));
 		$department->addCondition('is_active',true);
+		$department->addCondition('is_production_department',true);
 
 		// selector form
 		$form = $this->add('Form');

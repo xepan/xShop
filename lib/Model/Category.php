@@ -12,6 +12,8 @@ class Model_Category extends \Model_Table{
 		$this->addCondition('epan_id',$this->api->current_website->id);
 		$this->hasOne('xShop/Application','application_id');
 
+		$this->hasOne('xHR/Employee','created_by_id')->defaultValue($this->api->current_employee->id)->system(true);
+
 		//Do for category model with self loop of parent category
 		$this->hasOne('xShop/ParentCategory','parent_id')->defaultValue('Null')->group('x~6');
 		$f = $this->addField('name')->Caption('Category Name')->mandatory(true)->sortable(true)->group('a~6~<i class="fa fa-cog"></i> TITLE');

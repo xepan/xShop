@@ -42,6 +42,21 @@ class Model_OrderItemDepartmentalStatus extends \SQL_Model{
 		$this->add('dynamic_model/Controller_AutoCreator');
 	}
 
+	function createJobCard(){
+		$new_job_card = $this->add('xProduction/Model_JobCard');
+		$new_job_card->addCondition('orderitem_departmental_status_id',$this->id);
+		$new_job_card->tryLoadAny();
+
+		if($new_job_card->loaded())
+			throw $this->exception('Job Card Already Created');
+		
+		$new_job_card['orderitem_id'] = $this['orderitem_id'];
+		$new_job_card['department_id'] = $this['department_id'];
+		$new_job_card['name']=rand(1000,9999);
+		$new_job_card->save();
+		return $new_job_card;
+	}
+
 	function receive(){
 		// create job card for this department and this orderitem_id;
 		$jobcard_model=$this->add('xProduction/Model_JobCard');

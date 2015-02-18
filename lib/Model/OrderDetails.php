@@ -67,5 +67,15 @@ class Model_OrderDetails extends \Model_Table{
 		return $this->ref('order_id');
 	}
 
+	function deptartmentalStatus(){
+		return $this->ref('xShop/OrderItemDepartmentalStatus');
+	}
+
+	function nextDept(){
+		foreach ($dept_status=$this->deptartmentalStatus() as $ds) {
+			if(!$ds['status']) return $ds;
+		}
+	}
+
 }
 

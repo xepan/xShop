@@ -10,6 +10,7 @@ class page_xShop_page_owner_quotation_items extends page_xShop_page_owner_main{
 		$item_model->addCondition('quotation_id',$quotation_id);
 		$item_crud=$this->add('CRUD');
 		$item_crud->setModel($item_model);
+		$crud->add('xHR/Controller_Acl');
 
 	}
 }
