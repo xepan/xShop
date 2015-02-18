@@ -19,6 +19,10 @@ class Model_OrderDetails extends \Model_Table{
 		$this->addField('amount')->type('money');
 		$this->addField('custom_fields')->type('text')->system(false);
 
+		$this->addExpression('created_by_id')->set(function($m,$q){
+			return $m->refSQL('order_id')->fieldQuery('created_by_id');
+		});
+
 		$this->hasMany('xShop/OrderItemDepartmentalStatus','orderitem_id');
 
 		$this->addHook('afterInsert',$this);

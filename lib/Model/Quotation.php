@@ -21,10 +21,6 @@ class Model_Quotation extends \Model_Table{
 
 		$this->hasMany('xShop/QuotationItem','quotation_id');
 
-		
-
-		
-		
 		$this->add('dynamic_model/Controller_AutoCreator');
 		
 		
